@@ -1,0 +1,45 @@
+<f:layout name="Participant" />
+<f:section name="content">
+	<f:comment>
+		<f:debug title="participants">{participants}</f:debug>
+	</f:comment>
+	<f:if condition="{settings.debug}">
+		<f:debug title="settings">{settings}</f:debug>
+	</f:if>
+	<h1>Teilnehmer</h1>
+	<f:flashMessages renderMode="div" />
+	<div class="list">
+		<table class="typo3-dblist tx_t3eventscourse">
+			<tr class="c-headline">
+				<td>ID</td>
+				<td class="col-title">Name, Vorname</td>
+				<td class="">Reservierung # - Schulung</td>
+				<td>Datum / Ort</td>
+			</tr>
+			<f:groupedFor each="{participants}" as="participantsByLesson" groupBy="reservation.lesson" groupKey="lesson">
+				<f:if condition="{lesson}">
+					<tr class="t3-row-header">
+						<td colspan="3">
+							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
+							- {lesson.course.headline}
+						</td>
+						<td>
+							<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-dakosy_reservations-download-excel-white" title="Teilnehmer exportieren" />
+						</td>
+					</tr>
+					<f:for each="{participantsByLesson}" as="participant">
+						<tr class="db_list_normal">
+							<td>{participant.uid}</td>
+							<td>{participant.name}, {participant.firstName}</td>
+							<td>{participant.reservation.uid} - {participant.reservation.lesson.course.headline}</td>
+							<td>
+								<f:format.date format="d.m.Y">{participant.reservation.lesson.date}</f:format.date>
+								, {participant.reservation.lesson.eventLocation.name}
+							</td>
+						</tr>
+					</f:for>
+				</f:if>
+			</f:groupedFor>
+		</table>
+	</div>
+</f:section>

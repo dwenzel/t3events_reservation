@@ -1,0 +1,62 @@
+<h2>Buchungsende Termine und Reservierungen</h2>
+<f:render section="lessons" arguments="{lessons: lessons}" />
+<f:render section="reservations" arguments="{reservations: reservations}" />
+
+<f:section name="lessons">
+	<h3>Veranstaltungstermine</h3>
+	<table>
+		<f:if condition="{lessons->f:count()}">
+			<f:then>
+				<f:for each="{lessons}" as="lesson">
+					<tr>
+						<td>
+							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
+							- {lesson.course.headline}, {lesson.eventLocation.name}
+						</td>
+					</tr>
+				</f:for>
+			</f:then>
+			<f:else>
+				<tr>
+					<td>keine abgelaufenen Termine gefunden</td>
+				</tr>
+			</f:else>
+		</f:if>
+	</table>
+</f:section>
+
+<f:section name="reservations">
+	<h3>Reservierungen</h3>
+	<f:if condition="{reservations->f:count()}">
+		<f:then>
+			<f:for each="{reservations}" as="reservation">
+				<table>
+					<tr>
+						<th>
+							ID: {reservation.uid}
+							Firma: {reservation.company.name}
+							Ansprechpartner: {reservation.contact.name}, {reservation.contact.firstName}
+						</th>
+					</tr>
+					<f:if condition="{reservation.participants}">
+						<f:for each="{reservation.participants}" as="participant">
+							<tr>
+								<td>
+									{participant.name}, {participant.firstName}
+								</td>
+							</tr>
+						</f:for>
+					</f:if>
+				</table>
+				<br />
+			</f:for>
+		</f:then>
+		<f:else>
+			<table>
+				<tr>
+					<td>keine abgelaufenen Reservierungen gefunden</td>
+				</tr>
+			</table>
+		</f:else>
+	</f:if>
+</f:section>

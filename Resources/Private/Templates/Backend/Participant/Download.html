@@ -1,0 +1,4 @@
+Teilnehmer ID; Name; Vorname; Reservierung ID; Firma; Schulungsname; Termin ID; Datum; Ort; weitere Angebote
+<f:for each="{participants}" as="participant">
+	<f:alias map="{reservation: participant.reservation, lesson: participant.reservation.lesson}">"{participant.uid}";"{participant.name}";"{participant.firstName}";"{reservation.uid}";"{reservation.company.name}";"{lesson.course.headline}";"{lesson.uid}";"{lesson.date->f:format.date(format: 'd.m.Y')}";"{lesson.eventLocation.name}"; "{f:if(condition: '{reservation.offersAccepted}', then: 'ja', else: 'nein')}"</f:alias>
+</f:for>

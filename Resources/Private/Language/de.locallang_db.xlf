@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2015-11-19T15:36:41Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+			<trans-unit id="tabs.participants" approved="yes">
+				<source>Participants</source>
+				<target>Teilnehmer</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservation_domain_model_lesson.tab.participants" approved="yes">
+				<source>Participants</source>
+				<target>Teilnehmer</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations.tx_extbase_type" approved="yes">
+				<source>Event type</source>
+				<target>Veranstaltungstyp</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course" approved="yes">
+				<source>Course</source>
+				<target>Schulung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.abstract" approved="yes">
+				<source>Abstract</source>
+				<target>Übersicht</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.audience" approved="yes">
+				<source>Audience</source>
+				<target>Zielgruppe</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.lessons" approved="yes">
+				<source>Lessons</source>
+				<target>Termine</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.newUntil" approved="yes">
+				<source>New until</source>
+				<target>Neu im Angebot bis</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.goals" approved="yes">
+				<source>Goals</source>
+				<target>Ziele</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.requirements" approved="yes">
+				<source>Requirements for participation</source>
+				<target>Voraussetzungen für die Teilnahme</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.archivedate" approved="yes">
+				<source>Archive date</source>
+				<target>Archivdatum</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.listview_exclusion" approved="yes">
+				<source>Exclude from list view</source>
+				<target>Von Listenansicht ausschließen</target>
+			</trans-unit>
+
+			<trans-unit id="tx_dakosyreservations_domain_model_course.export_openqcat" approved="yes">
+				<source>Export to KURSNET</source>
+				<target>Export nach KURSNET</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.export_wis" approved="yes">
+				<source>Export to WIS</source>
+				<target>Export nach WIS</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.export_bison" approved="yes">
+				<source>Export to biSON</source>
+				<target>Export nach BISON</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.export_rce" approved="yes">
+				<source>Export to RCE</source>
+				<target>Export nach RCE</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.export_ea" approved="yes">
+				<source>Export to Export academy Rhein-Main</source>
+				<target>Export nach Exportakademie Rhein-Main</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.export_print" approved="yes">
+				<source>Export for print cataloque</source>
+				<target>Export zur Druckerei für Weiterbildungskatalog</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.exam_costs" approved="yes">
+				<source>Exam costs</source>
+				<target>Prüfungsgebühren</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.exam_remarks" approved="yes">
+				<source>Exam remarks</source>
+				<target>Beschreibung und Terminangaben zur Prüfung</target>
+			</trans-unit>
+
+			<trans-unit id="tx_dakosyreservations_domain_model_course.tab.relations" approved="yes">
+				<source>Relations</source>
+				<target>Zielgruppen/Partner/Kontakte</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.tab.images" approved="yes">
+				<source>Images</source>
+				<target>Bilder und Testimonials</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.tab.visibility" approved="yes">
+				<source>Visibility and Export</source>
+				<target>Sichtbarkeit und Export</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.tab.exam_degree" approved="yes">
+				<source>Exam and degree</source>
+				<target>Prüfung und Abschluss</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.targetgroup_desc" approved="yes">
+				<source>Targetgroup desc</source>
+				<target>Zielgruppe näher definiert</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform" approved="yes">
+				<source>Angebots-/Unterrichtsform</source>
+				<target>Angebots-/Unterrichtsform</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.6" approved="yes">
+				<source>auf Anfrage / Sonstiges</source>
+				<target>auf Anfrage / Sonstiges</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.1" approved="yes">
+				<source>Präsenzseminar</source>
+				<target>Präsenzseminar</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.103" approved="yes">
+				<source>- Vollzeit</source>
+				<target>- Vollzeit</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.104" approved="yes">
+				<source>- Teilzeit</source>
+				<target>- Teilzeit</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.105" approved="yes">
+				<source>- Wochenendveranstaltung</source>
+				<target>- Wochenendveranstaltung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.106" approved="yes">
+				<source>- Blockunterricht</source>
+				<target>- Blockunterricht</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.107" approved="yes">
+				<source>- Inhouse/Firmenseminar</source>
+				<target>- Inhouse/Firmenseminar</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.2" approved="yes">
+				<source>E-Learning/Blended Learning/Selbststudium</source>
+				<target>E-Learning/Blended Learning/Selbststudium</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.3" approved="yes">
+				<source>- Blended Learning</source>
+				<target>- Blended Learning</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.11" approved="yes">
+				<source>- Selbststudium</source>
+				<target>- Selbststudium</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.15" approved="yes">
+				<source>- E-Learning</source>
+				<target>- E-Learning</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.mode_instructionform.4" approved="yes">
+				<source>Fernunterricht/Fernstudium</source>
+				<target>Fernunterricht/Fernstudium</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.degree_type" approved="yes">
+				<source>Degree type</source>
+				<target>Abschluss</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.degree_type.0" approved="yes">
+				<source>No degree</source>
+				<target>Kein Abschluss</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.degree_type.1" approved="yes">
+				<source>Teilnahmebescheinigung</source>
+				<target>Teilnahmebescheinigung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.degree_type.2" approved="yes">
+				<source>Unterrichtungsnachweis</source>
+				<target>Unterrichtungsnachweis</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.degree_type.3" approved="yes">
+				<source>Zertifikat</source>
+				<target>Zertifikat</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.degree_type.4" approved="yes">
+				<source>Zeugnis</source>
+				<target>Zeugnis</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.certificate" approved="yes">
+				<source>Fördermöglichkeiten</source>
+				<target>Fördermöglichkeiten</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.certificate.1" approved="yes">
+				<source>Maßnahmezertifizierung nach AZWV/AZAV (SGB III)</source>
+				<target>Maßnahmezertifizierung nach AZWV/AZAV (SGB III)</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.certificate.2" approved="yes">
+				<source>Bildungsurlaub (entsprechend der Gesetze der Bundesländer)</source>
+				<target>Bildungsurlaub (entsprechend der Gesetze der Bundesländer)</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.certificate.3" approved="yes">
+				<source>Sonstiges</source>
+				<target>Sonstiges</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.certificate.4" approved="yes">
+				<source>AFBG ("Meister-BAFöG")</source>
+				<target>AFBG ("Meister-BAFöG")</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.tab.extended" approved="yes">
+				<source>Details</source>
+				<target>Details</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.tab.lessons" approved="yes">
+				<source>Lessons</source>
+				<target>Termin-, Anmelde- und Preisangaben</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.certificate_desc" approved="yes">
+				<source>Sonstige Fördermöglichkeiten</source>
+				<target>Sonstige Fördermöglichkeiten</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.list_view_image" approved="yes">
+				<source>List view image</source>
+				<target>Bild für Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.image_gallery" approved="yes">
+				<source>Image gallery</source>
+				<target>Impressionen</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.testimonials" approved="yes">
+				<source>Testimonials</source>
+				<target>Testimonials</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.branch" approved="yes">
+				<source>Branches</source>
+				<target>Branchen</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.program_agenda" approved="yes">
+				<source>Program agenda</source>
+				<target>Programmpunkte</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.contact_person" approved="yes">
+				<source>Course contacts</source>
+				<target>IHK-Ansprechpartner</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.course_contacts" approved="yes">
+				<source>Speaker</source>
+				<target>Referenten/Dozenten/Moderatoren</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.partner" approved="yes">
+				<source>Partner</source>
+				<target>Kooperationspartner</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_course.eventcategories" approved="yes">
+				<source>Categories</source>
+				<target>Kategorien</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.external_registration_link" approved="yes">
+				<source>Link to external registration</source>
+				<target>Link zu externer Registrierung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.registration_documents" approved="yes">
+				<source>File attachements for document based registration</source>
+				<target>Dateianhänge für schriftliche Anmeldung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.document_based_registration" approved="yes">
+				<source>Document based registration</source>
+				<target>Ausschließlich schriftliche Anmeldung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.external_registration" approved="yes">
+				<source>External registration</source>
+				<target>Anmeldung auf externer Website</target>
+			</trans-unit>
+
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson" approved="yes">
+				<source>Schedule</source>
+				<target>Termin</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.deadline" approved="yes">
+				<source>Deadline</source>
+				<target>Anmeldeschluss</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.duration" approved="yes">
+				<source>Duration</source>
+				<target>Dauer</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.places" approved="yes">
+				<source>Places</source>
+				<target>Plätze</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.price" approved="yes">
+				<source>Price</source>
+				<target>Preis</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.registration_begin" approved="yes">
+				<source>Begin of registation</source>
+				<target>Anmeldebeginn</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.date_end" approved="yes">
+				<source>Finish date</source>
+				<target>Enddatum</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.tab.extended" approved="yes">
+				<source>Details</source>
+				<target>Details</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.tab.price" approved="yes">
+				<source>Price details</source>
+				<target>Preisangaben</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.free_of_charge" approved="yes">
+				<source>Free of charge</source>
+				<target>Kostenlos</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.date_remarks" approved="yes">
+				<source>Date remarks</source>
+				<target>Ergänzende Termininformationen</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.registration_remarks" approved="yes">
+				<source>Registration remarks</source>
+				<target>Hinweise zur Anmeldung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.class_time" approved="yes">
+				<source>Class time</source>
+				<target>Unterrichtszeiten</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.tab.registration" approved="yes">
+				<source>Registration and availability</source>
+				<target>Anmeldung und Verfügbarkeit</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_lesson.tab.participants" approved="yes">
+				<source>Participants</source>
+				<target>Teilnehmer</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification" approved="yes">
+				<source>Notification</source>
+				<target>Benachrichtigung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.bodytext" approved="yes">
+				<source>Text</source>
+				<target>Text</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.format" approved="yes">
+				<source>Format</source>
+				<target>Format</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.recipient" approved="yes">
+				<source>Recipient</source>
+				<target>Empfänger</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.reservation" approved="yes">
+				<source>Reservation</source>
+				<target>Reservierung</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.send_at" approved="yes">
+				<source>Sent at</source>
+				<target>versendet</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.sender" approved="yes">
+				<source>Sender</source>
+				<target>Absender</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_notification.subject" approved="yes">
+				<source>Subject</source>
+				<target>Betreff</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_person.tx_extbase_type.contact" approved="yes">
+				<source>Contact</source>
+				<target>Ansprechpartner</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_person.tx_extbase_type.empty" approved="yes">
+				<source>-empty-</source>
+				<target>-leer-</target>
+			</trans-unit>
+			<trans-unit id="tx_dakosyreservations_domain_model_person.tx_extbase_type.participant" approved="yes">
+				<source>Participant</source>
+				<target>Teilnehmer</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactIsParticipant" approved="yes">
+				<source>Contact is participant</source>
+				<target>Ansprechpartner nimmt teil</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" approved="yes">
+				<source>Notifications</source>
+				<target>Benachrichtigungen</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.offersAccepted" approved="yes">
+				<source>Further offers accepted</source>
+				<target>Weitere Angebote akzeptiert</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted" approved="yes">
+				<source>Privacy statement accepted</source>
+				<target>Datenschutzerklärung akzeptiert</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0" approved="yes">
+				<source>new</source>
+				<target>neu</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.1" approved="yes">
+				<source>draft</source>
+				<target>Entwurf</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.2" approved="yes">
+				<source>submitted</source>
+				<target>gebucht</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.3" approved="yes">
+				<source>canceled (no charge)</source>
+				<target>storniert (kostenlos)</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.4" approved="yes">
+				<source>canceled (with costs)</source>
+				<target>storniert (kostenpflichtig)</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.5" approved="yes">
+				<source>closed</source>
+				<target>abgeschlossen</target>
+			</trans-unit>
+			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" approved="yes">
+				<source>canceled by DAKOSY</source>
+				<target>abgesagt durch DAKOSY</target>
+			</trans-unit>
+			<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.Tx_T3eventsCourse_Course" approved="yes">
+				<source>Course</source>
+				<target>Weiterbildungsangebot</target>
+			</trans-unit>
+			<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.default" approved="yes">
+				<source>Default</source>
+				<target>Allgemeine Veranstaltung</target>
+			</trans-unit>
+			<trans-unit id="tx_t3events_domain_model_genre" approved="yes">
+				<source>Product</source>
+				<target>Produkt</target>
+			</trans-unit>
+			<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.Tx_T3eventsCourse_Lesson" approved="yes">
+				<source>Schedule</source>
+				<target>Termin</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

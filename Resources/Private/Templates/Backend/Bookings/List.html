@@ -1,0 +1,77 @@
+<f:layout name="Default" />
+<f:section name="content">
+
+	<h1>Reservierungen</h1>
+
+	<f:flashMessages renderMode="div" />
+	<div class="list">
+		<table class="typo3-dblist tx_t3eventscourse">
+			<tr class="c-headline">
+				<td>ID</td>
+				<td class="col-title">
+					<f:translate key="tx_dakosyreservations_domain_model_reservation.status" />
+				</td>
+				<td class="">Firma</td>
+				<td>Ansprechpartner</td>
+				<td>Teilnehmer</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<f:be.widget.paginate
+				objects="{reservations}"
+				as="paginatedReservations"
+				configuration="{itemsPerPage: 10, maximumNumberOfLinks: 10, recordsLabel: 'Reservierung'}"
+				>
+				<f:groupedFor each="{paginatedReservations}" as="reservationsByLesson" groupBy="lesson" groupKey="lesson">
+					<tr class="t3-row-header">
+						<td colspan="4">
+							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
+							- {lesson.course.headline}, {lesson.eventLocation.name}
+						</td>
+						<td>{lesson.freePlaces} | {lesson.places} Plätze</td>
+						<td></td>
+						<td>
+							<f:link.action action="newNotification" arguments="{reservations: reservationsByLesson, lesson: lesson}">alle benachrichtigen</f:link.action>
+						</td>
+					</tr>
+					<f:for each="{reservationsByLesson}" as="reservation">
+						<tr class="db_list_normal">
+							<td>{reservation.uid}</td>
+							<td>
+								<f:translate key="tx_dakosyreservations_domain_model_reservation.status.{reservation.status}" />
+							</td>
+							<td>
+								<f:link.action
+									action="show"
+									arguments="{reservation: reservation}"
+									title="Reservierung ansehen"
+									>{reservation.company.name}
+								</f:link.action>
+							</td>
+							<td>
+								<f:if condition="{reservation.contact.gender} == 1">
+									{f:translate(key: 'tx_dakosyreservations_domain_model_person.gender.male')}
+								</f:if>
+								<f:if condition="{reservation.contact.gender} == 2">
+									{f:translate(key: 'tx_dakosyreservations_domain_model_person.gender.female')}
+								</f:if>
+								{reservation.contact.name}
+							</td>
+							<td>{reservation.participants->f:count()}</td>
+							<td>
+								<f:if condition="{reservation.status} <= 2">
+									<f:be.buttons.icon uri="{f:uri.action(action:'edit', arguments: {reservation: reservation})}" icon="actions-document-open" title="Bearbeiten" />
+								</f:if>
+							</td>
+							<td>
+								<f:link.action action="newNotification" arguments="{reservations: {0: reservation}, lesson: lesson}">benachrichtigen</f:link.action>
+							</td>
+						</tr>
+					</f:for>
+				</f:groupedFor>
+
+			</f:be.widget.paginate>
+		</table>
+	</div>
+
+</f:section>

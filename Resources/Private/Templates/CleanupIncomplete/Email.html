@@ -1,0 +1,9 @@
+<f:if condition="{dryRun}">
+	<f:then>
+		<h2>Testlauf</h2>
+		{deletedCount} unvollständige Reservierungen gefunden (Alter: {age} Sekunden)
+	</f:then>
+	<f:else>
+		{deletedCount} unvollständige Reservierungen gelöscht (Alter: {age} Sekunden)
+	</f:else>
+</f:if>
