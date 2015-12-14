@@ -1,148 +1,178 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2015-11-19T15:36:41Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-12-14T16:17:29Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="tabs.notifications">
-				<source>Notifications</source>
-			</trans-unit>
-			<trans-unit id="tabs.participants">
-				<source>Participants</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_schedule.tab.participants">
-				<source>Participants</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation.tx_extbase_type">
-				<source>Event type</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation.tx_extbase_type.0">
-				<source>Default</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_course">
-				<source>Course</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_course.abstract">
-				<source>Abstract</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_course.audience">
-				<source>Audience</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_course.schedules">
-				<source>Lessons</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_course.tab.extended">
-				<source>Details</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_course.tab.schedules">
-				<source>Lessons</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule">
-				<source>Schedule</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule.deadline">
-				<source>Deadline</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule.duration">
-				<source>Duration</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule.places">
-				<source>Places</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule.price">
-				<source>Price</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule.tab.extended">
-				<source>Details</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_schedule.tab.participants">
-				<source>Participants</source>
-			</trans-unit>
-
-			<trans-unit id="tx_t3events_domain_model_person.gender.female">
-				<source>Ms</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_person.gender.male">
-				<source>Mr</source>
-			</trans-unit>
-
-			<trans-unit id="tx_t3events_domain_model_person.type.contact">
-				<source>Contact</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_person.type.empty">
-				<source>-empty-</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_person.type.participant">
-				<source>Participant</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.Tx_T3eventsCourse_Person">
-				<source>Reservations Person</source>
-			</trans-unit>
-
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation">
-				<source>Reservation</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company">
-				<source>Company</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contact">
-				<source>Contact</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactIsParticipant">
-				<source>Contact is participant</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.schedule">
-				<source>Schedule</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications">
-				<source>Notifications</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.offersAccepted">
-				<source>Further offers accepted</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.participants">
-				<source>Participants</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted">
-				<source>Privacy statement accepted</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status">
-				<source>Status</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0">
-				<source>new</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.1">
-				<source>draft</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.2">
-				<source>submitted</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.3">
-				<source>canceled (no charge)</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.4">
-				<source>canceled (with costs)</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.5">
-				<source>closed</source>
-			</trans-unit>
-			<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6">
-				<source>canceled by DAKOSY</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.Tx_T3eventsCourse_Course">
-				<source>Course</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.default">
-				<source>Default</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_genre">
-				<source>Product</source>
-			</trans-unit>
-			<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.Tx_T3eventsCourse_Lesson">
-				<source>Schedule</source>
-			</trans-unit>
+		<trans-unit id="label.tab.participants" xml:space="preserve">
+			<source>Participants</source>
+		</trans-unit>
+		<trans-unit id="label.tab.price" xml:space="preserve">
+			<source>Price</source>
+		</trans-unit>
+		<trans-unit id="label.tab.registration" xml:space="preserve">
+			<source>Registration</source>
+		</trans-unit>
+		<trans-unit id="label.tabs.notifications" xml:space="preserve">
+			<source>Notifications</source>
+		</trans-unit>
+		<trans-unit id="label.tabs.participants" xml:space="preserve">
+			<source>Participants</source>
+		</trans-unit>
+		<trans-unit id="label.tx_extbase_type.Tx_T3eventsReservation_Schedule" xml:space="preserve">
+			<source>Schedule (bookable)</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.Tx_T3eventsCourse_Course" xml:space="preserve">
+			<source>Course</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.default" xml:space="preserve">
+			<source>Default</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_genre" xml:space="preserve">
+			<source>Product</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.Tx_T3eventsCourse_Lesson" xml:space="preserve">
+			<source>Schedule</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.gender.female" xml:space="preserve">
+			<source>Ms</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.gender.male" xml:space="preserve">
+			<source>Mr</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.type.contact" xml:space="preserve">
+			<source>Contact</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.type.empty" xml:space="preserve">
+			<source>-empty-</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.type.participant" xml:space="preserve">
+			<source>Participant</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation.tx_extbase_type" xml:space="preserve">
+			<source>Event type</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation.tx_extbase_type.0" xml:space="preserve">
+			<source>Default</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event" xml:space="preserve">
+			<source>Course</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.abstract" xml:space="preserve">
+			<source>Abstract</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.audience" xml:space="preserve">
+			<source>Audience</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.schedules" xml:space="preserve">
+			<source>Lessons</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.extended" xml:space="preserve">
+			<source>Details</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.schedules" xml:space="preserve">
+			<source>Lessons</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.deadline" xml:space="preserve">
+			<source>Registration Deadline</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.document_based_registration" xml:space="preserve">
+			<source>Document based registration</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.external_registration" xml:space="preserve">
+			<source>External Registration</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.external_registration_link" xml:space="preserve">
+			<source>External Registration Link</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.free_of_charge" xml:space="preserve">
+			<source>Free of charge</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.places" xml:space="preserve">
+			<source>Places</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_begin" xml:space="preserve">
+			<source>Registration Begin</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_documents" xml:space="preserve">
+			<source>Registration Documents</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_remarks" xml:space="preserve">
+			<source>Registration remarks</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.Tx_T3eventsCourse_Person" xml:space="preserve">
+			<source>Reservations Person</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation" xml:space="preserve">
+			<source>Reservation</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company" xml:space="preserve">
+			<source>Company</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contact" xml:space="preserve">
+			<source>Contact</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactIsParticipant" xml:space="preserve">
+			<source>Contact is participant</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" xml:space="preserve">
+			<source>Notifications</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.offersAccepted" xml:space="preserve">
+			<source>Further offers accepted</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.participants" xml:space="preserve">
+			<source>Participants</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted" xml:space="preserve">
+			<source>Privacy statement accepted</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.schedule" xml:space="preserve">
+			<source>Schedule</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status" xml:space="preserve">
+			<source>Status</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0" xml:space="preserve">
+			<source>new</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.1" xml:space="preserve">
+			<source>draft</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.2" xml:space="preserve">
+			<source>submitted</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.3" xml:space="preserve">
+			<source>canceled (no charge)</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.4" xml:space="preserve">
+			<source>canceled (with costs)</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.5" xml:space="preserve">
+			<source>closed</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" xml:space="preserve">
+			<source>canceled by DAKOSY</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_schedule" xml:space="preserve">
+			<source>Schedule</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_schedule.deadline" xml:space="preserve">
+			<source>Deadline</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_schedule.duration" xml:space="preserve">
+			<source>Duration</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_schedule.places" xml:space="preserve">
+			<source>Places</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_schedule.price" xml:space="preserve">
+			<source>Price</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_schedule.tab.extended" xml:space="preserve">
+			<source>Details</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>

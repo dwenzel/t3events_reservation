@@ -1,6 +1,17 @@
 config.tx_extbase {
 	persistence {
 		classes {
+			Webfox\T3events\Domain\Model\Performance {
+				subclasses {
+					Tx_T3eventsRegistration_Schedule = CPSIT\T3eventsRegistration\Domain\Model\Schedule
+				}
+			}
+			CPSIT\T3eventsCourse\Domain\Model\Schedule {
+				mapping {
+					tableName = tx_t3events_domain_model_performance
+					recordType = Tx_T3eventsRegistration_Schedule
+				}
+			}
 			CPSIT\T3eventsReservation\Domain\Model\Contact {
 				subclasses {
 					Tx_T3eventsReservation_Person = CPSIT\T3eventsReservation\Domain\Model\Person
