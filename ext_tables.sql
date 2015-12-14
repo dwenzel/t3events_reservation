@@ -86,3 +86,11 @@ CREATE TABLE tx_t3eventreservation_lesson_participants_person_mm (
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign)
 );
+
+###
+#
+# Table structure for table 'tx_t3events_domain_model_notification'
+#
+CREATE TABLE tx_t3events_domain_model_notification (
+	reservation int(11) unsigned DEFAULT '0' NOT NULL
+);

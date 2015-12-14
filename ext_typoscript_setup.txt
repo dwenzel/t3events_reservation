@@ -11,11 +11,15 @@ config.tx_extbase {
 					Tx_T3eventsReservation_Person = CPSIT\T3eventsReservation\Domain\Model\Person
 				}
 			}
-
 			CPSIT\T3eventsReservation\Domain\Model\Person {
 				mapping {
 					tableName = tx_t3events_domain_model_person
 					recordType = Tx_T3eventsReservation_Person
+				}
+			}
+			CPSIT\T3eventsReservation\Domain\Model\Notification {
+				mapping {
+					tableName = tx_t3events_domain_model_notification
 				}
 			}
 			CPSIT\T3eventsReservation\Domain\Model\Contact {
