@@ -28,5 +28,5 @@ use Webfox\T3events\Domain\Model\Performance;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 class Schedule extends Performance {
-
+	use BookableScheduleTrait;
 }
