@@ -58,7 +58,19 @@ CREATE TABLE tx_t3events_domain_model_person (
 # Table structure for table 'tx_t3events_domain_model_performance'
 #
 CREATE TABLE tx_t3events_domain_model_performance (
-	participants int(11) unsigned DEFAULT '0' NOT NULL
+	participants int(11) unsigned DEFAULT '0' NOT NULL,
+	deadline int(11) DEFAULT '0' NOT NULL,
+	date_end int(11) DEFAULT '0' NOT NULL,
+	registration_begin int(11) DEFAULT '0' NOT NULL,
+	price double(11,2) DEFAULT '0.00' NOT NULL,
+	places int(11) DEFAULT '0' NOT NULL,
+	free_of_charge tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	date_remarks text NOT NULL,
+	registration_remarks text NOT NULL,
+	external_registration_link tinytext NOT NULL,
+	document_based_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	external_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	registration_documents tinytext NOT NULL
 );
 
 #

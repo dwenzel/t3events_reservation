@@ -128,26 +128,41 @@ $temporaryColumns = [
 	],
 	'registration_documents' => [
 		'label' => $ll . 'tx_t3eventsreservation_domain_model_performance.registration_documents',
-		'config' => [
-			'type' => 'group',
-			'internal_type' => 'db',
-			'allowed' => 'sys_file',
-			'MM' => 'sys_file_reference',
-			'MM_match_fields' => [
-				'fieldname' => 'registration_documents'
+		'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'registration_documents',
+			[
+				'appearance' => [
+					'headerThumbnail' => [
+						'width' => '100',
+						'height' => '100',
+					],
+					'createNewRelationLinkTitle' => $ll. 'label.addDocument'
+				],
+				'foreign_types' => [
+					'0' => [
+						'showitem' => '
+						--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+						--palette--;;filePalette'
+					],
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
+						'showitem' => '
+						--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+						--palette--;;filePalette'
+					],
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
+						'showitem' => '
+						--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+						--palette--;;filePalette'
+					],
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
+						'showitem' => '
+						--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+						--palette--;;filePalette'
+					]
+				],
 			],
-			'prepend_tname' => TRUE,
-			'appearance' => [
-				'elementBrowserAllowed' => 'doc,dox,pdf',
-				'elementBrowserType' => 'file'
-			],
-			'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-			'show_thumbs' => '1',
-			'size' => '3',
-			'minitems' => '0',
-			'maxitems' => '200',
-			'autoSizeMax' => 40,
-		],
+			'doc,docx,pdf'
+		)
 	],
 ];
 
