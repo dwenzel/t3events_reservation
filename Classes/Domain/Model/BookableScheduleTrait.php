@@ -222,4 +222,89 @@ trait BookableScheduleTrait {
 	public function removeRegistrationDocument(FileReference $fileReference) {
 		$this->registrationDocuments->detach($fileReference);
 	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getRegistrationBegin() {
+		return $this->registrationBegin;
+	}
+
+	/**
+	 * @param \DateTime $registrationBegin
+	 */
+	public function setRegistrationBegin($registrationBegin) {
+		$this->registrationBegin = $registrationBegin;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isFreeOfCharge() {
+		return $this->freeOfCharge;
+	}
+
+	/**
+	 * @param boolean $freeOfCharge
+	 */
+	public function setFreeOfCharge($freeOfCharge) {
+		$this->freeOfCharge = $freeOfCharge;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRegistrationRemarks() {
+		return $this->registrationRemarks;
+	}
+
+	/**
+	 * @param string $registrationRemarks
+	 */
+	public function setRegistrationRemarks($registrationRemarks) {
+		$this->registrationRemarks = $registrationRemarks;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isDocumentBasedRegistration() {
+		return $this->documentBasedRegistration;
+	}
+
+	/**
+	 * @param boolean $documentBasedRegistration
+	 */
+	public function setDocumentBasedRegistration($documentBasedRegistration) {
+		$this->documentBasedRegistration = $documentBasedRegistration;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isExternalRegistration() {
+		return $this->externalRegistration;
+	}
+
+	/**
+	 * @param boolean $externalRegistration
+	 */
+	public function setExternalRegistration($externalRegistration) {
+		$this->externalRegistration = $externalRegistration;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getExternalRegistrationLink() {
+		return $this->externalRegistrationLink;
+	}
+
+	/**
+	 * @param string $externalRegistrationLink
+	 */
+	public function setExternalRegistrationLink($externalRegistrationLink) {
+		$this->externalRegistrationLink = $externalRegistrationLink;
+	}
+
 }
