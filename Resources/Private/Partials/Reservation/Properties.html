@@ -1,0 +1,41 @@
+<div class="tx-dakosyreservations-reservation">
+	<div class="reservationCompanyInfo">
+		<h3>
+			<f:translate key="tx_dakosyreservations_domain_model_company" />
+		</h3>
+		{reservation.company.name}<br />
+		{reservation.company.address}<br />
+		{reservation.company.zip}&nbsp;{reservation.company.city}<br />
+		{reservation.company.country}<br />
+	</div>
+	<div class="reservationContactInfo">
+		<h3>
+			<f:translate key="tx_dakosyreservations_domain_model_contact" />
+		</h3>
+		<f:if condition="{reservation.contact.gender}==1">
+			<f:then>
+				<f:translate key="tx_dakosyreservations_domain_model_contact.gender.male" />
+			</f:then>
+			<f:else>
+				<f:translate key="tx_dakosyreservations_domain_model_contact.gender.female" />
+			</f:else>
+		</f:if>
+		<br />
+		{reservation.contact.firstname}&nbsp;{reservation.contact.name}<br />
+		{reservation.contact.phone}<br />
+		{reservation.contact.email}
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="reservationParticipantsInfo">
+		<h3>
+			<f:translate key="tx_dakosyreservations_domain_model_reservation.participants" />
+		</h3>
+		<ul class="reservationParticipants">
+			<f:for each="{reservation.participants}" as="participant">
+				<f:render partial="Participant/ShowShort" arguments="{reservation: reservation, participant: participant}" />
+			</f:for>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2015-02-23T18:11:03Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+			<trans-unit id="button.applyFilter" approved="yes" xml:space="preserve">
+			<source>apply filter</source>
+			<target>Filter anwenden</target>
+		</trans-unit>
+		<trans-unit id="button.back" approved="yes" xml:space="preserve">
+			<source>back</source>
+			<target>zurück</target>
+		</trans-unit>
+		<trans-unit id="button.cancel" approved="yes" xml:space="preserve">
+			<source>Cancel</source>
+			<target>Abbrechen</target>
+		</trans-unit>
+		<trans-unit id="button.cancelFreeOfCharge" approved="yes" xml:space="preserve">
+			<source>free of charge</source>
+			<target>kostenlos</target>
+		</trans-unit>
+		<trans-unit id="button.cancelWithCosts" approved="yes" xml:space="preserve">
+			<source>with costs</source>
+			<target>kostenpflichtig</target>
+		</trans-unit>
+		<trans-unit id="button.checkout" approved="yes" xml:space="preserve">
+			<source>Confirm Reservation</source>
+			<target>Reservierung abschließen</target>
+		</trans-unit>
+		<trans-unit id="button.confirmReservation" approved="yes" xml:space="preserve">
+			<source>Confirm Reservation</source>
+			<target>Reservierung bestätigen</target>
+		</trans-unit>
+		<trans-unit id="button.createParticipant" approved="yes" xml:space="preserve">
+			<source>Add Participant</source>
+			<target>Teilnehmer hinzufügen</target>
+		</trans-unit>
+		<trans-unit id="button.createReservation" approved="yes" xml:space="preserve">
+			<source>book</source>
+			<target>buchen</target>
+		</trans-unit>
+		<trans-unit id="button.deleteReservation" approved="yes" xml:space="preserve">
+			<source>Delete Reservation</source>
+			<target>Reservierung löschen</target>
+		</trans-unit>
+		<trans-unit id="button.goToLessonListPage" approved="yes" xml:space="preserve">
+			<source>Go to lessons list</source>
+			<target>Zur Schulungsliste</target>
+		</trans-unit>
+		<trans-unit id="button.proceed" approved="yes" xml:space="preserve">
+			<source>Proceed</source>
+			<target>weiter</target>
+		</trans-unit>
+		<trans-unit id="button.removeParticipant" approved="yes" xml:space="preserve">
+			<source>Remove Participant</source>
+			<target>Teilnehmer löschen</target>
+		</trans-unit>
+		<trans-unit id="button.reset" approved="yes" xml:space="preserve">
+			<source>reset</source>
+			<target>zurücksetzen</target>
+		</trans-unit>
+		<trans-unit id="button.save" approved="yes" xml:space="preserve">
+			<source>Save</source>
+			<target>Speichern</target>
+		</trans-unit>
+		<trans-unit id="button.send" approved="yes" xml:space="preserve">
+			<source>Send</source>
+			<target>Abschicken</target>
+		</trans-unit>
+		<trans-unit id="button.show" approved="yes" xml:space="preserve">
+			<source>show</source>
+			<target>Detail</target>
+		</trans-unit>
+		<trans-unit id="error.newNotification.bodytext.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter a message!</source>
+			<target>Bitte geben Sie eine Nachricht ein!</target>
+		</trans-unit>
+		<trans-unit id="error.newNotification.subject.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter a subject!</source>
+			<target>Bitte geben Sie einen Betreff an!</target>
+		</trans-unit>
+		<trans-unit id="error.newParticipant.email.1221559976" approved="yes" xml:space="preserve">
+			<source>Please enter a valid email address!</source>
+			<target>Bitte geben Sie eine gültige Email-Adresse an!</target>
+		</trans-unit>
+		<trans-unit id="error.newParticipant.firstName.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter the first name of the participant!</source>
+			<target>Bitte geben Sie den Vornamen des Teilnehmers an! </target>
+		</trans-unit>
+		<trans-unit id="error.newParticipant.gender.1221560910" approved="yes" xml:space="preserve">
+			<source>Please choose a salutation!</source>
+			<target>Bitte wählen Sie eine Anrede!</target>
+		</trans-unit>
+		<trans-unit id="error.newParticipant.name.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter the participants name!</source>
+			<target>Bitte geben Sie den Namen des Teilnehmers an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.company.address.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter a company address!</source>
+			<target>Bitte geben Sie Strasse und Hausnummer an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.company.city.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter a city!</source>
+			<target>Bitte geben Sie den Ort an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.company.name.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter a company name!</source>
+			<target>Bitte geben Sie einen Firmennamen an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.company.zip.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter a ZIP code!</source>
+			<target>Bitte geben Sie die Postleitzahl an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.contact.1410958066" approved="yes" xml:space="preserve">
+			<source>Please enter an email adress of the contact person!</source>
+			<target>Bitte geben Sie die Email-Adresse des Ansprechpartners an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.contact.1417193585" approved="yes" xml:space="preserve">
+			<source>Please enter the contact persons phone number!</source>
+			<target>Bitte geben Sie die Telefonnummer des Ansprechpartners an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.contact.email.1221559976" approved="yes" xml:space="preserve">
+			<source>Please enter a valid email address!</source>
+			<target>Bitte geben Sie eine gültige Email-Adresse an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.contact.firstName.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter the first name of the contact person!</source>
+			<target>Bitte geben Sie den Vornamen des Ansprechpartners an! </target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.contact.gender.1221560910" approved="yes" xml:space="preserve">
+			<source>Please select a salutation!</source>
+			<target>Bitte wählen Sie eine Anrede!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.contact.name.1221560718" approved="yes" xml:space="preserve">
+			<source>Please enter the name of the contact person.</source>
+			<target>Bitte geben Sie den Namen des Ansprechpartners an!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.privacyStatementAccepted.1361959228" approved="yes" xml:space="preserve">
+			<source>Please accept the privacy statement!</source>
+			<target>Bitte akzeptieren Sie unsere Datenschutzerklärung!</target>
+		</trans-unit>
+		<trans-unit id="error.newReservation.privacyStatementAccepted.1361959228 " approved="yes" xml:space="preserve">
+			<source>Please accept the privacy statement!</source>
+			<target>Bitte akzeptieren Sie die Datenschutzvereinbarung!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to checkout this reservation.</source>
+			<target>Sie dürfen diese Registrierung nicht abschließen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.confirm.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to confirm this reservation.</source>
+			<target>Sie dürfen diese Registrierung nicht bestätigen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation.</source>
+			<target>Sie dürfen dies Reservierung nicht bearbeiten.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.unknownError" approved="yes" xml:space="preserve">
+			<source>Sorry, we could not create your reservation!</source>
+			<target>Ihre Reservierung konnte nicht erstellt werden!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to create a participant for this reservation.</source>
+			<target>Sie dürfen keinen Teilnehmer für diese Reservierung anlegen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.unknownError" approved="yes" xml:space="preserve">
+			<source>Sorry, the participant could not be created!</source>
+			<target>Der Teilnehmer konnte nicht hinzugefügt werden.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.delete.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to delete this reservation.</source>
+			<target>Sie dürfen diese Reservierung nicht löschen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newParticipant.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to add a participant to this reservation.</source>
+			<target>Sie dürfen keinen Teilnehmer zu dieser Reservierung hinzufügen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeParticipant.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to remove this participant.</source>
+			<target>Sie dürfen diesen Teilnehmer nicht entfernen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.show.accessDenied" approved="yes" xml:space="preserve">
+			<source>You are not allowed to see this reservation.</source>
+			<target>Sie dürfen diese Reservierung nicht sehen.</target>
+		</trans-unit>
+		<trans-unit id="label.allAudiences" approved="yes" xml:space="preserve">
+			<source>all audiences</source>
+			<target>alle Zielgruppen</target>
+		</trans-unit>
+		<trans-unit id="label.allEventLocations" approved="yes" xml:space="preserve">
+			<source>all event locations</source>
+			<target>alle Veranstaltungsorte</target>
+		</trans-unit>
+		<trans-unit id="label.allEventTypes" approved="yes" xml:space="preserve">
+			<source>all event types</source>
+			<target>alle Veranstaltungstypen</target>
+		</trans-unit>
+		<trans-unit id="label.allGenres" approved="yes" xml:space="preserve">
+			<source>all Products</source>
+			<target>alle Produkte</target>
+		</trans-unit>
+		<trans-unit id="label.availablePlaces" approved="yes" xml:space="preserve">
+			<source>available places</source>
+			<target>verfügbare Plätze</target>
+		</trans-unit>
+		<trans-unit id="message.bookings.cancel.sendNotification.error" approved="yes" xml:space="preserve">
+			<source>A cancelation message could not be sent to the contact person.</source>
+			<target>Eine Nachricht über die Stornierung konnte nicht an den Ansprechpartner versendet werden.</target>
+		</trans-unit>
+		<trans-unit id="message.bookings.cancel.sendNotification.success" approved="yes" xml:space="preserve">
+			<source>A cancelation message has been send to the contact person.</source>
+			<target>Eine Nachricht über die Stornierung wurde an den Ansprechpartner versendet.</target>
+		</trans-unit>
+		<trans-unit id="message.bookings.cancel.success" approved="yes" xml:space="preserve">
+			<source>The reservation has been canceled.</source>
+			<target>Die Reservierung wurde storniert.</target>
+		</trans-unit>
+		<trans-unit id="message.bookings.sendNotification.errorForRecipient" approved="yes" xml:space="preserve">
+			<source>Your message could not be sent to:</source>
+			<target>Ihre Nachricht konnte nicht versendet werden an:</target>
+		</trans-unit>
+		<trans-unit id="message.bookings.sendNotification.successForRecipients" approved="yes" xml:space="preserve">
+			<source>Your message has been sent to:</source>
+			<target>Ihre Nachricht wurde versendet an:</target>
+		</trans-unit>
+		<trans-unit id="message.deadLineForLessonExceed" approved="yes" xml:space="preserve">
+			<source>Sorry the reservation deadline for this lesson expired. </source>
+			<target>Die Anmeldefrist für diesen Termin ist abgelaufen. </target>
+		</trans-unit>
+		<trans-unit id="message.fillInCompanyData" approved="yes" xml:space="preserve">
+			<source>Please enter your company name and address.</source>
+			<target>Bitte geben Sie Name und Adresse Ihrer Firma ein.</target>
+		</trans-unit>
+		<trans-unit id="message.fillInContactPersonData" approved="yes" xml:space="preserve">
+			<source>Please enter your contact data.</source>
+			<target>Bitte geben Sie die Daten Ihres Ansprechpartners ein.</target>
+		</trans-unit>
+		<trans-unit id="message.fillInNotificationData" approved="yes" xml:space="preserve">
+			<source>Please enter a subject and message!</source>
+			<target>Please enter a subject and message!</target>
+		</trans-unit>
+		<trans-unit id="message.fillInParticipantData" approved="yes" xml:space="preserve">
+			<source>Please enter the details for the new participant.</source>
+			<target>Bitte geben sie die Kontaktdaten für den neuen Teilnehmer ein.</target>
+		</trans-unit>
+		<trans-unit id="message.mailToWaitlist" approved="yes" xml:space="preserve">
+			<source>Please send an email to &lt;a href=&quot;mailto:schulung@dakosy.de?subject=Waitlist&quot;&gt;schulung@dakosy.de&lt;/a&gt;</source>
+			<target>Um auf die Warteliste aufgenommen zu werden, senden Sie bitte eine E-Mail an:</target>
+		</trans-unit>
+		<trans-unit id="message.noCoursesFound.text" approved="yes" xml:space="preserve">
+			<source>Please, create a new course!</source>
+			<target>Bitte legen Sie eine Schulung an.</target>
+		</trans-unit>
+		<trans-unit id="message.noCoursesFound.title" approved="yes" xml:space="preserve">
+			<source>No courses found</source>
+			<target>Keine Schulungen gefunden</target>
+		</trans-unit>
+		<trans-unit id="message.noFreePlacesForThisLesson" approved="yes" xml:space="preserve">
+			<source>Sorry! There are no places available for this lesson anymore.</source>
+			<target>Für diesen Termin sind leider keine Plätze mehr verfügbar.</target>
+		</trans-unit>
+		<trans-unit id="message.noLessonsForSelection.text" approved="yes" xml:space="preserve">
+			<source>Sorry, we could not find any lessons for your selection.</source>
+			<target>Es konnten keine Schulungstermine für die aktuelle Auswahl gefunden werden.</target>
+		</trans-unit>
+		<trans-unit id="message.noLessonsForSelection.title" approved="yes" xml:space="preserve">
+			<source>No lessons found</source>
+			<target>Keine Schulungstermine gefunden</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.cancel.success" approved="yes" xml:space="preserve">
+			<source>The reservation has been canceled.</source>
+			<target>Die Reservierung wurde storniert.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.confirm.success" approved="yes" xml:space="preserve">
+			<source>Your reservation has been confirmed.</source>
+			<target>Ihre Reservierung wurde bestätigt.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.create.success" approved="yes" xml:space="preserve">
+			<source>Your reservation has been created.</source>
+			<target>Ihre Reservierung wurde angelegt.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.createParticipant.success" approved="yes" xml:space="preserve">
+			<source>The participant has been added to your reservation.</source>
+			<target>Der Teilnehmer wurde zur Reservierung hinzugefügt.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.delete.success" approved="yes" xml:space="preserve">
+			<source>Your reservation has been deleted.</source>
+			<target>Ihre Reservierung wurde gelöscht.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.newParticipant.addAtLeastOneParticipant" approved="yes" xml:space="preserve">
+			<source>Please, add at least one participant.</source>
+			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.removeParticipant.success" approved="yes" xml:space="preserve">
+			<source>The participant has been removed from your reservation.</source>
+			<target>Der Teilnehmer wurde von der Reservierung entfernt.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.sendNotification.error" approved="yes" xml:space="preserve">
+			<source>An error occured while sending a confirmation email.</source>
+			<target>Eine E-Mail mit den Reservierungsdaten konnte aufgrund eines Fehlers nicht gesendet werden.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.sendNotification.success" approved="yes" xml:space="preserve">
+			<source>A confirmation email has been sent to you.</source>
+			<target>Eine E-Mail mit den Reservierungsdaten wurde an Sie versandt.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.update.success" approved="yes" xml:space="preserve">
+			<source>The reservation has been updated successfully.</source>
+			<target>Die Reservierung wurde aktualisiert.</target>
+		</trans-unit>
+		<trans-unit id="message.selectLesson" approved="yes" xml:space="preserve">
+			<source>Please select a lesson!</source>
+			<target>Bitte wählen Sie einen Schulungstermin!</target>
+		</trans-unit>
+		<trans-unit id="newParticipant.email" approved="yes" xml:space="preserve">
+			<source>Email</source>
+			<target>E-Mail</target>
+		</trans-unit>
+		<trans-unit id="newParticipant.name" approved="yes" xml:space="preserve">
+			<source>Name</source>
+			<target>Name</target>
+		</trans-unit>
+		<trans-unit id="reservation.company.name" approved="yes" xml:space="preserve">
+			<source>Company: Name</source>
+			<target>Firma: Name</target>
+		</trans-unit>
+		<trans-unit id="reservation.contact" approved="yes" xml:space="preserve">
+			<source>Contact</source>
+			<target>Ansprechpartner</target>
+		</trans-unit>
+		<trans-unit id="reservation.contact.email" approved="yes" xml:space="preserve">
+			<source>Contact: Email</source>
+			<target>Ansprechpartner: E-Mail</target>
+		</trans-unit>
+		<trans-unit id="reservation.contact.name" approved="yes" xml:space="preserve">
+			<source>Contact: Name</source>
+			<target>Ansprechpartner: Name</target>
+		</trans-unit>
+		<trans-unit id="title.ReservationDetails" approved="yes" xml:space="preserve">
+			<source>Reservation Details</source>
+			<target>Reservierungsdetails</target>
+		</trans-unit>
+		<trans-unit id="title.confirmReservation" approved="yes" xml:space="preserve">
+			<source>Confirm Reservation</source>
+			<target>Reservierung bestätigen</target>
+		</trans-unit>
+		<trans-unit id="title.newNotification" approved="yes" xml:space="preserve">
+			<source>New Notification</source>
+			<target>Neue Nachricht</target>
+		</trans-unit>
+		<trans-unit id="title.newParticipant" approved="yes" xml:space="preserve">
+			<source>New Participant</source>
+			<target>Neuer Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="title.participant" approved="yes" xml:space="preserve">
+			<source>Participant</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventscourse_domain_model_company" approved="yes" xml:space="preserve">
+			<source>Company</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="label.address" approved="yes" xml:space="preserve">
+			<source>Street</source>
+			<target>Strasse / Nr.</target>
+		</trans-unit>
+		<trans-unit id="label.city" approved="yes" xml:space="preserve">
+			<source>City</source>
+			<target>Ort</target>
+		</trans-unit>
+		<trans-unit id="label.country" approved="yes" xml:space="preserve">
+			<source>Country</source>
+			<target>Land</target>
+		</trans-unit>
+		<trans-unit id="label.email" approved="yes" xml:space="preserve">
+			<source>Email</source>
+			<target>E-Mail</target>
+		</trans-unit>
+		<trans-unit id="label.name" approved="yes" xml:space="preserve">
+			<source>Company Name</source>
+			<target>Firmenname</target>
+		</trans-unit>
+		<trans-unit id="label.phone" approved="yes" xml:space="preserve">
+			<source>Phone</source>
+			<target>Telefon</target>
+		</trans-unit>
+		<trans-unit id="label.zip" approved="yes" xml:space="preserve">
+			<source>ZIP</source>
+			<target>PLZ</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventscourse_domain_model_contact" approved="yes" xml:space="preserve">
+			<source>Contact</source>
+			<target>Ansprechpartner</target>
+		</trans-unit>
+		<trans-unit id="label.address" approved="yes" xml:space="preserve">
+			<source>Address</source>
+			<target>Strasse / Nr.</target>
+		</trans-unit>
+		<trans-unit id="label.city" approved="yes" xml:space="preserve">
+			<source>City</source>
+			<target>Ort</target>
+		</trans-unit>
+		<trans-unit id="label.email" approved="yes" xml:space="preserve">
+			<source>Email</source>
+			<target>E-Mail</target>
+		</trans-unit>
+		<trans-unit id="label.gender.female" approved="yes" xml:space="preserve">
+			<source>Ms</source>
+			<target>Frau</target>
+		</trans-unit>
+		<trans-unit id="label.gender.male" approved="yes" xml:space="preserve">
+			<source>Mr.</source>
+			<target>Herr</target>
+		</trans-unit>
+		<trans-unit id="label.name" approved="yes" xml:space="preserve">
+			<source>Name</source>
+			<target>Name</target>
+		</trans-unit>
+		<trans-unit id="label.phone" approved="yes" xml:space="preserve">
+			<source>Phone</source>
+			<target>Telefon</target>
+		</trans-unit>
+		<trans-unit id="label.zip" approved="yes" xml:space="preserve">
+			<source>Zip</source>
+			<target>PLZ</target>
+		</trans-unit>
+		<trans-unit id="label.abstract" approved="yes" xml:space="preserve">
+			<source>Short description</source>
+			<target>Kurzbeschreibung</target>
+		</trans-unit>
+		<trans-unit id="label.audience" approved="yes" xml:space="preserve">
+			<source>Audience</source>
+			<target>Zielgruppe</target>
+		</trans-unit>
+		<trans-unit id="label.details" approved="yes" xml:space="preserve">
+			<source>Description</source>
+			<target>Inhalte des Seminars</target>
+		</trans-unit>
+		<trans-unit id="label.duration" approved="yes" xml:space="preserve">
+			<source>Duration</source>
+			<target>Dauer</target>
+		</trans-unit>
+		<trans-unit id="label.eventLocation" approved="yes" xml:space="preserve">
+			<source>Event location</source>
+			<target>Veranstaltungsort</target>
+		</trans-unit>
+		<trans-unit id="label.places" approved="yes" xml:space="preserve">
+			<source>Places</source>
+			<target>Plätze</target>
+		</trans-unit>
+		<trans-unit id="label.price" approved="yes" xml:space="preserve">
+			<source>Price</source>
+			<target>Preis</target>
+		</trans-unit>
+		<trans-unit id="label.bodytext" approved="yes" xml:space="preserve">
+			<source>Message</source>
+			<target>Nachricht</target>
+		</trans-unit>
+		<trans-unit id="label.subject" approved="yes" xml:space="preserve">
+			<source>Subject</source>
+			<target>Betreff</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventscourse_domain_model_person" approved="yes" xml:space="preserve">
+			<source>Person</source>
+			<target>Person</target>
+		</trans-unit>
+		<trans-unit id="label.first_name" approved="yes" xml:space="preserve">
+			<source>First Name</source>
+			<target>Vorname</target>
+		</trans-unit>
+		<trans-unit id="label.gender" approved="yes" xml:space="preserve">
+			<source>Gender</source>
+			<target>Anrede</target>
+		</trans-unit>
+		<trans-unit id="label.gender.female" approved="yes" xml:space="preserve">
+			<source>Ms</source>
+			<target>Frau</target>
+		</trans-unit>
+		<trans-unit id="label.gender.male" approved="yes" xml:space="preserve">
+			<source>Mr</source>
+			<target>Herr</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation" approved="yes" xml:space="preserve">
+			<source>Reservation</source>
+			<target>Reservierung</target>
+		</trans-unit>
+		<trans-unit id="label.company" approved="yes" xml:space="preserve">
+			<source>Company</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="label.contact" approved="yes" xml:space="preserve">
+			<source>Contact</source>
+			<target>Ansprechpartner</target>
+		</trans-unit>
+		<trans-unit id="label.contactIsParticipant" approved="yes" xml:space="preserve">
+			<source>Contact ist participant</source>
+			<target>Ansprechpartner nimmt teil.</target>
+		</trans-unit>
+		<trans-unit id="label.lesson" approved="yes" xml:space="preserve">
+			<source>Schedule</source>
+			<target>Termin</target>
+		</trans-unit>
+		<trans-unit id="label.offersAccepted" approved="yes" xml:space="preserve">
+			<source>Please send me further offers.</source>
+			<target>Bitte senden Sie mir weitere Angebote.</target>
+		</trans-unit>
+		<trans-unit id="label.participants" approved="yes" xml:space="preserve">
+			<source>Participants</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="label.privacyStatementAccepted" approved="yes" xml:space="preserve">
+			<source>Privacy Statetement accepted</source>
+			<target>Datenschutzerklärung akzeptiert</target>
+		</trans-unit>
+		<trans-unit id="label.status" approved="yes" xml:space="preserve">
+			<source>Status</source>
+			<target>Status</target>
+		</trans-unit>
+		<trans-unit id="label.status.0" approved="yes" xml:space="preserve">
+			<source>new</source>
+			<target>neu</target>
+		</trans-unit>
+		<trans-unit id="label.status.1" approved="yes" xml:space="preserve">
+			<source>Draft</source>
+			<target>Entwurf</target>
+		</trans-unit>
+		<trans-unit id="label.status.2" approved="yes" xml:space="preserve">
+			<source>submitted</source>
+			<target>eingereicht</target>
+		</trans-unit>
+		<trans-unit id="label.status.3" approved="yes" xml:space="preserve">
+			<source>canceled (no charge)</source>
+			<target>storniert (kostenfrei)</target>
+		</trans-unit>
+		<trans-unit id="label.status.4" approved="yes" xml:space="preserve">
+			<source>canceled (with costs)</source>
+			<target>storniert (kostenpflichtig)</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_genre" approved="yes" xml:space="preserve">
+			<source>Product</source>
+			<target>Produkt</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

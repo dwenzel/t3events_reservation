@@ -1,0 +1,123 @@
+<div class="form-fields">
+	<div class="section">
+		<div class="column reservationCompanyInfo">
+			<h3>
+				<f:translate key="tx_dakosyreservations_domain_model_company" />
+			</h3>
+			<div class="message">
+				<f:translate key="message.fillInCompanyData" />
+			</div>
+			<f:form.hidden property="lesson" value="{lesson}" />
+			<div class="field-input">
+				<label for="company">
+					<f:translate key="label.name" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="company.name" />
+			</div>
+			<div class="field-textarea">
+				<label for="address">
+					<f:translate key="label.address" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="company.address" />
+			</div>
+			<div class="field-input">
+				<label for="zip">
+					<f:translate key="label.zip" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="company.zip" />
+			</div>
+			<div class="field-input">
+				<label for="city">
+					<f:translate key="label.city" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="company.city" />
+			</div>
+			<div class="field-input">
+				<label for="country">
+					<f:translate key="label.country" />
+				</label>
+				<f:form.textfield property="company.country" />
+			</div>
+		</div>
+
+		<div class="column reservationContactInfo">
+			<h3>
+				<f:translate key="label.contact" />
+			</h3>
+			<div class="message">
+				<f:translate key="message.fillInContactPersonData" />
+			</div>
+			<div class="field-radio">
+				<label for="gender">
+					<f:translate key="label.gender" />
+					<span class="required">*</span>
+				</label>
+				<f:form.radio property="contact.gender" id="contactGenderFemale" value="2" />
+				<label for="contactGenderFemale" class="radiolabel">
+					<f:translate key="label.gender.female" />
+				</label>
+				<f:form.radio property="contact.gender" id="contactGenderMale" value="1" />
+				<label for="contactGenderMale" class="radiolabel">
+					<f:translate key="label.gender.male" />
+				</label>
+			</div>
+			<div class="field-input">
+				<label for="firstName">
+					<f:translate key="label.first_name" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="contact.firstName" />
+			</div>
+			<div class="field-input">
+				<label for="name">
+					<f:translate key="label.name" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="contact.name" />
+			</div>
+			<div class="field-input">
+				<label for="phone">
+					<f:translate key="label.phone" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="contact.phone" />
+			</div>
+			<div class="field-input">
+				<label for="email">
+					<f:translate key="label.email" />
+					<span class="required">*</span>
+				</label>
+				<f:form.textfield property="contact.email" />
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="section">
+		<div class="field-checkbox">
+			<label for="contactIsParticipant">
+				<f:form.checkbox property="contactIsParticipant" value="TRUE" />
+				<f:translate key="label.contactIsParticipant" />
+			</label>
+		</div>
+		<div class="field-checkbox">
+			<f:form.checkbox property="privacyStatementAccepted" value="TRUE" />
+			<label for="privacyStatementAccepted">
+				<f:link.page pageUid="{settings.privacyStatementsPid}">Datenschutzerklärung</f:link.page>
+				und
+				<f:link.page pageUid="{settings.termsAndConditionsPid}">Teilnahmebedingungen</f:link.page>
+				akzeptiert.
+			</label>
+		</div>
+		<div class="field-checkbox">
+			<label for="offersAccepted">
+				<f:form.checkbox property="offersAccepted" value="TRUE" />
+				<f:translate key="label.offersAccepted" />
+			</label>
+		</div>
+	</div>
+</div>

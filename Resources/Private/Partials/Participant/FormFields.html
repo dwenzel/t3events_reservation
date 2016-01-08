@@ -1,0 +1,51 @@
+<div class="form-fields"
+	xmlns="http://www.w3.org/1999/xhtml" lang="en"
+	xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+	f:schemaLocation="https://fluidtypo3.org/schemas/fluid-master.xsd">
+	<h3>
+		<f:translate key="tx_dakosyreservations_domain_model_person" />
+	</h3>
+	<div class="message">
+		<f:translate key="message.fillInParticipantData" />
+	</div>
+	<div class="field-radio">
+		<label for="gender">
+			<f:translate key="tx_dakosyreservations_domain_model_person.gender" />
+			<span class="required">*</span>
+		</label>
+		<f:form.radio property="gender" id="contactGenderFemale" value="2" />
+		<label for="contactGenderFemale" class="radiolabel">
+			<f:translate key="tx_dakosyreservations_domain_model_person.gender.female" />
+		</label>
+		<f:form.radio property="gender" id="contactGenderMale" value="1" />
+		<label for="contactGenderMale" class="radiolabel">
+			<f:translate key="tx_dakosyreservations_domain_model_person.gender.male" />
+		</label>
+	</div>
+	<div class="field-input">
+		<label for="firstName">
+			<f:translate key="tx_dakosyreservations_domain_model_person.first_name" />
+			<span class="required">*</span>
+		</label>
+		<f:form.textfield property="firstName" />
+	</div>
+	<div class="field-input">
+		<label for="name">
+			<f:translate key="tx_dakosyreservations_domain_model_contact.name" />
+			<span class="required">*</span>
+		</label>
+		<f:form.textfield property="name" />
+	</div>
+	<div class="field-input">
+		<label for="phone">
+			<f:translate key="tx_dakosyreservations_domain_model_contact.phone" />
+		</label>
+		<f:form.textfield property="phone" />
+	</div>
+	<div class="field-input">
+		<label for="email">
+			<f:translate key="tx_dakosyreservations_domain_model_contact.email" />
+		</label>
+		<f:form.textfield property="email" />
+	</div>
+</div>

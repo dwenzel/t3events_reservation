@@ -1,0 +1,9 @@
+<div class="participantShort" xmlns:f="http://www.w3.org/1999/html">
+	<f:form action="removeParticipant"
+		name="removeParticipant"
+		object="{participant}"
+		arguments="{reservation: reservation, participant: participant}">
+		<f:form.submit value="{f:translate(key: 'button.removeParticipant')}" />
+	</f:form>
+	<span class="participantName">{participant.name}, {participant.firstName}</span>
+</div>

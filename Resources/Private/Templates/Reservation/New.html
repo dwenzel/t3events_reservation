@@ -1,0 +1,19 @@
+<f:layout name="Default" />
+<f:section name="main">
+	<f:if condition="{settings.debug.reservation.new}">
+		<f:debug title="lesson">{lesson}</f:debug>
+	</f:if>
+		<f:render partial="Reservation/LessonProperties" arguments="{lesson: lesson}" />
+		<f:flashMessages renderMode="div" />
+		<f:if condition="{lesson.freePlaces} > 0">
+			<f:then>
+				<f:render partial="FormErrors" arguments="{object:Reservation}" />
+				<f:form action="create" name="newReservation" object="{newReservation}" noCacheHash="TRUE">
+					<f:render partial="Reservation/FormFields" arguments="{lesson: lesson}" />
+					<div class="section">
+						<f:form.submit class="button" value="{f:translate(key: 'button.proceed')}" />
+					</div>
+				</f:form>
+			</f:then>
+		</f:if>
+</f:section>
