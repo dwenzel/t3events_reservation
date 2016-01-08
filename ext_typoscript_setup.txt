@@ -83,7 +83,7 @@ module.tx_t3eventreservation {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = DAKOSY - Ihr Schulungstermin wurde abgesagt
+						subject = Ihr Schulungstermin wurde abgesagt
 						templateFileName = ByDakosy
 					}
 				}
@@ -92,7 +92,7 @@ module.tx_t3eventreservation {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = DAKOSY - Reservierung kostenpflichtig storniert
+						subject = Reservierung kostenpflichtig storniert
 						templateFileName = WithCosts
 					}
 				}
@@ -101,7 +101,7 @@ module.tx_t3eventreservation {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = DAKOSY - Reservierung kostenfrei storniert
+						subject = Reservierung kostenfrei storniert
 						templateFileName = NoCharge
 					}
 				}
@@ -112,7 +112,7 @@ module.tx_t3eventreservation {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = DAKOSY - Reservierung für einen Teilnehmer storniert
+						subject = Reservierung für einen Teilnehmer storniert
 						templateFileName = ByDakosy
 					}
 				}
@@ -121,7 +121,7 @@ module.tx_t3eventreservation {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = DAKOSY - Reservierung für einen Teilnehmer kostenpflichtig storniert
+						subject = Reservierung für einen Teilnehmer kostenpflichtig storniert
 						templateFileName = WithCosts
 					}
 				}
@@ -130,7 +130,7 @@ module.tx_t3eventreservation {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = DAKOSY - Reservierung für einen Teilnehmer kostenfrei storniert
+						subject = Reservierung für einen Teilnehmer kostenfrei storniert
 						templateFileName = NoCharge
 					}
 				}
@@ -142,3 +142,6 @@ module.tx_t3eventreservation {
 		}
 	}
 }
+
+lib.plugin.eventReservationPi1 = COA_INT
+lib.plugin.eventReservationPi1 < tt_content.list.20.t3eventsreservation_pi1

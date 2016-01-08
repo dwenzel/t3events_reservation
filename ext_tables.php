@@ -2,20 +2,31 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+
+// register frontend plugin
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+	'CPSIT' . $_EXTKEY,
+	'Pi1',
+	'Reservations'
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Reservations');
+
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'CPSIT.' . $_EXTKEY,
 		'courses',     // Make module a submodule of 'courses'
 		'm1',    // Submodule key
 		'',                        // Position
-		array(
-			'Backend\Bookings' => 'list, show, edit, update, cancel, delete, newParticipant, createParticipant, editParticipant, removeParticipant, newNotification, createNotification',
-		),
-		array(
+		[
+			'Backend\Bookings' => 'list, show, edit, update, cancel, delete, newParticipant, createParticipant,
+			editParticipant, removeParticipant, newNotification, createNotification',
+		],
+		[
 			'access' => 'user,group',
 			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_reservation.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m1.xlf',
-		)
+		]
 	);
 
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -23,14 +34,14 @@ if (TYPO3_MODE === 'BE') {
 		'courses',     // Make module a submodule of 'courses'
 		'm3',    // Submodule key
 		'',                        // Position
-		array(
+		[
 			'Backend\Participant' => 'list, download',
-		),
-		array(
+		],
+		[
 			'access' => 'user,group',
 			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_participant.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m3.xlf',
-		)
+		]
 	);
 }
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(

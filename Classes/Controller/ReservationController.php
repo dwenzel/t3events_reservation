@@ -75,12 +75,12 @@ class ReservationController extends AbstractController {
 	/**
 	 * action new
 	 *
-	 * @param \CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson
+	 * @param \Webfox\T3events\Domain\Model\Performance $lesson
 	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation
 	 * @ignorevalidation $newReservation
 	 * @return void
 	 */
-	public function newAction(\CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson = NULL, \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation = NULL) {
+	public function newAction(\Webfox\T3events\Domain\Model\Performance $lesson = NULL, \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation = NULL) {
 		if (is_null($lesson)) {
 			$error = 'message.selectLesson';
 		} elseif (!$lesson->getFreePlaces()) {
@@ -90,7 +90,7 @@ class ReservationController extends AbstractController {
 			$this->addFlashMessage(
 				$this->translate($error), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
 			);
-			$this->redirect('list', 'Schedule', 'dakosyreservations', array(), $this->settings['lesson']['listPid']);
+			$this->redirect('list', 'Schedule', 't3events', array(), $this->settings['schedule']['listPid']);
 		}
 		if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
 			$newReservation = $this->request->getOriginalRequest()->getArgument('newReservation');

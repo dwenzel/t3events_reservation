@@ -1,0 +1,8 @@
+plugin.tx_t3eventsreservation.settings {
+	schedule {
+		listPid = {$plugin.tx_t3eventsreservation.settings.schedule.listPid}
+	}
+	reservation {
+		detailPid = {$plugin.tx_t3eventsreservation.settings.reservation.detailPid}
+	}
+}
