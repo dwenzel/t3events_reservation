@@ -14,6 +14,7 @@ class ContactValidator extends AbstractValidator {
 	 * Is contact valid
 	 *
 	 * @param mixed $contact
+	 * @return bool
 	 */
 	public function isValid($contact) {
 		if (!$contact instanceof \CPSIT\T3eventsReservation\Domain\Model\Person) {

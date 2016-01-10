@@ -7,11 +7,11 @@ if (!defined('TYPO3_MODE')) {
 	'CPSIT.' . $_EXTKEY,
 	'Pi1',
 	array(
-		'Reservation' => 'new, show, create, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant',
+		'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant',
 	),
 	// non-cacheable actions
 	array(
-		'Reservation' => 'new, show, create, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant',
+		'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant',
 	)
 );
 

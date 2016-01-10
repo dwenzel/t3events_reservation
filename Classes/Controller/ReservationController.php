@@ -20,6 +20,8 @@ namespace CPSIT\T3eventsReservation\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsCourse\Controller\AbstractController;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 
 /**
  * ReservationController
@@ -35,9 +37,9 @@ class ReservationController extends AbstractController {
 	protected $reservationRepository = NULL;
 
 	/**
-	 * Schedule Repository
+	 * Lesson Repository
 	 *
-	 * @var \CPSIT\T3eventsCourse\Domain\Repository\ScheduleRepository
+	 * @var \Webfox\T3events\Domain\Repository\PerformanceRepository
 	 * @inject
 	 */
 	protected $lessonRepository = NULL;
@@ -81,6 +83,7 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function newAction(\Webfox\T3events\Domain\Model\Performance $lesson = NULL, \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation = NULL) {
+		//@todo: check for existing session key and prevent creating new reservation
 		if (is_null($lesson)) {
 			$error = 'message.selectLesson';
 		} elseif (!$lesson->getFreePlaces()) {
@@ -110,13 +113,14 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function createAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation) {
+		//@todo: check for existing session key and prevent creating new reservation
 		if (is_null($newReservation->getUid())) {
 			$contact = $newReservation->getContact();
-			$newReservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_NEW);
-			$contact->setType(\CPSIT\T3eventsReservation\Domain\Model\Person::PERSON_TYPE_CONTACT);
+			$newReservation->setStatus(Reservation::STATUS_NEW);
+			$contact->setType(Person::PERSON_TYPE_CONTACT);
 			if ($newReservation->getContactIsParticipant()) {
 				$participant = clone $contact;
-				$participant->setType(\CPSIT\T3eventsReservation\Domain\Model\Person::PERSON_TYPE_PARTICIPANT);
+				$participant->setType(Person::PERSON_TYPE_PARTICIPANT);
 				$newReservation->addParticipant($participant);
 				$participant->setReservation($newReservation);
 				$newReservation->getLesson()->addParticipant($participant);
@@ -127,10 +131,30 @@ class ReservationController extends AbstractController {
 			$this->reservationRepository->add($newReservation);
 			$this->persistenceManager->persistAll();
 			$this->setSessionKey('reservationUid', $newReservation->getUid());
-			$this->forward('newParticipant', NULL, NULL, array('reservation' => $newReservation));
+			$this->forward('edit', NULL, NULL, array('reservation' => $newReservation));
 		} else {
 			$this->denyAccess();
 		}
+	}
+
+	/**
+	 * action edit
+	 *
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @return void
+	 */
+	public function editAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+		if (!$this->isAccessAllowed($reservation)) {
+			$this->denyAccess();
+		}
+		$this->reservationRepository->update($reservation);
+		$this->persistenceManager->persistAll();
+
+		$this->view->assignMultiple(
+			[
+				'reservation' => $reservation
+			]
+		);
 	}
 
 	/**
@@ -163,10 +187,8 @@ class ReservationController extends AbstractController {
 
 	/**
 	 * action newParticipant
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 *
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
 	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant
 	 * @ignorevalidation $newParticipant
 	 * @return void
@@ -205,36 +227,37 @@ class ReservationController extends AbstractController {
 
 	/**
 	 * action createParticipant
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 *
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
 	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant
 	 * @return void
 	 */
 	public function createParticipantAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation, \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant) {
-		if ($this->isAccessAllowed($reservation)) {
-			if (!$reservation->getStatus() == \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT) {
-				$reservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT);
-			}
-			if ($reservation->getLesson()->getFreePlaces()) {
-				$newParticipant->setReservation($reservation);
-				$newParticipant->setType(\CPSIT\T3eventsReservation\Domain\Model\Person::PERSON_TYPE_PARTICIPANT);
-				$reservation->addParticipant($newParticipant);
-				$reservation->getLesson()->addParticipant($newParticipant);
-				$this->reservationRepository->update($reservation);
-				$this->lessonRepository->update($reservation->getLesson());
-				$this->persistenceManager->persistAll();
-				$this->addFlashMessage(
-					$this->translate('message.reservation.createParticipant.success')
-				);
-				$this->redirect('newParticipant', NULL, NULL, array('reservation' => $reservation));
-			} else {
-				$this->redirect('checkout', 'Reservation', 'dakosyreservations', array('reservation' => $reservation));
-			}
-		} else {
+		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
 		}
+		if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+			$reservation->setStatus(Reservation::STATUS_DRAFT);
+		}
+		if ($reservation->getLesson()->getFreePlaces()) {
+			$newParticipant->setReservation($reservation);
+			$newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
+			$reservation->addParticipant($newParticipant);
+			$reservation->getLesson()->addParticipant($newParticipant);
+			$this->reservationRepository->update($reservation);
+			$this->lessonRepository->update($reservation->getLesson());
+			$this->persistenceManager->persistAll();
+			$this->addFlashMessage(
+				$this->translate('message.reservation.createParticipant.success')
+			);
+		}
+
+		$this->redirect(
+			'edit',
+			null,
+			null,
+			['reservation' => $reservation]
+		);
 	}
 
 	/**
@@ -297,10 +320,8 @@ class ReservationController extends AbstractController {
 
 	/**
 	 * action removeParticipant
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 *
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
 	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
 	 * @return void
 	 */
@@ -315,7 +336,7 @@ class ReservationController extends AbstractController {
 			$this->addFlashMessage(
 				$this->translate('message.reservation.removeParticipant.success')
 			);
-			$this->redirect('newParticipant', NULL, NULL, array('reservation' => $reservation));
+			$this->redirect('edit', NULL, NULL, array('reservation' => $reservation));
 		} else {
 			$this->denyAccess();
 		}
