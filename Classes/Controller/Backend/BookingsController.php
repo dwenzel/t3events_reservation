@@ -116,7 +116,7 @@ class BookingsController extends AbstractController {
 	public function cancelAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation, $reason) {
 		switch ($reason) {
 			case 'byDakosy':
-				$newStatus = \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_CANCELED_BY_DAKOSY;
+				$newStatus = \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_CANCELED_BY_SUPPLIER;
 				break;
 			case 'withCosts':
 				$newStatus = \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_CANCELED_WITH_COSTS;

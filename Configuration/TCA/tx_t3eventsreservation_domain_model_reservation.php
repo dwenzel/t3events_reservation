@@ -33,7 +33,7 @@ return array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, status, company, contact, billing_address, participants, lesson, notifications',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, status, company, contact, privacy_statement_accepted, offers_accepted, lesson,--div--;' . $ll . 'tabs.participants, participants, --div--;' . $ll . 'tabs.notifications, notifications, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, status, company, contact, billing_address, privacy_statement_accepted, offers_accepted, lesson,--div--;' . $ll . 'tabs.participants, participants, --div--;' . $ll . 'tabs.notifications, notifications, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),

@@ -21,7 +21,6 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  ***************************************************************/
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use Webfox\T3events\Domain\Model\Notification;
-use Webfox\T3events\Domain\Model\Company;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 
 /**
@@ -35,7 +34,7 @@ class Reservation extends AbstractEntity {
 	const STATUS_CANCELED_NO_CHARGE = 3;
 	const STATUS_CANCELED_WITH_COSTS = 4;
 	const STATUS_CLOSED = 5;
-	const STATUS_CANCELED_BY_DAKOSY = 6;
+	const STATUS_CANCELED_BY_SUPPLIER = 6;
 
 	/**
 	 * Hidden
