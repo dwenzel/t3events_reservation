@@ -1,0 +1,65 @@
+.tx-dakosy-reservations .button-group form {
+	display: inline-block;
+}
+
+.tx-dakosy-reservations form .button-group {
+	clear: both;
+	margin-top: 1em;
+}
+
+.tx-dakosy-reservations .clear {
+	clear: both;
+}
+
+.tx-dakosy-reservations .column {
+	width: 33%;
+	min-width: 230px;
+	float: left;
+}
+
+.tx-dakosy-reservations .button {
+	/*	padding: 20px 0 20px 0;*/
+	display: inline-block;
+}
+
+.tx-dakosy-reservations a.button,
+.tx-dakosy-reservations input.button {
+	width: auto;
+	margin: 0 10px 0 0;
+	background: #1C3862;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	color: #FFFFFF;
+	font-size: 12px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.tx-dakosy-reservations a.button {
+	padding: 8px 22px;
+}
+
+.tx-dakosy-reservations input.button {
+	padding: 10px 22px;
+}
+
+.tx-dakosy-reservations a.button:hover,
+.tx-dakosy-reservations input.button:hover {
+	background: #CD1421;
+}
+
+/* Buttons */
+.button-group .button.left {
+	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.button-group .button.right {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+}
+
+#typo3-docbody .button-group form {
+	margin-bottom: 0;
+}
