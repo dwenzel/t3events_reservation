@@ -3,6 +3,8 @@ namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
 use Webfox\T3events\Domain\Model\Dto\AbstractDemand;
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
+use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -29,7 +31,11 @@ use Webfox\T3events\Domain\Model\Dto\DemandInterface;
  * @package CPSIT\T3eventsReservation\Domain\Model\Dto
  */
 class ReservationDemand extends AbstractDemand
-	implements DemandInterface {
+	implements DemandInterface, PeriodAwareDemandInterface {
+	use PeriodAwareDemandTrait;
+
+	const START_DATE_FIELD = 'lesson.date';
+	const END_DATE_FIELD = 'lesson.endDate';
 
 	/**
 	 * Status
@@ -131,4 +137,23 @@ class ReservationDemand extends AbstractDemand
 	public function setLessonDate($date) {
 		$this->lessonDate = $date;
 	}
+
+	/**
+	 * Gets the start date field
+	 *
+	 * @return string
+	 */
+	public function getStartDateField() {
+		return self::START_DATE_FIELD;
+	}
+
+	/**
+	 * Gets the endDate field
+	 *
+	 * @return string
+	 */
+	public function getEndDateField() {
+		return self::END_DATE_FIELD;
+	}
+
 }
