@@ -1,8 +1,22 @@
-plugin.tx_t3eventsreservation.settings {
-	schedule {
-		listPid =
+plugin.tx_t3eventsreservation {
+	view {
+		templateRootPath = EXT:t3events_reservation/Resources/Private/Templates/
+		partialRootPath = EXT:t3events_reservation/Resources/Private/Partials/
+		layoutRootPath = EXT:t3events_reservation/Resources/Private/Layouts/
 	}
-	reservation {
-		detailPid =
+
+	persistence {
+		# cat=plugin.tx_t3events//a; type=string; label=Default storage PID
+		storagePid =
 	}
+
+	settings {
+		schedule {
+			listPid =
+		}
+		reservation {
+			detailPid =
+		}
+	}
+
 }

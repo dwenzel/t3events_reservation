@@ -1,4 +1,5 @@
 <f:be.container
+	addJsFile="{f:uri.resource(path:'JavaScript/tabmenu.js', extensionName: 'backend')}"
 	includeCssFiles="{0: '{f:uri.resource(path:\'Css/forms.css\')}', 1: '{f:uri.resource(path: \'Css/sbt.css\')}', 2: '{f:uri.resource(path: \'Css/sbt_backend.css\')}'}">
 	<div class="typo3-fullDoc">
 		<div id="typo3-docheader">
@@ -20,7 +21,7 @@
 
 		</div>
 		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody" class="tx-dakosyreservations">
+			<div id="typo3-inner-docbody" class="tx-t3eventsreservation">
 				<f:render section="content" />
 			</div>
 		</div>

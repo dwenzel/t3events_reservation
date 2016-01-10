@@ -3,11 +3,11 @@
 <f:section name="content">
 	<h1>Reservierung bearbeiten</h1>
 
-	<h2>{reservation.lesson.course.headline} -
+	<h2>{reservation.lesson.event.headline} -
 		<f:format.date date="{reservation.lesson.date}" />
 	</h2>
 	<div class="places"><b>
-		<f:translate key="label.availablePlaces" />
+		<f:translate key="label.availablePlaces"/>
 		: </b>{reservation.lesson.freePlaces} | {reservation.lesson.places}
 	</div>
 
@@ -15,16 +15,16 @@
 	<div class="typo3-dyntabmenu-tabs">
 		<table class="typo3-dyntabmenu" cellspacing="0" cellpadding="0" border="0">
 			<tr>
-				<td class="tab" id="DTM-dakosy-reservations-1-MENU" nowrap="nowrap" onmouseover="DTM_mouseOver(this);"
+				<td class="tab" id="DTM-t3eventsreservation-1-MENU" nowrap="nowrap" onmouseover="DTM_mouseOver(this);"
 					onmouseout="DTM_mouseOut(this);">
-					<a href="#" onclick="this.blur(); DTM_activate(&quot;DTM-dakosy-reservations&quot;,&quot;1&quot;, 0); return false;">
-						{f:translate(key: 'tx_dakosyreservations_domain_model_reservation')}
+					<a href="#" onclick="this.blur(); DTM_activate(&quot;DTM-t3eventsreservation&quot;,&quot;1&quot;, 0); return false;">
+						{f:translate(key: 'label.reservation', default: 'Reservation')}
 					</a>
 				</td>
-				<td class="tab" id="DTM-dakosy-reservations-2-MENU" nowrap="nowrap" onmouseover="DTM_mouseOver(this);"
+				<td class="tab" id="DTM-t3eventsreservation-2-MENU" nowrap="nowrap" onmouseover="DTM_mouseOver(this);"
 					onmouseout="DTM_mouseOut(this);">
-					<a href="#" onclick="this.blur(); DTM_activate(&quot;DTM-dakosy-reservations&quot;,&quot;2&quot;, 0); return false;">
-						{f:translate(key: 'tx_dakosyreservations_domain_model_reservation.participants')}
+					<a href="#" onclick="this.blur(); DTM_activate(&quot;DTM-t3eventsreservation&quot;,&quot;2&quot;, 0); return false;">
+						{f:translate(key: 'label.participants', default: 'Participants')}
 					</a>
 				</td>
 			</tr>
@@ -32,7 +32,7 @@
 	</div>
 
 	<div class="typo3-dyntabmenu-divs">
-		<div style="display: none; padding: 10px;" id="DTM-dakosy-reservations-1-DIV" class="c-tablayer">
+		<div style="display: none; padding: 10px;" id="DTM-t3eventsreservation-1-DIV" class="c-tablayer">
 			<f:form action="update" name="reservation" object="{reservation}">
 				<f:render partial="FormErrors" />
 				<f:render partial="Reservation/FormFields" arguments="{reservation:reservation}" />
@@ -62,7 +62,7 @@
 			</div>
 
 		</div>
-		<div style="display: none; padding: 10px;" id="DTM-dakosy-reservations-2-DIV" class="c-tablayer">
+		<div style="display: none; padding: 10px;" id="DTM-t3eventsreservation-2-DIV" class="c-tablayer">
 			<f:if condition="{f:count(subject: reservation.participants)}> 0">
 				<table class="typo3-dblist">
 					<f:for each="{reservation.participants}" as="participant">
@@ -82,9 +82,9 @@
 
 	<!-- Initialization JavaScript for the menu -->
 	<script type="text/javascript">
-		DTM_array["DTM-dakosy-reservations"] = new Array();
-		DTM_array["DTM-dakosy-reservations"][0] = "DTM-dakosy-reservations-1";
-		DTM_array["DTM-dakosy-reservations"][1] = "DTM-dakosy-reservations-2";
-		DTM_activate("DTM-dakosy-reservations", top.DTM_currentTabs["DTM-dakosy-reservations"] ? top.DTM_currentTabs["DTM-dakosy-reservations"] : 1, 0);
+		DTM_array["DTM-t3eventsreservation"] = new Array();
+		DTM_array["DTM-t3eventsreservation"][0] = "DTM-t3eventsreservation-1";
+		DTM_array["DTM-t3eventsreservation"][1] = "DTM-t3eventsreservation-2";
+		DTM_activate("DTM-t3eventsreservation", top.DTM_currentTabs["DTM-t3eventsreservation"] ? top.DTM_currentTabs["DTM-t3eventsreservation"] : 1, 0);
 	</script>
 </f:section>

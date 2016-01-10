@@ -1,10 +1,7 @@
 module.tx_t3eventsreservation {
 	view {
-		# cat=module.tx_t3eventsreservation/file; type=string; label=Path to template root (BE)
 		templateRootPaths.0 = EXT:t3events_reservation/Resources/Private/Templates/
-		# cat=module.tx_t3eventsreservation/file; type=string; label=Path to template partials (BE)
 		partialRootPaths.0 = EXT:t3events_reservation/Resources/Private/Partials/
-		# cat=module.tx_t3eventsreservation/file; type=string; label=Path to template layouts (BE)
 		layoutRootPaths.0 = EXT:t3events_reservation/Resources/Private/Layouts/Backend/
 	}
 

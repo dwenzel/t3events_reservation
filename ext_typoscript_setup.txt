@@ -44,15 +44,16 @@ config.tx_extbase {
 }
 
 # Module configuration
-module.tx_t3eventreservation {
+module.tx_t3eventsreservation {
 	persistence {
 		storagePid = {$module.tx_t3eventsreservation.persistence.storagePid}
 	}
 
 	view {
-		#templateRootPaths.0 = {$module.tx_t3eventsreservation.view.templateRootPaths.0}
-		partialRootPaths.0 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}
-		layoutRootPaths.0 = {$module.tx_t3eventsreservation.view.layoutRootPaths.0}
+		templateRootPaths.10 = {$module.tx_t3eventsreservation.view.templateRootPaths.0}
+		partialRootPaths.10 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}
+		partialRootPaths.20 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}Backend/
+		layoutRootPaths.10 = {$module.tx_t3eventsreservation.view.layoutRootPaths.0}
 	}
 
 	settings {
@@ -145,3 +146,15 @@ module.tx_t3eventreservation {
 
 lib.plugin.eventReservationPi1 = COA_INT
 lib.plugin.eventReservationPi1 < tt_content.list.20.t3eventsreservation_pi1
+lib.plugin.eventReservationAjax = PAGE
+lib.plugin.eventReservationAjax {
+	typeNum = 1452365941
+	10 < tt_content.list.20.t3eventsreservation_pi1
+	config {
+		disableAllHeaderCode = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+		no_cache = 1
+	}
+}
