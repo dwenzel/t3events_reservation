@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 // register frontend plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'CPSIT' . $_EXTKEY,
+	'CPSIT.' . $_EXTKEY,
 	'Pi1',
 	'Reservations'
 );
