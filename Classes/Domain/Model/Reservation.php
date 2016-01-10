@@ -54,21 +54,22 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * company
-
-
-
-
-*
-*@var \Webfox\T3events\Domain\Model\Company
+	 *
+	 * @var \Webfox\T3events\Domain\Model\Company
 	 */
 	protected $company = NULL;
 
 	/**
+	 * billing address
+	 *
+	 * @var \CPSIT\T3eventsReservation\Domain\Model\Person
+	 */
+	protected $billingAddress = NULL;
+
+	/**
 	 * Responsible contact person for reservation.
-
-
-*
-*@var \CPSIT\T3eventsReservation\Domain\Model\Person
+	 *
+	 * @var \CPSIT\T3eventsReservation\Domain\Model\Person
 	 * @validate \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
 	 */
 	protected $contact = NULL;
@@ -83,7 +84,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * lesson
 	 *
-	 * @var \CPSIT\T3eventsCourse\Domain\Model\Schedule
+	 * @var \Webfox\T3events\Domain\Model\Performance
 	 */
 	protected $lesson = NULL;
 
@@ -155,12 +156,8 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * Returns the company
-
-
-
-
-*
-*@return \Webfox\T3events\Domain\Model\Company $company
+	 *
+	 * @return \Webfox\T3events\Domain\Model\Company $company
 	 */
 	public function getCompany() {
 		return $this->company;
@@ -168,12 +165,8 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * Sets the company
-
-
-
-
-*
-*@param \Webfox\T3events\Domain\Model\Company $company
+	 *
+	 * @param \Webfox\T3events\Domain\Model\Company $company
 	 * @return void
 	 */
 	public function setCompany(\Webfox\T3events\Domain\Model\Company $company) {
@@ -182,10 +175,8 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * Returns the contact
-
-
-*
-*@return \CPSIT\T3eventsReservation\Domain\Model\Person $contact
+	 *
+	 * @return \CPSIT\T3eventsReservation\Domain\Model\Person $contact
 	 */
 	public function getContact() {
 		return $this->contact;
@@ -193,10 +184,8 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * Sets the contact
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Person $contact
+	 *
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $contact
 	 * @return void
 	 */
 	public function setContact(\CPSIT\T3eventsReservation\Domain\Model\Person $contact) {
@@ -226,10 +215,8 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * Adds a Person
-
-
-*
-* @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
+	 *
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
 	 * @return void
 	 */
 	public function addParticipant(Person $participant) {
@@ -238,9 +225,7 @@ class Reservation extends AbstractEntity {
 
 	/**
 	 * Removes a Person
-
-
-*
+	 *
 	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participantToRemove The Person to be removed
 	 * @return void
 	 */
@@ -270,7 +255,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Returns the lesson
 	 *
-	 * @return \CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson
+	 * @return \\Webfox\T3events\Domain\Model\Performance $lesson
 	 */
 	public function getLesson() {
 		return $this->lesson;
@@ -279,10 +264,10 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Sets the lesson
 	 *
-	 * @param \CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson
+	 * @param \Webfox\T3events\Domain\Model\Performance $lesson
 	 * @return void
 	 */
-	public function setLesson(\CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson) {
+	public function setLesson(\Webfox\T3events\Domain\Model\Performance $lesson) {
 		$this->lesson = $lesson;
 	}
 
@@ -382,4 +367,17 @@ class Reservation extends AbstractEntity {
 		$this->notifications = $notifications;
 	}
 
+	/**
+	 * @return \CPSIT\T3eventsReservation\Domain\Model\Person
+	 */
+	public function getBillingAddress() {
+		return $this->billingAddress;
+	}
+
+	/**
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $billingAddress
+	 */
+	public function setBillingAddress($billingAddress) {
+		$this->billingAddress = $billingAddress;
+	}
 }
