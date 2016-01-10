@@ -29,6 +29,24 @@ $tmpColumns = array(
 			'readOnly' => 1
 		),
 	),
+	'birthplace' => [
+		'label' => $ll . 'tx_t3events_domain_model_person.birthplace',
+		'config' => [
+			'type' => 'input',
+		]
+	],
+	'company_name' => [
+		'label' => $ll . 'tx_t3events_domain_model_person.company_name',
+		'config' => [
+			'type' => 'input',
+		]
+	],
+	'role' => [
+		'label' => $ll . 'tx_t3events_domain_model_person.role',
+		'config' => [
+			'type' => 'input',
+		]
+	],
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
@@ -40,4 +58,4 @@ $tmpColumns = array(
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'tx_t3events_domain_model_person', 'tx_extbase_type', '', 'before:person_type');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-	'tx_t3events_domain_model_event', 'reservation', '', 'after:email');
+	'tx_t3events_domain_model_person', 'reservation,birthplace,company_name,role', '', 'after:email');

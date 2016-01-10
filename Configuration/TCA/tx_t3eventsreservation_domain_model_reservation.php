@@ -26,11 +26,11 @@ return array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'status,company,contact,participants,lesson,',
+		'searchFields' => 'status,company,contact, billing_address, participants,lesson,',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3events_reservation') . 'Resources/Public/Icons/tx_t3eventsreservation_domain_model_reservation.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, status, company, contact, participants, lesson, notifications',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, status, company, contact, billing_address, participants, lesson, notifications',
 	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, status, company, contact, privacy_statement_accepted, offers_accepted, lesson,--div--;' . $ll . 'tabs.participants, participants, --div--;' . $ll . 'tabs.notifications, notifications, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
@@ -154,6 +154,17 @@ return array(
 		'contact' => array(
 			'exclude' => 1,
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.contact',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_t3events_domain_model_person',
+				'foreign_table_field' => 'name',
+				'minitems' => 0,
+				'maxitems' => 1,
+			),
+		),
+		'billing_address' => array(
+			'exclude' => 1,
+			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.billingAddress',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_t3events_domain_model_person',

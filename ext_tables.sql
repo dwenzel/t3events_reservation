@@ -9,6 +9,7 @@ CREATE TABLE tx_t3eventsreservation_domain_model_reservation (
 	status int(11) DEFAULT '0' NOT NULL,
 	company int(11) unsigned DEFAULT '0',
 	contact int(11) unsigned DEFAULT '0',
+	billing_address int(11) unsigned DEFAULT '0',
 	participants int(11) unsigned DEFAULT '0' NOT NULL,
 	notifications int(11) unsigned DEFAULT '0' NOT NULL,
 	lesson int(11) unsigned DEFAULT '0',
@@ -51,6 +52,9 @@ CREATE TABLE tx_t3eventsreservation_domain_model_reservation (
 CREATE TABLE tx_t3events_domain_model_person (
 	type int(11) DEFAULT '0' NOT NULL,
 	reservation int(11) DEFAULT '0' NOT NULL,
+	birthplace varchar(255) DEFAULT '' NOT NULL,
+	company_name varchar(255) DEFAULT '' NOT NULL,
+	role varchar(255) DEFAULT '' NOT NULL,
 	tx_extbase_type varchar(255) DEFAULT '' NOT NULL
 );
 

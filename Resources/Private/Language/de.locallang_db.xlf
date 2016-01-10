@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2015-12-16T11:02:33Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-01-08T22:40:06Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -32,6 +32,18 @@
 		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.tx_t3eventsreservation_Lesson" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Termin</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.birthplace" approved="yes" xml:space="preserve">
+			<source>Birthplace</source>
+			<target>Geburtsort</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.company_name" approved="yes" xml:space="preserve">
+			<source>Company Name</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.role" approved="yes" xml:space="preserve">
+			<source>Role</source>
+			<target>Position</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation.tx_extbase_type" approved="yes" xml:space="preserve">
 			<source>Event type</source>
@@ -388,6 +400,10 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.participant" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.billingAddress" approved="yes" xml:space="preserve">
+			<source>Billing Address</source>
+			<target>Rechnungsadresse</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactIsParticipant" approved="yes" xml:space="preserve">
 			<source>Contact is participant</source>

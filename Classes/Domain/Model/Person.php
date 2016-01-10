@@ -24,81 +24,8 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  * Person
  */
 class Person extends \Webfox\T3events\Domain\Model\Person {
+	use ReservationPersonTrait;
 	const PERSON_TYPE_UNKNOWN = 0;
 	const PERSON_TYPE_CONTACT = 1;
 	const PERSON_TYPE_PARTICIPANT = 2;
-
-	/**
-	 * type
-	 *
-	 * @var integer
-	 */
-	protected $type = 0;
-
-
-	/**
-	 * reservation
-	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Model\Reservation
-	 */
-	protected $reservation;
-
-	/**
-	 * Returns the name
-	 *
-	 * @return string $name
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * Sets the name
-	 *
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
-
-
-	/**
-	 * Returns the type
-	 *
-	 * @return integer $type
-	 */
-	public function getType() {
-		return $this->type;
-	}
-
-	/**
-	 * Sets the type
-	 *
-	 * @param integer $type
-	 * @return void
-	 */
-	public function setType($type) {
-		$this->type = $type;
-	}
-
-	/**
-	 * Returns the reservation
-	 *
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 */
-	public function getReservation() {
-		return $this->reservation;
-	}
-
-	/**
-	 * Sets the reservation
-	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @return void
-	 */
-	public function setReservation($reservation) {
-		$this->reservation = $reservation;
-	}
-
 }

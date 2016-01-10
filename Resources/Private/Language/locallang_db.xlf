@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2015-12-16T11:02:33Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-01-08T22:40:06Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -38,11 +38,20 @@
 		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.Tx_T3eventsCourse_Lesson" xml:space="preserve">
 			<source>Schedule</source>
 		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.birthplace" xml:space="preserve">
+			<source>Birthplace</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.company_name" xml:space="preserve">
+			<source>Company Name</source>
+		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_person.gender.female" xml:space="preserve">
 			<source>Ms</source>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_person.gender.male" xml:space="preserve">
 			<source>Mr</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.role" xml:space="preserve">
+			<source>Role</source>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_person.type.contact" xml:space="preserve">
 			<source>Contact</source>
@@ -109,6 +118,9 @@
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation" xml:space="preserve">
 			<source>Reservation</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.billingAddress" xml:space="preserve">
+			<source>Billing Address</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company" xml:space="preserve">
 			<source>Company</source>
