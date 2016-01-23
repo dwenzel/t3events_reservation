@@ -370,6 +370,6 @@ class ReservationController extends AbstractController {
 		$this->addFlashMessage(
 			$this->translate('error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
 		);
-		$this->redirect('list', 'Schedule', 'dakosyreservations', array(), $this->settings['lesson']['listPid']);
+		$this->redirect('list', 'Schedule', 't3eventsreservation', array(), $this->settings['lesson']['listPid']);
 	}
 }

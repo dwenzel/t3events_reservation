@@ -133,7 +133,7 @@ return array(
 					array($ll . 'tx_t3eventsreservation_domain_model_reservation.status.3', 3), // canceled (no charge) - storniert (kostenlos)
 					array($ll . 'tx_t3eventsreservation_domain_model_reservation.status.4', 4), // canceled (with costs) - storniert (kostenpflichtig)
 					array($ll . 'tx_t3eventsreservation_domain_model_reservation.status.5', 5), // closed - abgeschlossen
-					array($ll . 'tx_t3eventsreservation_domain_model_reservation.status.6', 6), // canceled by DAKOSY- abgesagt durch DAKOSY
+					array($ll . 'tx_t3eventsreservation_domain_model_reservation.status.6', 6), // canceled by Organizer- abgesagt durch Veranstalter
 				),
 				'size' => 1,
 				'maxitems' => 1,

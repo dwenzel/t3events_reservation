@@ -47,7 +47,7 @@
 		</trans-unit>
 		<trans-unit id="button.goToLessonListPage" approved="yes" xml:space="preserve">
 			<source>Go to lessons list</source>
-			<target>Zur Schulungsliste</target>
+			<target>Zur Veranstaltungsliste</target>
 		</trans-unit>
 		<trans-unit id="button.proceed" approved="yes" xml:space="preserve">
 			<source>Proceed</source>
@@ -246,16 +246,16 @@
 			<target>Bitte geben sie die Kontaktdaten für den neuen Teilnehmer ein.</target>
 		</trans-unit>
 		<trans-unit id="message.mailToWaitlist" approved="yes" xml:space="preserve">
-			<source>Please send an email to &lt;a href=&quot;mailto:schulung@dakosy.de?subject=Waitlist&quot;&gt;schulung@dakosy.de&lt;/a&gt;</source>
+			<source>Please send an email to &lt;a href=&quot;mailto:t3events@cps-it.de?subject=Waitlist&quot;&gt;t3events@cps-it.de&lt;/a&gt;</source>
 			<target>Um auf die Warteliste aufgenommen zu werden, senden Sie bitte eine E-Mail an:</target>
 		</trans-unit>
 		<trans-unit id="message.noCoursesFound.text" approved="yes" xml:space="preserve">
 			<source>Please, create a new course!</source>
-			<target>Bitte legen Sie eine Schulung an.</target>
+			<target>Bitte legen Sie eine Veranstaltung an.</target>
 		</trans-unit>
 		<trans-unit id="message.noCoursesFound.title" approved="yes" xml:space="preserve">
 			<source>No courses found</source>
-			<target>Keine Schulungen gefunden</target>
+			<target>Keine Veranstaltungen gefunden</target>
 		</trans-unit>
 		<trans-unit id="message.noFreePlacesForThisLesson" approved="yes" xml:space="preserve">
 			<source>Sorry! There are no places available for this lesson anymore.</source>
@@ -263,11 +263,11 @@
 		</trans-unit>
 		<trans-unit id="message.noLessonsForSelection.text" approved="yes" xml:space="preserve">
 			<source>Sorry, we could not find any lessons for your selection.</source>
-			<target>Es konnten keine Schulungstermine für die aktuelle Auswahl gefunden werden.</target>
+			<target>Es konnten keine Veranstaltungstermine für die aktuelle Auswahl gefunden werden.</target>
 		</trans-unit>
 		<trans-unit id="message.noLessonsForSelection.title" approved="yes" xml:space="preserve">
 			<source>No lessons found</source>
-			<target>Keine Schulungstermine gefunden</target>
+			<target>Keine Veranstaltungstermine gefunden</target>
 		</trans-unit>
 		<trans-unit id="message.reservation.cancel.success" approved="yes" xml:space="preserve">
 			<source>The reservation has been canceled.</source>
@@ -311,7 +311,7 @@
 		</trans-unit>
 		<trans-unit id="message.selectLesson" approved="yes" xml:space="preserve">
 			<source>Please select a lesson!</source>
-			<target>Bitte wählen Sie einen Schulungstermin!</target>
+			<target>Bitte wählen Sie einen Veranstaltungstermin!</target>
 		</trans-unit>
 		<trans-unit id="newParticipant.email" approved="yes" xml:space="preserve">
 			<source>Email</source>

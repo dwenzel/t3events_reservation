@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-09-10T10:56:14Z" product-name="dakosy_reservations">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-09-10T10:56:14Z" product-name="t3events_reservation">
 		<header />
 		<body>
 			<trans-unit id="mlang_tabs_tab">

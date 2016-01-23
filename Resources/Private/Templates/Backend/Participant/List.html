@@ -13,7 +13,7 @@
 			<tr class="c-headline">
 				<td>ID</td>
 				<td class="col-title">Name, Vorname</td>
-				<td class="">Reservierung # - Schulung</td>
+				<td class="">Reservierung # - Veranstaltung</td>
 				<td>Datum / Ort</td>
 			</tr>
 			<f:groupedFor each="{participants}" as="participantsByLesson" groupBy="reservation.lesson" groupKey="lesson">
@@ -24,7 +24,7 @@
 							- {lesson.course.headline}
 						</td>
 						<td>
-							<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-dakosy_reservations-download-excel-white" title="Teilnehmer exportieren" />
+							<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Teilnehmer exportieren" />
 						</td>
 					</tr>
 					<f:for each="{participantsByLesson}" as="participant">

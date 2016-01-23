@@ -168,7 +168,7 @@
 			<source>closed</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" xml:space="preserve">
-			<source>canceled by DAKOSY</source>
+			<source>canceled by organizer</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_schedule" xml:space="preserve">
 			<source>Schedule</source>
