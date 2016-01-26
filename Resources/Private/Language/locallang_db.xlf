@@ -116,6 +116,15 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_remarks" xml:space="preserve">
 			<source>Registration remarks</source>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.feedback" xml:space="preserve">
+			<source>Feedback</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.disclaimRevocation" xml:space="preserve">
+			<source>Disclaim of revocation</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.postReservationStorage" xml:space="preserve">
+			<source>Post reservation storage</source>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.Tx_T3eventsCourse_Person" xml:space="preserve">
 			<source>Reservations Person</source>
 		</trans-unit>
@@ -171,7 +180,7 @@
 			<source>closed</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" xml:space="preserve">
-			<source>canceled by DAKOSY</source>
+			<source>canceled by organizer</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_schedule" xml:space="preserve">
 			<source>Schedule</source>

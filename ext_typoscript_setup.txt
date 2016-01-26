@@ -80,12 +80,12 @@ module.tx_t3eventsreservation {
 			}
 
 			cancel {
-				byDakosy {
+				byOrganizer {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
-						subject = Ihr Schulungstermin wurde abgesagt
-						templateFileName = ByDakosy
+						subject = Ihr Veranstaltungstermin wurde abgesagt
+						templateFileName = ByOrganizer
 					}
 				}
 
@@ -109,12 +109,12 @@ module.tx_t3eventsreservation {
 			}
 
 			removeParticipant {
-				byDakosy {
+				byOrganizer {
 					confirm {
 						sendNotification = 1
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
 						subject = Reservierung für einen Teilnehmer storniert
-						templateFileName = ByDakosy
+						templateFileName = ByOrganizer
 					}
 				}
 

@@ -186,7 +186,7 @@
 			<source>Please enter the details for the new participant.</source>
 		</trans-unit>
 		<trans-unit id="message.mailToWaitlist" xml:space="preserve">
-			<source>Please send an email to &lt;a href=&quot;mailto:schulung@dakosy.de?subject=Waitlist&quot;&gt;schulung@dakosy.de&lt;/a&gt;</source>
+			<source>Please send an email to &lt;a href=&quot;mailto:veranstaltungen@cps-it.de?subject=Waitlist&quot;&gt;veranstaltungen@cps-it.de&lt;/a&gt;</source>
 		</trans-unit>
 		<trans-unit id="message.noCoursesFound.text" xml:space="preserve">
 			<source>Please, create a new course!</source>

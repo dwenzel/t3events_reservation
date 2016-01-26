@@ -1,29 +1,29 @@
-.tx-dakosy-reservations .button-group form {
+.tx-t3events-reservation .button-group form {
 	display: inline-block;
 }
 
-.tx-dakosy-reservations form .button-group {
+.tx-t3events-reservation form .button-group {
 	clear: both;
 	margin-top: 1em;
 }
 
-.tx-dakosy-reservations .clear {
+.tx-t3events-reservation .clear {
 	clear: both;
 }
 
-.tx-dakosy-reservations .column {
+.tx-t3events-reservation .column {
 	width: 33%;
 	min-width: 230px;
 	float: left;
 }
 
-.tx-dakosy-reservations .button {
+.tx-t3events-reservation .button {
 	/*	padding: 20px 0 20px 0;*/
 	display: inline-block;
 }
 
-.tx-dakosy-reservations a.button,
-.tx-dakosy-reservations input.button {
+.tx-t3events-reservation a.button,
+.tx-t3events-reservation input.button {
 	width: auto;
 	margin: 0 10px 0 0;
 	background: #1C3862;
@@ -36,16 +36,16 @@
 	cursor: pointer;
 }
 
-.tx-dakosy-reservations a.button {
+.tx-t3events-reservation a.button {
 	padding: 8px 22px;
 }
 
-.tx-dakosy-reservations input.button {
+.tx-t3events-reservation input.button {
 	padding: 10px 22px;
 }
 
-.tx-dakosy-reservations a.button:hover,
-.tx-dakosy-reservations input.button:hover {
+.tx-t3events-reservation a.button:hover,
+.tx-t3events-reservation input.button:hover {
 	background: #CD1421;
 }
 

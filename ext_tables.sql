@@ -16,6 +16,9 @@ CREATE TABLE tx_t3eventsreservation_domain_model_reservation (
 	privacy_statement_accepted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	offers_accepted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	contact_is_participant tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	disclaim_revocation tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	feedback text NOT NULL,
+	postreservation_storage text NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

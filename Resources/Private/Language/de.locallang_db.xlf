@@ -13,7 +13,7 @@
 			<source></source>
 			<target>Teilnehmer</target>
 		</trans-unit>
-		<trans-unit id="tx_dakosyreservation_domain_model_lesson.tab.participants" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.tab.participants" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Teilnehmer</target>
 		</trans-unit>
@@ -55,7 +55,7 @@
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_event" approved="yes" xml:space="preserve">
 			<source>Course</source>
-			<target>Schulung</target>
+			<target>Veranstaltung</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.abstract" approved="yes" xml:space="preserve">
 			<source>Abstract</source>
@@ -421,6 +421,18 @@
 			<source>Privacy statement accepted</source>
 			<target>Datenschutzerklärung akzeptiert</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.feedback" approved="yes" xml:space="preserve">
+			<source>Feedback</source>
+			<target>Feedback</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
+			<source>Disclaim revocation</source>
+			<target>Verzicht auf Widerrufsrecht</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.postReservationStorage" approved="yes" xml:space="preserve">
+			<source>Post reservation storage</source>
+			<target>Formulareingaben nach Reservierungsabschluss (Serialisiertes Array)</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0" approved="yes" xml:space="preserve">
 			<source>new</source>
 			<target>neu</target>
@@ -446,8 +458,8 @@
 			<target>abgeschlossen</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" approved="yes" xml:space="preserve">
-			<source>canceled by DAKOSY</source>
-			<target>abgesagt durch DAKOSY</target>
+			<source>canceled by organizer</source>
+			<target>Abgesagt durch Veranstalter</target>
 		</trans-unit>
 		</body>
 	</file>

@@ -119,7 +119,7 @@ class CloseBookingCommandController extends CommandController {
 		if ((count($lessons) OR count($reservations)) AND !empty($email)) {
 			try {
 				$this->notificationService->notify(
-					$email, 'schulung@dakosy.de', 'close booking', 'Email', NULL, 'CloseBooking', array(
+					$email, 't3events@cps-it.de', 'close booking', 'Email', NULL, 'CloseBooking', array(
 					'dryRun' => $dryRun,
 					'lessons' => $lessons,
 					'reservations' => $reservations
@@ -163,7 +163,7 @@ class CloseBookingCommandController extends CommandController {
 		) {
 			try {
 				$this->notificationService->notify(
-					$email, 'no-reply@example.com', 'Abgelaufene Termine und Reservierungen auf www.dakosy.de', 'Email', NULL, 'ReportExpired', array(
+					$email, 'no-reply@example.com', 'Abgelaufene Termine und Reservierungen in ihrem Veranstaltungssystem', 'Email', NULL, 'ReportExpired', array(
 					'lessons' => $lessons,
 					'reservations' => $reservations
 				), array(
