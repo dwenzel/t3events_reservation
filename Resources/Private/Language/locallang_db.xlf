@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-01-08T22:40:06Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-01-11T13:17:03Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -34,6 +34,9 @@
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_genre" xml:space="preserve">
 			<source>Product</source>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_performance.course_contacts" xml:space="preserve">
+			<source>Course Contacts / Speakers</source>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.Tx_T3eventsCourse_Lesson" xml:space="preserve">
 			<source>Schedule</source>

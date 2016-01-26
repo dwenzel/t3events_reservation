@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-01-08T22:40:06Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-01-11T13:17:03Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -28,6 +28,10 @@
 		<trans-unit id="tx_t3events_domain_model_genre" approved="yes" xml:space="preserve">
 			<source>Product</source>
 			<target>Produkt</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_performance.course_contacts" approved="yes" xml:space="preserve">
+			<source>Course Contacts / Speakers</source>
+			<target>Referenten/Dozenten/Moderatoren</target>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.tx_t3eventsreservation_Lesson" approved="yes" xml:space="preserve">
 			<source></source>
@@ -96,10 +100,6 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.contact_person" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>IHK-Ansprechpartner</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.course_contacts" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Referenten/Dozenten/Moderatoren</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type" approved="yes" xml:space="preserve">
 			<source></source>
