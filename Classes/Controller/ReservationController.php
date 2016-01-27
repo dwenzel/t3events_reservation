@@ -365,7 +365,7 @@ class ReservationController extends AbstractController {
 	 *
 	 * @return void
 	 */
-	private function denyAccess() {
+	protected function denyAccess() {
 		$this->clearCacheOnError();
 		$this->addFlashMessage(
 			$this->translate('error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
