@@ -1,5 +1,6 @@
 plugin.tx_t3eventsreservation {
 	view {
+		templateRootPath = {$plugin.tx_t3eventsreservation.view.templateRootPath}
 		templateRootPaths {
 			10 = {$plugin.tx_t3eventsreservation.view.templateRootPath}
 		}
@@ -17,6 +18,28 @@ plugin.tx_t3eventsreservation {
 		}
 		reservation {
 			detailPid = {$plugin.tx_t3eventsreservation.settings.reservation.detailPid}
+			confirm {
+				notification {
+					admin {
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.fromEmail}
+						toEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.toEmail}
+						subject = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.subject}
+						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.format}
+						#template {
+						#	fileName = Admin
+						#	folderName = Reservation/Email
+						#}
+					}
+					user {
+						toEmail {
+							field = contact.email
+						}
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.fromEmail}
+						subject = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject}
+						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.format}
+					}
+				}
+			}
 		}
 	}
 }

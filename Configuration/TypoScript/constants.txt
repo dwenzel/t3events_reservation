@@ -16,6 +16,21 @@ plugin.tx_t3eventsreservation {
 		}
 		reservation {
 			detailPid =
+			confirm {
+				notification {
+					admin {
+						fromEmail = no-reply@example.com
+						toEmail = no-reply@example.com
+						subject = New Reservation
+						format = html
+					}
+					user {
+						fromEmail = no-reply@example.com
+						subject = Reservation confirmation
+						format = html
+					}
+				}
+			}
 		}
 	}
 

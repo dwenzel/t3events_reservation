@@ -19,12 +19,11 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * Reservation
+ * Notification for reservations
  */
-class Notification extends AbstractEntity {
+class Notification extends \Webfox\T3events\Domain\Model\Notification {
 	/**
 	 * Reservation
 	 *

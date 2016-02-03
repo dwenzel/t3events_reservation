@@ -19,14 +19,36 @@ namespace CPSIT\T3eventsReservation\Controller;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use CPSIT\T3eventsCourse\Controller\AbstractController;
+use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Configuration\Exception;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use Webfox\T3events\Session\Typo3Session;
 
 /**
  * ReservationController
  */
 class ReservationController extends AbstractController {
+	const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
+
+	/**
+	 * Persistence Manager
+	 *
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+	 * @inject
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Notification Service
+	 *
+	 * @var \Webfox\T3events\Service\NotificationService
+	 * @inject
+	 */
+	protected $notificationService;
 
 	/**
 	 * reservationRepository
@@ -59,6 +81,19 @@ class ReservationController extends AbstractController {
 	 * @inject
 	 */
 	protected $personRepository = NULL;
+
+	/**
+	 * @var \Webfox\T3events\Session\SessionInterface
+	 */
+	protected $session;
+
+	/**
+	 * Initialize Action
+	 */
+	public function initializeAction() {
+		parent::initializeAction();
+		$this->session = $this->objectManager->get(Typo3Session::class, self::SESSION_NAME_SPACE);
+	}
 
 	/**
 	 * action show
@@ -130,7 +165,7 @@ class ReservationController extends AbstractController {
 			);
 			$this->reservationRepository->add($newReservation);
 			$this->persistenceManager->persistAll();
-			$this->setSessionKey('reservationUid', $newReservation->getUid());
+			$this->session->set('reservationUid', $newReservation->getUid());
 			$this->forward('edit', NULL, NULL, array('reservation' => $newReservation));
 		} else {
 			$this->denyAccess();
@@ -254,8 +289,8 @@ class ReservationController extends AbstractController {
 
 		$this->redirect(
 			'edit',
-			null,
-			null,
+			NULL,
+			NULL,
 			['reservation' => $reservation]
 		);
 	}
@@ -282,34 +317,13 @@ class ReservationController extends AbstractController {
 	 */
 	public function confirmAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
 		if ($this->isAccessAllowed($reservation)) {
+			// @todo optionally read reservation status from settings
 			$reservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_SUBMITTED);
 			$this->addFlashMessage(
 				$this->translate('message.reservation.confirm.success')
 			);
-			if ($this->settings['reservation']['confirm']['sendNotification']) {
-				/** @var \Webfox\T3events\Domain\Model\Notification $notification */
-				$notification = $this->objectManager->get('CPSIT\\T3eventsCourse\\Domain\\Model\Notification');
-				$notification->setRecipient($reservation->getContact()->getEmail());
-				$notification->setSender($this->settings['reservation']['confirm']['fromEmail']);
-				$notification->setSubject($this->settings['reservation']['confirm']['subject']);
-				$notification->setFormat('html');
-				$bodyText = $this->notificationService->render(
-					$this->settings['reservation']['confirm']['templateFileName'],
-					'html',
-					$this->settings['reservation']['confirm']['folderName'],
-					array('reservation' => $reservation, 'settings' => $this->settings)
-				);
-				$notification->setBodytext($bodyText);
-				$reservation->addNotification($notification);
-				$notificationSuccess = $this->notificationService->send($notification);
-				if ($notificationSuccess) {
-					$mailMessageKey = 'message.reservation.sendNotification.success';
-					$mailMessageSeverity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK;
-				} else {
-					$mailMessageKey = 'message.reservation.sendNotification.error';
-					$mailMessageSeverity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
-				}
-				$this->addFlashMessage($this->translate($mailMessageKey), NULL, $mailMessageSeverity);
+			foreach ($this->settings['reservation']['confirm']['notification'] as $identifier => $config) {
+				$this->sendNotification($reservation, $identifier, $config);
 			}
 			$this->reservationRepository->update($reservation);
 			$this->forward('show', NULL, NULL, array('reservation' => $reservation));
@@ -371,5 +385,83 @@ class ReservationController extends AbstractController {
 			$this->translate('error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
 		);
 		$this->redirect('list', 'Schedule', 't3eventsreservation', array(), $this->settings['lesson']['listPid']);
+	}
+
+	/**
+	 * Checks if access is allowed
+	 *
+	 * @param \object $object Object which should be accessed
+	 * @return \boolean
+	 */
+	public function isAccessAllowed($object) {
+		$isAllowed = FALSE;
+		if ($object instanceof Reservation) {
+			$isAllowed = ($this->session->has('reservationUid')
+				&& method_exists($object, 'getUid')
+				&& ((int) $this->session->get('reservationUid') === $object->getUid())
+			);
+		}
+
+		return $isAllowed;
+	}
+
+	/**
+	 * @param Reservation $reservation
+	 * @param string $identifier
+	 * @param array $config
+	 * @return bool
+	 * @throws Exception
+	 */
+	protected function sendNotification(Reservation $reservation, $identifier, $config) {
+		if (isset($config['fromEmail'])) {
+			$sender = $config['fromEmail'];
+		} else {
+			throw new Exception('Missing sender for email notification', 1454518855);
+		}
+		if (isset($config['toEmail'])) {
+			if (isset($config['toEmail']['field']) && is_string($config['toEmail']['field'])) {
+				$recipientEmail = ObjectAccess::getPropertyPath($reservation, $config['toEmail']['field']);
+			} elseif (is_string($config['toEmail'])) {
+				$recipientEmail = $config['toEmail'];
+			}
+		}
+
+		if (!isset($recipientEmail)) {
+			throw new Exception('Missing recipient for email notification ' . $identifier, 1454518855);
+		}
+
+		if (isset($config['subject'])) {
+			$subject = $config['subject'];
+		} else {
+			throw new Exception('Missing subject for email notification ' . $identifier, 1454518855);
+		}
+
+		$format = 'plain';
+		if (isset($config['format']) && is_string($config['format'])) {
+			$format = $config['format'];
+		}
+		$fileName = ucfirst($identifier);
+		if (isset($config['template']['fileName'])) {
+			$fileName = $config['template']['fileName'];
+		}
+		$folderName = 'Reservation/Email';
+		if (isset($config['template']['folderName'])) {
+			$folderName = $config['template']['folderName'];
+		}
+		/** @var Notification $notification */
+		$notification = $this->objectManager->get(Notification::class);
+		$notification->setRecipient($recipientEmail);
+		$notification->setSender($sender);
+		$notification->setSubject($subject);
+		$notification->setFormat($format);
+		$bodyText = $this->notificationService->render(
+			$fileName,
+			$format,
+			$folderName,
+			['reservation' => $reservation, 'settings' => $this->settings]
+		);
+		$notification->setBodytext($bodyText);
+		$reservation->addNotification($notification);
+		return $this->notificationService->send($notification);
 	}
 }

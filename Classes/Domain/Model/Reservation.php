@@ -254,7 +254,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Returns the lesson
 	 *
-	 * @return \\Webfox\T3events\Domain\Model\Performance $lesson
+	 * @return \Webfox\T3events\Domain\Model\Performance $lesson
 	 */
 	public function getLesson() {
 		return $this->lesson;
