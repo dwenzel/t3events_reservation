@@ -465,6 +465,15 @@
 			<source>canceled by organizer</source>
 			<target>Abgesagt durch Veranstalter</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.total_price" xml:space="preserve">
+			<source>Total price</source>
+			<target>Gesamtpreis</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.note" xml:space="preserve">
+			<source>Note</source>
+			<target>Notiz</target>
+		</trans-unit>
+
 		</body>
 	</file>
 </xliff>
