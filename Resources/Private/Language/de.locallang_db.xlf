@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-01-11T13:17:03Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-03T12:52:50Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -10,10 +10,6 @@
 			<target>Dokument hinzufügen</target>
 		</trans-unit>
 		<trans-unit id="tabs.participants" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnehmer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.tab.participants" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Teilnehmer</target>
 		</trans-unit>
@@ -48,6 +44,10 @@
 		<trans-unit id="tx_t3events_domain_model_person.role" approved="yes" xml:space="preserve">
 			<source>Role</source>
 			<target>Position</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.type.participant" approved="yes" xml:space="preserve">
+			<source>Participant</source>
+			<target>Teilnehmer</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation.tx_extbase_type" approved="yes" xml:space="preserve">
 			<source>Event type</source>
@@ -389,6 +389,10 @@
 			<source></source>
 			<target>Betreff</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.tab.participants" approved="yes" xml:space="preserve">
+			<source></source>
+			<target>Teilnehmer</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.contact" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Ansprechpartner</target>
@@ -409,6 +413,14 @@
 			<source>Contact is participant</source>
 			<target>Ansprechpartner nimmt teil</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
+			<source></source>
+			<target>Verzicht auf Widerrufsrecht</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.feedback" approved="yes" xml:space="preserve">
+			<source></source>
+			<target>Feedback</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" approved="yes" xml:space="preserve">
 			<source>Notifications</source>
 			<target>Benachrichtigungen</target>
@@ -417,21 +429,13 @@
 			<source>Further offers accepted</source>
 			<target>Weitere Angebote akzeptiert</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.postReservationStorage" approved="yes" xml:space="preserve">
+			<source></source>
+			<target>Formulareingaben nach Reservierungsabschluss (Serialisiertes Array)</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted" approved="yes" xml:space="preserve">
 			<source>Privacy statement accepted</source>
 			<target>Datenschutzerklärung akzeptiert</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.feedback" approved="yes" xml:space="preserve">
-			<source>Feedback</source>
-			<target>Feedback</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
-			<source>Disclaim revocation</source>
-			<target>Verzicht auf Widerrufsrecht</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.postReservationStorage" approved="yes" xml:space="preserve">
-			<source>Post reservation storage</source>
-			<target>Formulareingaben nach Reservierungsabschluss (Serialisiertes Array)</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0" approved="yes" xml:space="preserve">
 			<source>new</source>

@@ -53,12 +53,10 @@ CREATE TABLE tx_t3eventsreservation_domain_model_reservation (
 # Table structure for table 'tx_t3events_domain_model_person'
 #
 CREATE TABLE tx_t3events_domain_model_person (
-	type int(11) DEFAULT '0' NOT NULL,
 	reservation int(11) DEFAULT '0' NOT NULL,
 	birthplace varchar(255) DEFAULT '' NOT NULL,
 	company_name varchar(255) DEFAULT '' NOT NULL,
-	role varchar(255) DEFAULT '' NOT NULL,
-	tx_extbase_type varchar(255) DEFAULT '' NOT NULL
+	role varchar(255) DEFAULT '' NOT NULL
 );
 
 #

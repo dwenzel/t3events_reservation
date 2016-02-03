@@ -25,7 +25,5 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  */
 class Person extends \Webfox\T3events\Domain\Model\Person {
 	use ReservationPersonTrait;
-	const PERSON_TYPE_UNKNOWN = 0;
-	const PERSON_TYPE_CONTACT = 1;
 	const PERSON_TYPE_PARTICIPANT = 2;
 }
