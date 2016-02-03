@@ -117,6 +117,20 @@ class Reservation extends AbstractEntity {
 	protected $notifications;
 
 	/**
+	 * total price
+	 *
+	 * @var \float
+	 */
+	protected $totalPrice = 0.0;
+
+	/**
+	 * note
+	 *
+	 * @var \string
+	 */
+	protected $note;
+
+	/**
 	 * Returns hidden
 	 *
 	 * @return \int
@@ -379,4 +393,34 @@ class Reservation extends AbstractEntity {
 	public function setBillingAddress($billingAddress) {
 		$this->billingAddress = $billingAddress;
 	}
+
+	/**
+	 * @return float
+	 */
+	public function getTotalPrice() {
+		return $this->totalPrice;
+	}
+
+	/**
+	 * @param float $totalPrice
+	 */
+	public function setTotalPrice($totalPrice) {
+		$this->totalPrice = $totalPrice;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNote() {
+		return $this->note;
+	}
+
+	/**
+	 * @param string $note
+	 */
+	public function setNote($note) {
+		$this->note = $note;
+	}
+
+
 }

@@ -30,12 +30,12 @@ return array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3events_reservation') . 'Resources/Public/Icons/tx_t3eventsreservation_domain_model_reservation.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, status, company, contact, billing_address, participants, lesson, notifications',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, status, company, contact, billing_address, participants, lesson, notifications, total_price, note',
 	),
 	'types' => array(
 		'1' => array(
 			'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, status, company, contact,
-							billing_address, privacy_statement_accepted, offers_accepted, lesson, disclaim_revocation, feedback,
+							billing_address, privacy_statement_accepted, offers_accepted, lesson, disclaim_revocation, total_price, note, feedback,
 							postreservation_storage,
 							--div--;' . $ll . 'tabs.participants, participants,
 							--div--;' . $ll . 'tabs.notifications, notifications,
@@ -281,6 +281,27 @@ return array(
 				'rows' => 10,
 				'readOnly' => 1,
 			]
+		],
+
+		'total_price' => [
+			'exclude' => 0,
+			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.total_price',
+			'config' => [
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'double2'
+			],
+		],
+
+		'note' => [
+			'exclude' => 0,
+			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.note',
+			'config' => [
+				'type' => 'text',
+				'cols' => 32,
+				'rows' => 5,
+				'eval' => 'trim'
+			],
 		],
 	),
 );

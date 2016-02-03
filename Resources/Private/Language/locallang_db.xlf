@@ -5,7 +5,7 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="label.addDocument" xml:space="preserve">
+			<trans-unit id="label.addDocument" xml:space="preserve">
 			<source>Add Document</source>
 		</trans-unit>
 		<trans-unit id="label.tab.participants" xml:space="preserve">
@@ -175,6 +175,12 @@
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" xml:space="preserve">
 			<source>canceled by organizer</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.total_price" xml:space="preserve">
+			<source>Total price</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.note" xml:space="preserve">
+			<source>Note</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_schedule" xml:space="preserve">
 			<source>Schedule</source>
