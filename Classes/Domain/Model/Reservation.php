@@ -19,7 +19,9 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use CPSIT\T3eventsReservation\PriceableInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Webfox\T3events\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 
@@ -234,6 +236,7 @@ class Reservation extends AbstractEntity {
 	 */
 	public function addParticipant(Person $participant) {
 		$this->participants->attach($participant);
+		$this->updateTotalPrice();
 	}
 
 	/**
@@ -244,6 +247,7 @@ class Reservation extends AbstractEntity {
 	 */
 	public function removeParticipant(\CPSIT\T3eventsReservation\Domain\Model\Person $participantToRemove) {
 		$this->participants->detach($participantToRemove);
+		$this->updateTotalPrice();
 	}
 
 	/**
@@ -263,6 +267,7 @@ class Reservation extends AbstractEntity {
 	 */
 	public function setParticipants(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $participants) {
 		$this->participants = $participants;
+		$this->updateTotalPrice();
 	}
 
 	/**
@@ -422,5 +427,15 @@ class Reservation extends AbstractEntity {
 		$this->note = $note;
 	}
 
-
+	/**
+	 * updates the total price
+	 */
+	protected function updateTotalPrice() {
+		if ($lesson = $this->getLesson()) {
+			if ($lesson instanceof PriceableInterface) {
+				$totalPrice = $lesson->getPrice() * $this->participants->count();
+				$this->setTotalPrice($totalPrice);
+			}
+		}
+	}
 }

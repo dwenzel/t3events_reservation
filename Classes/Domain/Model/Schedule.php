@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model;
 
+use CPSIT\T3eventsReservation\PriceableInterface;
 use Webfox\T3events\Domain\Model\Performance;
 
 /***************************************************************
@@ -27,6 +28,8 @@ use Webfox\T3events\Domain\Model\Performance;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Schedule extends Performance {
+class Schedule
+	extends Performance
+	implements PriceableInterface {
 	use BookableScheduleTrait;
 }
