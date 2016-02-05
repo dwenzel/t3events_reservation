@@ -22,10 +22,12 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use Webfox\T3events\Domain\Model\Performance;
 use Webfox\T3events\Session\Typo3Session;
 
 /**
@@ -98,10 +100,10 @@ class ReservationController extends AbstractController {
 	/**
 	 * action show
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function showAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function showAction(Reservation $reservation) {
 		if ($this->isAccessAllowed($reservation)) {
 			$this->view->assign('reservation', $reservation);
 		} else {
@@ -113,41 +115,41 @@ class ReservationController extends AbstractController {
 	 * action new
 	 *
 	 * @param \Webfox\T3events\Domain\Model\Performance $lesson
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation
+	 * @param Reservation $newReservation
 	 * @ignorevalidation $newReservation
 	 * @return void
 	 */
-	public function newAction(\Webfox\T3events\Domain\Model\Performance $lesson = NULL, \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation = NULL) {
+	public function newAction(Performance $lesson = NULL, Reservation $newReservation = NULL) {
 		//@todo: check for existing session key and prevent creating new reservation
 		if (is_null($lesson)) {
 			$error = 'message.selectLesson';
 		} elseif (!$lesson->getFreePlaces()) {
 			$error = 'message.noFreePlacesForThisLesson';
 		}
-		if ($error) {
+		if (isset($error)) {
 			$this->addFlashMessage(
-				$this->translate($error), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
+				$this->translate($error), '', AbstractMessage::ERROR, TRUE
 			);
-			$this->redirect('list', 'Schedule', 't3events', array(), $this->settings['schedule']['listPid']);
+			$this->redirect('list', 'Schedule', 't3events', [], $this->settings['schedule']['listPid']);
 		}
-		if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
+		if ($this->request->getOriginalRequest() instanceof Request) {
 			$newReservation = $this->request->getOriginalRequest()->getArgument('newReservation');
 		}
 		$this->view->assignMultiple(
-			array(
+			[
 				'newReservation' => $newReservation,
 				'lesson' => $lesson
-			)
+			]
 		);
 	}
 
 	/**
 	 * action create
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation
+	 * @param Reservation $newReservation
 	 * @return void
 	 */
-	public function createAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $newReservation) {
+	public function createAction(Reservation $newReservation) {
 		//@todo: check for existing session key and prevent creating new reservation
 		if (is_null($newReservation->getUid())) {
 			$contact = $newReservation->getContact();
@@ -166,7 +168,7 @@ class ReservationController extends AbstractController {
 			$this->reservationRepository->add($newReservation);
 			$this->persistenceManager->persistAll();
 			$this->session->set('reservationUid', $newReservation->getUid());
-			$this->forward('edit', NULL, NULL, array('reservation' => $newReservation));
+			$this->forward('edit', NULL, NULL, ['reservation' => $newReservation]);
 		} else {
 			$this->denyAccess();
 		}
@@ -175,10 +177,10 @@ class ReservationController extends AbstractController {
 	/**
 	 * action edit
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function editAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function editAction(Reservation $reservation) {
 		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
 		}
@@ -195,10 +197,10 @@ class ReservationController extends AbstractController {
 	/**
 	 * action delete
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function deleteAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function deleteAction(Reservation $reservation) {
 		if ($this->isAccessAllowed($reservation)) {
 			$this->addFlashMessage(
 				$this->translate('message.reservation.delete.success')
@@ -223,37 +225,37 @@ class ReservationController extends AbstractController {
 	/**
 	 * action newParticipant
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant
+	 * @param Reservation $reservation
+	 * @param Person $newParticipant
 	 * @ignorevalidation $newParticipant
 	 * @return void
 	 */
-	public function newParticipantAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation,
-		\CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant = NULL) {
+	public function newParticipantAction(Reservation $reservation,
+		Person $newParticipant = NULL) {
 		if ($this->isAccessAllowed($reservation)
-			AND $reservation->getStatus() == \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT
-			OR $reservation->getStatus() == \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_NEW
+			AND $reservation->getStatus() == Reservation::STATUS_DRAFT
+			OR $reservation->getStatus() == Reservation::STATUS_NEW
 		) {
-			if (!$reservation->getStatus() == \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT) {
-				$reservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT);
+			if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+				$reservation->setStatus(Reservation::STATUS_DRAFT);
 			}
 			if (!$reservation->getLesson()->getFreePlaces()) {
 				$this->addFlashMessage(
-					$this->translate('message.noFreePlacesForThisLesson'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
+					$this->translate('message.noFreePlacesForThisLesson'), '', AbstractMessage::ERROR, TRUE
 				);
 			} elseif (!count($reservation->getParticipants())) {
 				$this->addFlashMessage(
-					$this->translate('message.reservation.newParticipant.addAtLeastOneParticipant'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::NOTICE
+					$this->translate('message.reservation.newParticipant.addAtLeastOneParticipant'), '', AbstractMessage::NOTICE
 				);
 			}
 			if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
 				$newParticipant = $this->request->getOriginalRequest()->getArgument('newParticipant');
 			}
 			$this->view->assignMultiple(
-				array(
+				[
 					'newParticipant' => $newParticipant,
 					'reservation' => $reservation
-				)
+				]
 			);
 		} else {
 			$this->denyAccess();
@@ -263,11 +265,11 @@ class ReservationController extends AbstractController {
 	/**
 	 * action createParticipant
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant
+	 * @param Reservation $reservation
+	 * @param Person $newParticipant
 	 * @return void
 	 */
-	public function createParticipantAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation, \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant) {
+	public function createParticipantAction(Reservation $reservation, Person $newParticipant) {
 		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
 		}
@@ -298,10 +300,10 @@ class ReservationController extends AbstractController {
 	/**
 	 * Checkout Action
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function checkoutAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function checkoutAction(Reservation $reservation) {
 		if ($this->isAccessAllowed($reservation)) {
 			$this->view->assign('reservation', $reservation);
 		} else {
@@ -312,13 +314,13 @@ class ReservationController extends AbstractController {
 	/**
 	 * Confirm Action
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function confirmAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function confirmAction(Reservation $reservation) {
 		if ($this->isAccessAllowed($reservation)) {
 			// @todo optionally read reservation status from settings
-			$reservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_SUBMITTED);
+			$reservation->setStatus(Reservation::STATUS_SUBMITTED);
 			$this->addFlashMessage(
 				$this->translate('message.reservation.confirm.success')
 			);
@@ -326,7 +328,7 @@ class ReservationController extends AbstractController {
 				$this->sendNotification($reservation, $identifier, $config);
 			}
 			$this->reservationRepository->update($reservation);
-			$this->forward('show', NULL, NULL, array('reservation' => $reservation));
+			$this->forward('show', NULL, NULL, ['reservation' => $reservation]);
 		} else {
 			$this->denyAccess();
 		}
@@ -335,13 +337,13 @@ class ReservationController extends AbstractController {
 	/**
 	 * action removeParticipant
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
+	 * @param Reservation $reservation
+	 * @param Person $participant
 	 * @return void
 	 */
 	public function removeParticipantAction(
-		\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation,
-		\CPSIT\T3eventsReservation\Domain\Model\Person $participant
+		Reservation $reservation,
+		Person $participant
 	) {
 		if ($this->isAccessAllowed($reservation)) {
 			$reservation->removeParticipant($participant);
@@ -350,7 +352,7 @@ class ReservationController extends AbstractController {
 			$this->addFlashMessage(
 				$this->translate('message.reservation.removeParticipant.success')
 			);
-			$this->redirect('edit', NULL, NULL, array('reservation' => $reservation));
+			$this->redirect('edit', NULL, NULL, ['reservation' => $reservation]);
 		} else {
 			$this->denyAccess();
 		}
@@ -382,9 +384,9 @@ class ReservationController extends AbstractController {
 	protected function denyAccess() {
 		$this->clearCacheOnError();
 		$this->addFlashMessage(
-			$this->translate('error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR, TRUE
+			$this->translate('error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'), '', AbstractMessage::ERROR, TRUE
 		);
-		$this->redirect('list', 'Schedule', 't3eventsreservation', array(), $this->settings['lesson']['listPid']);
+		$this->redirect('list', 'Schedule', 't3eventsreservation', [], $this->settings['lesson']['listPid']);
 	}
 
 	/**
@@ -462,6 +464,7 @@ class ReservationController extends AbstractController {
 		);
 		$notification->setBodytext($bodyText);
 		$reservation->addNotification($notification);
+
 		return $this->notificationService->send($notification);
 	}
 
