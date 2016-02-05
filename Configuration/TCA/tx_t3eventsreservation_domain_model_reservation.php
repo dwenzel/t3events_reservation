@@ -35,8 +35,7 @@ return array(
 	'types' => array(
 		'1' => array(
 			'showitem' => 'status, lesson, contact,
-							billing_address, privacy_statement_accepted, offers_accepted,  disclaim_revocation, total_price, note, feedback,
-							postreservation_storage,
+							billing_address, privacy_statement_accepted, offers_accepted,  disclaim_revocation, total_price, note,
 							--div--;' . $ll . 'tabs.participants, participants,
 							--div--;' . $ll . 'tabs.notifications, notifications,
 							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, starttime, endtime'
@@ -273,26 +272,6 @@ return array(
 				'readOnly' => 1,
 			),
 		),
-		'feedback' => [
-			'exclude' => 1,
-			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.feedback',
-			'config' => [
-				'type' => 'text',
-				'cols' => 40,
-				'rows' => 10,
-				'readOnly' => 1,
-			]
-		],
-		'postreservation_storage' => [
-			'exclude' => 1,
-			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.postReservationStorage',
-			'config' => [
-				'type' => 'text',
-				'cols' => 40,
-				'rows' => 10,
-				'readOnly' => 1,
-			]
-		],
 
 		'total_price' => [
 			'exclude' => 0,
