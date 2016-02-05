@@ -23,6 +23,9 @@
 		<trans-unit id="label.tabs.participants" xml:space="preserve">
 			<source>Participants</source>
 		</trans-unit>
+		<trans-unit id="label.tabs.notifications" xml:space="preserve">
+			<source>Notifications</source>
+		</trans-unit>
 		<trans-unit id="label.tx_extbase_type.Tx_T3eventsReservation_Schedule" xml:space="preserve">
 			<source>Schedule (bookable)</source>
 		</trans-unit>
@@ -130,6 +133,9 @@
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company" xml:space="preserve">
 			<source>Company</source>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.lesson" xml:space="preserve">
+			<source>Performance</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contact" xml:space="preserve">
 			<source>Contact</source>

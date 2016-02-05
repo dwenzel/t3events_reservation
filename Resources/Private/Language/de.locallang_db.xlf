@@ -13,6 +13,10 @@
 			<source></source>
 			<target>Teilnehmer</target>
 		</trans-unit>
+		<trans-unit id="tabs.notifications" approved="yes" xml:space="preserve">
+			<source>Notifications</source>
+			<target>Benachrichtigungen</target>
+		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.default" approved="yes" xml:space="preserve">
 			<source>Default</source>
 			<target>Allgemeine Veranstaltung</target>
@@ -405,6 +409,18 @@
 			<source></source>
 			<target>Teilnehmer</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contact" approved="yes" xml:space="preserve">
+			<source>Contact</source>
+			<target>Buchungskontakt</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.lesson" approved="yes" xml:space="preserve">
+			<source>Performance</source>
+			<target>Veranstaltungstermin</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company" approved="yes" xml:space="preserve">
+			<source>Company</source>
+			<target>Firma</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.billingAddress" approved="yes" xml:space="preserve">
 			<source>Billing Address</source>
 			<target>Rechnungsadresse</target>
@@ -414,12 +430,20 @@
 			<target>Ansprechpartner nimmt teil</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
+			<source>Disclaim of revocation</source>
+			<target>Verzicht auf Widerrufsrecht</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Verzicht auf Widerrufsrecht</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.feedback" approved="yes" xml:space="preserve">
-			<source></source>
+			<source>Feedback</source>
 			<target>Feedback</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.participants" approved="yes" xml:space="preserve">
+			<source>Participants</source>
+			<target>Teilnehmer</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" approved="yes" xml:space="preserve">
 			<source>Notifications</source>

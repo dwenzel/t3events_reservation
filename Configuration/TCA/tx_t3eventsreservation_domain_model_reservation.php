@@ -34,12 +34,12 @@ return array(
 	),
 	'types' => array(
 		'1' => array(
-			'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, status, company, contact,
-							billing_address, privacy_statement_accepted, offers_accepted, lesson, disclaim_revocation, total_price, note, feedback,
+			'showitem' => 'status, lesson, contact,
+							billing_address, privacy_statement_accepted, offers_accepted,  disclaim_revocation, total_price, note, feedback,
 							postreservation_storage,
 							--div--;' . $ll . 'tabs.participants, participants,
 							--div--;' . $ll . 'tabs.notifications, notifications,
-							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, hidden, starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, starttime, endtime'
 		),
 	),
 	'palettes' => array(
@@ -147,37 +147,45 @@ return array(
 				'eval' => ''
 			),
 		),
+
+		// TODO; remove as obsolete due merge with model company into person using contact field
 		'company' => array(
 			'exclude' => 1,
-			'label' => $ll . 'tx_t3events_domain_model_company',
+			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.company',
 			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'tx_t3events_domain_model_company',
-				'foreign_table_field' => 'name',
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_t3events_domain_model_company',
+				'size' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,
+				'readOnly' => 1,
 			),
 		),
 		'contact' => array(
 			'exclude' => 1,
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.contact',
 			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'tx_t3events_domain_model_person',
-				'foreign_table_field' => 'name',
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_t3events_domain_model_person',
+				'size' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,
+				'readOnly' => 1,
 			),
 		),
 		'billing_address' => array(
 			'exclude' => 1,
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.billingAddress',
 			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'tx_t3events_domain_model_person',
-				'foreign_table_field' => 'name',
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_t3events_domain_model_person',
+				'size' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,
+				'readOnly' => 1,
 			),
 		),
 		'participants' => array(
@@ -227,10 +235,13 @@ return array(
 			'exclude' => 1,
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.lesson',
 			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'tx_t3events_domain_model_performance',
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_t3events_domain_model_performance',
+				'size' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,
+				'readOnly' => 1,
 			),
 		),
 		'notifications' => array(
