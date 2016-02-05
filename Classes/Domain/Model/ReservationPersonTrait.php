@@ -25,27 +25,11 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  */
 trait ReservationPersonTrait {
 	/**
-	 * type
-	 *
-	 * @var integer
-	 */
-	protected $type = 0;
-
-	/**
 	 * reservation
 	 *
 	 * @var \CPSIT\T3eventsReservation\Domain\Model\Reservation
 	 */
 	protected $reservation;
-
-	/**
-	 * Returns the type
-	 *
-	 * @return integer $type
-	 */
-	public function getType() {
-		return $this->type;
-	}
 
 	/**
 	 * @var string
@@ -61,16 +45,6 @@ trait ReservationPersonTrait {
 	 * @var string
 	 */
 	protected $role;
-
-	/**
-	 * Sets the type
-	 *
-	 * @param integer $type
-	 * @return void
-	 */
-	public function setType($type) {
-		$this->type = $type;
-	}
 
 	/**
 	 * Returns the reservation

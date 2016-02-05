@@ -25,5 +25,12 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  */
 class Person extends \Webfox\T3events\Domain\Model\Person {
 	use ReservationPersonTrait;
-	const PERSON_TYPE_PARTICIPANT = 2;
+	const PERSON_TYPE_PARTICIPANT = 'Tx_T3evensReservation_Participant';
+
+	/**
+	 * Record type
+	 *
+	 * @var string
+	 */
+	protected $type = self::PERSON_TYPE_PARTICIPANT;
 }
