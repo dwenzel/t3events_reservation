@@ -98,13 +98,6 @@ class Reservation extends AbstractEntity {
 	protected $privacyStatementAccepted = FALSE;
 
 	/**
-	 * Offers accepted
-	 *
-	 * @var \boolean
-	 */
-	protected $offersAccepted;
-
-	/**
 	 * Contact is participant
 	 *
 	 * @var \boolean
@@ -306,25 +299,6 @@ class Reservation extends AbstractEntity {
 	 */
 	public function setPrivacyStatementAccepted($accepted) {
 		$this->privacyStatementAccepted = $accepted;
-	}
-
-	/**
-	 * Get the  offers accepted
-	 *
-	 * @return \boolean
-	 */
-	public function getOffersAccepted() {
-		return $this->offersAccepted;
-	}
-
-	/**
-	 * Sets the privacy statement accepted
-	 *
-	 * @param \boolean $accepted
-	 * @return void
-	 */
-	public function setOffersAccepted($accepted) {
-		$this->offersAccepted = $accepted;
 	}
 
 	/**

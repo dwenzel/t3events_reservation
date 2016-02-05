@@ -249,25 +249,6 @@ class ReservationTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getOffersAcceptedForBooleanInitiallyReturnsNull() {
-		$this->assertNull(
-			$this->subject->getOffersAccepted()
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getOffersAcceptedCanBeSet() {
-		$this->subject->setOffersAccepted(true);
-		$this->assertTrue(
-			$this->subject->getOffersAccepted()
-		);
-	}
-
-	/**
-	 * @test
-	 */
 	public function addParticipantUpdatesTotalPrice() {
 		$this->subject = $this->getAccessibleMock(
 			Reservation::class, ['getLesson']

@@ -404,9 +404,6 @@
 		<trans-unit id="label.lesson" xml:space="preserve">
 			<source>Schedule</source>
 		</trans-unit>
-		<trans-unit id="label.offersAccepted" xml:space="preserve">
-			<source>Please send me further offers.</source>
-		</trans-unit>
 		<trans-unit id="label.participants" xml:space="preserve">
 			<source>Participants</source>
 		</trans-unit>

@@ -146,9 +146,6 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" xml:space="preserve">
 			<source>Notifications</source>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.offersAccepted" xml:space="preserve">
-			<source>Further offers accepted</source>
-		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.participants" xml:space="preserve">
 			<source>Participants</source>
 		</trans-unit>

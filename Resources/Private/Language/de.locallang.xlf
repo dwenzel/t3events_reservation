@@ -501,10 +501,6 @@
 			<source>Schedule</source>
 			<target>Termin</target>
 		</trans-unit>
-		<trans-unit id="label.offersAccepted" approved="yes" xml:space="preserve">
-			<source>Please send me further offers.</source>
-			<target>Bitte senden Sie mir weitere Angebote.</target>
-		</trans-unit>
 		<trans-unit id="label.participants" approved="yes" xml:space="preserve">
 			<source>Participants</source>
 			<target>Teilnehmer</target>
