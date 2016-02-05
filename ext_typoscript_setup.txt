@@ -17,26 +17,18 @@ config.tx_extbase {
 					Tx_T3eventsReservation_Person = CPSIT\T3eventsReservation\Domain\Model\Person
 				}
 			}
-			Webfox\T3events\Domain\Model\Person {
-				subclasses {
-					Tx_T3evensReservation_Participant = CPSIT\T3eventsReservation\Domain\Model\Person
-				}
-			}
 			CPSIT\T3eventsReservation\Domain\Model\Person {
 				mapping {
 					tableName = tx_t3events_domain_model_person
-					recordType = Tx_T3evensReservation_Participant
+					// do not set recordType
+					// it would prevent from setting type explicitly in ReservationController
+					// alternatively implement own class for Contact
+					//recordType = Tx_T3eventsReservation_Participant
 				}
 			}
 			CPSIT\T3eventsReservation\Domain\Model\Notification {
 				mapping {
 					tableName = tx_t3events_domain_model_notification
-				}
-			}
-			CPSIT\T3eventsReservation\Domain\Model\Contact {
-				mapping {
-					tableName = tx_t3events_domain_model_person
-					recordType = Tx_T3evensReservation_Participant
 				}
 			}
 		}

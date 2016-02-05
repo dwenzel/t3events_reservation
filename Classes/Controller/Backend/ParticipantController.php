@@ -3,7 +3,6 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 
 use CPSIT\T3eventsCourse\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
-use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 
 /***************************************************************
  *  Copyright notice
