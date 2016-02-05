@@ -98,6 +98,13 @@ class Reservation extends AbstractEntity {
 	protected $privacyStatementAccepted = FALSE;
 
 	/**
+	 * Disclaimer of revocation statement
+	 *
+	 * @var \boolean
+	 */
+	protected $disclaimRevocation = FALSE;
+
+	/**
 	 * Contact is participant
 	 *
 	 * @var \boolean
@@ -299,6 +306,24 @@ class Reservation extends AbstractEntity {
 	 */
 	public function setPrivacyStatementAccepted($accepted) {
 		$this->privacyStatementAccepted = $accepted;
+	}
+
+	/**
+	 * Get the disclaim of revocation
+	 *
+	 * @return boolean
+	 */
+	public function getDisclaimRevocation() {
+		return $this->disclaimRevocation;
+	}
+
+	/**
+	 * Set the disclaim of revocation
+	 *
+	 * @param boolean $disclaimRevocation
+	 */
+	public function setDisclaimRevocation($disclaimRevocation) {
+		$this->disclaimRevocation = $disclaimRevocation;
 	}
 
 	/**
