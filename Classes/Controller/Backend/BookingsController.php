@@ -4,6 +4,12 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 /**
  * ReservationController
  */
+use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 
@@ -28,12 +34,28 @@ use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 class BookingsController extends AbstractController {
 
 	/**
+	 * Persistence Manager
+	 *
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+	 * @inject
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Notification Service
+	 *
+	 * @var \Webfox\T3events\Service\NotificationService
+	 * @inject
+	 */
+	protected $notificationService;
+
+	/**
 	 * reservationRepository
 	 *
 	 * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
 	 * @inject
 	 */
-	protected $reservationRepository = NULL;
+	protected $reservationRepository = null;
 
 	/**
 	 * Company Repository
@@ -41,7 +63,7 @@ class BookingsController extends AbstractController {
 	 * @var \Webfox\T3events\Domain\Repository\CompanyRepository
 	 * @inject
 	 */
-	protected $companyRepository = NULL;
+	protected $companyRepository = null;
 
 	/**
 	 * Participant Repository
@@ -49,7 +71,7 @@ class BookingsController extends AbstractController {
 	 * @var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
 	 * @inject
 	 */
-	protected $personRepository = NULL;
+	protected $personRepository = null;
 
 	/**
 	 * Notification Repository
@@ -57,7 +79,7 @@ class BookingsController extends AbstractController {
 	 * @var \Webfox\T3events\Domain\Repository\NotificationRepository
 	 * @inject
 	 */
-	protected $notificationRepository = NULL;
+	protected $notificationRepository = null;
 
 	/**
 	 * List action
@@ -74,30 +96,30 @@ class BookingsController extends AbstractController {
 	/**
 	 * action show
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function showAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function showAction(Reservation $reservation) {
 		$this->view->assign('reservation', $reservation);
 	}
 
 	/**
 	 * Edit action
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function editAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function editAction(Reservation $reservation) {
 		$this->view->assign('reservation', $reservation);
 	}
 
 	/**
 	 * Update action
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function updateAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function updateAction(Reservation $reservation) {
 		$this->reservationRepository->update($reservation);
 		$this->addFlashMessage(
 			$this->translate('message.reservation.update.success')
@@ -109,20 +131,20 @@ class BookingsController extends AbstractController {
 	 * Cancel action
 	 * Cancels a reservation
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \string $reason
+	 * @param Reservation $reservation
+	 * @param string $reason
 	 * @return void
 	 */
-	public function cancelAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation, $reason) {
+	public function cancelAction(Reservation $reservation, $reason) {
 		switch ($reason) {
 			case 'byOrganizer':
-				$newStatus = \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_CANCELED_BY_SUPPLIER;
+				$newStatus = Reservation::STATUS_CANCELED_BY_SUPPLIER;
 				break;
 			case 'withCosts':
-				$newStatus = \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_CANCELED_WITH_COSTS;
+				$newStatus = Reservation::STATUS_CANCELED_WITH_COSTS;
 				break;
 			case 'noCharge':
-				$newStatus = \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_CANCELED_NO_CHARGE;
+				$newStatus = Reservation::STATUS_CANCELED_NO_CHARGE;
 				break;
 			default:
 				break;
@@ -140,14 +162,16 @@ class BookingsController extends AbstractController {
 				$this->translate('message.bookings.cancel.success')
 			);
 			if ($this->settings['bookings']['cancel'][$reason]['confirm']['sendNotification']) {
-				/**@var \Webfox\T3events\Domain\Model\Notification $notification * */
-				$notification = $this->objectManager->get('\\Webfox\\T3events\\Domain\\Model\\Notification');
+				/**@var Notification $notification * */
+				$notification = $this->objectManager->get(Notification::class);
 				$bodytext = $this->notificationService->render(
 					$this->settings['bookings']['cancel'][$reason]['confirm']['templateFileName'],
 					'html',
 					'Bookings/Email/Cancel',
-					array('reservation' => $reservation,
-						'baseUrl' => $this->getBaseUrlForFrontend())
+					[
+						'reservation' => $reservation,
+						'baseUrl' => $this->getBaseUrlForFrontend()
+					]
 				);
 				$notification->setRecipient($reservation->getContact()->getEmail());
 				$notification->setBodytext($bodytext);
@@ -157,17 +181,17 @@ class BookingsController extends AbstractController {
 				$notificationSuccess = $this->notificationService->send($notification);
 				if ($notificationSuccess) {
 					$mailMessageKey = 'message.bookings.cancel.sendNotification.success';
-					$mailMessageSeverity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK;
+					$mailMessageSeverity = AbstractMessage::OK;
 					$notification->setSentAt(new \DateTime());
 				} else {
 					$mailMessageKey = 'message.bookings.cancel.sendNotification.error';
-					$mailMessageSeverity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
+					$mailMessageSeverity = AbstractMessage::WARNING;
 				}
 				$this->notificationRepository->add($notification);
 				$this->persistenceManager->persistAll();
 				$reservation->addNotification($notification);
 
-				$this->addFlashMessage($this->translate($mailMessageKey), NULL, $mailMessageSeverity);
+				$this->addFlashMessage($this->translate($mailMessageKey), null, $mailMessageSeverity);
 			}
 		}
 		$this->forward('list');
@@ -176,10 +200,10 @@ class BookingsController extends AbstractController {
 	/**
 	 * action delete
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
+	 * @param Reservation $reservation
 	 * @return void
 	 */
-	public function deleteAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation) {
+	public function deleteAction(Reservation $reservation) {
 		$this->addFlashMessage(
 			$this->translate('message.reservation.delete.success')
 		);
@@ -201,44 +225,39 @@ class BookingsController extends AbstractController {
 
 	/**
 	 * action newParticipant
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant
+	 *
+	 * @param Reservation $reservation
+	 * @param Person $newParticipant
 	 * @ignorevalidation $newParticipant
 	 * @return void
 	 */
-	public function newParticipantAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation,
-		\CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant = NULL) {
-		if (!$reservation->getStatus() == \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT) {
-			$reservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT);
+	public function newParticipantAction(Reservation $reservation, Person $newParticipant = null) {
+		if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+			$reservation->setStatus(Reservation::STATUS_DRAFT);
 		}
-		if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
+		if ($this->request->getOriginalRequest() instanceof Request) {
 			$newParticipant = $this->request->getOriginalRequest()->getArgument('newParticipant');
 		}
 		$this->view->assignMultiple(
-			array(
+			[
 				'newParticipant' => $newParticipant,
 				'reservation' => $reservation
-			)
+			]
 		);
 	}
 
 	/**
 	 * action createParticipant
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant
+	 *
+	 * @param Reservation $reservation
+	 * @param Person $newParticipant
 	 * @return void
 	 */
-	public function createParticipantAction(\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation, \CPSIT\T3eventsReservation\Domain\Model\Person $newParticipant) {
-		if (!$reservation->getStatus() == \CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT) {
-			$reservation->setStatus(\CPSIT\T3eventsReservation\Domain\Model\Reservation::STATUS_DRAFT);
+	public function createParticipantAction(Reservation $reservation, Person $newParticipant) {
+		if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+			$reservation->setStatus(Reservation::STATUS_DRAFT);
 		}
-		$newParticipant->setType(\CPSIT\T3eventsReservation\Domain\Model\Person::PERSON_TYPE_PARTICIPANT);
+		$newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
 		$reservation->getLesson()->addParticipant($newParticipant);
 		$reservation->addParticipant($newParticipant);
 		$this->reservationRepository->update($reservation);
@@ -246,22 +265,20 @@ class BookingsController extends AbstractController {
 		$this->addFlashMessage(
 			$this->translate('message.reservation.createParticipant.success')
 		);
-		$this->redirect('edit', NULL, NULL, array('reservation' => $reservation));
+		$this->redirect('edit', null, null, ['reservation' => $reservation]);
 	}
 
 	/**
 	 * action removeParticipant
-
-
-*
-*@param \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
-	 * @param \string $reason Reason for cancellation of reservation for this participant. Allowed:  'byOrganizer', 'withCosts', 'withoutCost'
+	 *
+	 * @param Reservation $reservation
+	 * @param Person $participant
+	 * @param string $reason Reason for cancellation of reservation for this participant. Allowed:  'byOrganizer', 'withCosts', 'withoutCost'
 	 * @return void
 	 */
 	public function removeParticipantAction(
-		\CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation,
-		\CPSIT\T3eventsReservation\Domain\Model\Person $participant,
+		Reservation $reservation,
+		Person $participant,
 		$reason
 	) {
 		$reservation->removeParticipant($participant);
@@ -272,18 +289,18 @@ class BookingsController extends AbstractController {
 		);
 
 		if ($this->settings['bookings']['removeParticipant'][$reason]['confirm']['sendNotification']) {
-			/**@var \Webfox\T3events\Domain\Model\Notification $notification * */
-			$notification = $this->objectManager->get('\\Webfox\\T3events\\Domain\\Model\\Notification');
+			/**@var Notification $notification * */
+			$notification = $this->objectManager->get(Notification::class);
 			$bodytext = $this->notificationService->render(
 				$this->settings['bookings']['removeParticipant'][$reason]['confirm']['templateFileName'],
 				'html',
 				'Bookings/Email/RemoveParticipant',
-				array(
+				[
 					'reservation' => $reservation,
 					'participant' => $participant,
 					'reason' => $reason,
 					'baseUrl' => $this->getBaseUrlForFrontend()
-				)
+				]
 			);
 			$notification->setRecipient($reservation->getContact()->getEmail());
 			$notification->setBodytext($bodytext);
@@ -293,19 +310,19 @@ class BookingsController extends AbstractController {
 			$notificationSuccess = $this->notificationService->send($notification);
 			if ($notificationSuccess) {
 				$mailMessageKey = 'message.bookings.cancel.sendNotification.success';
-				$mailMessageSeverity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK;
+				$mailMessageSeverity = AbstractMessage::OK;
 				$notification->setSentAt(new \DateTime());
 			} else {
 				$mailMessageKey = 'message.bookings.cancel.sendNotification.error';
-				$mailMessageSeverity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
+				$mailMessageSeverity = AbstractMessage::WARNING;
 			}
 			$this->notificationRepository->add($notification);
 			$this->persistenceManager->persistAll();
 			$reservation->addNotification($notification);
 
-			$this->addFlashMessage($this->translate($mailMessageKey), NULL, $mailMessageSeverity);
+			$this->addFlashMessage($this->translate($mailMessageKey), null, $mailMessageSeverity);
 		}
-		$this->redirect('edit', NULL, NULL, array('reservation' => $reservation));
+		$this->redirect('edit', null, null, ['reservation' => $reservation]);
 	}
 
 	/**
@@ -318,7 +335,7 @@ class BookingsController extends AbstractController {
 	protected function getErrorFlashMessage() {
 		$key = 'error' . '.administration.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
 		$message = $this->translate($key);
-		if ($message == NULL) {
+		if ($message == null) {
 			return FALSE;
 		} else {
 			return $message;
@@ -334,15 +351,15 @@ class BookingsController extends AbstractController {
 	 * @ignorevalidation $newNotification
 	 * @return void
 	 */
-	public function newNotificationAction($reservations, $lesson, $newNotification = NULL) {
+	public function newNotificationAction($reservations, $lesson, $newNotification = null) {
 		$uidList = implode(',', $reservations);
 		$reservations = $this->reservationRepository->findMultipleByUid($uidList);
 		$this->view->assignMultiple(
-			array(
+			[
 				'notification' => $newNotification,
 				'lesson' => $lesson,
 				'reservations' => $reservations->toArray()
-			)
+			]
 		);
 	}
 
@@ -356,8 +373,8 @@ class BookingsController extends AbstractController {
 	public function createNotificationAction($newNotification, $reservations) {
 		$uidList = implode(',', $reservations);
 		$reservations = $this->reservationRepository->findMultipleByUid($uidList);
-		$succesfullSent = array();
-		$sendingFailed = array();
+		$succesfullSent = [];
+		$sendingFailed = [];
 
 		foreach ($reservations as $reservation) {
 			$notification = $this->notificationService->duplicate($newNotification);
@@ -382,13 +399,13 @@ class BookingsController extends AbstractController {
 			$this->addFlashMessage(
 				implode('<br />', $succesfullSent),
 				$this->translate('message.bookings.sendNotification.successForRecipients'),
-				\TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+				AbstractMessage::OK);
 		}
 		if (count($sendingFailed)) {
 			$this->addFlashMessage(
 				implode('<br />', $sendingFailed),
 				$this->translate('message.bookings.sendNotification.errorForRecipients'),
-				\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+				AbstractMessage::ERROR);
 		}
 		$this->forward('list');
 	}
@@ -401,7 +418,7 @@ class BookingsController extends AbstractController {
 	 */
 	protected function createDemandFromSettings($settings) {
 		/** @var ReservationDemand $demand */
-		$demand = $this->objectManager->get('CPSIT\\T3eventsReservation\\Domain\\Model\\Dto\\ReservationDemand');
+		$demand = $this->objectManager->get(ReservationDemand::class);
 		if (isset($settings['period'])) {
 			$demand->setPeriod($settings['period']);
 			if ($demand->getPeriod() === 'futureOnly'
@@ -424,10 +441,10 @@ class BookingsController extends AbstractController {
 	 * Pass this as a variable when rendering fluid templates in Backend context for instance
 	 * if you want to render images in emails.
 	 *
-	 * @return \string
+	 * @return string
 	 */
 	protected function getBaseUrlForFrontend() {
-		$typoScriptConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$typoScriptConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		return $typoScriptConfiguration['config.']['baseURL'];
 	}
