@@ -184,6 +184,7 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.listview_exclusion" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Von Listenansicht ausschließen</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.newUntil" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Neu im Angebot bis</target>
