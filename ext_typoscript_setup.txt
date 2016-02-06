@@ -5,6 +5,9 @@ config.tx_extbase {
 				subclasses {
 					Tx_T3eventsReservation_Schedule = CPSIT\T3eventsReservation\Domain\Model\Schedule
 				}
+				mapping {
+					recordType = 0
+				}
 			}
 			CPSIT\T3eventsReservation\Domain\Model\Schedule {
 				mapping {

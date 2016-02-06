@@ -4,7 +4,7 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 /**
  * ReservationController
  */
-use CPSIT\T3eventsCourse\Controller\AbstractController;
+use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 
 /***************************************************************

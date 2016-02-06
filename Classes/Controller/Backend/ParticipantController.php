@@ -1,7 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
-use CPSIT\T3eventsCourse\Controller\AbstractController;
+use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 
 /***************************************************************
@@ -201,10 +201,8 @@ class ParticipantController extends AbstractController {
 
 	/**
 	 * Create demand from settings
-
-
-*
-*@param \array $settings
+	 *
+	 * @param \array $settings
 	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
 	 */
 	protected function createDemandFromSettings($settings) {

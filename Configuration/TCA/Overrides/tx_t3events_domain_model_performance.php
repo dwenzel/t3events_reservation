@@ -9,8 +9,11 @@ $GLOBALS['TCA']['tx_t3events_domain_model_performance']['palettes']['paletteLess
 ];
 $extbaseType = 'Tx_T3eventsReservation_Schedule';
 $scheduleShowItems = '
+						sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource;;1,
+        				--palette--;;paletteTitle,
+        				--palette--;;paletteTime,
 						--palette--;;paletteLessonDates,
-        				date_remarks,class_time,event_location,status,course,
+        					event_location,status,
 					--div--;' . $ll . 'label.tab.price,
 						price,free_of_charge,price_notice,
 					--div--;' . $ll . 'label.tab.registration,
@@ -18,7 +21,7 @@ $scheduleShowItems = '
 						registration_documents,external_registration,external_registration_link,
 					--div--;' . $ll . 'label.tab.participants,
 						participants,
-					--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--div--;Access,
 					tx_extbase_type,hidden,starttime, endtime';
 $GLOBALS['TCA']['tx_t3events_domain_model_performance']['types'][$extbaseType]['showitem'] = $scheduleShowItems;
 
@@ -173,7 +176,7 @@ if (!isset($GLOBALS['TCA']['tx_t3events_domain_model_performance']['columns']['t
 			'label' => $ll . 'label.tx_extbase_type',
 			'type' => 'select',
 			'items' => [
-				[$ll . 'label.tx_extbase_type.default', ''],
+				[$ll . 'label.tx_extbase_type.default', '0'],
 				[$ll . 'label.tx_extbase_type.Tx_T3eventsReservation_Schedule', $extbaseType]
 			],
 		]
@@ -197,3 +200,5 @@ if (!isset($GLOBALS['TCA']['tx_t3events_domain_model_performance']['columns']['t
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'tx_t3events_domain_model_performance', 'price', '', 'before:price_notice');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+	'tx_t3events_domain_model_performance', 'tx_extbase_type', '', 'before:hidden');
