@@ -184,59 +184,6 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.listview_exclusion" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Von Listenansicht ausschließen</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Angebots-/Unterrichtsform</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.1" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Präsenzseminar</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.103" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Vollzeit</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.104" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Teilzeit</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.105" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Wochenendveranstaltung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.106" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Blockunterricht</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.107" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Inhouse/Firmenseminar</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.11" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Selbststudium</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.15" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- E-Learning</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.2" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>E-Learning/Blended Learning/Selbststudium</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.3" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>- Blended Learning</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.4" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Fernunterricht/Fernstudium</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.mode_instructionform.6" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>auf Anfrage / Sonstiges</target>
-		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_event.newUntil" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Neu im Angebot bis</target>
