@@ -422,13 +422,13 @@ class ReservationController extends AbstractController {
 		}
 
 		if (!isset($recipientEmail)) {
-			throw new Exception('Missing recipient for email notification ' . $identifier, 1454518855);
+			throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
 		}
 
 		if (isset($config['subject'])) {
 			$subject = $config['subject'];
 		} else {
-			throw new Exception('Missing subject for email notification ' . $identifier, 1454518855);
+			throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
 		}
 
 		$format = 'plain';

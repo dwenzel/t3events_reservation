@@ -35,9 +35,11 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use Webfox\T3events\Domain\Model\Performance;
-use \CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Repository\PerformanceRepository;
+use Webfox\T3events\Service\NotificationService;
 use Webfox\T3events\Session\SessionInterface;
 use Webfox\T3events\Session\Typo3Session;
 
@@ -168,6 +170,30 @@ class ReservationControllerTest extends UnitTestCase {
 				[],
 				$settings['schedule']['listPid']
 			);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function mockObjectManager() {
+		$mockObjectManager = $this->getMock(
+			ObjectManager::class, ['get']
+		);
+		$this->subject->_set('objectManager', $mockObjectManager);
+
+		return $mockObjectManager;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	protected function mockNotificationService() {
+		$mockNotificationService = $this->getMock(
+			NotificationService::class, ['render', 'send']
+		);
+		$this->inject($this->subject, 'notificationService', $mockNotificationService);
+
+		return $mockNotificationService;
 	}
 
 	protected function setUp() {
@@ -465,5 +491,404 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->deleteAction($reservation);
 	}
 
+	/**
+	 * @test
+	 */
+	public function initializeActionSetsSession() {
+		$this->subject = $this->getAccessibleMock(
+			ReservationController::class,
+			['setRequestArguments', 'setReferrerArguments'],
+			[], '', false);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockSession = $this->getMockForAbstractClass(
+			SessionInterface::class
+		);
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Typo3Session::class, ReservationController::SESSION_NAME_SPACE)
+			->will($this->returnValue($mockSession));
+		$this->subject->initializeAction();
+		$this->assertAttributeEquals(
+			$mockSession,
+			'session',
+			$this->subject
+		);
+	}
 
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\Configuration\Exception
+	 * @expectedExceptionCode 1454518855
+	 */
+	public function sendNotificationThrowsExceptionIfFromEmailIsNotSet() {
+		$config = [];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\Configuration\Exception
+	 * @expectedExceptionCode 1454865240
+	 */
+	public function sendNotificationThrowsExceptionIfRecipientEmailIsNotSet() {
+		$config = [
+			'fromEmail' => 'foo@bar.com'
+		];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\Configuration\Exception
+	 * @expectedExceptionCode 1454865250
+	 */
+	public function sendNotificationThrowsExceptionIfSubjectIsNotSet() {
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com'
+		];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sendNotificationSendsNotification() {
+		$settings = ['foo'];
+		$this->subject->_set('settings', $settings);
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz'
+		];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
+		);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$mockNotificationService = $this->mockNotificationService();
+		$mockNotificationService->expects($this->once())
+			->method('render')
+			->with(
+				ucfirst($identifier),
+				'plain',
+				'Reservation/Email',
+				['reservation' => $reservation, 'settings' => $settings]
+			);
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function sendNotificationGetsToEmailByPropertyPath() {
+		$settings = ['foo'];
+		$this->subject->_set('settings', $settings);
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => [
+				'field' => 'contact.email'
+			],
+			'subject' => 'baz'
+		];
+		$identifier = 'foo';
+		$email = 'bar@baz.com';
+		$mockContact = $this->getAccessibleMock(
+			Person::class, ['getEmail']
+		);
+		$reservation = $this->getAccessibleMock(
+			Reservation::class, ['getContact']
+		);
+		$reservation->expects($this->once())
+			->method('getContact')
+			->will($this->returnValue($mockContact));
+		$mockContact->expects($this->once())
+			->method('getEmail')
+			->will($this->returnValue($email));
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
+		);
+		$mockNotification->expects($this->once())
+			->method('setRecipient')
+			->with($email);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$mockNotificationService = $this->mockNotificationService();
+		$mockNotificationService->expects($this->once())
+			->method('render')
+			->with(
+				ucfirst($identifier),
+				'plain',
+				'Reservation/Email',
+				['reservation' => $reservation, 'settings' => $settings]
+			);
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sendNotificationGetsFormatFromSettings() {
+		$settings = ['foo'];
+		$this->subject->_set('settings', $settings);
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz',
+			'format' => 'html'
+		];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
+		);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$mockNotificationService = $this->mockNotificationService();
+		$mockNotificationService->expects($this->once())
+			->method('render')
+			->with(
+				ucfirst($identifier),
+				'html',
+				'Reservation/Email',
+				['reservation' => $reservation, 'settings' => $settings]
+			);
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sendNotificationGetsTemplateFileNameFromSettings() {
+		$settings = ['foo'];
+		$this->subject->_set('settings', $settings);
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz',
+			'format' => 'html',
+			'template' => [
+				'fileName' => 'fooFileName'
+			]
+		];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
+		);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$mockNotificationService = $this->mockNotificationService();
+		$mockNotificationService->expects($this->once())
+			->method('render')
+			->with(
+				'fooFileName',
+				'html',
+				'Reservation/Email',
+				['reservation' => $reservation, 'settings' => $settings]
+			);
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sendNotificationGetsTemplateFolderFromSettings() {
+		$settings = ['foo'];
+		$this->subject->_set('settings', $settings);
+		$folderName = 'fooFolder';
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz',
+			'format' => 'html',
+			'template' => [
+				'folderName' => $folderName
+			]
+		];
+		$identifier = 'foo';
+		$reservation = new Reservation();
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
+		);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$mockNotificationService = $this->mockNotificationService();
+		$mockNotificationService->expects($this->once())
+			->method('render')
+			->with(
+				ucfirst($identifier),
+				'html',
+				$folderName,
+				['reservation' => $reservation, 'settings' => $settings]
+			);
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newParticipantActionAssignsVariablesToView() {
+		$mockReservation = $this->getAccessibleMock(
+			Reservation::class, ['getStatus', 'getLesson']
+		);
+		$mockLesson = $this->getAccessibleMock(
+			Performance::class, ['getFreePlaces']
+		);
+		$mockLesson->expects($this->once())
+			->method('getFreePlaces')
+			->will($this->returnValue(1));
+		$this->subject->expects($this->once())
+			->method('isAccessAllowed')
+			->will($this->returnValue(true));
+		$mockReservation->expects($this->any())
+			->method('getStatus')
+			->will($this->returnValue(Reservation::STATUS_DRAFT));
+		$mockReservation->expects($this->once())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$mockRequest = $this->mockRequest();
+		$mockView = $this->mockView();
+		$mockView->expects($this->once())
+			->method('assignMultiple')
+			->with(
+				[
+					'newParticipant' => null,
+					'reservation' => $mockReservation
+				]
+			);
+		$this->subject->newParticipantAction($mockReservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newParticipantActionSetsStatusDraft() {
+		$mockReservation = $this->getAccessibleMock(
+			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
+		);
+		$mockLesson = $this->getAccessibleMock(
+			Performance::class, ['getFreePlaces']
+		);
+		$mockLesson->expects($this->once())
+			->method('getFreePlaces')
+			->will($this->returnValue(1));
+		$this->subject->expects($this->once())
+			->method('isAccessAllowed')
+			->will($this->returnValue(true));
+		$mockReservation->expects($this->any())
+			->method('getStatus')
+			->will($this->returnValue(Reservation::STATUS_NEW));
+		$mockReservation->expects($this->any())
+			->method('setStatus')
+			->with(Reservation::STATUS_DRAFT);
+		$mockReservation->expects($this->once())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$this->mockRequest();
+		$this->mockView();
+		$this->subject->newParticipantAction($mockReservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newParticipantActionAddsFlashMessageIfNoFreePlaces() {
+		$mockReservation = $this->getAccessibleMock(
+			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
+		);
+		$mockLesson = $this->getAccessibleMock(
+			Performance::class, ['getFreePlaces']
+		);
+		$mockLesson->expects($this->once())
+			->method('getFreePlaces')
+			->will($this->returnValue(0));
+		$this->subject->expects($this->once())
+			->method('isAccessAllowed')
+			->will($this->returnValue(true));
+		$mockReservation->expects($this->any())
+			->method('getStatus')
+			->will($this->returnValue(Reservation::STATUS_NEW));
+		$mockReservation->expects($this->once())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$this->mockRequest();
+		$this->mockView();
+		$mockMessage = 'fooMessage';
+		$this->subject->expects($this->once())
+			->method('translate')
+			->with('message.noFreePlacesForThisLesson')
+			->will($this->returnValue($mockMessage));
+		$this->subject->expects($this->once())
+			->method('addFlashMessage')
+			->with(
+				$mockMessage,
+				'',
+				AbstractMessage::ERROR,
+				true
+			);
+		$this->subject->newParticipantAction($mockReservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function newParticipantGetsParticipantFromOriginalRequest() {
+		$mockReservation = $this->getAccessibleMock(
+			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
+		);
+		$mockLesson = $this->getAccessibleMock(
+			Performance::class, ['getFreePlaces']
+		);
+		$mockLesson->expects($this->once())
+			->method('getFreePlaces')
+			->will($this->returnValue(3));
+		$this->subject->expects($this->once())
+			->method('isAccessAllowed')
+			->will($this->returnValue(true));
+		$mockReservation->expects($this->any())
+			->method('getStatus')
+			->will($this->returnValue(Reservation::STATUS_NEW));
+		$mockReservation->expects($this->once())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$this->mockView();
+		$mockRequest = $this->mockRequest();
+		$mockRequest->expects($this->any())
+			->method('getOriginalRequest')
+			->will($this->returnValue($mockRequest));
+		$mockRequest->expects($this->once())
+			->method('getArgument')
+			->with('newParticipant');
+		$this->subject->newParticipantAction($mockReservation);
+	}
 }
