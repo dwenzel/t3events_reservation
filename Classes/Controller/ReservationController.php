@@ -363,23 +363,6 @@ class ReservationController extends AbstractController {
 	}
 
 	/**
-	 * Returns custom error flash messages, or
-	 * display no flash message at all on errors.
-	 *
-	 * @return string|boolean The flash message or FALSE if no flash message should be set
-	 * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
-	 */
-	protected function getErrorFlashMessage() {
-		$key = 'error' . '.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
-		$message = $this->translate($key);
-		if ($message == NULL) {
-			return FALSE;
-		} else {
-			return $message;
-		}
-	}
-
-	/**
 	 * Deny access
 	 * Issues an error message and redirects
 	 *
