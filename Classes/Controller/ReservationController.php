@@ -19,6 +19,7 @@ namespace CPSIT\T3eventsReservation\Controller;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
@@ -114,10 +115,11 @@ class ReservationController extends AbstractController {
 	/**
 	 * action new
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Performance $lesson
+	 * @param BookableInterface|Performance $lesson
 	 * @param Reservation $newReservation
 	 * @ignorevalidation $newReservation
-	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
 	 */
 	public function newAction(Performance $lesson = NULL, Reservation $newReservation = NULL) {
 		//@todo: check for existing session key and prevent creating new reservation

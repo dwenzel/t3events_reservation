@@ -85,7 +85,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * lesson
 	 *
-	 * @var \Webfox\T3events\Domain\Model\Performance
+	 * @var BookableInterface|\Webfox\T3events\Domain\Model\Performance
 	 */
 	protected $lesson = NULL;
 
@@ -273,7 +273,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Returns the lesson
 	 *
-	 * @return \Webfox\T3events\Domain\Model\Performance $lesson
+	 * @return BookableInterface|\Webfox\T3events\Domain\Model\Performance $lesson
 	 */
 	public function getLesson() {
 		return $this->lesson;
@@ -282,7 +282,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Sets the lesson
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Performance $lesson
+	 * @param BookableInterface|\Webfox\T3events\Domain\Model\Performance $lesson
 	 * @return void
 	 */
 	public function setLesson(\Webfox\T3events\Domain\Model\Performance $lesson) {
