@@ -32,11 +32,14 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use Webfox\T3events\Domain\Model\Performance;
 use \CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Repository\PerformanceRepository;
 use Webfox\T3events\Session\SessionInterface;
+use Webfox\T3events\Session\Typo3Session;
 
 /**
  * Test case for class CPSIT\T3eventsReservations\Controller\ReservationController.
@@ -132,7 +135,7 @@ class ReservationControllerTest extends UnitTestCase {
 
 	protected function assertDenyAccess() {
 		$settings = [
-			'lesson' => [
+			'schedule' => [
 				'listPid' => '3'
 			]
 		];
@@ -163,7 +166,7 @@ class ReservationControllerTest extends UnitTestCase {
 				'Performance',
 				't3events',
 				[],
-				$settings['lesson']['listPid']
+				$settings['schedule']['listPid']
 			);
 	}
 

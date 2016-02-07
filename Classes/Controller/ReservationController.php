@@ -132,7 +132,8 @@ class ReservationController extends AbstractController {
 			$this->addFlashMessage(
 				$this->translate($error), '', AbstractMessage::ERROR, TRUE
 			);
-			$this->redirect('list', 'Schedule', 't3events', [], $this->settings['schedule']['listPid']);
+			// todo make redirect target configurable or use AbstractController->handleEntityNotFoundError
+			$this->redirect('list', 'Performance', 't3events', [], $this->settings['schedule']['listPid']);
 		}
 		if ($this->request->getOriginalRequest() instanceof Request) {
 			$newReservation = $this->request->getOriginalRequest()->getArgument('newReservation');
@@ -373,11 +374,12 @@ class ReservationController extends AbstractController {
 		$this->addFlashMessage(
 			$this->translate(
 				'error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'),
-			'',
-			AbstractMessage::ERROR,
-			true
+				'',
+				AbstractMessage::ERROR,
+				true
 		);
-		$this->redirect('list', 'Performance', 't3events', [], $this->settings['lesson']['listPid']);
+		// todo make redirect target configurable or use AbstractController->handleEntityNotFoundError
+		$this->redirect('list', 'Performance', 't3events', [], $this->settings['schedule']['listPid']);
 	}
 
 	/**
