@@ -30,6 +30,6 @@ use Webfox\T3events\Domain\Model\Performance;
  ***************************************************************/
 class Schedule
 	extends Performance
-	implements PriceableInterface {
+	implements PriceableInterface, BookableInterface {
 	use BookableScheduleTrait;
 }
