@@ -183,15 +183,16 @@ class ReservationController extends AbstractController {
 	public function editAction(Reservation $reservation) {
 		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
-		}
-		$this->reservationRepository->update($reservation);
-		$this->persistenceManager->persistAll();
+		} else {
+			$this->reservationRepository->update($reservation);
+			$this->persistenceManager->persistAll();
 
-		$this->view->assignMultiple(
-			[
-				'reservation' => $reservation
-			]
-		);
+			$this->view->assignMultiple(
+				[
+					'reservation' => $reservation
+				]
+			);
+		}
 	}
 
 	/**
@@ -233,8 +234,8 @@ class ReservationController extends AbstractController {
 	public function newParticipantAction(Reservation $reservation,
 		Person $newParticipant = NULL) {
 		if ($this->isAccessAllowed($reservation)
-			AND $reservation->getStatus() == Reservation::STATUS_DRAFT
-			OR $reservation->getStatus() == Reservation::STATUS_NEW
+			&& ($reservation->getStatus() == Reservation::STATUS_DRAFT
+			|| $reservation->getStatus() == Reservation::STATUS_NEW)
 		) {
 			if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
 				$reservation->setStatus(Reservation::STATUS_DRAFT);
@@ -272,29 +273,30 @@ class ReservationController extends AbstractController {
 	public function createParticipantAction(Reservation $reservation, Person $newParticipant) {
 		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
-		}
-		if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
-			$reservation->setStatus(Reservation::STATUS_DRAFT);
-		}
-		if ($reservation->getLesson()->getFreePlaces()) {
-			$newParticipant->setReservation($reservation);
-			$newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
-			$reservation->addParticipant($newParticipant);
-			$reservation->getLesson()->addParticipant($newParticipant);
-			$this->reservationRepository->update($reservation);
-			$this->lessonRepository->update($reservation->getLesson());
-			$this->persistenceManager->persistAll();
-			$this->addFlashMessage(
-				$this->translate('message.reservation.createParticipant.success')
+		} else {
+			if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+				$reservation->setStatus(Reservation::STATUS_DRAFT);
+			}
+			if ($reservation->getLesson()->getFreePlaces()) {
+				$newParticipant->setReservation($reservation);
+				$newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
+				$reservation->addParticipant($newParticipant);
+				$reservation->getLesson()->addParticipant($newParticipant);
+				$this->reservationRepository->update($reservation);
+				$this->lessonRepository->update($reservation->getLesson());
+				$this->persistenceManager->persistAll();
+				$this->addFlashMessage(
+					$this->translate('message.reservation.createParticipant.success')
+				);
+			}
+
+			$this->redirect(
+				'edit',
+				NULL,
+				NULL,
+				['reservation' => $reservation]
 			);
 		}
-
-		$this->redirect(
-			'edit',
-			NULL,
-			NULL,
-			['reservation' => $reservation]
-		);
 	}
 
 	/**
@@ -384,9 +386,13 @@ class ReservationController extends AbstractController {
 	protected function denyAccess() {
 		$this->clearCacheOnError();
 		$this->addFlashMessage(
-			$this->translate('error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'), '', AbstractMessage::ERROR, TRUE
+			$this->translate(
+				'error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'),
+			'',
+			AbstractMessage::ERROR,
+			true
 		);
-		$this->redirect('list', 'Schedule', 't3eventsreservation', [], $this->settings['lesson']['listPid']);
+		$this->redirect('list', 'Performance', 't3events', [], $this->settings['lesson']['listPid']);
 	}
 
 	/**
