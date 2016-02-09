@@ -156,13 +156,17 @@ class ReservationController extends AbstractController {
 		//@todo: check for existing session key and prevent creating new reservation
 		if (is_null($newReservation->getUid())) {
 			$contact = $newReservation->getContact();
+			$contact->setReservation($newReservation);
 			$newReservation->setStatus(Reservation::STATUS_NEW);
-			$contact->setType(Person::PERSON_TYPE_CONTACT);
 			if ($newReservation->getContactIsParticipant()) {
-				$participant = clone $contact;
+				$participant = new Person();
+				foreach (ObjectAccess::getGettableProperties($contact) as $propertyName=>$propertyValue) {
+					if (ObjectAccess::isPropertySettable($participant, $propertyName)) {
+						ObjectAccess::setProperty($participant, $propertyName, $propertyValue);
+					}
+				}
 				$participant->setType(Person::PERSON_TYPE_PARTICIPANT);
 				$newReservation->addParticipant($participant);
-				$participant->setReservation($newReservation);
 				$newReservation->getLesson()->addParticipant($participant);
 			}
 			$this->addFlashMessage(

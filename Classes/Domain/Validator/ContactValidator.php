@@ -17,7 +17,7 @@ class ContactValidator extends AbstractValidator {
 	 * @return bool
 	 */
 	public function isValid($contact) {
-		if (!$contact instanceof \CPSIT\T3eventsReservation\Domain\Model\Person) {
+		if (!$contact instanceof \Webfox\T3events\Domain\Model\Person) {
 			$this->addError('Contact must be a Person.', 1410958031);
 
 			return FALSE;

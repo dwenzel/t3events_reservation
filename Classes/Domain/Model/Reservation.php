@@ -70,7 +70,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Responsible contact person for reservation.
 	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Model\Person
+	 * @var \CPSIT\T3eventsReservation\Domain\Model\Contact
 	 * @validate \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
 	 */
 	protected $contact = NULL;
@@ -191,7 +191,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Returns the contact
 	 *
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Person $contact
+	 * @return \CPSIT\T3eventsReservation\Domain\Model\Contact $contact
 	 */
 	public function getContact() {
 		return $this->contact;
@@ -200,10 +200,10 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Sets the contact
 	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $contact
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Contact $contact
 	 * @return void
 	 */
-	public function setContact(\CPSIT\T3eventsReservation\Domain\Model\Person $contact) {
+	public function setContact(\CPSIT\T3eventsReservation\Domain\Model\Contact $contact) {
 		$this->contact = $contact;
 	}
 
