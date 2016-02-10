@@ -63,7 +63,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * billing address
 	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Model\Person
+	 * @var \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
 	 */
 	protected $billingAddress = NULL;
 
@@ -385,16 +385,16 @@ class Reservation extends AbstractEntity {
 	}
 
 	/**
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Person
+	 * @return \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
 	 */
 	public function getBillingAddress() {
 		return $this->billingAddress;
 	}
 
 	/**
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $billingAddress
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\BillingAddress $billingAddress
 	 */
-	public function setBillingAddress($billingAddress) {
+	public function setBillingAddress(BillingAddress $billingAddress) {
 		$this->billingAddress = $billingAddress;
 	}
 

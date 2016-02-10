@@ -21,6 +21,12 @@ config.tx_extbase {
 					recordType = Tx_T3events_Contact
 				}
 			}
+			CPSIT\T3eventsReservation\Domain\Model\BillingAddress {
+				mapping {
+					tableName = tx_t3events_domain_model_person
+					recordType = Tx_T3eventsReservation_BillingAddress
+				}
+			}
 			CPSIT\T3eventsReservation\Domain\Model\Person {
 				mapping {
 					tableName = tx_t3events_domain_model_person
@@ -31,6 +37,7 @@ config.tx_extbase {
 				subclasses {
 					Tx_T3events_Contact = CPSIT\T3eventsReservation\Domain\Model\Contact
 					Tx_T3eventsReservation_Participant = CPSIT\T3eventsReservation\Domain\Model\Person
+					Tx_T3eventsReservation_BillingAddress = CPSIT\T3eventsReservation\Domain\Model\BillingAddress
 				}
 			}
 			CPSIT\T3eventsReservation\Domain\Model\Notification {

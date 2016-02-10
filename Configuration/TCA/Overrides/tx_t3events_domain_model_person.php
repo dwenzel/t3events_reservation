@@ -20,17 +20,35 @@ $tmpColumns = array(
 			'type' => 'input',
 		]
 	],
+	'role' => [
+		'label' => $ll . 'tx_t3events_domain_model_person.role',
+		'config' => [
+			'type' => 'input',
+		]
+	],
 	'company_name' => [
 		'label' => $ll . 'tx_t3events_domain_model_person.company_name',
 		'config' => [
 			'type' => 'input',
 		]
 	],
-	'role' => [
-		'label' => $ll . 'tx_t3events_domain_model_person.role',
+	'vat_id' => [
+		'exclude' => 1,
+		'label' => $ll . 'tx_ihkofevents_domain_model_person.vat_id',
 		'config' => [
 			'type' => 'input',
-		]
+			'size' => 30,
+			'eval' => 'trim'
+		],
+	],
+	'accounting_office' => [
+		'exclude' => 1,
+		'label' => $ll . 'tx_ihkofevents_domain_model_person.accounting_office',
+		'config' => [
+			'type' => 'input',
+			'size' => 30,
+			'eval' => 'trim'
+		],
 	],
 );
 
@@ -42,6 +60,14 @@ $tmpColumns = array(
 		\CPSIT\T3eventsReservation\Domain\Model\Person::PERSON_TYPE_PARTICIPANT
 	]
 );
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+	'tx_t3events_domain_model_person',
+	'tx_extbase_type',
+	[
+		$ll . 'tx_t3events_domain_model_person.type.billingAddress',
+		\CPSIT\T3eventsReservation\Domain\Model\BillingAddress::PERSON_TYPE_BILLING_ADDRESS
+	]
+);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
 	'tx_t3events_domain_model_person',
 	$tmpColumns,
@@ -50,3 +76,7 @@ $tmpColumns = array(
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'tx_t3events_domain_model_person', 'reservation,birthplace,company_name,role', '', 'after:email');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+	'tx_t3events_domain_model_person', 'vat_id', '', 'after:company_name');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+	'tx_t3events_domain_model_person', 'accounting_office', '', 'after:vat_id');
