@@ -19,12 +19,11 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Webfox\T3events\Domain\Model\Person;
 
 /**
  * Contact
  */
-class Contact extends Person {
+class Contact extends \Webfox\T3events\Domain\Model\Person {
 	use ReservationPersonTrait;
 
 	/**

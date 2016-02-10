@@ -155,10 +155,11 @@ class ReservationController extends AbstractController {
 	public function createAction(Reservation $newReservation) {
 		//@todo: check for existing session key and prevent creating new reservation
 		if (is_null($newReservation->getUid())) {
-			$contact = $newReservation->getContact();
-			$contact->setReservation($newReservation);
+			if ($contact = $newReservation->getContact()) {
+				$contact->setReservation($newReservation);
+			}
 			$newReservation->setStatus(Reservation::STATUS_NEW);
-			if ($newReservation->getContactIsParticipant()) {
+			if ($newReservation->getContactIsParticipant() && is_object($contact)) {
 				$participant = new Person();
 				foreach (ObjectAccess::getGettableProperties($contact) as $propertyName=>$propertyValue) {
 					if (ObjectAccess::isPropertySettable($participant, $propertyName)) {
@@ -238,8 +239,7 @@ class ReservationController extends AbstractController {
 	 * @ignorevalidation $newParticipant
 	 * @return void
 	 */
-	public function newParticipantAction(Reservation $reservation,
-		Person $newParticipant = NULL) {
+	public function newParticipantAction(Reservation $reservation, Person $newParticipant = NULL) {
 		if ($this->isAccessAllowed($reservation)
 			&& ($reservation->getStatus() == Reservation::STATUS_DRAFT
 			|| $reservation->getStatus() == Reservation::STATUS_NEW)

@@ -25,6 +25,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
@@ -116,7 +117,7 @@ class ReservationTest extends UnitTestCase {
 	 * @test
 	 */
 	public function setContactForPersonSetsContact() {
-		$contactFixture = $this->getMock(Person::class);
+		$contactFixture = $this->getMock(Contact::class);
 		$this->subject->setContact($contactFixture);
 
 		$this->assertAttributeEquals(
