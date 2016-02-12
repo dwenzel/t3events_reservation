@@ -42,6 +42,7 @@ use Webfox\T3events\Domain\Repository\PerformanceRepository;
 use Webfox\T3events\Service\NotificationService;
 use Webfox\T3events\Session\SessionInterface;
 use Webfox\T3events\Session\Typo3Session;
+use Webfox\T3events\Utility\SettingsUtility;
 
 /**
  * Test case for class CPSIT\T3eventsReservations\Controller\ReservationController.
@@ -121,6 +122,15 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->inject($this->subject, 'session', $mockSession);
 
 		return $mockSession;
+	}
+
+	protected function mockSettingsUtility() {
+		$mockSettingsUtility = $this->getMock(
+			SettingsUtility::class, ['getValueByKey']
+		);
+		$this->subject->injectSettingsUtility($mockSettingsUtility);
+
+		return $mockSettingsUtility;
 	}
 
 	/**
@@ -523,6 +533,7 @@ class ReservationControllerTest extends UnitTestCase {
 	public function sendNotificationThrowsExceptionIfFromEmailIsNotSet() {
 		$config = [];
 		$identifier = 'foo';
+		$this->mockSettingsUtility();
 		$reservation = new Reservation();
 		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
 	}
@@ -537,6 +548,7 @@ class ReservationControllerTest extends UnitTestCase {
 			'fromEmail' => 'foo@bar.com'
 		];
 		$identifier = 'foo';
+		$this->mockSettingsUtility();
 		$reservation = new Reservation();
 		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
 	}
@@ -552,6 +564,7 @@ class ReservationControllerTest extends UnitTestCase {
 			'toEmail' => 'bar@baz.com'
 		];
 		$identifier = 'foo';
+		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$reservation = new Reservation();
 		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
 	}
@@ -567,6 +580,8 @@ class ReservationControllerTest extends UnitTestCase {
 			'toEmail' => 'bar@baz.com',
 			'subject' => 'baz'
 		];
+		$this->subject->injectSettingsUtility(new SettingsUtility());
+
 		$identifier = 'foo';
 		$reservation = new Reservation();
 		$mockNotification = $this->getMock(
@@ -604,6 +619,7 @@ class ReservationControllerTest extends UnitTestCase {
 			],
 			'subject' => 'baz'
 		];
+		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$identifier = 'foo';
 		$email = 'bar@baz.com';
 		$mockContact = $this->getAccessibleMock(
@@ -655,6 +671,7 @@ class ReservationControllerTest extends UnitTestCase {
 			'format' => 'html'
 		];
 		$identifier = 'foo';
+		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$reservation = new Reservation();
 		$mockNotification = $this->getMock(
 			Notification::class,
@@ -693,6 +710,7 @@ class ReservationControllerTest extends UnitTestCase {
 			]
 		];
 		$identifier = 'foo';
+		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$reservation = new Reservation();
 		$mockNotification = $this->getMock(
 			Notification::class,
@@ -721,6 +739,7 @@ class ReservationControllerTest extends UnitTestCase {
 	public function sendNotificationGetsTemplateFolderFromSettings() {
 		$settings = ['foo'];
 		$this->subject->_set('settings', $settings);
+		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$folderName = 'fooFolder';
 		$config = [
 			'fromEmail' => 'foo@bar.com',
@@ -890,5 +909,19 @@ class ReservationControllerTest extends UnitTestCase {
 			->method('getArgument')
 			->with('newParticipant');
 		$this->subject->newParticipantAction($mockReservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function injectSettingsUtilitySetsObject() {
+		$object = new SettingsUtility();
+		$this->subject->injectSettingsUtility($object);
+
+		$this->assertAttributeEquals(
+			$object,
+			'settingsUtility',
+			$this->subject
+		);
 	}
 }

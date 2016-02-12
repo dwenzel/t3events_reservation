@@ -30,6 +30,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use Webfox\T3events\Domain\Model\Performance;
 use Webfox\T3events\Session\Typo3Session;
+use Webfox\T3events\Utility\SettingsUtility;
 
 /**
  * ReservationController
@@ -89,6 +90,20 @@ class ReservationController extends AbstractController {
 	 * @var \Webfox\T3events\Session\SessionInterface
 	 */
 	protected $session;
+
+	/**
+	 * @var \Webfox\T3events\Utility\SettingsUtility
+	 */
+	protected $settingsUtility;
+
+	/**
+	 * injects the settings utility
+	 *
+	 * @param SettingsUtility $settingsUtility
+	 */
+	public function injectSettingsUtility(SettingsUtility $settingsUtility) {
+		$this->settingsUtility = $settingsUtility;
+	}
 
 	/**
 	 * Initialize Action
@@ -417,21 +432,14 @@ class ReservationController extends AbstractController {
 		} else {
 			throw new Exception('Missing sender for email notification', 1454518855);
 		}
-		if (isset($config['toEmail'])) {
-			if (isset($config['toEmail']['field']) && is_string($config['toEmail']['field'])) {
-				$recipientEmail = ObjectAccess::getPropertyPath($reservation, $config['toEmail']['field']);
-			} elseif (is_string($config['toEmail'])) {
-				$recipientEmail = $config['toEmail'];
-			}
-		}
 
+		$recipientEmail = $this->settingsUtility->getValueByKey($reservation, $config, 'toEmail');
 		if (!isset($recipientEmail)) {
 			throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
 		}
 
-		if (isset($config['subject'])) {
-			$subject = $config['subject'];
-		} else {
+		$subject = $this->settingsUtility->getValueByKey($reservation, $config, 'subject');
+		if (!isset($subject)) {
 			throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
 		}
 

@@ -21,12 +21,18 @@ plugin.tx_t3eventsreservation {
 					admin {
 						fromEmail = no-reply@example.com
 						toEmail = no-reply@example.com
-						subject = New Reservation
+						subject {
+							field = lesson.event.headline
+							noTrimWrap = |New Registration for event |
+						}
 						format = html
 					}
 					user {
 						fromEmail = no-reply@example.com
-						subject = Reservation confirmation
+						subject  {
+							field = lesson.event.headline
+							noTrimWrap = Reservation confirmation for event |
+						}
 						format = html
 					}
 				}

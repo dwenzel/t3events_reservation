@@ -23,7 +23,10 @@ plugin.tx_t3eventsreservation {
 					admin {
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.fromEmail}
 						toEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.toEmail}
-						subject = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.subject}
+						subject {
+							field = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.subject.field}
+							noTrimWrap = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.subject.noTrimWrap}
+						}
 						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.format}
 						#template {
 						#	fileName = Admin
