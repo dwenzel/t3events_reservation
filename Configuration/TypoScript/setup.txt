@@ -38,7 +38,10 @@ plugin.tx_t3eventsreservation {
 							field = contact.email
 						}
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.fromEmail}
-						subject = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject}
+						subject {
+							field = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject.field}
+							noTrimWrap = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject.noTrimWrap}
+						}
 						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.format}
 					}
 				}
