@@ -2,8 +2,10 @@
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
+use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
+use Webfox\T3events\Domain\Model\Performance;
 
 /***************************************************************
  *  Copyright notice
@@ -79,17 +81,18 @@ class ParticipantController extends AbstractController {
 		} elseif (is_array($participants)) {
 			$participants = $this->personRepository->findMultipleByUid(implode(',', $participants));
 		}
+		/** @var Performance $lesson */
 		$lesson = $participants->getFirst()->getReservation()->getLesson();
 		$fileName = date('Y-m-d_H-m') . '_';
 		if (isset($this->settings['participant']['download']['fileName'])) {
 			$fileName .= $this->settings['participant']['download']['fileName'] . '_';
 		}
 		if ($lesson) {
-			$fileName .= $lesson->getCourse()->getHeadline();
+			$fileName .= $lesson->getEvent()->getHeadline();
 		}
 
 		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver $localDriver */
-		$localDriver = $this->objectManager->get('\TYPO3\CMS\Core\Resource\Driver\LocalDriver');
+		$localDriver = $this->objectManager->get(LocalDriver::class);
 		$fileName = $localDriver->sanitizeFileName($fileName);
 
 		$this->view->assign('participants', $participants);
