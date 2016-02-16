@@ -1,10 +1,15 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
+use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandTrait;
+use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandTrait;
 use Webfox\T3events\Domain\Model\Dto\AbstractDemand;
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
+use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
+use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -31,11 +36,15 @@ use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
  * @package CPSIT\T3eventsReservation\Domain\Model\Dto
  */
 class ReservationDemand extends AbstractDemand
-	implements DemandInterface, PeriodAwareDemandInterface {
-	use PeriodAwareDemandTrait;
+	implements DemandInterface, PeriodAwareDemandInterface,
+	GenreAwareDemandInterface, EventTypeAwareDemandInterface {
+	use PeriodAwareDemandTrait, SearchAwareDemandTrait,
+		GenreAwareDemandTrait, EventTypeAwareDemandTrait;
 
 	const START_DATE_FIELD = 'lesson.date';
 	const END_DATE_FIELD = 'lesson.endDate';
+	const GENRE_FIELD = 'lesson.event.genre';
+	const EVENT_TYPE_FIELD = 'lesson.event.eventType';
 
 	/**
 	 * Status
@@ -156,4 +165,19 @@ class ReservationDemand extends AbstractDemand
 		return self::END_DATE_FIELD;
 	}
 
+	/**
+	 * Gets the genre field
+	 *
+	 * @return string
+	 */
+	public function getGenreField() {
+		return self::GENRE_FIELD;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEventTypeField() {
+		return self::EVENT_TYPE_FIELD;
+	}
 }
