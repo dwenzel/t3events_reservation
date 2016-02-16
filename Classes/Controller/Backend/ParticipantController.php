@@ -3,7 +3,7 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
-use Webfox\T3events\Controller\AbstractController;
+use Webfox\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Model\Performance;
 
@@ -25,7 +25,7 @@ use Webfox\T3events\Domain\Model\Performance;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class ParticipantController extends AbstractController {
+class ParticipantController extends AbstractBackendController {
 
 	/**
 	 * reservationRepository
@@ -81,110 +81,24 @@ class ParticipantController extends AbstractController {
 		} elseif (is_array($participants)) {
 			$participants = $this->personRepository->findMultipleByUid(implode(',', $participants));
 		}
+		$fileName = 'participants';
 		/** @var Performance $lesson */
 		$lesson = $participants->getFirst()->getReservation()->getLesson();
-		$fileName = date('Y-m-d_H-m') . '_';
+		// todo use settings utility for reading filename from field
 		if (isset($this->settings['participant']['download']['fileName'])) {
-			$fileName .= $this->settings['participant']['download']['fileName'] . '_';
+			$fileName = $this->settings['participant']['download']['fileName'] . '_';
 		}
 		if ($lesson) {
 			$fileName .= $lesson->getEvent()->getHeadline();
 		}
-
-		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver $localDriver */
-		$localDriver = $this->objectManager->get(LocalDriver::class);
-		$fileName = $localDriver->sanitizeFileName($fileName);
+		$fileName = $this->getDownloadFileName($fileName, TRUE);
+		$this->sendDownloadHeaders($ext, $fileName);
 
 		$this->view->assign('participants', $participants);
-		switch ($ext) {
-			case 'csv':
-				$cType = 'text/csv';
-				break;
-			case 'txt':
-				$cType = 'text/plain';
-				break;
-			case 'pdf':
-				$cType = 'application/pdf';
-				break;
-			case 'exe':
-				$cType = 'application/octet-stream';
-				break;
-			case 'zip':
-				$cType = 'application/zip';
-				break;
-			case 'doc':
-				$cType = 'application/msword';
-				break;
-			case 'xls':
-				$cType = 'application/vnd.ms-excel';
-				break;
-			case 'ppt':
-				$cType = 'application/vnd.ms-powerpoint';
-				break;
-			case 'gif':
-				$cType = 'image/gif';
-				break;
-			case 'png':
-				$cType = 'image/png';
-				break;
-			case 'jpeg':
-			case 'jpg':
-				$cType = 'image/jpg';
-				break;
-			case 'mp3':
-				$cType = 'audio/mpeg';
-				break;
-			case 'wav':
-				$cType = 'audio/x-wav';
-				break;
-			case 'mpeg':
-			case 'mpg':
-			case 'mpe':
-				$cType = 'video/mpeg';
-				break;
-			case 'mov':
-				$cType = 'video/quicktime';
-				break;
-			case 'avi':
-				$cType = 'video/x-msvideo';
-				break;
-
-			//forbidden filetypes
-			case 'inc':
-			case 'conf':
-			case 'sql':
-			case 'cgi':
-			case 'htaccess':
-			case 'php':
-			case 'php3':
-			case 'php4':
-			case 'php5':
-				exit;
-
-			default:
-				$cType = 'application/force-download';
-				break;
-		}
-
-		$headers = array(
-			'Pragma' => 'public',
-			'Expires' => 0,
-			'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-			'Cache-Control' => 'public',
-			'Content-Description' => 'File Transfer',
-			'Content-Type' => $cType,
-			'Content-Disposition' => 'attachment; filename="' . $fileName . '.' . $ext . '"',
-			'Content-Transfer-Encoding' => 'binary',
-			//'Content-Length'            => $fileLen
-		);
-
-		foreach ($headers as $header => $data) {
-			$this->response->setHeader($header, $data);
-		}
-		$this->response->sendHeaders();
 		echo($this->view->render());
 		exit;
 	}
+
 
 	/**
 	 * Returns custom error flash messages, or
@@ -225,4 +139,5 @@ class ParticipantController extends AbstractController {
 
 		return $demand;
 	}
+
 }
