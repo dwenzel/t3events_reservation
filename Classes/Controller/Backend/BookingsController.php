@@ -563,6 +563,39 @@ class BookingsController extends AbstractBackendController {
 	}
 
 	/**
+	 * Download action
+	 *
+	 * @param array $reservations
+	 * @param string $fileExtension
+	 */
+	public function downloadAction($reservations = null, $fileExtension='csv') {
+		if (is_null($reservations)) {
+			$demand = $this->createDemandFromSettings($this->settings);
+			$reservationResult = $this->reservationRepository->findDemanded($demand);
+		} else {
+			$reservationIdList = implode(',', $reservations);
+			$reservationResult = $this->reservationRepository->findMultipleByUid($reservationIdList);
+		}
+		// todo use settings utility for reading filename from field
+		$fileName = 'reservations';
+		if (
+			$reservationResult->count()
+			&& isset($this->settings['bookings']['download'])
+		) {
+			$fileName = $this->settingsUtility->getValueByKey(
+				$reservationResult->getFirst(),
+				$this->settings['bookings']['download'],
+				'fileName'
+			);
+		}
+		$fileName = $this->getDownloadFileName($fileName);
+		$this->sendDownloadHeaders($fileExtension, $fileName);
+		$this->view->assign('reservations', $reservationResult);
+		echo($this->view->render());
+		exit;
+	}
+
+	/**
 	 * Get frontend base url as configured in TypoScript
 	 * Pass this as a variable when rendering fluid templates in Backend context for instance
 	 * if you want to render images in emails.
