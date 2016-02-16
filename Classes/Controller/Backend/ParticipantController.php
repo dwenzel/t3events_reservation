@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
+use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 
@@ -206,8 +207,8 @@ class ParticipantController extends AbstractController {
 	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
 	 */
 	protected function createDemandFromSettings($settings) {
-		/**@var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand * */
-		$demand = $this->objectManager->get('CPSIT\\T3eventsReservation\\Domain\\Model\\Dto\\PersonDemand');
+		/**@var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
+		$demand = $this->objectManager->get(PersonDemand::class);
 		$demand->setTypes((string) Person::PERSON_TYPE_PARTICIPANT);
 		if (isset($settings['list']['lessonPeriod'])) {
 			$demand->setLessonPeriod($settings['list']['lessonPeriod']);
@@ -215,7 +216,8 @@ class ParticipantController extends AbstractController {
 		if ($demand->getLessonPeriod() === 'futureOnly'
 			OR $demand->getLessonPeriod() === 'pastOnly'
 		) {
-			$demand->setLessonDate(new \DateTime('midnight'));
+			$timeZone = new \DateTimeZone(date_default_timezone_get());
+			$demand->setLessonDate(new \DateTime('midnight'), $timeZone);
 		}
 
 		return $demand;

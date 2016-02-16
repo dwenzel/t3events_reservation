@@ -38,10 +38,10 @@ class PersonRepository extends AbstractDemandedRepository {
 	 */
 	public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {
 		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
-		$constraints = array();
+		$constraints = [];
 		if ($demand->getTypes()) {
-			$personTypes = GeneralUtility::intExplode(',', $demand->getTypes());
-			$personConstraints = array();
+			$personTypes = explode(',', $demand->getTypes());
+			$personConstraints = [];
 			foreach ($personTypes as $personType) {
 				$personConstraints[] = $query->equals('type', $personType);
 			}
