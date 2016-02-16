@@ -911,17 +911,4 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->newParticipantAction($mockReservation);
 	}
 
-	/**
-	 * @test
-	 */
-	public function injectSettingsUtilitySetsObject() {
-		$object = new SettingsUtility();
-		$this->subject->injectSettingsUtility($object);
-
-		$this->assertAttributeEquals(
-			$object,
-			'settingsUtility',
-			$this->subject
-		);
-	}
 }

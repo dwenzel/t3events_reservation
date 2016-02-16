@@ -92,20 +92,6 @@ class ReservationController extends AbstractController {
 	protected $session;
 
 	/**
-	 * @var \Webfox\T3events\Utility\SettingsUtility
-	 */
-	protected $settingsUtility;
-
-	/**
-	 * injects the settings utility
-	 *
-	 * @param SettingsUtility $settingsUtility
-	 */
-	public function injectSettingsUtility(SettingsUtility $settingsUtility) {
-		$this->settingsUtility = $settingsUtility;
-	}
-
-	/**
 	 * Initialize Action
 	 */
 	public function initializeAction() {
