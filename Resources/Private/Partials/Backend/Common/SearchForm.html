@@ -1,0 +1,63 @@
+<div class="search-form">
+	<f:if condition="{settings.bookings.searchForm.debug}">
+		<f:debug inline="true">{overwriteDemand}</f:debug>
+	</f:if>
+	<f:form name="overwriteDemand" action="list">
+		<f:comment>show subject field</f:comment>
+		<f:if condition="{settings.bookings.search.showSubjectField}">
+			<f:render partial="Common/SearchSubject" arguments="{overwriteDemand: overwriteDemand}" />
+		</f:if>
+
+		<f:comment>genres</f:comment>
+		<f:if condition="{genres}">
+			<f:form.select
+				id="tx_t3eventsQuickMenue"
+				name="overwriteDemand[genres]"
+				options="{genres}"
+				optionValueField="uid"
+				optionLabelField="title"
+				prependOptionLabel="{f:translate(key: 'label.allGenres')}"
+				value="{overwriteDemand.genres}"
+				/>
+		</f:if>
+
+		<f:comment>venues</f:comment>
+		<f:if condition="{venues}">
+			<f:form.select
+				id="tx_t3eventsQuickMenue"
+				name="overwriteDemand[venues]"
+				options="{venues}"
+				optionValueField="uid"
+				optionLabelField="title"
+				prependOptionLabel="{f:translate(key: 'label.allVenues')}"
+				value="{overwriteDemand.venues}"
+				/>
+		</f:if>
+
+		<f:comment>event types</f:comment>
+		<f:if condition="{eventTypes}">
+			<f:form.select
+				id="tx_t3eventsQuickMenue"
+				name="overwriteDemand[eventTypes]"
+				options="{eventTypes}"
+				optionValueField="uid"
+				optionLabelField="title"
+				prependOptionLabel="{f:translate(key: 'label.allEventTypes')}"
+				value="{overwriteDemand.eventTypes}"
+				/>
+		</f:if>
+
+		<f:form.hidden
+			id="tx_t3eventsQuickMenue"
+			name="overwriteDemand[categoryConjunction]"
+			value="{settings.bookings.search.categoryConjunction}"
+			/>
+
+
+		<div class="button-group">
+			<f:form.button name="submit"
+				class="btn" value="submit">{f:translate(key: 'button.search', default: 'button.search', extensionName: 'wis_lib')}</f:form.button>
+			<f:link.action action="reset">{f:translate(key: 'button.reset', default: 'button.reset', extensionName: 'wis_lib')}</f:link.action>
+		</div>
+	</f:form>
+</div>

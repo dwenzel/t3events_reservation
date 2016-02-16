@@ -20,7 +20,7 @@ if (TYPO3_MODE === 'BE') {
 		'',                        // Position
 		[
 			'Backend\Bookings' => 'list, show, edit, update, cancel, delete, newParticipant, createParticipant,
-			editParticipant, removeParticipant, newNotification, createNotification',
+			editParticipant, removeParticipant, newNotification, createNotification, reset',
 		],
 		[
 			'access' => 'user,group',

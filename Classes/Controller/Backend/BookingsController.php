@@ -10,8 +10,13 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use Webfox\T3events\Controller\AbstractBackendController;
 use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
+use Webfox\T3events\Domain\Repository\EventTypeRepository;
+use Webfox\T3events\Domain\Repository\GenreRepository;
+use Webfox\T3events\Domain\Repository\VenueRepository;
 
 /***************************************************************
  *  Copyright notice
@@ -31,7 +36,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class BookingsController extends AbstractController {
+class BookingsController extends AbstractBackendController {
 
 	/**
 	 * Persistence Manager
@@ -82,15 +87,99 @@ class BookingsController extends AbstractController {
 	protected $notificationRepository = null;
 
 	/**
-	 * List action
+	 * genreRepository
 	 *
+	 * @var \Webfox\T3events\Domain\Repository\GenreRepository
+	 */
+	protected $genreRepository;
+
+	/**
+	 * venueRepository
+	 *
+	 * @var \Webfox\T3events\Domain\Repository\VenueRepository
+	 */
+	protected $venueRepository;
+
+	/**
+	 * eventTypeRepository
+	 *
+	 * @var \Webfox\T3events\Domain\Repository\EventTypeRepository
+	 */
+	protected $eventTypeRepository;
+
+	/**
+	 * injectGenreRepository
+	 *
+	 * @param \Webfox\T3events\Domain\Repository\GenreRepository $genreRepository
 	 * @return void
 	 */
-	public function listAction() {
+	public function injectGenreRepository(GenreRepository $genreRepository) {
+		$this->genreRepository = $genreRepository;
+	}
+
+	/**
+	 * injectVenueRepository
+	 *
+	 * @param \Webfox\T3events\Domain\Repository\VenueRepository $venueRepository
+	 * @return void
+	 */
+	public function injectVenueRepository(VenueRepository $venueRepository) {
+		$this->venueRepository = $venueRepository;
+	}
+
+	/**
+	 * injectEventTypeRepository
+	 *
+	 * @param \Webfox\T3events\Domain\Repository\EventTypeRepository $eventTypeRepository
+	 * @return void
+	 */
+	public function injectEventTypeRepository(EventTypeRepository $eventTypeRepository) {
+		$this->eventTypeRepository = $eventTypeRepository;
+	}
+
+	/**
+	 * List action
+	 *
+	 * @param array $overwriteDemand
+	 * @return void
+	 */
+	public function listAction(array $overwriteDemand = NULL) {
 		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $demand */
 		$demand = $this->createDemandFromSettings($this->settings['bookings']['list']);
+
+		// get filter options from plugin
+		if (isset($this->settings['bookings']['genres'])) {
+			$genres = $this->genreRepository->findMultipleByUid($this->settings['genres'], 'title');
+		} else {
+			$genres = $this->genreRepository->findAll();
+		}
+		$venues = $this->venueRepository->findMultipleByUid($this->settings['venues'], 'title');
+		if (isset($this->settings['bookings']['eventTypes'])) {
+			$eventTypes = $this->eventTypeRepository->findMultipleByUid($this->settings['eventTypes'], 'title');
+		} else {
+			$eventTypes = $this->eventTypeRepository->findAll();
+		}
+
+		if ($overwriteDemand === NULL) {
+			$overwriteDemand = $this->moduleData->getOverwriteDemand();
+		} else {
+			$this->moduleData->setOverwriteDemand($overwriteDemand);
+		}
+
+		$this->overwriteDemandObject($demand, $overwriteDemand);
+		$this->moduleData->setDemand($demand);
+
 		$reservations = $this->reservationRepository->findDemanded($demand);
-		$this->view->assign('reservations', $reservations);
+		$this->view->assignMultiple(
+			[
+				'reservations' => $reservations,
+				'overwriteDemand' => $overwriteDemand,
+				'demand' => $demand,
+				'genres' => $genres,
+				'venues' => $venues,
+				'eventTypes' => $eventTypes
+			]
+		);
 	}
 
 	/**
@@ -434,6 +523,43 @@ class BookingsController extends AbstractController {
 		}
 
 		return $demand;
+	}
+
+	/**
+	 * @param ReservationDemand $demand
+	 * @param array $overwriteDemand
+	 */
+	public function overwriteDemandObject(&$demand, $overwriteDemand) {
+		if ((bool) $overwriteDemand) {
+			foreach ($overwriteDemand as $propertyName => $propertyValue) {
+				switch ($propertyName) {
+					case 'sortBy':
+						$orderings = $propertyValue;
+						if (isset($overwriteDemand['sortDirection'])) {
+							$orderings .= '|' . $overwriteDemand['sortDirection'];
+						}
+						$demand->setOrder($orderings);
+						$demand->setSortBy($overwriteDemand['sortBy']);
+						break;
+					case 'search':
+						$searchObj = $this->createSearchObject(
+							$propertyValue,
+							$this->settings['bookings']['search']
+						);
+						$demand->setSearch($searchObj);
+						break;
+					case 'sortDirection':
+						if ($propertyValue !== 'desc') {
+							$propertyValue = 'asc';
+						}
+					// fall through to default
+					default:
+						if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
+							ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
+						}
+				}
+			}
+		}
 	}
 
 	/**

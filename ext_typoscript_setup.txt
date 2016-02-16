@@ -83,6 +83,15 @@ module.tx_t3eventsreservation {
 			list {
 				period = futureOnly
 				order = lesson.date|asc,lesson.uid|desc
+				genres =
+				venues =
+				eventTypes =
+			}
+
+			search {
+				showSubjectField = true
+				fields = lesson.event.headline
+				categoryConjunction = AND
 			}
 
 			cancel {

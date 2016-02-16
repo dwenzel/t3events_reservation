@@ -20,24 +20,40 @@ namespace CPSIT\T3eventsReservation\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Webfox\T3events\Domain\Model\Dto\DemandInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use Webfox\T3events\Domain\Repository\AbstractDemandedRepository;
+use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
+use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
 
 /**
  * The repository for Reservations
  */
-class ReservationRepository extends AbstractDemandedRepository {
-	public function createConstraintsFromDemand(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, \Webfox\T3events\Domain\Model\Dto\DemandInterface $demand) {
+class ReservationRepository
+	extends AbstractDemandedRepository
+	implements GenreConstraintRepositoryInterface,
+	EventTypeConstraintRepositoryInterface {
+	use GenreConstraintRepositoryTrait, EventTypeConstraintRepositoryTrait;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param \Webfox\T3events\Domain\Model\Dto\DemandInterface $demand
+	 * @return array
+	 */
+	public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {
 		/** @var  \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $demand */
-		$constraints = array();
+		$constraints = [];
 		if ($demand->getLessonDeadline()) {
 			$constraints[] = $query->logicalAnd(
 				$query->lessThan('lesson.deadline', $demand->getLessonDeadline())
 			);
 		}
 		if ($demand->getStatus()) {
-			$statusArr = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $demand->getStatus());
-			$statusConstraints = array();
+			$statusArr = GeneralUtility::intExplode(',', $demand->getStatus());
+			$statusConstraints = [];
 			foreach ($statusArr as $status) {
 				$statusConstraints[] = $query->equals('status', $status);
 			}
@@ -56,6 +72,15 @@ class ReservationRepository extends AbstractDemandedRepository {
 			} elseif ($demand->getPeriod() === 'pastOnly') {
 				$constraints[] = $query->lessThanOrEqual('lesson.date', $demand->getLessonDate());
 			}
+		}
+		if ((bool) $genreConstraints = $this->createGenreConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $genreConstraints, $demand->getCategoryConjunction());
+		}
+		if ((bool) $searchConstraints = $this->createSearchConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $searchConstraints, 'OR');
+		}
+		if ((bool) $eventTypeConstraints = $this->createEventTypeConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $eventTypeConstraints, $demand->getCategoryConjunction());
 		}
 
 		return $constraints;
