@@ -63,6 +63,7 @@ module.tx_t3eventsreservation {
 	}
 
 	settings {
+		#common.searchForm.debug = 1
 		lesson {
 			list {
 				period = futureOnly
@@ -76,6 +77,14 @@ module.tx_t3eventsreservation {
 
 			list {
 				lessonPeriod = futureOnly
+				filter {
+					genre =
+					eventType =
+				}
+			}
+			search {
+				showSubjectField = true
+				fields = name,firstName,lastName,reservation.lesson.event.headline
 			}
 		}
 
@@ -83,9 +92,11 @@ module.tx_t3eventsreservation {
 			list {
 				period = futureOnly
 				order = lesson.date|asc,lesson.uid|desc
-				genres =
-				venues =
-				eventTypes =
+				filter {
+					genre =
+					venue =
+					eventType =
+				}
 			}
 
 			search {

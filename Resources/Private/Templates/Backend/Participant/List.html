@@ -6,15 +6,17 @@
 	<f:if condition="{settings.debug}">
 		<f:debug title="settings">{settings}</f:debug>
 	</f:if>
-	<h1>Teilnehmer</h1>
+	<h1>{f:translate(key: 'header.participants', default: 'Participants')}</h1>
+	<f:render partial="Common/SearchForm"
+		arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.participant.search.showSubjectField}'}" />
 	<f:flashMessages renderMode="div" />
 	<div class="list">
 		<table class="typo3-dblist tx_t3eventsreservation">
 			<tr class="c-headline">
-				<td>ID</td>
-				<td class="col-title">Name, Vorname</td>
-				<td class="">Reservierung # - Veranstaltung</td>
-				<td>Datum / Ort</td>
+				<td>{f:translate(key: 'label.id', default: 'ID')}</td>
+				<td class="col-title">{f:translate(key: 'label.name', default: 'Name')}, {f:translate(key: 'label.firstName', default: 'First Name')}</td>
+				<td class="">{f:translate(key: 'label.reservation', default: 'Reservation')} {f:translate(key: 'label.id', default: 'ID')} - {f:translate(key: 'label.event', default: 'Event')}</td>
+				<td>{f:translate(key: 'label.date', default: 'Date')} / {f:translate(key: 'label.location', default: 'Location')}</td>
 			</tr>
 			<f:groupedFor each="{participants}" as="participantsByLesson" groupBy="reservation.lesson" groupKey="lesson">
 				<f:if condition="{lesson}">

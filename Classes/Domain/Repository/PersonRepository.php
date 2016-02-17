@@ -24,11 +24,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
 use Webfox\T3events\Domain\Repository\AbstractDemandedRepository;
+use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
+use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
 
 /**
  * The repository for Persons
  */
-class PersonRepository extends AbstractDemandedRepository {
+class PersonRepository
+	extends AbstractDemandedRepository
+	implements GenreConstraintRepositoryInterface,
+	EventTypeConstraintRepositoryInterface {
+	use GenreConstraintRepositoryTrait, EventTypeConstraintRepositoryTrait;
 	/**
 	 * Returns an array of constraints created from a given demand object.
 	 *
@@ -61,6 +69,16 @@ class PersonRepository extends AbstractDemandedRepository {
 				$constraints[] = $query->lessThanOrEqual('reservation.lesson.date', $demand->getLessonDate());
 			}
 		}
+		if ((bool) $genreConstraints = $this->createGenreConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $genreConstraints, $demand->getCategoryConjunction());
+		}
+		if ((bool) $searchConstraints = $this->createSearchConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $searchConstraints, 'OR');
+		}
+		if ((bool) $eventTypeConstraints = $this->createEventTypeConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $eventTypeConstraints, $demand->getCategoryConjunction());
+		}
+
 
 		return $constraints;
 	}

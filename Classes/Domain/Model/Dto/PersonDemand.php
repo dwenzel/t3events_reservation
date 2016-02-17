@@ -3,6 +3,12 @@ namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
 use Webfox\T3events\Domain\Model\Dto\AbstractDemand;
+use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandTrait;
+use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandTrait;
+use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
 
 /**
  * Class PersonDemand
@@ -10,7 +16,13 @@ use Webfox\T3events\Domain\Model\Dto\AbstractDemand;
  * @package CPSIT\T3eventsCourse\Domain\Model\Dto
  */
 class PersonDemand extends AbstractDemand
-	implements DemandInterface {
+	implements DemandInterface, SearchAwareDemandInterface,
+	GenreAwareDemandInterface, EventTypeAwareDemandInterface {
+	use SearchAwareDemandTrait, GenreAwareDemandTrait,
+		EventTypeAwareDemandTrait;
+
+	const GENRE_FIELD = 'reservation.lesson.event.genre';
+	const EVENT_TYPE_FIELD = 'reservation.lesson.event.eventType';
 
 	/**
 	 * Types
@@ -111,5 +123,19 @@ class PersonDemand extends AbstractDemand
 	 */
 	public function setLessonPeriod($period) {
 		$this->lessonPeriod = $period;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGenreField() {
+		return self::GENRE_FIELD;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEventTypeField() {
+		return self::EVENT_TYPE_FIELD;
 	}
 }

@@ -2,7 +2,6 @@
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
-use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use Webfox\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Model\Performance;
@@ -54,17 +53,33 @@ class ParticipantController extends AbstractBackendController {
 	/**
 	 * List action
 	 *
+	 * @param array $overwriteDemand
 	 * @return void
 	 */
-	public function listAction() {
+	public function listAction(array $overwriteDemand = null) {
 		$demand = $this->createDemandFromSettings($this->settings['participant']);
-		$participants = $this->personRepository->findDemanded($demand);
+		$filterOptions = $this->getFilterOptions(
+			$this->settings[$this->settingsUtility->getControllerKey($this)]['list']['filter']
+		);
+
+		if ($overwriteDemand === NULL) {
+			$overwriteDemand = $this->moduleData->getOverwriteDemand();
+		} else {
+			$this->moduleData->setOverwriteDemand($overwriteDemand);
+		}
+
+		$this->overwriteDemandObject($demand, $overwriteDemand);
+		$this->moduleData->setDemand($demand);
+
+		$participants = $this->personRepository->findDemanded($demand)->toArray();
+
 		$this->view->assignMultiple(
-			array(
+			[
 				'participants' => $participants,
-				'settings' => $this->settings,
+				'overwriteDemand' => $overwriteDemand,
 				'demand' => $demand,
-			)
+				'filterOptions' => $filterOptions
+			]
 		);
 	}
 
