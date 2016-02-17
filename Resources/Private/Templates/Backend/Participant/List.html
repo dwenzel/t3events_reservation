@@ -28,7 +28,7 @@
 						<tr class="t3-row-header">
 							<td colspan="3">
 								<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
-								- {lesson.event.headline}
+								- {lesson.event.headline} ({lesson.participants->f:count()} {f:translate(key: 'label.participants', default: 'Participants')})
 							</td>
 							<td>
 								<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Teilnehmer exportieren" />
