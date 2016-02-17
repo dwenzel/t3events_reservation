@@ -71,7 +71,7 @@ class ParticipantController extends AbstractBackendController {
 		$this->overwriteDemandObject($demand, $overwriteDemand);
 		$this->moduleData->setDemand($demand);
 
-		$participants = $this->personRepository->findDemanded($demand)->toArray();
+		$participants = $this->personRepository->findDemanded($demand);
 
 		$this->view->assignMultiple(
 			[

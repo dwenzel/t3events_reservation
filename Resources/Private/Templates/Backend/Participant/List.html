@@ -18,30 +18,36 @@
 				<td class="">{f:translate(key: 'label.reservation', default: 'Reservation')} {f:translate(key: 'label.id', default: 'ID')} - {f:translate(key: 'label.event', default: 'Event')}</td>
 				<td>{f:translate(key: 'label.date', default: 'Date')} / {f:translate(key: 'label.location', default: 'Location')}</td>
 			</tr>
-			<f:groupedFor each="{participants}" as="participantsByLesson" groupBy="reservation.lesson" groupKey="lesson">
-				<f:if condition="{lesson}">
-					<tr class="t3-row-header">
-						<td colspan="3">
-							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
-							- {lesson.event.headline}
-						</td>
-						<td>
-							<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Teilnehmer exportieren" />
-						</td>
-					</tr>
-					<f:for each="{participantsByLesson}" as="participant">
-						<tr class="db_list_normal">
-							<td>{participant.uid}</td>
-							<td>{participant.lastName}, {participant.firstName}</td>
-							<td>{participant.reservation.uid} - {participant.reservation.lesson.event.headline}</td>
+			<f:be.widget.paginate
+				objects="{participants}"
+				as="paginatedParticipants"
+				configuration="{itemsPerPage: 10, maximumNumberOfLinks: 10, recordsLabel: '{f:translate(key: \'label.participant\', default: \'Participant\')}'}"
+				>
+				<f:groupedFor each="{paginatedParticipants}" as="participantsByLesson" groupBy="reservation.lesson" groupKey="lesson">
+					<f:if condition="{lesson}">
+						<tr class="t3-row-header">
+							<td colspan="3">
+								<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
+								- {lesson.event.headline}
+							</td>
 							<td>
-								<f:format.date format="d.m.Y">{participant.reservation.lesson.date}</f:format.date>
-								, {participant.reservation.lesson.eventLocation.name}
+								<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Teilnehmer exportieren" />
 							</td>
 						</tr>
-					</f:for>
-				</f:if>
-			</f:groupedFor>
+						<f:for each="{participantsByLesson}" as="participant">
+							<tr class="db_list_normal">
+								<td>{participant.uid}</td>
+								<td>{participant.lastName}, {participant.firstName}</td>
+								<td>{participant.reservation.uid} - {participant.reservation.lesson.event.headline}</td>
+								<td>
+									<f:format.date format="d.m.Y">{participant.reservation.lesson.date}</f:format.date>
+									, {participant.reservation.lesson.eventLocation.name}
+								</td>
+							</tr>
+						</f:for>
+					</f:if>
+				</f:groupedFor>
+			</f:be.widget.paginate>
 		</table>
 	</div>
 </f:section>
