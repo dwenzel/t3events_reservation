@@ -1,9 +1,9 @@
 <f:layout name="Default" />
 <f:section name="content">
 
-	<h1>Reservierungen</h1>
+	<h1>{f:translate(key: 'header.reservations', default: 'Reservations')}</h1>
 	<f:render partial="Common/SearchForm"
-		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', genres: '{genres}', eventTypes: '{eventTypes}', venues: '{venues}'}"/>
+		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.bookings.search.showSubjectField}'}"/>
 	<f:flashMessages renderMode="div" />
 	<div class="list">
 		<table class="typo3-dblist tx_t3eventscourse">
@@ -12,9 +12,9 @@
 				<td class="col-title">
 					<f:translate key="tx_t3eventsreservation_domain_model_reservation.status" />
 				</td>
-				<td class="">Firma</td>
-				<td>Ansprechpartner</td>
-				<td>Teilnehmer</td>
+				<td class="">{f:translate(key: 'label.company', default: 'Company')}</td>
+				<td>{f:translate(key: 'label.contact', default: 'Contact')}</td>
+				<td>{f:translate(key: 'label.participants', default: 'Participants')}</td>
 				<td></td>
 				<td></td>
 				<td></td>

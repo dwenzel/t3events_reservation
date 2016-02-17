@@ -7,16 +7,13 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
+use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Webfox\T3events\Controller\AbstractBackendController;
-use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use Webfox\T3events\Domain\Repository\EventTypeRepository;
-use Webfox\T3events\Domain\Repository\GenreRepository;
-use Webfox\T3events\Domain\Repository\VenueRepository;
 
 /***************************************************************
  *  Copyright notice
@@ -38,103 +35,39 @@ use Webfox\T3events\Domain\Repository\VenueRepository;
  ***************************************************************/
 class BookingsController extends AbstractBackendController {
 
-	/**
-	 * Persistence Manager
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-	 * @inject
-	 */
-	protected $persistenceManager;
-
-	/**
-	 * Notification Service
-	 *
-	 * @var \Webfox\T3events\Service\NotificationService
-	 * @inject
-	 */
-	protected $notificationService;
 
 	/**
 	 * reservationRepository
 	 *
 	 * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
-	 * @inject
 	 */
 	protected $reservationRepository = null;
-
-	/**
-	 * Company Repository
-	 *
-	 * @var \Webfox\T3events\Domain\Repository\CompanyRepository
-	 * @inject
-	 */
-	protected $companyRepository = null;
 
 	/**
 	 * Participant Repository
 	 *
 	 * @var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
-	 * @inject
 	 */
 	protected $personRepository = null;
 
 	/**
-	 * Notification Repository
+	 * injects the person repository
 	 *
-	 * @var \Webfox\T3events\Domain\Repository\NotificationRepository
-	 * @inject
-	 */
-	protected $notificationRepository = null;
-
-	/**
-	 * genreRepository
-	 *
-	 * @var \Webfox\T3events\Domain\Repository\GenreRepository
-	 */
-	protected $genreRepository;
-
-	/**
-	 * venueRepository
-	 *
-	 * @var \Webfox\T3events\Domain\Repository\VenueRepository
-	 */
-	protected $venueRepository;
-
-	/**
-	 * eventTypeRepository
-	 *
-	 * @var \Webfox\T3events\Domain\Repository\EventTypeRepository
-	 */
-	protected $eventTypeRepository;
-
-	/**
-	 * injectGenreRepository
-	 *
-	 * @param \Webfox\T3events\Domain\Repository\GenreRepository $genreRepository
+	 * @param \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository $personRepository
 	 * @return void
 	 */
-	public function injectGenreRepository(GenreRepository $genreRepository) {
-		$this->genreRepository = $genreRepository;
+	public function injectPersonRepository(PersonRepository $personRepository) {
+		$this->personRepository = $personRepository;
 	}
 
 	/**
-	 * injectVenueRepository
+	 * injectReservationRepository
 	 *
-	 * @param \Webfox\T3events\Domain\Repository\VenueRepository $venueRepository
+	 * @param \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository $reservationRepository
 	 * @return void
 	 */
-	public function injectVenueRepository(VenueRepository $venueRepository) {
-		$this->venueRepository = $venueRepository;
-	}
-
-	/**
-	 * injectEventTypeRepository
-	 *
-	 * @param \Webfox\T3events\Domain\Repository\EventTypeRepository $eventTypeRepository
-	 * @return void
-	 */
-	public function injectEventTypeRepository(EventTypeRepository $eventTypeRepository) {
-		$this->eventTypeRepository = $eventTypeRepository;
+	public function injectReservationRepository(ReservationRepository $reservationRepository) {
+		$this->reservationRepository = $reservationRepository;
 	}
 
 	/**
@@ -146,19 +79,6 @@ class BookingsController extends AbstractBackendController {
 	public function listAction(array $overwriteDemand = NULL) {
 		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $demand */
 		$demand = $this->createDemandFromSettings($this->settings['bookings']['list']);
-
-		// get filter options from plugin
-		if (isset($this->settings['bookings']['genres'])) {
-			$genres = $this->genreRepository->findMultipleByUid($this->settings['genres'], 'title');
-		} else {
-			$genres = $this->genreRepository->findAll();
-		}
-		$venues = $this->venueRepository->findMultipleByUid($this->settings['venues'], 'title');
-		if (isset($this->settings['bookings']['eventTypes'])) {
-			$eventTypes = $this->eventTypeRepository->findMultipleByUid($this->settings['eventTypes'], 'title');
-		} else {
-			$eventTypes = $this->eventTypeRepository->findAll();
-		}
 
 		if ($overwriteDemand === NULL) {
 			$overwriteDemand = $this->moduleData->getOverwriteDemand();
@@ -175,9 +95,8 @@ class BookingsController extends AbstractBackendController {
 				'reservations' => $reservations,
 				'overwriteDemand' => $overwriteDemand,
 				'demand' => $demand,
-				'genres' => $genres,
-				'venues' => $venues,
-				'eventTypes' => $eventTypes
+				'filterOptions' => $this->getFilterOptions(
+					$this->settings[$this->settingsUtility->getControllerKey($this)]['list']['filter'])
 			]
 		);
 	}
@@ -422,7 +341,8 @@ class BookingsController extends AbstractBackendController {
 	 * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected function getErrorFlashMessage() {
-		$key = 'error' . '.administration.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
+		$key = 'error' . '.' . $this->settingsUtility->getControllerKey($this) . '.'
+			. str_replace('Action', '', $this->actionMethodName);
 		$message = $this->translate($key);
 		if ($message == null) {
 			return FALSE;
@@ -523,43 +443,6 @@ class BookingsController extends AbstractBackendController {
 		}
 
 		return $demand;
-	}
-
-	/**
-	 * @param ReservationDemand $demand
-	 * @param array $overwriteDemand
-	 */
-	public function overwriteDemandObject(&$demand, $overwriteDemand) {
-		if ((bool) $overwriteDemand) {
-			foreach ($overwriteDemand as $propertyName => $propertyValue) {
-				switch ($propertyName) {
-					case 'sortBy':
-						$orderings = $propertyValue;
-						if (isset($overwriteDemand['sortDirection'])) {
-							$orderings .= '|' . $overwriteDemand['sortDirection'];
-						}
-						$demand->setOrder($orderings);
-						$demand->setSortBy($overwriteDemand['sortBy']);
-						break;
-					case 'search':
-						$searchObj = $this->createSearchObject(
-							$propertyValue,
-							$this->settings['bookings']['search']
-						);
-						$demand->setSearch($searchObj);
-						break;
-					case 'sortDirection':
-						if ($propertyValue !== 'desc') {
-							$propertyValue = 'asc';
-						}
-					// fall through to default
-					default:
-						if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
-							ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
-						}
-				}
-			}
-		}
 	}
 
 	/**

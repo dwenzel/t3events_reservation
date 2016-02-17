@@ -9,6 +9,7 @@ use Webfox\T3events\Domain\Model\Dto\DemandInterface;
 use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
+use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
 
 /***************************************************************
@@ -37,7 +38,8 @@ use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
  */
 class ReservationDemand extends AbstractDemand
 	implements DemandInterface, PeriodAwareDemandInterface,
-	GenreAwareDemandInterface, EventTypeAwareDemandInterface {
+	GenreAwareDemandInterface, EventTypeAwareDemandInterface,
+	SearchAwareDemandInterface {
 	use PeriodAwareDemandTrait, SearchAwareDemandTrait,
 		GenreAwareDemandTrait, EventTypeAwareDemandTrait;
 
