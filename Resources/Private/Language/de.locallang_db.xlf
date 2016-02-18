@@ -51,7 +51,7 @@
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_person.type.billingAddress" approved="yes" xml:space="preserve">
 			<source>Billing Address</source>
-			<target>Buchungsaddress</target>
+			<target>Buchungsadresse</target>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_person.type.participant" approved="yes" xml:space="preserve">
 			<source>Participant</source>
@@ -253,7 +253,7 @@
 			<source></source>
 			<target>Ergänzende Termininformationen</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.deadline" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.deadline" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Anmeldeschluss</target>
 		</trans-unit>
@@ -269,11 +269,11 @@
 			<source></source>
 			<target>Anmeldung auf externer Website</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.external_registration_link" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.external_registration_link" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Link zu externer Registrierung</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.free_of_charge" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.free_of_charge" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Kostenlos</target>
 		</trans-unit>
@@ -285,15 +285,15 @@
 			<source></source>
 			<target>Preis</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.registration_begin" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_begin" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Anmeldebeginn</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.registration_documents" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_documents" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Dateianhänge für schriftliche Anmeldung</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.registration_remarks" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_remarks" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Hinweise zur Anmeldung</target>
 		</trans-unit>
