@@ -1,427 +1,463 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-10T09:59:49Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-18T22:26:25Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="label.addDocument" approved="yes" xml:space="preserve">
+		<trans-unit id="label.addDocument" approved="yes">
 			<source>Add Document</source>
 			<target>Dokument hinzufügen</target>
 		</trans-unit>
-		<trans-unit id="tabs.notifications" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Benachrichtigungen</target>
-		</trans-unit>
-		<trans-unit id="tabs.participants" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnehmer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.default" approved="yes" xml:space="preserve">
-			<source>Default</source>
-			<target>Allgemeine Veranstaltung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.tx_t3eventsreservation_Course" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Weiterbildungsangebot</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_genre" approved="yes" xml:space="preserve">
-			<source>Product</source>
-			<target>Produkt</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_performance.course_contacts" approved="yes" xml:space="preserve">
-			<source>Course Contacts / Speakers</source>
-			<target>Referenten/Dozenten/Moderatoren</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.tx_t3eventsreservation_Lesson" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Termin</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_person.birthplace" approved="yes" xml:space="preserve">
-			<source>Birthplace</source>
-			<target>Geburtsort</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_person.company_name" approved="yes" xml:space="preserve">
-			<source>Company Name</source>
-			<target>Firma</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_person.role" approved="yes" xml:space="preserve">
-			<source>Role</source>
-			<target>Position</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_person.type.billingAddress" approved="yes" xml:space="preserve">
-			<source>Billing Address</source>
-			<target>Buchungsadresse</target>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_person.type.participant" approved="yes" xml:space="preserve">
-			<source>Participant</source>
-			<target>Teilnehmer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation.tx_extbase_type" approved="yes" xml:space="preserve">
-			<source>Event type</source>
-			<target>Veranstaltungstyp</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event" approved="yes" xml:space="preserve">
-			<source>Course</source>
-			<target>Veranstaltung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.abstract" approved="yes" xml:space="preserve">
-			<source>Abstract</source>
-			<target>Übersicht</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.archivedate" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Archivdatum</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.audience" approved="yes" xml:space="preserve">
-			<source>Audience</source>
-			<target>Zielgruppe</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.branch" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Branchen</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Fördermöglichkeiten</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.1" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Maßnahmezertifizierung nach AZWV/AZAV (SGB III)</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.2" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Bildungsurlaub (entsprechend der Gesetze der Bundesländer)</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.3" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Sonstiges</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.4" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>AFBG (&quot;Meister-BAFöG&quot;)</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate_desc" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Sonstige Fördermöglichkeiten</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.contact_person" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>IHK-Ansprechpartner</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Abschluss</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.0" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Kein Abschluss</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.1" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnahmebescheinigung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.2" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Unterrichtungsnachweis</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.3" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Zertifikat</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.4" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Zeugnis</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.eventcategories" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Kategorien</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.exam_costs" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Prüfungsgebühren</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.exam_remarks" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Beschreibung und Terminangaben zur Prüfung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_bison" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Export nach BISON</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_ea" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Export nach Exportakademie Rhein-Main</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_openqcat" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Export nach KURSNET</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_print" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Export zur Druckerei für Weiterbildungskatalog</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_rce" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Export nach RCE</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_wis" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Export nach WIS</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.goals" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Ziele</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.image_gallery" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Impressionen</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.lessons" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Termine</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.list_view_image" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Bild für Listenansicht</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.listview_exclusion" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Von Listenansicht ausschließen</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.newUntil" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Neu im Angebot bis</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.partner" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Kooperationspartner</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.program_agenda" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Programmpunkte</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.requirements" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Voraussetzungen für die Teilnahme</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.exam_degree" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Prüfung und Abschluss</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.extended" approved="yes" xml:space="preserve">
-			<source>Details</source>
-			<target>Details</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.images" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Bilder und Testimonials</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.lessons" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Termin-, Anmelde- und Preisangaben</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.relations" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Zielgruppen/Partner/Kontakte</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.visibility" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Sichtbarkeit und Export</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.targetgroup_desc" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Zielgruppe näher definiert</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_event.testimonials" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Testimonials</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Termin</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.class_time" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Unterrichtszeiten</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.date_end" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Enddatum</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.date_remarks" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Ergänzende Termininformationen</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.deadline" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Anmeldeschluss</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.duration" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Dauer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.external_registration_link" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Link zu externer Registrierung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.free_of_charge" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Kostenlos</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.places" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Plätze</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.price" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Preis</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_begin" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Anmeldebeginn</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_documents" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Dateianhänge für schriftliche Anmeldung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_remarks" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Hinweise zur Anmeldung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.extended" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Details</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.participants" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnehmer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.price" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Preisangaben</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.registration" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Anmeldung und Verfügbarkeit</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Benachrichtigung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.bodytext" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Text</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.format" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Format</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.recipient" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Empfänger</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.reservation" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Reservierung</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.send_at" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>versendet</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.sender" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Absender</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_notification.subject" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Betreff</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_performance.tab.participants" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnehmer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.contact" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Ansprechpartner</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.empty" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>-leer-</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.participant" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnehmer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.billingAddress" approved="yes" xml:space="preserve">
-			<source>Billing Address</source>
-			<target>Rechnungsadresse</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company" approved="yes" xml:space="preserve">
-			<source>Company</source>
-			<target>Firma</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contact" approved="yes" xml:space="preserve">
-			<source>Contact</source>
-			<target>Buchungskontakt</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactIsParticipant" approved="yes" xml:space="preserve">
-			<source>Contact is participant</source>
-			<target>Ansprechpartner nimmt teil</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Verzicht auf Widerrufsrecht</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.lesson" approved="yes" xml:space="preserve">
-			<source>Performance</source>
-			<target>Veranstaltungstermin</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.note" approved="yes" xml:space="preserve">
-			<source>Note</source>
-			<target>Notiz</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" approved="yes" xml:space="preserve">
-			<source>Notifications</source>
-			<target>Benachrichtigungen</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.participants" approved="yes" xml:space="preserve">
+		<trans-unit id="label.tab.participants" approved="yes">
 			<source>Participants</source>
 			<target>Teilnehmer</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted" approved="yes" xml:space="preserve">
+		<trans-unit id="label.tab.price" approved="yes">
+			<source>Price</source>
+			<target>Preis</target>
+		</trans-unit>
+		<trans-unit id="label.tab.registration" approved="yes">
+			<source>Registration</source>
+			<target>Registrierung</target>
+		</trans-unit>
+		<trans-unit id="label.tabs.notifications" approved="yes">
+			<source>Notifications</source>
+			<target>Benachrichtigung</target>
+		</trans-unit>
+		<trans-unit id="label.tabs.participants" approved="yes">
+			<source>Participants</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="label.tx_extbase_type.Tx_T3eventsReservation_Schedule" approved="yes">
+			<source>Schedule (bookable)</source>
+			<target>Termin (buchbar)</target>
+		</trans-unit>
+		<trans-unit id="tabs.notifications" approved="yes">
+			<source></source>
+			<target>Benachrichtigungen</target>
+		</trans-unit>
+		<trans-unit id="tabs.participants" approved="yes">
+			<source></source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.Tx_T3eventsCourse_Course" approved="yes">
+			<source>Course</source>
+			<target>Seminar</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.default" approved="yes">
+			<source>Default</source>
+			<target>Allgemeine Veranstaltung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.tx_t3eventsreservation_Course" approved="yes">
+			<source></source>
+			<target>Weiterbildungsangebot</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_genre" approved="yes">
+			<source>Product</source>
+			<target>Produkt</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_performance.course_contacts" approved="yes">
+			<source>Course Contacts / Speakers</source>
+			<target>Referenten/Dozenten/Moderatoren</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_performance.tx_extbase_type.tx_t3eventsreservation_Lesson" approved="yes">
+			<source></source>
+			<target>Termin</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.accounting_office" approved="yes">
+			<source>Accounting office</source>
+			<target>Rechnungsstelle</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.birthplace" approved="yes">
+			<source>Birthplace</source>
+			<target>Geburtsort</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.company_name" approved="yes">
+			<source>Company Name</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.role" approved="yes">
+			<source>Role</source>
+			<target>Position</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.type.billingAddress" approved="yes">
+			<source>Billing Address</source>
+			<target>Buchungsadresse</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.type.participant" approved="yes">
+			<source>Participant</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_person.vat_id" approved="yes">
+			<source>VAT ID</source>
+			<target>Umsatzsteuer-ID</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation.tx_extbase_type" approved="yes">
+			<source>Event type</source>
+			<target>Veranstaltungstyp</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event" approved="yes">
+			<source>Course</source>
+			<target>Veranstaltung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.abstract" approved="yes">
+			<source>Abstract</source>
+			<target>Übersicht</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.archivedate" approved="yes">
+			<source></source>
+			<target>Archivdatum</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.audience" approved="yes">
+			<source>Audience</source>
+			<target>Zielgruppe</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.branch" approved="yes">
+			<source></source>
+			<target>Branchen</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate" approved="yes">
+			<source></source>
+			<target>Fördermöglichkeiten</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.1" approved="yes">
+			<source></source>
+			<target>Maßnahmezertifizierung nach AZWV/AZAV (SGB III)</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.2" approved="yes">
+			<source></source>
+			<target>Bildungsurlaub (entsprechend der Gesetze der Bundesländer)</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.3" approved="yes">
+			<source></source>
+			<target>Sonstiges</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate.4" approved="yes">
+			<source></source>
+			<target>AFBG (&quot;Meister-BAFöG&quot;)</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.certificate_desc" approved="yes">
+			<source></source>
+			<target>Sonstige Fördermöglichkeiten</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.contact_person" approved="yes">
+			<source></source>
+			<target>IHK-Ansprechpartner</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type" approved="yes">
+			<source></source>
+			<target>Abschluss</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.0" approved="yes">
+			<source></source>
+			<target>Kein Abschluss</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.1" approved="yes">
+			<source></source>
+			<target>Teilnahmebescheinigung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.2" approved="yes">
+			<source></source>
+			<target>Unterrichtungsnachweis</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.3" approved="yes">
+			<source></source>
+			<target>Zertifikat</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.degree_type.4" approved="yes">
+			<source></source>
+			<target>Zeugnis</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.eventcategories" approved="yes">
+			<source></source>
+			<target>Kategorien</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.exam_costs" approved="yes">
+			<source></source>
+			<target>Prüfungsgebühren</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.exam_remarks" approved="yes">
+			<source></source>
+			<target>Beschreibung und Terminangaben zur Prüfung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_bison" approved="yes">
+			<source></source>
+			<target>Export nach BISON</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_ea" approved="yes">
+			<source></source>
+			<target>Export nach Exportakademie Rhein-Main</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_openqcat" approved="yes">
+			<source></source>
+			<target>Export nach KURSNET</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_print" approved="yes">
+			<source></source>
+			<target>Export zur Druckerei für Weiterbildungskatalog</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_rce" approved="yes">
+			<source></source>
+			<target>Export nach RCE</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.export_wis" approved="yes">
+			<source></source>
+			<target>Export nach WIS</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.goals" approved="yes">
+			<source></source>
+			<target>Ziele</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.image_gallery" approved="yes">
+			<source></source>
+			<target>Impressionen</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.lessons" approved="yes">
+			<source></source>
+			<target>Termine</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.list_view_image" approved="yes">
+			<source></source>
+			<target>Bild für Listenansicht</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.listview_exclusion" approved="yes">
+			<source></source>
+			<target>Von Listenansicht ausschließen</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.newUntil" approved="yes">
+			<source></source>
+			<target>Neu im Angebot bis</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.partner" approved="yes">
+			<source></source>
+			<target>Kooperationspartner</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.program_agenda" approved="yes">
+			<source></source>
+			<target>Programmpunkte</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.requirements" approved="yes">
+			<source></source>
+			<target>Voraussetzungen für die Teilnahme</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.exam_degree" approved="yes">
+			<source></source>
+			<target>Prüfung und Abschluss</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.extended" approved="yes">
+			<source>Details</source>
+			<target>Details</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.images" approved="yes">
+			<source></source>
+			<target>Bilder und Testimonials</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.lessons" approved="yes">
+			<source></source>
+			<target>Termin-, Anmelde- und Preisangaben</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.relations" approved="yes">
+			<source></source>
+			<target>Zielgruppen/Partner/Kontakte</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.tab.visibility" approved="yes">
+			<source></source>
+			<target>Sichtbarkeit und Export</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.targetgroup_desc" approved="yes">
+			<source></source>
+			<target>Zielgruppe näher definiert</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_event.testimonials" approved="yes">
+			<source></source>
+			<target>Testimonials</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson" approved="yes">
+			<source></source>
+			<target>Termin</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.class_time" approved="yes">
+			<source></source>
+			<target>Unterrichtszeiten</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.date_end" approved="yes">
+			<source></source>
+			<target>Enddatum</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.date_remarks" approved="yes">
+			<source></source>
+			<target>Ergänzende Termininformationen</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.duration" approved="yes">
+			<source></source>
+			<target>Dauer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.places" approved="yes">
+			<source></source>
+			<target>Plätze</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.price" approved="yes">
+			<source></source>
+			<target>Preis</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.extended" approved="yes">
+			<source></source>
+			<target>Details</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.participants" approved="yes">
+			<source></source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.price" approved="yes">
+			<source></source>
+			<target>Preisangaben</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.tab.registration" approved="yes">
+			<source></source>
+			<target>Anmeldung und Verfügbarkeit</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification" approved="yes">
+			<source></source>
+			<target>Benachrichtigung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.bodytext" approved="yes">
+			<source></source>
+			<target>Text</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.format" approved="yes">
+			<source></source>
+			<target>Format</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.recipient" approved="yes">
+			<source></source>
+			<target>Empfänger</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.reservation" approved="yes">
+			<source></source>
+			<target>Reservierung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.send_at" approved="yes">
+			<source></source>
+			<target>versendet</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.sender" approved="yes">
+			<source></source>
+			<target>Absender</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_notification.subject" approved="yes">
+			<source></source>
+			<target>Betreff</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.deadline" approved="yes">
+			<source>Registration Deadline</source>
+			<target>Anmeldeschluss</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.external_registration_link" approved="yes">
+			<source>External Registration Link</source>
+			<target>Link zu externer Registrierung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.free_of_charge" approved="yes">
+			<source>Free of charge</source>
+			<target>Kostenlos</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_begin" approved="yes">
+			<source>Registration Begin</source>
+			<target>Anmeldebeginn</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_documents" approved="yes">
+			<source>Registration Documents</source>
+			<target>Dateianhänge für schriftliche Anmeldung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.registration_remarks" approved="yes">
+			<source>Registration remarks</source>
+			<target>Hinweise zur Anmeldung</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_performance.tab.participants" approved="yes">
+			<source></source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.contact" approved="yes">
+			<source></source>
+			<target>Ansprechpartner</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.empty" approved="yes">
+			<source></source>
+			<target>-leer-</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_person.tx_extbase_type.participant" approved="yes">
+			<source></source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.billingAddress" approved="yes">
+			<source>Billing Address</source>
+			<target>Rechnungsadresse</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.company" approved="yes">
+			<source>Company</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contact" approved="yes">
+			<source>Contact</source>
+			<target>Buchungskontakt</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactIsParticipant" approved="yes">
+			<source>Contact is participant</source>
+			<target>Ansprechpartner nimmt teil</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes">
+			<source></source>
+			<target>Verzicht auf Widerrufsrecht</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.lesson" approved="yes">
+			<source>Performance</source>
+			<target>Veranstaltungstermin</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.note" approved="yes">
+			<source>Note</source>
+			<target>Notiz</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.notifications" approved="yes">
+			<source>Notifications</source>
+			<target>Benachrichtigungen</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.participants" approved="yes">
+			<source>Participants</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted" approved="yes">
 			<source>Privacy statement accepted</source>
 			<target>Datenschutzerklärung akzeptiert</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.0" approved="yes">
 			<source>new</source>
 			<target>neu</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.1" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.1" approved="yes">
 			<source>draft</source>
 			<target>Entwurf</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.2" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.2" approved="yes">
 			<source>submitted</source>
 			<target>gebucht</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.3" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.3" approved="yes">
 			<source>canceled (no charge)</source>
 			<target>storniert (kostenlos)</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.4" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.4" approved="yes">
 			<source>canceled (with costs)</source>
 			<target>storniert (kostenpflichtig)</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.5" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.5" approved="yes">
 			<source>closed</source>
 			<target>abgeschlossen</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.status.6" approved="yes">
 			<source>canceled by organizer</source>
 			<target>Abgesagt durch Veranstalter</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.total_price" approved="yes" xml:space="preserve">
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.total_price" approved="yes">
 			<source>Total price</source>
 			<target>Gesamtpreis</target>
 		</trans-unit>

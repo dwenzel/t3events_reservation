@@ -34,7 +34,7 @@ $tmpColumns = array(
 	],
 	'vat_id' => [
 		'exclude' => 1,
-		'label' => $ll . 'tx_ihkofevents_domain_model_person.vat_id',
+		'label' => $ll . 'tx_t3events_domain_model_person.vat_id',
 		'config' => [
 			'type' => 'input',
 			'size' => 30,
@@ -43,7 +43,7 @@ $tmpColumns = array(
 	],
 	'accounting_office' => [
 		'exclude' => 1,
-		'label' => $ll . 'tx_ihkofevents_domain_model_person.accounting_office',
+		'label' => $ll . 'tx_t3events_domain_model_person.accounting_office',
 		'config' => [
 			'type' => 'input',
 			'size' => 30,
