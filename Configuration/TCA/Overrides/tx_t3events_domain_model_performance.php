@@ -17,8 +17,8 @@ $scheduleShowItems = '
 					--div--;' . $ll . 'label.tab.price,
 						price,free_of_charge,price_notice,
 					--div--;' . $ll . 'label.tab.registration,
-						--palette--;;paletteLessonRegistration,places,registration_remarks,document_based_registration,
-						registration_documents,external_registration,external_registration_link,
+						--palette--;;paletteLessonRegistration,places,registration_remarks,
+						registration_documents,external_registration_link,
 					--div--;' . $ll . 'label.tab.participants,
 						participants,
 					--div--;Access,
@@ -102,22 +102,6 @@ $temporaryColumns = [
 			'cols' => 40,
 			'rows' => 5,
 			'eval' => 'trim'
-		]
-	],
-	'document_based_registration' => [
-		'exclude' => 1,
-		'label' => $ll . 'tx_t3eventsreservation_domain_model_performance.document_based_registration',
-		'config' => [
-			'type' => 'check',
-			'default' => '0'
-		]
-	],
-	'external_registration' => [
-		'exclude' => 1,
-		'label' => $ll . 'tx_t3eventsreservation_domain_model_performance.external_registration',
-		'config' => [
-			'type' => 'check',
-			'default' => '1'
 		]
 	],
 	'external_registration_link' => [

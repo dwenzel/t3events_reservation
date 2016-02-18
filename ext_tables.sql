@@ -72,8 +72,6 @@ CREATE TABLE tx_t3events_domain_model_performance (
 	date_remarks text NOT NULL,
 	registration_remarks text NOT NULL,
 	external_registration_link tinytext NOT NULL,
-	document_based_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
-	external_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	registration_documents tinytext NOT NULL,
 	tx_extbase_type varchar(255) DEFAULT '' NOT NULL
 );

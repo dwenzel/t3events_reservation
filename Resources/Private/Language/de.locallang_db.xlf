@@ -257,17 +257,9 @@
 			<source></source>
 			<target>Anmeldeschluss</target>
 		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.document_based_registration" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Ausschließlich schriftliche Anmeldung</target>
-		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.duration" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Dauer</target>
-		</trans-unit>
-		<trans-unit id="tx_t3eventsreservation_domain_model_lesson.external_registration" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Anmeldung auf externer Website</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_performance.external_registration_link" approved="yes" xml:space="preserve">
 			<source></source>
