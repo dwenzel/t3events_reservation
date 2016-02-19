@@ -441,6 +441,9 @@ class BookingsController extends AbstractBackendController {
 		) {
 			$demand->setOrder($settings['order']);
 		}
+		if (isset($settings['list']['maxItems'])) {
+			$demand->setLimit($settings['list']['maxItems']);
+		}
 
 		return $demand;
 	}
