@@ -151,6 +151,9 @@ class ParticipantController extends AbstractBackendController {
 			$timeZone = new \DateTimeZone(date_default_timezone_get());
 			$demand->setLessonDate(new \DateTime('midnight'), $timeZone);
 		}
+		if (isset($settings['list']['maxItems'])) {
+			$demand->setLimit($settings['list']['maxItems']);
+		}
 
 		return $demand;
 	}
