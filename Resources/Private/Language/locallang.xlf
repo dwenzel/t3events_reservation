@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2015-02-23T18:11:03Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-02-19T15:02:38Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="button.applyFilter" xml:space="preserve">
+		<trans-unit id="button.applyFilter" xml:space="preserve">
 			<source>apply filter</source>
 		</trans-unit>
 		<trans-unit id="button.back" xml:space="preserve">
@@ -49,6 +49,9 @@
 		</trans-unit>
 		<trans-unit id="button.save" xml:space="preserve">
 			<source>Save</source>
+		</trans-unit>
+		<trans-unit id="button.search" xml:space="preserve">
+			<source>search</source>
 		</trans-unit>
 		<trans-unit id="button.send" xml:space="preserve">
 			<source>Send</source>
@@ -140,6 +143,12 @@
 		<trans-unit id="error.reservation.show.accessDenied" xml:space="preserve">
 			<source>You are not allowed to see this reservation.</source>
 		</trans-unit>
+		<trans-unit id="label.abstract" xml:space="preserve">
+			<source>Short description</source>
+		</trans-unit>
+		<trans-unit id="label.address" xml:space="preserve">
+			<source>Street</source>
+		</trans-unit>
 		<trans-unit id="label.allAudiences" xml:space="preserve">
 			<source>all audiences</source>
 		</trans-unit>
@@ -152,8 +161,110 @@
 		<trans-unit id="label.allGenres" xml:space="preserve">
 			<source>all Products</source>
 		</trans-unit>
+		<trans-unit id="label.audience" xml:space="preserve">
+			<source>Audience</source>
+		</trans-unit>
 		<trans-unit id="label.availablePlaces" xml:space="preserve">
 			<source>available places</source>
+		</trans-unit>
+		<trans-unit id="label.bodytext" xml:space="preserve">
+			<source>Message</source>
+		</trans-unit>
+		<trans-unit id="label.city" xml:space="preserve">
+			<source>City</source>
+		</trans-unit>
+		<trans-unit id="label.company" xml:space="preserve">
+			<source>Company</source>
+		</trans-unit>
+		<trans-unit id="label.contact" xml:space="preserve">
+			<source>Contact</source>
+		</trans-unit>
+		<trans-unit id="label.contactIsParticipant" xml:space="preserve">
+			<source>Contact ist participant</source>
+		</trans-unit>
+		<trans-unit id="label.country" xml:space="preserve">
+			<source>Country</source>
+		</trans-unit>
+		<trans-unit id="label.deadline" xml:space="preserve">
+			<source>Deadline</source>
+		</trans-unit>
+		<trans-unit id="label.details" xml:space="preserve">
+			<source>Description</source>
+		</trans-unit>
+		<trans-unit id="label.duration" xml:space="preserve">
+			<source>Duration</source>
+		</trans-unit>
+		<trans-unit id="label.email" xml:space="preserve">
+			<source>Email</source>
+		</trans-unit>
+		<trans-unit id="label.eventLocation" xml:space="preserve">
+			<source>Event location</source>
+		</trans-unit>
+		<trans-unit id="label.first_name" xml:space="preserve">
+			<source>First Name</source>
+		</trans-unit>
+		<trans-unit id="label.gender" xml:space="preserve">
+			<source>Gender</source>
+		</trans-unit>
+		<trans-unit id="label.gender.female" xml:space="preserve">
+			<source>Ms</source>
+		</trans-unit>
+		<trans-unit id="label.gender.male" xml:space="preserve">
+			<source>Mr</source>
+		</trans-unit>
+		<trans-unit id="label.lesson" xml:space="preserve">
+			<source>Schedule</source>
+		</trans-unit>
+		<trans-unit id="label.lessons" xml:space="preserve">
+			<source>Lessons</source>
+		</trans-unit>
+		<trans-unit id="label.name" xml:space="preserve">
+			<source>Name</source>
+		</trans-unit>
+		<trans-unit id="label.participants" xml:space="preserve">
+			<source>Participants</source>
+		</trans-unit>
+		<trans-unit id="label.phone" xml:space="preserve">
+			<source>Phone</source>
+		</trans-unit>
+		<trans-unit id="label.places" xml:space="preserve">
+			<source>Places</source>
+		</trans-unit>
+		<trans-unit id="label.price" xml:space="preserve">
+			<source>Price</source>
+		</trans-unit>
+		<trans-unit id="label.privacyStatementAccepted" xml:space="preserve">
+			<source>Privacy Statetement accepted</source>
+		</trans-unit>
+		<trans-unit id="label.search.field.subject" xml:space="preserve">
+			<source>Subject</source>
+		</trans-unit>
+		<trans-unit id="label.status" xml:space="preserve">
+			<source>Status</source>
+		</trans-unit>
+		<trans-unit id="label.status.0" xml:space="preserve">
+			<source>new</source>
+		</trans-unit>
+		<trans-unit id="label.status.1" xml:space="preserve">
+			<source>Draft</source>
+		</trans-unit>
+		<trans-unit id="label.status.2" xml:space="preserve">
+			<source>submitted</source>
+		</trans-unit>
+		<trans-unit id="label.status.3" xml:space="preserve">
+			<source>canceled (no charge)</source>
+		</trans-unit>
+		<trans-unit id="label.status.4" xml:space="preserve">
+			<source>canceled (with costs)</source>
+		</trans-unit>
+		<trans-unit id="label.subject" xml:space="preserve">
+			<source>Subject</source>
+		</trans-unit>
+		<trans-unit id="label.zip" xml:space="preserve">
+			<source>Zip</source>
+		</trans-unit>
+		<trans-unit id="labeladdress" xml:space="preserve">
+			<source>Address</source>
 		</trans-unit>
 		<trans-unit id="message.bookings.cancel.sendNotification.error" xml:space="preserve">
 			<source>A cancelation message could not be sent to the contact person.</source>
@@ -278,158 +389,26 @@
 		<trans-unit id="tx_t3events_domain_model_audience.title" xml:space="preserve">
 			<source>Title</source>
 		</trans-unit>
+		<trans-unit id="tx_t3events_domain_model_genre" xml:space="preserve">
+			<source>Product</source>
+		</trans-unit>
 		<trans-unit id="tx_t3eventscourse_domain_model_company" xml:space="preserve">
 			<source>Company</source>
-		</trans-unit>
-		<trans-unit id="label.address" xml:space="preserve">
-			<source>Street</source>
-		</trans-unit>
-		<trans-unit id="label.city" xml:space="preserve">
-			<source>City</source>
-		</trans-unit>
-		<trans-unit id="label.country" xml:space="preserve">
-			<source>Country</source>
-		</trans-unit>
-		<trans-unit id="label.email" xml:space="preserve">
-			<source>Email</source>
-		</trans-unit>
-		<trans-unit id="label.name" xml:space="preserve">
-			<source>Company Name</source>
-		</trans-unit>
-		<trans-unit id="label.phone" xml:space="preserve">
-			<source>Phone</source>
-		</trans-unit>
-		<trans-unit id="label.zip" xml:space="preserve">
-			<source>ZIP</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventscourse_domain_model_contact" xml:space="preserve">
 			<source>Contact</source>
 		</trans-unit>
-		<trans-unit id="labeladdress" xml:space="preserve">
-			<source>Address</source>
-		</trans-unit>
-		<trans-unit id="label.city" xml:space="preserve">
-			<source>City</source>
-		</trans-unit>
-		<trans-unit id="label.email" xml:space="preserve">
-			<source>Email</source>
-		</trans-unit>
-		<trans-unit id="label.gender.female" xml:space="preserve">
-			<source>Ms</source>
-		</trans-unit>
-		<trans-unit id="label.gender.male" xml:space="preserve">
-			<source>Mr.</source>
-		</trans-unit>
-		<trans-unit id="label.name" xml:space="preserve">
-			<source>Name</source>
-		</trans-unit>
-		<trans-unit id="label.phone" xml:space="preserve">
-			<source>Phone</source>
-		</trans-unit>
-		<trans-unit id="label.zip" xml:space="preserve">
-			<source>Zip</source>
-		</trans-unit>
 		<trans-unit id="tx_t3eventscourse_domain_model_event" xml:space="preserve">
 			<source>Course</source>
-		</trans-unit>
-		<trans-unit id="label.abstract" xml:space="preserve">
-			<source>Abstract</source>
-		</trans-unit>
-		<trans-unit id="label.audience" xml:space="preserve">
-			<source>Audience</source>
-		</trans-unit>
-		<trans-unit id="label.lessons" xml:space="preserve">
-			<source>Lessons</source>
 		</trans-unit>
 		<trans-unit id="tx_t3eventscourse_domain_model_performance" xml:space="preserve">
 			<source>Schedule</source>
 		</trans-unit>
-		<trans-unit id="label.abstract" xml:space="preserve">
-			<source>Short description</source>
-		</trans-unit>
-		<trans-unit id="label.audience" xml:space="preserve">
-			<source>Audience</source>
-		</trans-unit>
-		<trans-unit id="label.deadline" xml:space="preserve">
-			<source>Deadline</source>
-		</trans-unit>
-		<trans-unit id="label.details" xml:space="preserve">
-			<source>Description</source>
-		</trans-unit>
-		<trans-unit id="label.duration" xml:space="preserve">
-			<source>Duration</source>
-		</trans-unit>
-		<trans-unit id="label.eventLocation" xml:space="preserve">
-			<source>Event location</source>
-		</trans-unit>
-		<trans-unit id="label.places" xml:space="preserve">
-			<source>Places</source>
-		</trans-unit>
-		<trans-unit id="label.price" xml:space="preserve">
-			<source>Price</source>
-		</trans-unit>
-		<trans-unit id="label.bodytext" xml:space="preserve">
-			<source>Message</source>
-		</trans-unit>
-		<trans-unit id="label.subject" xml:space="preserve">
-			<source>Subject</source>
-		</trans-unit>
 		<trans-unit id="tx_t3eventscourse_domain_model_person" xml:space="preserve">
 			<source>Person</source>
 		</trans-unit>
-		<trans-unit id="label.first_name" xml:space="preserve">
-			<source>First Name</source>
-		</trans-unit>
-		<trans-unit id="label.gender" xml:space="preserve">
-			<source>Gender</source>
-		</trans-unit>
-		<trans-unit id="label.gender.female" xml:space="preserve">
-			<source>Ms</source>
-		</trans-unit>
-		<trans-unit id="label.gender.male" xml:space="preserve">
-			<source>Mr</source>
-		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation" xml:space="preserve">
 			<source>Reservation</source>
-		</trans-unit>
-		<trans-unit id="label.company" xml:space="preserve">
-			<source>Company</source>
-		</trans-unit>
-		<trans-unit id="label.contact" xml:space="preserve">
-			<source>Contact</source>
-		</trans-unit>
-		<trans-unit id="label.contactIsParticipant" xml:space="preserve">
-			<source>Contact ist participant</source>
-		</trans-unit>
-		<trans-unit id="label.lesson" xml:space="preserve">
-			<source>Schedule</source>
-		</trans-unit>
-		<trans-unit id="label.participants" xml:space="preserve">
-			<source>Participants</source>
-		</trans-unit>
-		<trans-unit id="label.privacyStatementAccepted" xml:space="preserve">
-			<source>Privacy Statetement accepted</source>
-		</trans-unit>
-		<trans-unit id="label.status" xml:space="preserve">
-			<source>Status</source>
-		</trans-unit>
-		<trans-unit id="label.status.0" xml:space="preserve">
-			<source>new</source>
-		</trans-unit>
-		<trans-unit id="label.status.1" xml:space="preserve">
-			<source>Draft</source>
-		</trans-unit>
-		<trans-unit id="label.status.2" xml:space="preserve">
-			<source>submitted</source>
-		</trans-unit>
-		<trans-unit id="label.status.3" xml:space="preserve">
-			<source>canceled (no charge)</source>
-		</trans-unit>
-		<trans-unit id="label.status.4" xml:space="preserve">
-			<source>canceled (with costs)</source>
-		</trans-unit>
-		<trans-unit id="tx_t3events_domain_model_genre" xml:space="preserve">
-			<source>Product</source>
 		</trans-unit>
 		</body>
 	</file>
