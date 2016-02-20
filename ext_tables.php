@@ -35,7 +35,7 @@ if (TYPO3_MODE === 'BE') {
 		'm3',    // Submodule key
 		'',                        // Position
 		[
-			'Backend\Participant' => 'list, download',
+			'Backend\Participant' => 'list, download,reset',
 		],
 		[
 			'access' => 'user,group',
