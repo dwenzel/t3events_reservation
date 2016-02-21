@@ -487,35 +487,11 @@ class BookingsController extends AbstractBackendController {
 			$reservationIdList = implode(',', $reservations);
 			$reservationResult = $this->reservationRepository->findMultipleByUid($reservationIdList);
 		}
-		// todo use settings utility for reading filename from field
-		$fileName = 'reservations';
-		if (
-			$reservationResult->count()
-			&& isset($this->settings['bookings']['download'])
-		) {
-			$fileName = $this->settingsUtility->getValueByKey(
-				$reservationResult->getFirst(),
-				$this->settings['bookings']['download'],
-				'fileName'
-			);
-		}
-		$fileName = $this->getDownloadFileName($fileName);
-		$this->sendDownloadHeaders($fileExtension, $fileName);
 		$this->view->assign('reservations', $reservationResult);
-		echo($this->view->render());
-		exit;
+		$objectForFileName = $reservationResult->getFirst();
+
+		echo($this->getContentForDownload($fileExtension, $objectForFileName));
+		return;
 	}
 
-	/**
-	 * Get frontend base url as configured in TypoScript
-	 * Pass this as a variable when rendering fluid templates in Backend context for instance
-	 * if you want to render images in emails.
-	 *
-	 * @return string
-	 */
-	protected function getBaseUrlForFrontend() {
-		$typoScriptConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-
-		return $typoScriptConfiguration['config.']['baseURL'];
-	}
 }
