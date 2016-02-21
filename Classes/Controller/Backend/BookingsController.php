@@ -12,6 +12,7 @@ use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Webfox\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 
@@ -428,12 +429,36 @@ class BookingsController extends AbstractBackendController {
 	protected function createDemandFromSettings($settings) {
 		/** @var ReservationDemand $demand */
 		$demand = $this->objectManager->get(ReservationDemand::class);
+
+		foreach ($settings as $propertyName => $propertyValue) {
+			if (empty($propertyValue)) {
+				continue;
+			}
+			switch ($propertyName) {
+				case 'maxItems':
+					$demand->setLimit($propertyValue);
+					break;
+				// all following fall through (see below)
+				case 'periodType':
+				case 'periodStart':
+				case 'periodEndDate':
+				case 'periodDuration':
+				case 'search':
+					break;
+				default:
+					if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
+						ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
+					}
+			}
+		}
+
 		if (isset($settings['period'])) {
 			$demand->setPeriod($settings['period']);
 			if ($demand->getPeriod() === 'futureOnly'
 				OR $demand->getPeriod() == 'pastOnly'
 			) {
-				$demand->setLessonDate(new \DateTime('midnight'));
+				$timeZone = new \DateTimeZone(date_default_timezone_get());
+				$demand->setStartDate(new \DateTime('midnight', $timeZone));
 			}
 		}
 		if (isset($settings['order'])

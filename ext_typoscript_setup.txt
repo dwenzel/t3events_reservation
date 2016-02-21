@@ -94,8 +94,10 @@ module.tx_t3eventsreservation {
 				order = lesson.date|asc,lesson.uid|desc
 				filter {
 					genre =
+					audience =
 					venue =
 					eventType =
+					periods =
 				}
 			}
 
