@@ -86,8 +86,8 @@ class ParticipantController extends AbstractBackendController {
 	/**
 	 * Download action
 	 *
-	 * @param \array $participants
-	 * @param \string $ext File extension for download
+	 * @param array $participants
+	 * @param string $ext File extension for download
 	 */
 	public function downloadAction($participants = NULL, $ext = 'csv') {
 		if (is_null($participants)) {
@@ -96,24 +96,14 @@ class ParticipantController extends AbstractBackendController {
 		} elseif (is_array($participants)) {
 			$participants = $this->personRepository->findMultipleByUid(implode(',', $participants));
 		}
-		$fileName = 'participants';
-		/** @var Performance $lesson */
-		$lesson = $participants->getFirst()->getReservation()->getLesson();
-		// todo use settings utility for reading filename from field
-		if (isset($this->settings['participant']['download']['fileName'])) {
-			$fileName = $this->settings['participant']['download']['fileName'] . '_';
-		}
-		if ($lesson) {
-			$fileName .= $lesson->getEvent()->getHeadline();
-		}
-		$fileName = $this->getDownloadFileName($fileName, TRUE);
-		$this->sendDownloadHeaders($ext, $fileName);
-
 		$this->view->assign('participants', $participants);
-		echo($this->view->render());
-		exit;
-	}
 
+		/** @var Person $objectForFileName */
+		$objectForFileName = $participants->getFirst();
+		echo($this->getContentForDownload($ext, $objectForFileName));
+
+		return;
+	}
 
 	/**
 	 * Returns custom error flash messages, or

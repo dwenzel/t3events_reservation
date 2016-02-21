@@ -69,10 +69,12 @@ module.tx_t3eventsreservation {
 				period = futureOnly
 			}
 		}
-
 		participant {
 			download {
-				fileName = teilnehmer
+				fileName {
+					field = reservation.lesson.event.headline
+					default = teilnehmer
+				}
 			}
 
 			list {
