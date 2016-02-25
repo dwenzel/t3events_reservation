@@ -82,6 +82,10 @@ module.tx_t3eventsreservation {
 				filter {
 					genre =
 					eventType =
+					audience =
+					category =
+					periods =
+					venue =
 				}
 			}
 			search {

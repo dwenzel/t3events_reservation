@@ -1,6 +1,8 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
+use Webfox\T3events\Domain\Model\Dto\CategoryAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\CategoryAwareDemandTrait;
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
 use Webfox\T3events\Domain\Model\Dto\AbstractDemand;
 use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
@@ -17,12 +19,14 @@ use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
  */
 class PersonDemand extends AbstractDemand
 	implements DemandInterface, SearchAwareDemandInterface,
-	GenreAwareDemandInterface, EventTypeAwareDemandInterface {
+	GenreAwareDemandInterface, EventTypeAwareDemandInterface,
+	CategoryAwareDemandInterface {
 	use SearchAwareDemandTrait, GenreAwareDemandTrait,
-		EventTypeAwareDemandTrait;
+		EventTypeAwareDemandTrait, CategoryAwareDemandTrait;
 
 	const GENRE_FIELD = 'reservation.lesson.event.genre';
 	const EVENT_TYPE_FIELD = 'reservation.lesson.event.eventType';
+	const CATEGORY_FIELD = 'reservation.lesson.event.categories';
 
 	/**
 	 * Types
@@ -137,5 +141,12 @@ class PersonDemand extends AbstractDemand
 	 */
 	public function getEventTypeField() {
 		return self::EVENT_TYPE_FIELD;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCategoryField() {
+		return self::CATEGORY_FIELD;
 	}
 }

@@ -4,7 +4,10 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use Webfox\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
+use Webfox\T3events\Controller\FilterableControllerInterface;
+use Webfox\T3events\Controller\FilterableControllerTrait;
 use Webfox\T3events\Domain\Model\Performance;
+use Webfox\T3events\Domain\Repository\CategoryRepository;
 
 /***************************************************************
  *  Copyright notice
@@ -24,7 +27,9 @@ use Webfox\T3events\Domain\Model\Performance;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class ParticipantController extends AbstractBackendController {
+class ParticipantController extends AbstractBackendController
+	implements FilterableControllerInterface {
+	use FilterableControllerTrait;
 
 	/**
 	 * reservationRepository
@@ -49,6 +54,21 @@ class ParticipantController extends AbstractBackendController {
 	 * @inject
 	 */
 	protected $personRepository = NULL;
+
+	/**
+	 * @var \Webfox\T3events\Domain\Repository\CategoryRepository
+	 */
+	protected $categoryRepository;
+
+	/**
+	 * injectCategoryRepository
+	 *
+	 * @param \Webfox\T3events\Domain\Repository\CategoryRepository $categoryRepository
+	 * @return void
+	 */
+	public function injectCategoryRepository(CategoryRepository $categoryRepository) {
+		$this->categoryRepository = $categoryRepository;
+	}
 
 	/**
 	 * List action

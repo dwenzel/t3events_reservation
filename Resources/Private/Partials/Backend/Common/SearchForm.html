@@ -75,6 +75,20 @@
 				/>
 		</f:if>
 
+		<f:comment>categories</f:comment>
+		<f:if condition="{filterOptions.categorys}">
+			<f:form.select
+				id="tx_t3eventsQuickMenue"
+				name="overwriteDemand[categories]"
+				options="{filterOptions.categorys}"
+				optionValueField="uid"
+				optionLabelField="title"
+				prependOptionLabel="{f:translate(key: 'label.allDepartments', default: 'label.allDepartments')}"
+				value="{overwriteDemand.categories}"
+				/>
+		</f:if>
+
+
 		<f:form.hidden
 			id="tx_t3eventsQuickMenue"
 			name="overwriteDemand[categoryConjunction]"

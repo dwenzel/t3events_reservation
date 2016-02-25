@@ -15,6 +15,8 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Webfox\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
+use Webfox\T3events\Controller\FilterableControllerInterface;
+use Webfox\T3events\Controller\FilterableControllerTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -34,7 +36,9 @@ use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class BookingsController extends AbstractBackendController {
+class BookingsController extends AbstractBackendController
+	implements FilterableControllerInterface {
+	use FilterableControllerTrait;
 
 
 	/**
