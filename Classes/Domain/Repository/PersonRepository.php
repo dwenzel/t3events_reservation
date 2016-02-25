@@ -24,19 +24,28 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
 use Webfox\T3events\Domain\Repository\AbstractDemandedRepository;
+use Webfox\T3events\Domain\Repository\AudienceConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\AudienceConstraintRepositoryTrait;
+use Webfox\T3events\Domain\Repository\CategoryConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\CategoryConstraintRepositoryTrait;
 use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
 use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
 use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
 use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
+use Webfox\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
+use Webfox\T3events\Domain\Repository\PeriodConstraintRepositoryTrait;
 
 /**
  * The repository for Persons
  */
 class PersonRepository
 	extends AbstractDemandedRepository
-	implements GenreConstraintRepositoryInterface,
-	EventTypeConstraintRepositoryInterface {
-	use GenreConstraintRepositoryTrait, EventTypeConstraintRepositoryTrait;
+	implements GenreConstraintRepositoryInterface, CategoryConstraintRepositoryInterface,
+	EventTypeConstraintRepositoryInterface, PeriodConstraintRepositoryInterface,
+	AudienceConstraintRepositoryInterface {
+	use GenreConstraintRepositoryTrait, EventTypeConstraintRepositoryTrait,
+		CategoryConstraintRepositoryTrait, PeriodConstraintRepositoryTrait,
+		AudienceConstraintRepositoryTrait;
 	/**
 	 * Returns an array of constraints created from a given demand object.
 	 *
@@ -78,7 +87,15 @@ class PersonRepository
 		if ((bool) $eventTypeConstraints = $this->createEventTypeConstraints($query, $demand)) {
 			$this->combineConstraints($query, $constraints, $eventTypeConstraints, $demand->getCategoryConjunction());
 		}
-
+		if ((bool) $categoryConstraints = $this->createCategoryConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $categoryConstraints, $demand->getCategoryConjunction());
+		}
+		if ((bool) $periodConstraints = $this->createPeriodConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $periodConstraints);
+		}
+		if ((bool) $audienceConstraints = $this->createAudienceConstraints($query, $demand)) {
+			$this->combineConstraints($query, $constraints, $audienceConstraints);
+		}
 
 		return $constraints;
 	}

@@ -2,11 +2,13 @@
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Webfox\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Controller\FilterableControllerInterface;
 use Webfox\T3events\Controller\FilterableControllerTrait;
 use Webfox\T3events\Domain\Model\Performance;
+use Webfox\T3events\Domain\Repository\AudienceRepository;
 use Webfox\T3events\Domain\Repository\CategoryRepository;
 
 /***************************************************************
@@ -68,6 +70,21 @@ class ParticipantController extends AbstractBackendController
 	 */
 	public function injectCategoryRepository(CategoryRepository $categoryRepository) {
 		$this->categoryRepository = $categoryRepository;
+	}
+
+	/**
+	 * @var \Webfox\T3events\Domain\Repository\AudienceRepository
+	 */
+	protected $audienceRepository;
+
+	/**
+	 * injectAudienceRepository
+	 *
+	 * @param \Webfox\T3events\Domain\Repository\AudienceRepository $audienceRepository
+	 * @return void
+	 */
+	public function injectAudienceRepository(AudienceRepository $audienceRepository) {
+		$this->audienceRepository = $audienceRepository;
 	}
 
 	/**
@@ -152,17 +169,38 @@ class ParticipantController extends AbstractBackendController
 		/**@var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
 		$demand = $this->objectManager->get(PersonDemand::class);
 		$demand->setTypes((string) Person::PERSON_TYPE_PARTICIPANT);
-		if (isset($settings['list']['lessonPeriod'])) {
-			$demand->setLessonPeriod($settings['list']['lessonPeriod']);
+		if (isset($settings['list'])) {
+			foreach ($settings['list'] as $propertyName => $propertyValue) {
+				if (empty($propertyValue)) {
+					continue;
+				}
+				switch ($propertyName) {
+					case 'maxItems':
+						$demand->setLimit($propertyValue);
+						break;
+					case 'category':
+						$demand->setCategories($propertyValue);
+						break;
+						// all following fall through (see below)
+					case 'periodType':
+					case 'periodStart':
+					case 'periodEndDate':
+					case 'periodDuration':
+					case 'search':
+						break;
+					default:
+						if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
+							ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
+						}
+				}
+			}
 		}
+
 		if ($demand->getLessonPeriod() === 'futureOnly'
 			OR $demand->getLessonPeriod() === 'pastOnly'
 		) {
 			$timeZone = new \DateTimeZone(date_default_timezone_get());
 			$demand->setLessonDate(new \DateTime('midnight'), $timeZone);
-		}
-		if (isset($settings['list']['maxItems'])) {
-			$demand->setLimit($settings['list']['maxItems']);
 		}
 
 		return $demand;

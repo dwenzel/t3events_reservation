@@ -1,6 +1,8 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
+use Webfox\T3events\Domain\Model\Dto\AudienceAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\AudienceAwareDemandTrait;
 use Webfox\T3events\Domain\Model\Dto\CategoryAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\CategoryAwareDemandTrait;
 use Webfox\T3events\Domain\Model\Dto\DemandInterface;
@@ -9,6 +11,8 @@ use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandTrait;
 use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandTrait;
+use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
+use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
 use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandInterface;
 use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
 
@@ -20,13 +24,18 @@ use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
 class PersonDemand extends AbstractDemand
 	implements DemandInterface, SearchAwareDemandInterface,
 	GenreAwareDemandInterface, EventTypeAwareDemandInterface,
-	CategoryAwareDemandInterface {
+	CategoryAwareDemandInterface, PeriodAwareDemandInterface,
+	AudienceAwareDemandInterface {
 	use SearchAwareDemandTrait, GenreAwareDemandTrait,
-		EventTypeAwareDemandTrait, CategoryAwareDemandTrait;
+		EventTypeAwareDemandTrait, CategoryAwareDemandTrait,
+		PeriodAwareDemandTrait, AudienceAwareDemandTrait;
 
 	const GENRE_FIELD = 'reservation.lesson.event.genre';
 	const EVENT_TYPE_FIELD = 'reservation.lesson.event.eventType';
 	const CATEGORY_FIELD = 'reservation.lesson.event.categories';
+	const START_DATE_FIELD = 'reservation.lesson.date';
+	const END_DATE_FIELD = 'reservation.lesson.endDate';
+	const AUDIENCE_FIELD = 'reservation.lesson.event.audience';
 
 	/**
 	 * Types
@@ -149,4 +158,26 @@ class PersonDemand extends AbstractDemand
 	public function getCategoryField() {
 		return self::CATEGORY_FIELD;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStartDateField() {
+		return self::START_DATE_FIELD;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEndDateField() {
+		return self::END_DATE_FIELD;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAudienceField() {
+		return self::AUDIENCE_FIELD;
+	}
+
 }
