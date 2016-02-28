@@ -26,7 +26,7 @@ before_script:
 script: 
 - >
   echo;
-  .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/ --coverage-clover .Build/log/coverage/clover.xml
+  .Build/bin/phpunit --colors -c Tests/Build/UnitTests.xml Tests/Unit/ --coverage-clover .Build/log/coverage/clover.xml
 
 - >
   echo;
