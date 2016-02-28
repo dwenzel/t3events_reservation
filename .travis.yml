@@ -26,4 +26,10 @@ before_script:
 script: 
 - >
   echo;
-  .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/
+  .Build/bin/phpunit --colors -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/ --coverage-clover .Build/log/coverage/clover.xml
+
+- >
+	echo;
+	export COVERALLS_SERVICE_NAME=travis-ci;
+	.Build/bin/coveralls -v
+
