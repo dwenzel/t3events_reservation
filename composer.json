@@ -1,0 +1,63 @@
+{
+	"name": "cpsit/t3events_reservation",
+	"type": "typo3-cms-extension",
+	"description": "Reservations is an extension for the TYPO3 CMS. It extends t3events and allows to manage bookings for events.",
+	"keywords": ["TYPO3", "extension", "events", "reservation"],
+	"version": "0.1.0",
+	"license": ["GPL-2.0+"],
+	"authors": [
+		{
+			"name": "Dirk Wenzel",
+			"role": "Developer"
+		}
+	],
+	"repositories": [
+	  {"type": "vcs", "url": "https://github.com/dwenzel/t3events.git"}
+	],
+	"require": {
+		"typo3/cms": ">=6.2.0,<8.0",
+		"webfox/t3events": "0.17.*"
+	},
+	"require-dev": {
+    "mikey179/vfsStream": "1.4.*@dev",
+    "phpunit/phpunit": "~4.8.0",
+		"satooshi/php-coveralls": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "CPSIT\\T3eventsReservation\\": "Classes"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CPSIT\\T3eventsReservation\\Tests\\": "Tests",
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+      "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+    }
+  },
+  "replace": {
+    "t3events_reservation": "self.version",
+    "typo3-ter/t3events_reservation": "self.version"
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "mkdir -p .Build/Web/typo3conf/ext/",
+      "mkdir -p .Build/log/coverage/",
+      "[ -L .Build/Web/typo3conf/ext/t3events_reservation ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/t3events_reservation"
+    ]
+  },
+  "extra": {
+		"branch-alias": {
+			"dev-master": "0.1.x-dev"
+		},
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web"
+    }
+  }
+}
+

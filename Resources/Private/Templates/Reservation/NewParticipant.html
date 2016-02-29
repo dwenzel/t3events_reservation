@@ -1,0 +1,37 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+	<f:if condition="{settings.debug.reservation.newParticipant}">
+		<f:debug title="reservation">{reservation}</f:debug>
+	</f:if>
+	<f:render partial="Reservation/LessonProperties" arguments="{lesson: reservation.lesson}" />
+	<hr />
+	<f:flashMessages renderMode="div" />
+
+	<f:if condition="{f:count(subject: reservation.participants)}> 0">
+		<h3>Teilnehmer</h3>
+	</f:if>
+	<f:for each="{reservation.participants}" as="participant">
+		<f:render partial="Participant/Short" arguments="{reservation: reservation, participant: participant}" />
+	</f:for>
+	<f:render partial="FormErrors" arguments="{object:Reservation}" />
+	<f:if condition="{reservation.lesson.freePlaces} > 0">
+		<f:form action="createParticipant"
+			name="newParticipant"
+			object="{newParticipant}"
+			arguments="{reservation: reservation}"
+			noCacheHash="TRUE"
+			>
+			<f:render partial="Participant/FormFields" />
+			<f:form.submit value="{f:translate(key: 'button.createParticipant')}" />
+		</f:form>
+	</f:if>
+	<f:if condition="{f:count(subject: reservation.participants)}> 0">
+		<f:form action="checkout"
+			arguments="{reservation: reservation}"
+			noCacheHash="TRUE"
+			>
+			<f:form.submit value="{f:translate(key: 'button.checkout')}" />
+		</f:form>
+	</f:if>
+</f:section>

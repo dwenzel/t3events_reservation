@@ -1,0 +1,39 @@
+<div class="reservation">
+	<f:if condition="{reservation.company}">
+		<div class="reservationCompanyInfo">
+			<h3>{f:translate(key: 'header.company')}</h3>
+			{reservation.company.name}<br />
+			{reservation.company.address}<br />
+			{reservation.company.zip}&nbsp;{reservation.company.city}<br />
+			{reservation.company.country}<br />
+		</div>
+	</f:if>
+	<div class="reservationContactInfo">
+		<h3>{f:translate(key: 'label.contact', default: 'Contact')}</h3>
+		{f:translate(key: 'label.gender.{reservation.contact.gender}')}
+		<br />
+		{reservation.contact.firstName}&nbsp;{reservation.contact.lastName}<br />
+		{reservation.contact.phone}<br />
+		{reservation.contact.email}
+	</div>
+	<div class="reservationParticipantsInfo">
+		<h3>{f:translate(key: 'header.participants', default: 'Participants')}</h3>
+		<ul class="reservationParticipants">
+			<f:for each="{reservation.participants}" as="participant">
+				<f:render partial="Participant/ShowShort" arguments="{reservation: reservation, participant: participant}" />
+			</f:for>
+		</ul>
+	</div>
+	<f:if condition="{reservation.billingAddress}">
+		<div class="reservationBillingAddress">
+			<h3>{f:translate(key: 'header.billingAddress', default: 'Billing Address')}</h3>
+			{f:translate(key: 'label.gender.{reservation.billingAddress.gender}', default: '[translate] label.gender.x')}
+			{reservation.billingAddress.name}<br />
+			{reservation.billingAddress.firstName}&nbsp;{reservation.billingAddress.lastName}<br />
+			{reservation.billingAddress.address}<br />
+			{reservation.billingAddress.zip}&nbsp;{reservation.billingAddress.city}<br />
+			{reservation.billingAddress.country}<br />
+		</div>
+	</f:if>
+
+</div>

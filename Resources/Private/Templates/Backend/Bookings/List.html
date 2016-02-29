@@ -1,0 +1,84 @@
+<f:layout name="Default" />
+<f:section name="content">
+
+	<h1>{f:translate(key: 'header.reservations', default: 'Reservations')}</h1>
+	<f:render partial="Common/SearchForm"
+		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.bookings.search.showSubjectField}'}"/>
+	<f:flashMessages renderMode="div" />
+	<div class="list">
+		<table class="typo3-dblist tx_t3eventsreservation">
+			<tr class="c-headline">
+				<td>ID</td>
+				<td class="col-title">
+					<f:translate key="tx_t3eventsreservation_domain_model_reservation.status" />
+				</td>
+				<td class="">{f:translate(key: 'label.company', default: 'Company')}</td>
+				<td>{f:translate(key: 'label.contact', default: 'Contact')}</td>
+				<td>{f:translate(key: 'label.participants', default: 'Participants')}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<f:be.widget.paginate
+				objects="{reservations}"
+				as="paginatedReservations"
+				configuration="{itemsPerPage: 10, maximumNumberOfLinks: 10, recordsLabel: 'Reservierung'}"
+				>
+				<f:groupedFor each="{paginatedReservations}" as="reservationsByLesson" groupBy="lesson" groupKey="lesson">
+					<tr class="t3-row-header">
+						<td colspan="4">
+							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
+							- {lesson.event.headline->f:format.crop(maxCharacters: 70)}, {lesson.eventLocation.name}
+						</td>
+						<td>{lesson.freePlaces} | {lesson.places} Plätze</td>
+						<td></td>
+						<td>
+							<f:link.action action="newNotification" arguments="{reservations: reservationsByLesson, lesson: lesson}">alle benachrichtigen</f:link.action>
+						</td>
+						<td>
+							<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {reservations: '{reservationsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Buchungen exportieren" />
+						</td>
+					</tr>
+					<f:for each="{reservationsByLesson}" as="reservation">
+						<tr class="db_list_normal">
+							<td><f:link.action
+								action="show"
+								arguments="{reservation: reservation}"
+								title="View reservation"
+								>{reservation.uid}
+							</f:link.action></td>
+							<td>
+								<f:translate key="tx_t3eventsreservation_domain_model_reservation.status.{reservation.status}" />
+							</td>
+							<td>{reservation.company.name}
+
+							</td>
+							<td>
+								<f:if condition="{reservation.contact.gender} == 1">
+									{f:translate(key: 'tx_t3eventsreservation_domain_model_person.gender.male', default: 'Mr')}
+								</f:if>
+								<f:if condition="{reservation.contact.gender} == 2">
+									{f:translate(key: 'tx_t3eventsreservation_domain_model_person.gender.female', default: 'Ms')}
+								</f:if>
+								{f:if(condition: '{reservation.contact.lastName}', then: '{reservation.contact.lastName}, ')}{f:if(condition: '{reservation.contact.firstName}', then: '{reservation.contact.firstName}')}
+							</td>
+							<td>{reservation.participants->f:count()}</td>
+							<td>
+								<f:if condition="{reservation.status} <= 2">
+									<f:be.buttons.icon uri="#"
+										additionalAttributes="{onclick: 'window.location.href=\'alt_doc.php?returnUrl=\'+T3_THIS_LOCATION+\'&edit[tx_t3eventsreservation_domain_model_reservation][{reservation.uid}]=edit\'; return false;'}" icon="actions-document-open" title="Edit" />
+								</f:if>
+							</td>
+							<td>
+								<f:link.action action="newNotification" arguments="{reservations: {0: reservation}, lesson: lesson}">benachrichtigen</f:link.action>
+							</td>
+							<td></td>
+						</tr>
+					</f:for>
+				</f:groupedFor>
+
+			</f:be.widget.paginate>
+		</table>
+	</div>
+
+</f:section>

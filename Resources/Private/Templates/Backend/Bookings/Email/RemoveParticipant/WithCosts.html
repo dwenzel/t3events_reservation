@@ -1,0 +1,8 @@
+<f:render partial="Email/Salutation" arguments="{reservation: reservation}" />
+Ihre Buchung für unsere Veranstaltung  "{reservation.lesson.course.headline}" am {f:format.date(date: '{reservation.lesson.date}', format: 'd.m.Y')} wurde geändert.
+<br />
+Wir bestätigen die kostenpflichtige Stornierung für:<br>
+<br>
+<f:render partial="Email/Participants" arguments="{participants: '{0: \'{participant}\'}'}" />
+
+<f:render partial="Email/Signature" arguments="{baseUrl: baseUrl}" />

@@ -1,0 +1,13 @@
+<f:layout name="Default" />
+<f:section name="main">
+	<h1>Reservation bearbeiten</h1>
+
+	<f:flashMessages renderMode="div" />
+
+	<f:render partial="FormErrors" arguments="{object:Reservation}" />
+
+	<f:form action="update" name="reservation" object="{reservation}" noCacheHash="TRUE">
+		<f:render partial="Reservation/FormFields" arguments="{reservation:reservation}" />
+		<f:form.submit value="Save" />
+	</f:form>
+</f:section>

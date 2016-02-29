@@ -1,0 +1,3 @@
+Reservation ID; Event Headline; Event Date; Participants;
+<f:for each="{reservations}" as="reservation">"{reservation.uid}";"{reservation.lesson.event.headline}";"{reservation.lesson.date->f:format.date(format: 'd.m.Y')}";"{reservation.participants->f:count()}"
+</f:for>

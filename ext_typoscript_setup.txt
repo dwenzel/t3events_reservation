@@ -1,0 +1,195 @@
+config.tx_extbase {
+	persistence {
+		classes {
+			Webfox\T3events\Domain\Model\Performance {
+				subclasses {
+					Tx_T3eventsReservation_Schedule = CPSIT\T3eventsReservation\Domain\Model\Schedule
+				}
+				mapping {
+					recordType = 0
+				}
+			}
+			CPSIT\T3eventsReservation\Domain\Model\Schedule {
+				mapping {
+					tableName = tx_t3events_domain_model_performance
+					recordType = Tx_T3eventsReservation_Schedule
+				}
+			}
+			CPSIT\T3eventsReservation\Domain\Model\Contact {
+				mapping {
+					tableName = tx_t3events_domain_model_person
+					recordType = Tx_T3events_Contact
+				}
+			}
+			CPSIT\T3eventsReservation\Domain\Model\BillingAddress {
+				mapping {
+					tableName = tx_t3events_domain_model_person
+					recordType = Tx_T3eventsReservation_BillingAddress
+				}
+			}
+			CPSIT\T3eventsReservation\Domain\Model\Person {
+				mapping {
+					tableName = tx_t3events_domain_model_person
+					recordType = Tx_T3eventsReservation_Participant
+				}
+			}
+			Webfox\T3events\Domain\Model\Person {
+				subclasses {
+					Tx_T3events_Contact = CPSIT\T3eventsReservation\Domain\Model\Contact
+					Tx_T3eventsReservation_Participant = CPSIT\T3eventsReservation\Domain\Model\Person
+					Tx_T3eventsReservation_BillingAddress = CPSIT\T3eventsReservation\Domain\Model\BillingAddress
+				}
+			}
+			CPSIT\T3eventsReservation\Domain\Model\Notification {
+				mapping {
+					tableName = tx_t3events_domain_model_notification
+				}
+			}
+		}
+	}
+}
+
+# Module configuration
+module.tx_t3eventsreservation {
+	persistence {
+		storagePid = {$module.tx_t3eventsreservation.persistence.storagePid}
+	}
+
+	view {
+		templateRootPaths.10 = {$module.tx_t3eventsreservation.view.templateRootPaths.0}
+		partialRootPaths.10 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}
+		partialRootPaths.20 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}Backend/
+		layoutRootPaths.10 = {$module.tx_t3eventsreservation.view.layoutRootPaths.0}
+	}
+
+	settings {
+		#common.searchForm.debug = 1
+		lesson {
+			list {
+				period = futureOnly
+			}
+		}
+		participant {
+			download {
+				fileName {
+					field = reservation.lesson.event.headline
+					default = teilnehmer
+				}
+			}
+
+			list {
+				maxItems = 99999
+				lessonPeriod = futureOnly
+				filter {
+					genre =
+					eventType =
+					audience =
+					category =
+					periods =
+					venue =
+				}
+			}
+			search {
+				showSubjectField = true
+				fields = name,firstName,lastName,reservation.lesson.event.headline
+			}
+		}
+
+		bookings {
+			list {
+				period = futureOnly
+				order = lesson.date|asc,lesson.uid|desc
+				filter {
+					genre =
+					audience =
+					venue =
+					eventType =
+					periods =
+				}
+			}
+
+			search {
+				showSubjectField = true
+				fields = lesson.event.headline
+				categoryConjunction = AND
+			}
+
+			cancel {
+				byOrganizer {
+					confirm {
+						sendNotification = 1
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
+						subject = Ihr Veranstaltungstermin wurde abgesagt
+						templateFileName = ByOrganizer
+					}
+				}
+
+				withCosts {
+					confirm {
+						sendNotification = 1
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
+						subject = Reservierung kostenpflichtig storniert
+						templateFileName = WithCosts
+					}
+				}
+
+				noCharge {
+					confirm {
+						sendNotification = 1
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
+						subject = Reservierung kostenfrei storniert
+						templateFileName = NoCharge
+					}
+				}
+			}
+
+			removeParticipant {
+				byOrganizer {
+					confirm {
+						sendNotification = 1
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
+						subject = Reservierung für einen Teilnehmer storniert
+						templateFileName = ByOrganizer
+					}
+				}
+
+				withCosts {
+					confirm {
+						sendNotification = 1
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
+						subject = Reservierung für einen Teilnehmer kostenpflichtig storniert
+						templateFileName = WithCosts
+					}
+				}
+
+				noCharge {
+					confirm {
+						sendNotification = 1
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.default.fromEmail}
+						subject = Reservierung für einen Teilnehmer kostenfrei storniert
+						templateFileName = NoCharge
+					}
+				}
+			}
+
+			notify {
+				fromEmail = {$plugin.tx_t3eventscourse.settings.reservation.default.fromEmail}
+			}
+		}
+	}
+}
+
+lib.plugin.eventReservationPi1 = COA_INT
+lib.plugin.eventReservationPi1 < tt_content.list.20.t3eventsreservation_pi1
+lib.plugin.eventReservationAjax = PAGE
+lib.plugin.eventReservationAjax {
+	typeNum = 1452365941
+	10 < tt_content.list.20.t3eventsreservation_pi1
+	config {
+		disableAllHeaderCode = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+		no_cache = 1
+	}
+}

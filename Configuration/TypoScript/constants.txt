@@ -1,0 +1,43 @@
+plugin.tx_t3eventsreservation {
+	view {
+		templateRootPath = EXT:t3events_reservation/Resources/Private/Templates/
+		partialRootPath = EXT:t3events_reservation/Resources/Private/Partials/
+		layoutRootPath = EXT:t3events_reservation/Resources/Private/Layouts/
+	}
+
+	persistence {
+		# cat=plugin.tx_t3events//a; type=string; label=Default storage PID
+		storagePid =
+	}
+
+	settings {
+		schedule {
+			listPid =
+		}
+		reservation {
+			detailPid =
+			confirm {
+				notification {
+					admin {
+						fromEmail = no-reply@example.com
+						toEmail = no-reply@example.com
+						subject {
+							field = lesson.event.headline
+							noTrimWrap = |New Registration for event |
+						}
+						format = html
+					}
+					user {
+						fromEmail = no-reply@example.com
+						subject  {
+							field = lesson.event.headline
+							noTrimWrap = Reservation confirmation for event |
+						}
+						format = html
+					}
+				}
+			}
+		}
+	}
+
+}

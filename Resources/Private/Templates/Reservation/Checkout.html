@@ -1,0 +1,22 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+	<h1>{f:translate(key: 'title.confirmReservation')}</h1>
+	<f:render partial="Reservation/LessonProperties" arguments="{lesson: '{reservation.lesson}'}" />
+
+	<f:flashMessages renderMode="div" />
+	<f:render partial="Reservation/Properties" arguments="{reservation:reservation}" />
+
+	<f:form action="confirm"
+		arguments="{reservation: reservation}"
+		noCacheHash="TRUE"
+		>
+		<f:form.submit value="{f:translate(key: 'button.confirmReservation')}" />
+	</f:form>
+	<f:form action="delete"
+		arguments="{reservation: reservation}"
+		noCacheHash="TRUE"
+		>
+		<f:form.submit value="{f:translate(key: 'button.deleteReservation')}" />
+	</f:form>
+</f:section>

@@ -1,0 +1,90 @@
+<f:layout name="Default" />
+
+<f:section name="content">
+	<h1>Reservierung bearbeiten</h1>
+
+	<h2>{reservation.lesson.event.headline} -
+		<f:format.date date="{reservation.lesson.date}" />
+	</h2>
+	<div class="places"><b>
+		<f:translate key="label.availablePlaces"/>
+		: </b>{reservation.lesson.freePlaces} | {reservation.lesson.places}
+	</div>
+
+	<f:flashMessages renderMode="div" />
+	<div class="typo3-dyntabmenu-tabs">
+		<table class="typo3-dyntabmenu" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td class="tab" id="DTM-t3eventsreservation-1-MENU" nowrap="nowrap" onmouseover="DTM_mouseOver(this);"
+					onmouseout="DTM_mouseOut(this);">
+					<a href="#" onclick="this.blur(); DTM_activate(&quot;DTM-t3eventsreservation&quot;,&quot;1&quot;, 0); return false;">
+						{f:translate(key: 'label.reservation', default: 'Reservation')}
+					</a>
+				</td>
+				<td class="tab" id="DTM-t3eventsreservation-2-MENU" nowrap="nowrap" onmouseover="DTM_mouseOver(this);"
+					onmouseout="DTM_mouseOut(this);">
+					<a href="#" onclick="this.blur(); DTM_activate(&quot;DTM-t3eventsreservation&quot;,&quot;2&quot;, 0); return false;">
+						{f:translate(key: 'label.participants', default: 'Participants')}
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="typo3-dyntabmenu-divs">
+		<div style="display: none; padding: 10px;" id="DTM-t3eventsreservation-1-DIV" class="c-tablayer">
+			<f:form action="update" name="reservation" object="{reservation}">
+				<f:render partial="FormErrors" />
+				<f:render partial="Reservation/FormFields" arguments="{reservation:reservation}" />
+				<div class="button-group clearfix">
+					<f:link.action
+						action="list"
+						class="button left float-left">{f:translate(key: 'button.cancel')}
+					</f:link.action>
+					<f:form.submit
+						class="button right float-left"
+						value="{f:translate(key: 'button.save', default: 'button.save')}" />
+				</div>
+			</f:form>
+			<h3>Stornieren</h3>
+
+			<div class="button-group clearfix">
+				<f:form action="cancel" name="reservation" object="{reservation}" arguments="{reason: 'noCharge'}">
+					<f:form.submit
+						class="button left float-left"
+						value="{f:translate(key: 'button.cancelFreeOfCharge', default: 'button.cancelFreeOfCharge')}" />
+				</f:form>
+				<f:form action="cancel" name="reservation" object="{reservation}" arguments="{reason: 'withCosts'}">
+					<f:form.submit
+						class="button right float-left"
+						value="{f:translate(key: 'button.cancelWithCosts', default: 'button.cancelWithCosts')}" />
+				</f:form>
+			</div>
+
+		</div>
+		<div style="display: none; padding: 10px;" id="DTM-t3eventsreservation-2-DIV" class="c-tablayer">
+			<f:if condition="{f:count(subject: reservation.participants)}> 0">
+				<table class="typo3-dblist">
+					<f:for each="{reservation.participants}" as="participant">
+						<f:render partial="Participant/BackendShort" arguments="{reservation: reservation, participant: participant}" />
+					</f:for>
+				</table>
+			</f:if>
+			<f:if condition="{reservation.lesson.freePlaces}">
+				<f:link.action
+					action="newParticipant"
+					class="button"
+					arguments="{reservation: '{reservation}'}">{f:translate(key: 'button.createParticipant', default: 'button.createParticipant')}
+				</f:link.action>
+			</f:if>
+		</div>
+	</div>
+
+	<!-- Initialization JavaScript for the menu -->
+	<script type="text/javascript">
+		DTM_array["DTM-t3eventsreservation"] = new Array();
+		DTM_array["DTM-t3eventsreservation"][0] = "DTM-t3eventsreservation-1";
+		DTM_array["DTM-t3eventsreservation"][1] = "DTM-t3eventsreservation-2";
+		DTM_activate("DTM-t3eventsreservation", top.DTM_currentTabs["DTM-t3eventsreservation"] ? top.DTM_currentTabs["DTM-t3eventsreservation"] : 1, 0);
+	</script>
+</f:section>

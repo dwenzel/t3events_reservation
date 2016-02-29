@@ -1,0 +1,92 @@
+<div class="lesson-properties">
+	<div class="infosDate lessonItemContainer">
+		<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
+		<f:cObject typoscriptObjectPath="lib.timeValue">{lesson.begin}</f:cObject>
+		Uhr -
+		<f:cObject typoscriptObjectPath="lib.timeValue">{lesson.end}</f:cObject>
+		Uhr
+	</div>
+
+	<h2>{lesson.course.eventType.title} - {lesson.course.headline}</h2>
+
+	<h3>{lesson.course.subtitle}</h3>
+
+	<div class="section">
+		<div class="genres">
+			<f:for each="{lesson.course.genre}" as="genre" iteration="iteration">
+				{genre.title}{f:if(condition: '{iteration.isLast}', else: ', ')}
+			</f:for>
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="abstract">
+			{lesson.course.abstract}
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="audiences">
+			<b>{f:translate(key: 'label.audience')}:</b>
+			<f:for each="{lesson.course.audience}" as="audience" iteration="iteration">
+				{audience.title}{f:if(condition: '{iteration.isLast}', else: ', ')}
+			</f:for>
+		</div>
+		<div class="courseDuration">
+			<b>{f:translate(key: 'label.duration')}:</b>&nbsp;{lesson.duration}
+		</div>
+		<div class="coursePrice">
+			<b>{f:translate(key: 'label.price')}:</b>&nbsp;
+			<f:format.number decimals="2" decimalSeparator="," thousandsSeparator="">{lesson.price}</f:format.number>
+			&nbsp;&euro;
+		</div>
+		<div class="coursePlaces">
+			<b>{f:translate(key: 'label.places')}:</b>&nbsp;{lesson.freePlaces} / {lesson.places}
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="eventLocation">
+			<f:if condition="{lesson.eventLocation.image}">
+				<div class="eventLocation-image">
+					<f:image src="uploads/tx_t3events/{lesson.eventLocation.image}"
+						alt="{lesson.eventLocation.name}"
+						title="{lesson.eventLocation.name}"
+						/>
+				</div>
+			</f:if>
+			<div class="eventLocation-info">
+				<f:if condition="{lesson.eventLocation.name}">
+					<span class="name">
+						<b>{lesson.eventLocation.name}</b>
+					</span>
+					<br>
+				</f:if>
+				<f:if condition="{lesson.eventLocation.address}">
+					<span class="address">
+						{lesson.eventLocation.address}
+					</span>
+				</f:if>
+				<br />
+				<f:if condition="{lesson.eventLocation.zip}">
+				<span class="zip">
+					{lesson.eventLocation.zip}
+				</span>
+				</f:if>
+				<f:if condition="{lesson.eventLocation.place}">
+				<span class="place">
+					{lesson.eventLocation.place}
+				</span><br />
+				</f:if>
+				<f:if condition="{lesson.eventLocation.country}">
+					<span class="country">
+						{lesson.eventLocation.country.shortNameLocal}
+					</span>
+				</f:if>
+			</div>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+</div>

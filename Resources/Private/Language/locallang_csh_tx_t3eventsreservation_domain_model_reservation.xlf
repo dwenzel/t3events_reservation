@@ -1,0 +1,22 @@
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-09-10T11:28:23Z" product-name="t3events_reservation">
+		<header />
+		<body>
+			<trans-unit id="status.description">
+				<source>status</source>
+			</trans-unit>
+			<trans-unit id="company.description">
+				<source>company</source>
+			</trans-unit>
+			<trans-unit id="contact.description">
+				<source>Responsible contact person for reservation.</source>
+			</trans-unit>
+			<trans-unit id="participants.description">
+				<source>participants</source>
+			</trans-unit>
+			<trans-unit id="lesson.description">
+				<source>lesson</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

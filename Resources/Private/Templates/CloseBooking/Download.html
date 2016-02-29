@@ -1,0 +1,29 @@
+<html>
+<body>
+<table>
+	<tr class="c-headline">
+		<td>Reservierung ID</td>
+		<td>Datum</td>
+		<td>Veranstaltung</td>
+		<td>Firma</td>
+		<td>Ansprechpartner</td>
+		<td class="col-title">Teilnehmer Name, Vorname</td>
+		<td>Datum / Ort</td>
+	</tr>
+	<f:for each="{reservations}" as="reservation">
+		<f:for each="{reservation.participants}" as="participant">
+			<tr>
+				<td>{reservation.uid}</td>
+				<td>
+					<f:format.date format="d.m.Y">{reservation.lesson.date}</f:format.date>
+				</td>
+				<td>{reservation.lesson.course.headline}</td>
+				<td>{reservation.company.name}</td>
+				<td>{reservation.contact.name}, {reservation.contact.firstName}</td>
+				<td>{participant.name}, {participant.firstName}</td>
+			</tr>
+		</f:for>
+	</f:for>
+</table>
+</body>
+</html>

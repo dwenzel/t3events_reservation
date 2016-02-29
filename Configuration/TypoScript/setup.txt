@@ -1,0 +1,51 @@
+plugin.tx_t3eventsreservation {
+	view {
+		templateRootPath = {$plugin.tx_t3eventsreservation.view.templateRootPath}
+		templateRootPaths {
+			10 = {$plugin.tx_t3eventsreservation.view.templateRootPath}
+		}
+		partialRootPaths {
+			10 = {$plugin.tx_t3eventsreservation.view.partialRootPath}
+		}
+		layoutRootPaths {
+			10 = {$plugin.tx_t3eventsreservation.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		schedule {
+			listPid = {$plugin.tx_t3eventsreservation.settings.schedule.listPid}
+		}
+		reservation {
+			detailPid = {$plugin.tx_t3eventsreservation.settings.reservation.detailPid}
+			confirm {
+				notification {
+					admin {
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.fromEmail}
+						toEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.toEmail}
+						subject {
+							field = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.subject.field}
+							noTrimWrap = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.subject.noTrimWrap}
+						}
+						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.format}
+						#template {
+						#	fileName = Admin
+						#	folderName = Reservation/Email
+						#}
+					}
+					user {
+						toEmail {
+							field = contact.email
+						}
+						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.fromEmail}
+						subject {
+							field = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject.field}
+							noTrimWrap = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject.noTrimWrap}
+						}
+						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.format}
+					}
+				}
+			}
+		}
+	}
+}
