@@ -31,7 +31,7 @@
 								- {lesson.event.headline} ({lesson.participants->f:count()} {f:translate(key: 'label.participants', default: 'Participants')})
 							</td>
 							<td>
-								<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {participants: '{participantsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Teilnehmer exportieren" />
+								<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {schedule: '{lesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Teilnehmer exportieren" />
 							</td>
 						</tr>
 						<f:for each="{participantsByLesson}" as="participant">
