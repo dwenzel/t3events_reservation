@@ -130,16 +130,16 @@ class ParticipantController extends AbstractBackendController
 	 */
 	public function downloadAction($schedule = null, $ext = 'csv') {
 		if (is_null($schedule)) {
-			$demand = $this->createDemandFromSettings($this->settings['download']);
+			$demand = $this->createDemandFromSettings($this->settings['participant']['download']);
+			$this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
 			$participants = $this->personRepository->findDemanded($demand);
 		} else {
 			$participants = $schedule->getParticipants();
+			$participants->rewind();
+			/** @var Person $objectForFileName */
+			$objectForFileName = $participants->current();
 		}
 		$this->view->assign('participants', $participants);
-
-		/** @var Person $objectForFileName */
-		$participants->rewind();
-		$objectForFileName = $participants->current();
 
 		return $this->getContentForDownload($ext, $objectForFileName);
 	}
