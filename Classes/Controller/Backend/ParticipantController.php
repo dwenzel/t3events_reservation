@@ -39,7 +39,7 @@ class ParticipantController extends AbstractBackendController
 	 * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
 	 * @inject
 	 */
-	protected $reservationRepository = NULL;
+	protected $reservationRepository = null;
 
 	/**
 	 * Company Repository
@@ -47,7 +47,7 @@ class ParticipantController extends AbstractBackendController
 	 * @var \Webfox\T3events\Domain\Repository\CompanyRepository
 	 * @inject
 	 */
-	protected $companyRepository = NULL;
+	protected $companyRepository = null;
 
 	/**
 	 * Participant Repository
@@ -55,7 +55,7 @@ class ParticipantController extends AbstractBackendController
 	 * @var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
 	 * @inject
 	 */
-	protected $personRepository = NULL;
+	protected $personRepository = null;
 
 	/**
 	 * @var \Webfox\T3events\Domain\Repository\CategoryRepository
@@ -94,12 +94,12 @@ class ParticipantController extends AbstractBackendController
 	 * @return void
 	 */
 	public function listAction(array $overwriteDemand = null) {
-		$demand = $this->createDemandFromSettings($this->settings['participant']);
+		$demand = $this->createDemandFromSettings($this->settings['participant']['list']);
 		$filterOptions = $this->getFilterOptions(
 			$this->settings[$this->settingsUtility->getControllerKey($this)]['list']['filter']
 		);
 
-		if ($overwriteDemand === NULL) {
+		if ($overwriteDemand === null) {
 			$overwriteDemand = $this->moduleData->getOverwriteDemand();
 		} else {
 			$this->moduleData->setOverwriteDemand($overwriteDemand);
@@ -123,37 +123,39 @@ class ParticipantController extends AbstractBackendController
 	/**
 	 * Download action
 	 *
-	 * @param array $participants
+	 * @param \CPSIT\T3eventsReservation\Domain\Model\Schedule $schedule
+	 * @ignorevalidation $schedule
 	 * @param string $ext File extension for download
+	 * @return string
 	 */
-	public function downloadAction($participants = NULL, $ext = 'csv') {
-		if (is_null($participants)) {
-			$demand = $this->createDemandFromSettings($this->settings);
+	public function downloadAction($schedule = null, $ext = 'csv') {
+		if (is_null($schedule)) {
+			$demand = $this->createDemandFromSettings($this->settings['participant']['download']);
+			$this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
 			$participants = $this->personRepository->findDemanded($demand);
-		} elseif (is_array($participants)) {
-			$participants = $this->personRepository->findMultipleByUid(implode(',', $participants));
+		} else {
+			$participants = $schedule->getParticipants();
+			$participants->rewind();
+			/** @var Person $objectForFileName */
+			$objectForFileName = $participants->current();
 		}
 		$this->view->assign('participants', $participants);
 
-		/** @var Person $objectForFileName */
-		$objectForFileName = $participants->getFirst();
-		echo($this->getContentForDownload($ext, $objectForFileName));
-
-		return;
+		return $this->getContentForDownload($ext, $objectForFileName);
 	}
 
 	/**
 	 * Returns custom error flash messages, or
 	 * display no flash message at all on errors.
 	 *
-	 * @return string|boolean The flash message or FALSE if no flash message should be set
+	 * @return string|boolean The flash message or false if no flash message should be set
 	 * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected function getErrorFlashMessage() {
 		$key = 'error' . '.participant.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
 		$message = $this->translate($key);
-		if ($message == NULL) {
-			return FALSE;
+		if ($message == null) {
+			return false;
 		} else {
 			return $message;
 		}
@@ -169,30 +171,28 @@ class ParticipantController extends AbstractBackendController
 		/**@var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
 		$demand = $this->objectManager->get(PersonDemand::class);
 		$demand->setTypes((string) Person::PERSON_TYPE_PARTICIPANT);
-		if (isset($settings['list'])) {
-			foreach ($settings['list'] as $propertyName => $propertyValue) {
-				if (empty($propertyValue)) {
-					continue;
-				}
-				switch ($propertyName) {
-					case 'maxItems':
-						$demand->setLimit($propertyValue);
-						break;
-					case 'category':
-						$demand->setCategories($propertyValue);
-						break;
-						// all following fall through (see below)
-					case 'periodType':
-					case 'periodStart':
-					case 'periodEndDate':
-					case 'periodDuration':
-					case 'search':
-						break;
-					default:
-						if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
-							ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
-						}
-				}
+		foreach ($settings as $propertyName => $propertyValue) {
+			if (empty($propertyValue)) {
+				continue;
+			}
+			switch ($propertyName) {
+				case 'maxItems':
+					$demand->setLimit($propertyValue);
+					break;
+				case 'category':
+					$demand->setCategories($propertyValue);
+					break;
+				// all following fall through (see below)
+				case 'periodType':
+				case 'periodStart':
+				case 'periodEndDate':
+				case 'periodDuration':
+				case 'search':
+					break;
+				default:
+					if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
+						ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
+					}
 			}
 		}
 
