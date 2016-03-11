@@ -1,3 +1,8 @@
+2016-03-11         [RELEASE] Release of t3events_reservation 0.2.0 (Sebastian Kreideweiß)
+2016-03-11 16ed134 [TASK] Participant module now has a download button for all participants (according to current filtering) (Dirk Wenzel)
+2016-03-11 839ddef [TASK] pagination of backend module made configurable by TypoScript (Dirk Wenzel)
+2016-03-11 0bdc0b7 [BUGFIX] fixed error which prevented from downloading all participants of a schedule in backendmodule (Dirk Wenzel)
+
 2016-02-29         [RELEASE] Release of t3events_reservation 0.1.0 (Dirk Wenzel)
 2016-02-28 b6490b8 [TASK] UnitTests.xml adapted. Use custom configuration file for unit tests. (Dirk Wenzel)
 2016-02-28 e4a4584 [BUGFIX] error in travis configuration syntax fixed (Dirk Wenzel)
@@ -83,5 +88,3 @@
 2015-12-14 04f0bcb [TASK] table configuration for performance, TypoScript, localized strings and sql edited. (Dirk Wenzel)
 2015-12-14 627ef8a [TASK] new Model Notification extends Notification from t3events. (Dirk Wenzel)
 2015-12-09 d759f8f [TASK] registration functionality refactored from custom extension into this (Dirk Wenzel)
-
-
