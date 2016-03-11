@@ -20,8 +20,8 @@
 			</tr>
 			<f:be.widget.paginate
 				objects="{participants}"
+				configuration="{settings.participant.list.paginate}"
 				as="paginatedParticipants"
-				configuration="{itemsPerPage: 10, maximumNumberOfLinks: 10, recordsLabel: '{f:translate(key: \'label.participant\', default: \'Participant\')}'}"
 				>
 				<f:groupedFor each="{paginatedParticipants}" as="participantsByLesson" groupBy="reservation.lesson" groupKey="lesson">
 					<f:if condition="{lesson}">

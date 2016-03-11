@@ -88,6 +88,12 @@ module.tx_t3eventsreservation {
 					periods =
 					venue =
 				}
+				paginate {
+					itemsPerPage = 25
+					insertBelow = 0
+					insertAbove = 1
+					recordsLabel = Participants
+				}
 			}
 			search {
 				showSubjectField = true

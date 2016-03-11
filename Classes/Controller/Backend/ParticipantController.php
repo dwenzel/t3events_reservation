@@ -126,6 +126,7 @@ class ParticipantController extends AbstractBackendController
 	 * @param \CPSIT\T3eventsReservation\Domain\Model\Schedule $schedule
 	 * @ignorevalidation $schedule
 	 * @param string $ext File extension for download
+	 * @return string
 	 */
 	public function downloadAction($schedule = null, $ext = 'csv') {
 		if (is_null($schedule)) {
