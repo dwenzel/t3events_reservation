@@ -43,6 +43,17 @@ plugin.tx_t3eventsreservation {
 							noTrimWrap = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject.noTrimWrap}
 						}
 						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.format}
+						attachments {
+							# list of files, which are attached to the notification
+							# allowed are all file identifiers
+							files {
+								field = lesson.registrationDocuments
+								# fallback if field is empty:
+								# default = file:1,path/to/file,1
+								# attach always:
+								# always = EXT:extension_name/path/to/file
+							}
+						}
 					}
 				}
 			}

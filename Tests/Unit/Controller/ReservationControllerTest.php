@@ -29,6 +29,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Webfox\T3events\Domain\Model\Performance;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Repository\PerformanceRepository;
@@ -126,7 +128,7 @@ class ReservationControllerTest extends UnitTestCase {
 
 	protected function mockSettingsUtility() {
 		$mockSettingsUtility = $this->getMock(
-			SettingsUtility::class, ['getValueByKey']
+			SettingsUtility::class, ['getValueByKey', 'getFileStorage']
 		);
 		$this->subject->injectSettingsUtility($mockSettingsUtility);
 
@@ -730,6 +732,51 @@ class ReservationControllerTest extends UnitTestCase {
 				'Reservation/Email',
 				['reservation' => $reservation, 'settings' => $settings]
 			);
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sendNotificationAddsAttachments() {
+		$reservation = new Reservation();
+		$identifier = 'foo';
+		$fileUtilityConfig = [
+			'foo' => 'bar'
+		];
+		$config = [
+			'attachments' => [
+				'files' => $fileUtilityConfig
+			],
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz',
+		];
+		$mockObjectStorage = $this->getMock(
+			ObjectStorage::class
+		);
+		$mockSettingsUtility = $this->mockSettingsUtility();
+		$mockSettingsUtility->expects($this->once())
+			->method('getFileStorage')
+			->with($reservation, $fileUtilityConfig)
+			->will($this->returnValue($mockObjectStorage));
+		$mockSettingsUtility->expects($this->any())
+			->method('getValueByKey')
+			->will($this->returnValue('barBaz'));
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setAttachments']
+		);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$this->mockNotificationService();
+		$mockNotification->expects($this->once())
+			->method('setAttachments')
+			->with($mockObjectStorage);
+
 		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
 	}
 

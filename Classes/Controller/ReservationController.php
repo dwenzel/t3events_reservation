@@ -30,7 +30,6 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use Webfox\T3events\Domain\Model\Performance;
 use Webfox\T3events\Session\Typo3Session;
-use Webfox\T3events\Utility\SettingsUtility;
 
 /**
  * ReservationController
@@ -443,6 +442,12 @@ class ReservationController extends AbstractController {
 		}
 		/** @var Notification $notification */
 		$notification = $this->objectManager->get(Notification::class);
+		if (isset($config['attachments']['files']) && is_array($config['attachments']['files'])) {
+			$filesToAttach = $this->settingsUtility->getFileStorage(
+				$reservation, $config['attachments']['files']
+			);
+			$notification->setAttachments($filesToAttach);
+		}
 		$notification->setRecipient($recipientEmail);
 		$notification->setSender($sender);
 		$notification->setSubject($subject);
@@ -472,4 +477,5 @@ class ReservationController extends AbstractController {
 	public function translate($key, $extension = 't3events_reservation', $arguments = NULL) {
 		return parent::translate($key, $extension, $arguments);
 	}
+
 }
