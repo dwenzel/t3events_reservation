@@ -28,10 +28,6 @@ class ContactValidator extends AbstractValidator {
 
 			return FALSE;
 		}
-		$phone = $contact->getPhone();
-		if (is_null($phone) OR $phone === '') {
-			$this->addError('Phone must not be empty.', 1417193585);
-		}
 
 		return TRUE;
 	}
