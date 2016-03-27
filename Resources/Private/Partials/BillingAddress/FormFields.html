@@ -1,0 +1,45 @@
+<div class="form-fields">
+	<div class="message">
+		<f:translate key="message.fillInBillingAddress" />
+	</div>
+	<div class="field-radio">
+		<label>
+			<f:translate key="tx_t3eventsreservation_domain_model_person.gender" />
+			<span class="required">*</span>
+		</label>
+		<f:form.radio property="billingAddress.gender" id="contactGenderFemale" value="2" />
+		<label for="contactGenderFemale" class="radiolabel">
+			<f:translate key="label.gender.female" />
+		</label>
+		<f:form.radio property="billingAddress.gender" id="contactGenderMale" value="1" />
+		<label for="contactGenderMale" class="radiolabel">
+			<f:translate key="label.gender.male" />
+		</label>
+	</div>
+	<div class="field-input">
+		<label for="billingAddressFirstName">
+			<f:translate key="label.first_name" />
+			<span class="required">*</span>
+		</label>
+		<f:form.textfield id="billingAddressFirstName" property="billingAddress.firstName" />
+	</div>
+	<div class="field-input">
+		<label for="billingAddressLastName">
+			<f:translate key="label.name" />
+			<span class="required">*</span>
+		</label>
+		<f:form.textfield id="billingAddressLastName" property="billingAddress.name" />
+	</div>
+	<div class="field-input">
+		<label for="billingAddressPhone">
+			<f:translate key="label.phone" />
+		</label>
+		<f:form.textfield id="billingAddressPhone" property="billingAddress.phone" />
+	</div>
+	<div class="field-input">
+		<label for="billingAddressEmail">
+			<f:translate key="label.email" />
+		</label>
+		<f:form.textfield id="billingAddressEmail" property="billingAddress.email" />
+	</div>
+</div>

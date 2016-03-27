@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-19T15:02:38Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-03-27T11:40:27Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -189,6 +189,10 @@
 			<source>You are not allowed to see this reservation.</source>
 			<target>Sie dürfen diese Reservierung nicht sehen.</target>
 		</trans-unit>
+		<trans-unit id="header.editBillingAddress" approved="yes" xml:space="preserve">
+			<source>Edit billing address</source>
+			<target>Rechnungsadresse bearbeiten</target>
+		</trans-unit>
 		<trans-unit id="label.abstract" approved="yes" xml:space="preserve">
 			<source>Short description</source>
 			<target>Kurzbeschreibung</target>
@@ -364,6 +368,10 @@
 		<trans-unit id="message.deadLineForLessonExceed" approved="yes" xml:space="preserve">
 			<source>Sorry the reservation deadline for this lesson expired. </source>
 			<target>Die Anmeldefrist für diesen Termin ist abgelaufen. </target>
+		</trans-unit>
+		<trans-unit id="message.fillInBillingAddress" approved="yes" xml:space="preserve">
+			<source>Please, enter your billing address data.</source>
+			<target>Bitte geben Sie Ihre Rechnungsadresse an.</target>
 		</trans-unit>
 		<trans-unit id="message.fillInCompanyData" approved="yes" xml:space="preserve">
 			<source>Please enter your company name and address.</source>

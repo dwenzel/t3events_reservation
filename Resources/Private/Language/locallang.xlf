@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-02-19T15:02:38Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-03-27T11:40:27Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -143,6 +143,9 @@
 		<trans-unit id="error.reservation.show.accessDenied" xml:space="preserve">
 			<source>You are not allowed to see this reservation.</source>
 		</trans-unit>
+		<trans-unit id="header.editBillingAddress" xml:space="preserve">
+			<source>Edit billing address</source>
+		</trans-unit>
 		<trans-unit id="label.abstract" xml:space="preserve">
 			<source>Short description</source>
 		</trans-unit>
@@ -283,6 +286,9 @@
 		</trans-unit>
 		<trans-unit id="message.deadLineForLessonExceed" xml:space="preserve">
 			<source>Sorry the reservation deadline for this lesson expired. </source>
+		</trans-unit>
+		<trans-unit id="message.fillInBillingAddress" xml:space="preserve">
+			<source>Please, enter your billing address data.</source>
 		</trans-unit>
 		<trans-unit id="message.fillInCompanyData" xml:space="preserve">
 			<source>Please enter your company name and address.</source>

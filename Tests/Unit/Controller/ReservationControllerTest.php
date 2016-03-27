@@ -958,4 +958,106 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->newParticipantAction($mockReservation);
 	}
 
+	/**
+	 * @test
+	 */
+	public function editBillingAddressActionDeniesAccess() {
+		$reservation = new Reservation();
+		$this->subject->expects($this->once())
+			->method('isAccessAllowed')
+			->will($this->returnValue(false));
+		$this->assertDenyAccess();
+		$this->subject->editBillingAddressAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function editBillingAddressActionAssignsReservationToView() {
+		$this->mockAllowAccessReturnsTrue();
+		$view = $this->mockView();
+
+		$reservation = new Reservation();
+
+		$view->expects($this->once())
+			->method('assignMultiple')
+			->with(
+				[
+					'reservation' => $reservation
+				]
+			);
+
+		$this->subject->editBillingAddressAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionDeniesAccess() {
+		$reservation = new Reservation();
+		$this->subject->expects($this->once())
+			->method('isAccessAllowed')
+			->will($this->returnValue(false));
+		$this->assertDenyAccess();
+
+		$this->subject->updateAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionUpdatesReservation() {
+		$this->mockAllowAccessReturnsTrue();
+		$reservationRepository = $this->mockReservationRepository();
+
+		$reservation = new Reservation();
+
+		$reservationRepository->expects($this->once())
+			->method('update')
+			->with($reservation);
+
+		$this->subject->updateAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionAddsFlashMessageOnSuccess() {
+		$this->mockAllowAccessReturnsTrue();
+		$this->mockReservationRepository();
+		$translatedMessage = 'foo';
+		$reservation = new Reservation();
+
+		$this->subject->expects($this->once())
+			->method('translate')
+			->with('message.reservation.update.success')
+			->will($this->returnValue($translatedMessage));
+		$this->subject->expects($this->once())
+			->method('addFlashMessage')
+			->with($translatedMessage);
+
+		$this->subject->updateAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionRedirectsToEditAction() {
+		$this->mockAllowAccessReturnsTrue();
+		$this->mockReservationRepository();
+		$reservation = new Reservation();
+
+		$this->subject->expects($this->once())
+			->method('redirect')
+			->with(
+				'edit',
+				null,
+				null,
+				[
+					'reservation' => $reservation
+				]
+			);
+
+		$this->subject->updateAction($reservation);
+	}
 }
