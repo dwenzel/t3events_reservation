@@ -22,6 +22,7 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use CPSIT\T3eventsReservation\PriceableInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
@@ -30,6 +31,7 @@ use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use Webfox\T3events\Domain\Model\Performance;
+use Webfox\T3events\Session\SessionInterface;
 use Webfox\T3events\Session\Typo3Session;
 
 /**
@@ -106,11 +108,12 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function showAction(Reservation $reservation) {
-		if ($this->isAccessAllowed($reservation)) {
-			$this->view->assign('reservation', $reservation);
-		} else {
+		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
+			return;
 		}
+
+		$this->view->assign('reservation', $reservation);
 	}
 
 	/**
@@ -154,33 +157,37 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function createAction(Reservation $newReservation) {
-		//@todo: check for existing session key and prevent creating new reservation
-		if (is_null($newReservation->getUid())) {
-			if ($contact = $newReservation->getContact()) {
-				$contact->setReservation($newReservation);
-			}
-			$newReservation->setStatus(Reservation::STATUS_NEW);
-			if ($newReservation->getContactIsParticipant() && is_object($contact)) {
-				$participant = new Person();
-				foreach (ObjectAccess::getGettableProperties($contact) as $propertyName=>$propertyValue) {
-					if (ObjectAccess::isPropertySettable($participant, $propertyName)) {
-						ObjectAccess::setProperty($participant, $propertyName, $propertyValue);
-					}
-				}
-				$participant->setType(Person::PERSON_TYPE_PARTICIPANT);
-				$newReservation->addParticipant($participant);
-				$newReservation->getLesson()->addParticipant($participant);
-			}
-			$this->addFlashMessage(
-				$this->translate('message.reservation.create.success')
-			);
-			$this->reservationRepository->add($newReservation);
-			$this->persistenceManager->persistAll();
-			$this->session->set('reservationUid', $newReservation->getUid());
-			$this->forward('edit', NULL, NULL, ['reservation' => $newReservation]);
-		} else {
+		if (
+            !is_null($newReservation->getUid())
+            || ($this->session instanceof SessionInterface
+                && $this->session->has('reservationUid'))
+        ) {
 			$this->denyAccess();
+			return;
 		}
+
+		if ($contact = $newReservation->getContact()) {
+			$contact->setReservation($newReservation);
+		}
+		$newReservation->setStatus(Reservation::STATUS_NEW);
+		if ($newReservation->getContactIsParticipant() && is_object($contact)) {
+			$participant = new Person();
+			foreach (ObjectAccess::getGettableProperties($contact) as $propertyName=>$propertyValue) {
+				if (ObjectAccess::isPropertySettable($participant, $propertyName)) {
+					ObjectAccess::setProperty($participant, $propertyName, $propertyValue);
+				}
+			}
+			$participant->setType(Person::PERSON_TYPE_PARTICIPANT);
+			$newReservation->addParticipant($participant);
+			$newReservation->getLesson()->addParticipant($participant);
+		}
+		$this->addFlashMessage(
+			$this->translate('message.reservation.create.success')
+		);
+		$this->reservationRepository->add($newReservation);
+		$this->persistenceManager->persistAll();
+		$this->session->set('reservationUid', $newReservation->getUid());
+		$this->forward('edit', NULL, NULL, ['reservation' => $newReservation]);
 	}
 
 	/**
@@ -192,16 +199,17 @@ class ReservationController extends AbstractController {
 	public function editAction(Reservation $reservation) {
 		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
-		} else {
-			$this->reservationRepository->update($reservation);
-			$this->persistenceManager->persistAll();
-
-			$this->view->assignMultiple(
-				[
-					'reservation' => $reservation
-				]
-			);
+			return;
 		}
+
+		$this->reservationRepository->update($reservation);
+		$this->persistenceManager->persistAll();
+
+		$this->view->assignMultiple(
+			[
+				'reservation' => $reservation
+			]
+		);
 	}
 
 	/**
@@ -211,25 +219,26 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function deleteAction(Reservation $reservation) {
-		if ($this->isAccessAllowed($reservation)) {
-			$this->addFlashMessage(
-				$this->translate('message.reservation.delete.success')
-			);
-			if ($participants = $reservation->getParticipants()) {
-				foreach ($participants as $participant) {
-					$this->personRepository->remove($participant);
-				}
-			}
-			if ($company = $reservation->getCompany()) {
-				$this->companyRepository->remove($company);
-			}
-			if ($contact = $reservation->getContact()) {
-				$this->personRepository->remove($contact);
-			}
-			$this->reservationRepository->remove($reservation);
-		} else {
+		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
+			return;
 		}
+
+		$this->addFlashMessage(
+			$this->translate('message.reservation.delete.success')
+		);
+		if ($participants = $reservation->getParticipants()) {
+			foreach ($participants as $participant) {
+				$this->personRepository->remove($participant);
+			}
+		}
+		if ($company = $reservation->getCompany()) {
+			$this->companyRepository->remove($company);
+		}
+		if ($contact = $reservation->getContact()) {
+			$this->personRepository->remove($contact);
+		}
+		$this->reservationRepository->remove($reservation);
 	}
 
 	/**
@@ -241,34 +250,41 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function newParticipantAction(Reservation $reservation, Person $newParticipant = NULL) {
-		if ($this->isAccessAllowed($reservation)
-			&& ($reservation->getStatus() == Reservation::STATUS_DRAFT
-			|| $reservation->getStatus() == Reservation::STATUS_NEW)
+		if (
+			!$this->isAccessAllowed($reservation)
+			|| !(
+				$reservation->getStatus() === Reservation::STATUS_DRAFT
+				|| $reservation->getStatus() === Reservation::STATUS_NEW
+			)
 		) {
-			if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
-				$reservation->setStatus(Reservation::STATUS_DRAFT);
-			}
-			if (!$reservation->getLesson()->getFreePlaces()) {
-				$this->addFlashMessage(
-					$this->translate('message.noFreePlacesForThisLesson'), '', AbstractMessage::ERROR, TRUE
-				);
-			} elseif (!count($reservation->getParticipants())) {
-				$this->addFlashMessage(
-					$this->translate('message.reservation.newParticipant.addAtLeastOneParticipant'), '', AbstractMessage::NOTICE
-				);
-			}
-			if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
-				$newParticipant = $this->request->getOriginalRequest()->getArgument('newParticipant');
-			}
-			$this->view->assignMultiple(
-				[
-					'newParticipant' => $newParticipant,
-					'reservation' => $reservation
-				]
-			);
-		} else {
 			$this->denyAccess();
+			return;
 		}
+
+		if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+			$reservation->setStatus(Reservation::STATUS_DRAFT);
+		}
+
+		$lesson = $reservation->getLesson();
+		if ($lesson instanceof BookableInterface &&
+			$lesson->getFreePlaces() < 1) {
+			$this->addFlashMessage(
+				$this->translate('message.noFreePlacesForThisLesson'), '', AbstractMessage::ERROR, TRUE
+			);
+		} elseif (!count($reservation->getParticipants())) {
+			$this->addFlashMessage(
+				$this->translate('message.reservation.newParticipant.addAtLeastOneParticipant'), '', AbstractMessage::NOTICE
+			);
+		}
+		if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
+			$newParticipant = $this->request->getOriginalRequest()->getArgument('newParticipant');
+		}
+		$this->view->assignMultiple(
+			[
+				'newParticipant' => $newParticipant,
+				'reservation' => $reservation
+			]
+		);
 	}
 
 	/**
@@ -281,30 +297,30 @@ class ReservationController extends AbstractController {
 	public function createParticipantAction(Reservation $reservation, Person $newParticipant) {
 		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
-		} else {
-			if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
-				$reservation->setStatus(Reservation::STATUS_DRAFT);
-			}
-			if ($reservation->getLesson()->getFreePlaces()) {
-				$newParticipant->setReservation($reservation);
-				$newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
-				$reservation->addParticipant($newParticipant);
-				$reservation->getLesson()->addParticipant($newParticipant);
-				$this->reservationRepository->update($reservation);
-				$this->lessonRepository->update($reservation->getLesson());
-				$this->persistenceManager->persistAll();
-				$this->addFlashMessage(
-					$this->translate('message.reservation.createParticipant.success')
-				);
-			}
-
-			$this->redirect(
-				'edit',
-				NULL,
-				NULL,
-				['reservation' => $reservation]
+			return;
+		}
+		if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+			$reservation->setStatus(Reservation::STATUS_DRAFT);
+		}
+		if ($reservation->getLesson()->getFreePlaces()) {
+			$newParticipant->setReservation($reservation);
+			$newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
+			$reservation->addParticipant($newParticipant);
+			$reservation->getLesson()->addParticipant($newParticipant);
+			$this->reservationRepository->update($reservation);
+			$this->lessonRepository->update($reservation->getLesson());
+			$this->persistenceManager->persistAll();
+			$this->addFlashMessage(
+				$this->translate('message.reservation.createParticipant.success')
 			);
 		}
+
+		$this->redirect(
+			'edit',
+			null,
+			null,
+			['reservation' => $reservation]
+		);
 	}
 
 	/**
@@ -314,11 +330,12 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function checkoutAction(Reservation $reservation) {
-		if ($this->isAccessAllowed($reservation)) {
-			$this->view->assign('reservation', $reservation);
-		} else {
+		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
+			return;
 		}
+
+		$this->view->assign('reservation', $reservation);
 	}
 
 	/**
@@ -328,20 +345,20 @@ class ReservationController extends AbstractController {
 	 * @return void
 	 */
 	public function confirmAction(Reservation $reservation) {
-		if ($this->isAccessAllowed($reservation)) {
-			// @todo optionally read reservation status from settings
-			$reservation->setStatus(Reservation::STATUS_SUBMITTED);
-			$this->addFlashMessage(
-				$this->translate('message.reservation.confirm.success')
-			);
-			foreach ($this->settings['reservation']['confirm']['notification'] as $identifier => $config) {
-				$this->sendNotification($reservation, $identifier, $config);
-			}
-			$this->reservationRepository->update($reservation);
-			$this->forward('show', NULL, NULL, ['reservation' => $reservation]);
-		} else {
+		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
+			return;
 		}
+		// @todo optionally read reservation status from settings
+		$reservation->setStatus(Reservation::STATUS_SUBMITTED);
+		$this->addFlashMessage(
+			$this->translate('message.reservation.confirm.success')
+		);
+		foreach ($this->settings['reservation']['confirm']['notification'] as $identifier => $config) {
+			$this->sendNotification($reservation, $identifier, $config);
+		}
+		$this->reservationRepository->update($reservation);
+		$this->forward('show', NULL, NULL, ['reservation' => $reservation]);
 	}
 
 	/**
@@ -351,21 +368,20 @@ class ReservationController extends AbstractController {
 	 * @param Person $participant
 	 * @return void
 	 */
-	public function removeParticipantAction(
-		Reservation $reservation,
-		Person $participant
-	) {
-		if ($this->isAccessAllowed($reservation)) {
-			$reservation->removeParticipant($participant);
-			$reservation->getLesson()->removeParticipant($participant);
-			$this->personRepository->remove($participant);
-			$this->addFlashMessage(
-				$this->translate('message.reservation.removeParticipant.success')
-			);
-			$this->redirect('edit', NULL, NULL, ['reservation' => $reservation]);
-		} else {
+	public function removeParticipantAction(Reservation $reservation, Person $participant) {
+		if (!$this->isAccessAllowed($reservation)) {
 			$this->denyAccess();
+			return;
 		}
+
+		$reservation->removeParticipant($participant);
+		$reservation->getLesson()->removeParticipant($participant);
+		$this->personRepository->remove($participant);
+		$this->addFlashMessage(
+			$this->translate('message.reservation.removeParticipant.success')
+		);
+
+		$this->redirect('edit', NULL, NULL, ['reservation' => $reservation]);
 	}
 
 	/**
@@ -433,7 +449,7 @@ class ReservationController extends AbstractController {
 	 * @return boolean
 	 */
 	public function isAccessAllowed($object) {
-		$isAllowed = FALSE;
+		$isAllowed = false;
 		if ($object instanceof Reservation) {
 			$isAllowed = ($this->session->has('reservationUid')
 				&& method_exists($object, 'getUid')

@@ -25,6 +25,7 @@ namespace CPSIT\T3eventsReservations\Tests\Unit\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsReservation\Controller\ReservationController;
+use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -270,6 +271,24 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function newParticipantActionDoesNotDenyAccessIfReservationStatusIsDraft() {
+		$mockRequest = $this->getMock(
+			Request::class
+		);
+		$this->mockView();
+		$this->inject($this->subject, 'request', $mockRequest);
+		$reservation = new Reservation();
+		$reservation->setStatus(Reservation::STATUS_DRAFT);
+
+		$this->mockAllowAccessReturnsTrue();
+		$this->subject->expects($this->never())
+			->method('denyAccess');
+		$this->subject->newParticipantAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
 	public function removeParticipantActionDeniesAccess() {
 		$reservation = new Reservation();
 		$participant = new Person();
@@ -328,6 +347,23 @@ class ReservationControllerTest extends UnitTestCase {
 			->method('getUid')
 			->will($this->returnValue(5));
 		$this->assertDenyAccess();
+		$this->subject->createAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function createActionDeniesAccessReservationIsInSession() {
+		$reservation = $this->getMock(
+			Reservation::class
+		);
+		$mockSession = $this->mockSession();
+		$mockSession->expects($this->once())
+			->method('has')
+			->with('reservationUid')
+			->will($this->returnValue(true));
+		$this->assertDenyAccess();
+
 		$this->subject->createAction($reservation);
 	}
 
@@ -827,15 +863,14 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
+		$mockLesson = $this->getMock(
+			BookableInterface::class
 		);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(1));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
+		$this->mockAllowAccessReturnsTrue();
+
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_DRAFT));
@@ -862,15 +897,12 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
-		);
+		$mockLesson = $this->getMock(BookableInterface::class);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(1));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
+        $this->mockAllowAccessReturnsTrue();
+
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_NEW));
@@ -892,19 +924,16 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
-		);
+        $this->mockAllowAccessReturnsTrue();
+
+		$mockLesson = $this->getMock(BookableInterface::class);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(0));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_NEW));
-		$mockReservation->expects($this->once())
+        $mockReservation->expects($this->once())
 			->method('getLesson')
 			->will($this->returnValue($mockLesson));
 		$this->mockRequest();
@@ -932,15 +961,13 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
-		);
+		$this->mockAllowAccessReturnsTrue();
+
+        $mockLesson = $this->getMock(BookableInterface::class);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(3));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
+
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_NEW));
