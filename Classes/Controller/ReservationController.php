@@ -354,9 +354,11 @@ class ReservationController extends AbstractController {
 		$this->addFlashMessage(
 			$this->translate('message.reservation.confirm.success')
 		);
-		foreach ($this->settings['reservation']['confirm']['notification'] as $identifier => $config) {
-			$this->sendNotification($reservation, $identifier, $config);
-		}
+        if (is_array($this->settings['reservation']['confirm']['notification'])) {
+            foreach ($this->settings['reservation']['confirm']['notification'] as $identifier => $config) {
+                $this->sendNotification($reservation, $identifier, $config);
+            }
+        }
 		$this->reservationRepository->update($reservation);
 		$this->forward('show', NULL, NULL, ['reservation' => $reservation]);
 	}

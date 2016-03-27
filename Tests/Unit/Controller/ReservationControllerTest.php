@@ -311,7 +311,114 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->confirmAction($reservation);
 	}
 
-	/**
+    /**
+     * @test
+     */
+    public function confirmActionSetsStatusSubmitted() {
+        $mockReservation = $this->getMock(
+            Reservation::class, ['setStatus']
+        );
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+
+        $mockReservation->expects($this->once())
+            ->method('setStatus')
+            ->with(Reservation::STATUS_SUBMITTED);
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionAddsFlashMessage() {
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+        $translatedMessage = 'foo';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with('message.reservation.confirm.success')
+            ->will($this->returnValue($translatedMessage)
+        );
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($translatedMessage);
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionSendsNotification() {
+        $this->subject = $this->getAccessibleMock(
+            ReservationController::class,
+            ['sendNotification', 'redirect', 'forward', 'addFlashMessage', 'translate', 'isAccessAllowed', 'clearCacheOnError'],
+            [], '', false);
+        $identifier = 'foo';
+        $configForIdentifier = ['bar'];
+
+        $settings = [
+            'reservation' => [
+                'confirm' => [
+                    'notification' => [
+                        $identifier => $configForIdentifier
+                    ]
+                ]
+            ]
+        ];
+        $this->subject->_set('settings', $settings);
+
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+
+        $this->subject->expects($this->once())
+            ->method('sendNotification')
+            ->with(
+                $mockReservation,
+                $identifier,
+                $configForIdentifier
+            );
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionUpdatesReservation() {
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockAllowAccessReturnsTrue();
+        $mockRepository = $this->mockReservationRepository();
+        $mockRepository->expects($this->once())
+            ->method('update')
+            ->with($mockReservation);
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionForwardToShowAction() {
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+        $this->subject->expects($this->once())
+            ->method('forward')
+            ->with(
+                'show',
+                null,
+                null,
+                ['reservation' => $mockReservation]
+            );
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
 	 * @test
 	 */
 	public function checkoutActionDeniesAccess() {
@@ -323,7 +430,21 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->checkoutAction($reservation);
 	}
 
-	/**
+    /**
+     * @test
+     */
+    public function checkoutActionAssignsReservationToView() {
+        $this->mockAllowAccessReturnsTrue();
+        $reservation = new Reservation();
+        $view = $this->mockView();
+        $view->expects($this->once())
+            ->method('assign')
+            ->with('reservation', $reservation);
+
+        $this->subject->checkoutAction($reservation);
+    }
+
+    /**
 	 * @test
 	 */
 	public function createParticipantActionDeniesAccess() {
