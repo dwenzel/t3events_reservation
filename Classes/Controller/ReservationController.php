@@ -111,10 +111,10 @@ class ReservationController extends AbstractController
     {
         if (!$this->isAccessAllowed($reservation)) {
             $this->denyAccess();
-
             return;
         }
 
+        $this->session->clean();
         $this->view->assign('reservation', $reservation);
     }
 

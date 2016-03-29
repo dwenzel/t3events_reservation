@@ -536,6 +536,20 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->showAction($reservation);
 	}
 
+    /**
+     * @test
+     */
+    public function showActionCleansSession() {
+        $this->mockAllowAccessReturnsTrue();
+        $reservation = new Reservation();
+        $this->mockView();
+        $session = $this->mockSession();
+        $session->expects($this->once())
+            ->method('clean');
+
+        $this->subject->showAction($reservation);
+    }
+
 	/**
 	 * @test
 	 */
