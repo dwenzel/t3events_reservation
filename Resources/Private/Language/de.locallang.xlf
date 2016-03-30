@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-03-27T11:40:27Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-03-30T15:16:13Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -425,6 +425,10 @@
 			<source>Your reservation has been created.</source>
 			<target>Ihre Reservierung wurde angelegt.</target>
 		</trans-unit>
+		<trans-unit id="message.reservation.createBillingAddress.success" approved="yes" xml:space="preserve">
+			<source>The billing address has been saved.</source>
+			<target>Die Rechnungsadresse wurde gespeichert.</target>
+		</trans-unit>
 		<trans-unit id="message.reservation.createParticipant.success" approved="yes" xml:space="preserve">
 			<source>The participant has been added to your reservation.</source>
 			<target>Der Teilnehmer wurde zur Reservierung hinzugefügt.</target>
@@ -436,6 +440,10 @@
 		<trans-unit id="message.reservation.newParticipant.addAtLeastOneParticipant" approved="yes" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
 			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.removeBillingAddress.success" approved="yes" xml:space="preserve">
+			<source>The billing address has been removed from your reservation.</source>
+			<target>Die Rechnungsadresse wurde von der Reservierung entfernt.</target>
 		</trans-unit>
 		<trans-unit id="message.reservation.removeParticipant.success" approved="yes" xml:space="preserve">
 			<source>The participant has been removed from your reservation.</source>

@@ -398,6 +398,14 @@ class Reservation extends AbstractEntity {
 		$this->billingAddress = $billingAddress;
 	}
 
+    /**
+     * Removes the billing address.
+     * I.e. sets it to null
+     */
+	public function removeBillingAddress() {
+        $this->billingAddress = null;
+    }
+
 	/**
 	 * @return float
 	 */

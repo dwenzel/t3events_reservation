@@ -25,8 +25,10 @@ namespace CPSIT\T3eventsReservations\Tests\Unit\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsReservation\Controller\ReservationController;
+use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -39,6 +41,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Domain\Model\Performance;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Repository\PerformanceRepository;
@@ -91,13 +94,24 @@ class ReservationControllerTest extends UnitTestCase {
 	 */
 	protected function mockReservationRepository() {
 		$reservationRepository = $this->getMock(
-			ReservationRepository::class, ['add', 'update', 'remove'], [], '', FALSE);
+			ReservationRepository::class, ['add', 'update', 'remove'], [], '', false);
 		$this->inject($this->subject, 'reservationRepository', $reservationRepository);
 
 		return $reservationRepository;
 	}
 
-	protected function mockAllowAccessReturnsTrue() {
+    /**
+     * @return mixed
+     */
+    protected function mockPersonRepository() {
+        $personRepository = $this->getMock(
+            PersonRepository::class, ['add', 'update', 'remove'], [], '', false);
+        $this->inject($this->subject, 'personRepository', $personRepository);
+
+        return $personRepository;
+    }
+
+    protected function mockAllowAccessReturnsTrue() {
 		$this->subject->expects($this->once())
 			->method('isAccessAllowed')
 			->will($this->returnValue(TRUE));
@@ -1222,4 +1236,314 @@ class ReservationControllerTest extends UnitTestCase {
 
 		$this->subject->updateAction($reservation);
 	}
+
+    /**
+     * @test
+     */
+    public function editParticipantActionDeniesAccess() {
+        $reservation = new Reservation();
+        $participant = new Person();
+        $this->subject->expects($this->once())
+            ->method('isAccessAllowed')
+            ->will($this->returnValue(false));
+        $this->assertDenyAccess();
+        $this->subject->editParticipantAction($reservation, $participant);
+    }
+
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459342911
+     */
+    public function editParticipantActionThrowsExceptionForInvalidPersonType()
+    {
+        $reservation = new Reservation();
+        $participant = new Person();
+        $participant->setType('foo');
+        $this->mockAllowAccessReturnsTrue();
+        $this->subject->editParticipantAction(
+            $reservation, $participant
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459343264
+     */
+    public function editParticipantActionThrowsExceptionForMissingParticipant()
+    {
+        $reservation = new Reservation();
+        $participant = new Person();
+        $this->mockAllowAccessReturnsTrue();
+        $this->subject->editParticipantAction(
+            $reservation, $participant
+        );
+    }
+
+
+    /**
+     * @test
+     */
+    public function removeBillingAddressActionDeniesAccess() {
+        $reservation = new Reservation();
+        $billingAddress = new BillingAddress();
+        $this->subject->expects($this->once())
+            ->method('isAccessAllowed')
+            ->will($this->returnValue(false));
+        $this->assertDenyAccess();
+        $this->subject->removeBillingAddressAction($reservation, $billingAddress);
+    }
+
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459344863
+     */
+    public function removeBillingAddressActionThrowsExceptionForMissingAddress() {
+        $reservation = new Reservation();
+        $this->mockAllowAccessReturnsTrue();
+        $billingAddress = new BillingAddress();
+        $this->subject->removeBillingAddressAction(
+            $reservation, $billingAddress
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function removeBillingAddressAddsMessageOnSuccess()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockPersonRepository();
+
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class, ['getBillingAddress']
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $reservation->expects($this->any())
+            ->method('getBillingAddress')
+            ->will($this->returnValue($mockBillingAddress));
+        $expectedKey = 'message.reservation.removeBillingAddress.success';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with($expectedKey)
+            ->will($this->returnValue($expectedKey));
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($expectedKey);
+
+        $this->subject->removeBillingAddressAction($reservation, $mockBillingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function removeBillingAddressRedirectsToEditAction()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+        $this->mockPersonRepository();
+
+        /** @var Reservation $mockReservation */
+        $mockReservation = $this->getMock(
+            Reservation::class, ['getBillingAddress']
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $mockReservation->expects($this->any())
+            ->method('getBillingAddress')
+            ->will($this->returnValue($mockBillingAddress));
+
+        $this->subject->expects($this->once())
+            ->method('redirect')
+            ->with(
+                'edit',
+                null,
+                null,
+                [
+                    'reservation' => $mockReservation
+                ]
+            );
+
+        $this->subject->removeBillingAddressAction($mockReservation, $mockBillingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function newBillingAddressActionDeniesAccess() {
+        $reservation = new Reservation();
+        $this->assertDenyAccess();
+        $this->subject->newBillingAddressAction($reservation);
+    }
+
+    /**
+     * @test
+     */
+    public function newBillingAddressActionAssignsVariablesToView()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        $mockReservation = $this->getAccessibleMock(
+            Reservation::class
+        );
+
+        $mockView = $this->mockView();
+        $mockView->expects($this->once())
+            ->method('assignMultiple')
+            ->with(
+                [
+                    'newBillingAddress' => null,
+                    'reservation' => $mockReservation
+                ]
+            );
+
+        $this->subject->newBillingAddressAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionDeniesAccess() {
+        $reservation = new Reservation();
+        $billingAddress = new BillingAddress();
+        $this->assertDenyAccess();
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionSetsBillingAddress()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class, ['setBillingAddress']
+        );
+        /** @var BillingAddress $billingAddress */
+        $billingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->mockPersonRepository();
+        $reservation->expects($this->once())
+            ->method('setBillingAddress')
+            ->with($billingAddress);
+
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionAddsBillingAddressToRepository()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $billingAddress */
+        $billingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->mockReservationRepository();
+        $mockPersonRepository = $this->mockPersonRepository();
+        $mockPersonRepository->expects($this->once())
+            ->method('add')
+            ->with($billingAddress);
+
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressUpdatesReservation()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $billingAddress */
+        $billingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->mockPersonRepository();
+        $mockReservationRepository = $this->mockReservationRepository();
+        $mockReservationRepository->expects($this->once())
+            ->method('update')
+            ->with($reservation);
+
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+
+    /**
+     * @test
+     */
+    public function createBillingAddressAddsMessageOnSuccess()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockPersonRepository();
+        $this->mockReservationRepository();
+
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $expectedKey = 'message.reservation.createBillingAddress.success';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with($expectedKey)
+            ->will($this->returnValue($expectedKey));
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($expectedKey);
+
+        $this->subject->createBillingAddressAction($reservation, $mockBillingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionRedirectsToEditAction()
+    {
+        $this->mockAllowAccessReturnsTrue();
+        $this->mockReservationRepository();
+        $this->mockPersonRepository();
+
+        /** @var Reservation $mockReservation */
+        $mockReservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->subject->expects($this->once())
+            ->method('redirect')
+            ->with(
+                'edit',
+                null,
+                null,
+                [
+                    'reservation' => $mockReservation
+                ]
+            );
+
+        $this->subject->createBillingAddressAction($mockReservation, $mockBillingAddress);
+    }
 }

@@ -19,11 +19,13 @@ namespace CPSIT\T3eventsReservation\Controller;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use Webfox\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
@@ -339,6 +341,47 @@ class ReservationController extends AbstractController
     }
 
     /**
+     * Edit participant
+     *
+     * @param Reservation $reservation
+     * @param Person $participant
+     * @throws InvalidSourceException
+     */
+    public function editParticipantAction(Reservation $reservation, Person $participant)
+    {
+        if (!$this->isAccessAllowed($reservation)) {
+            $this->denyAccess();
+
+            return;
+        }
+
+        if ($participant->getType() !== Person::PERSON_TYPE_PARTICIPANT)
+        {
+            throw new InvalidSourceException(
+                'Invalid person type for ReservationController->editParticipantAction. ' .
+                'Expected ' . Person::class . '::PERSON_TYPE_PARTICIPANT, got class '
+                . get_class($participant) . ' type ' . $participant->getType() . '.',
+                1459342911
+            );
+        }
+
+        if (!$reservation->getParticipants()->contains($participant))
+        {
+            throw new InvalidSourceException(
+                'Can not edit participant uid ' . $participant->getUid()
+                . '. Participant not found in Reservation uid: ' . $reservation->getUid() . '.',
+                1459343264
+            );
+        }
+        $this->view->assignMultiple(
+            [
+                'reservation' => $reservation,
+                'participant' => $participant
+            ]
+        );
+    }
+
+    /**
      * Checkout Action
      *
      * @param Reservation $reservation
@@ -424,6 +467,89 @@ class ReservationController extends AbstractController
             [
                 'reservation' => $reservation,
             ]
+        );
+    }
+
+    /**
+     * Removes a billing address from reservation
+     *
+     * @param Reservation $reservation
+     * @param BillingAddress $billingAddress
+     * @throws InvalidSourceException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     */
+    public function removeBillingAddressAction(Reservation $reservation, BillingAddress $billingAddress)
+    {
+        if (!$this->isAccessAllowed($reservation)) {
+            $this->denyAccess();
+
+            return;
+        }
+
+        if ($reservation->getBillingAddress() !== $billingAddress) {
+            throw new InvalidSourceException(
+                'Can not remove billing address uid ' . $billingAddress->getUid() . ' from Reservation uid '
+            . $reservation->getUid() . '.',
+                1459344863
+            );
+        }
+
+        $reservation->removeBillingAddress();
+        $this->personRepository->remove($billingAddress);
+
+        $this->addFlashMessage(
+            $this->translate('message.reservation.removeBillingAddress.success')
+        );
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            ['reservation' => $reservation]
+        );
+    }
+
+    /**
+     * New billing address action
+     *
+     * @param Reservation $reservation
+     * @param BillingAddress|null $newBillingAddress
+     * @ignorevalidation $newBillingAddress
+     */
+    public function newBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress = null)
+    {
+        if (!$this->isAccessAllowed($reservation)) {
+            $this->denyAccess();
+            return;
+        }
+
+        $this->view->assignMultiple(
+            [
+                'newBillingAddress' => $newBillingAddress,
+                'reservation' => $reservation
+            ]
+        );
+    }
+
+    public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress)
+    {
+        if (!$this->isAccessAllowed($reservation)) {
+            $this->denyAccess();
+            return;
+        }
+
+        $reservation->setBillingAddress($newBillingAddress);
+        $this->personRepository->add($newBillingAddress);
+        $this->reservationRepository->update($reservation);
+        $this->addFlashMessage(
+            $this->translate('message.reservation.createBillingAddress.success')
+        );
+
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            ['reservation' => $reservation]
         );
     }
 
