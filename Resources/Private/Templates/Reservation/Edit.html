@@ -7,7 +7,7 @@
 	<f:render partial="FormErrors" arguments="{object:reservation}" />
 	<f:link.action
 		action="editBillingAddress"
-		arguments="{billingAddress : '{reservation.billingAddress}'}">
+		arguments="{reservation: reservation}">
 		{f:translate(key: 'button.editBillingAddress', default:'button.editBillingAddress')}</f:link.action>
 	<f:form action="checkout" name="reservation" object="{reservation}" noCacheHash="TRUE">
 		<f:render partial="Reservation/FormFields" arguments="{reservation:reservation}" />

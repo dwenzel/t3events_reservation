@@ -7,7 +7,9 @@
 	<f:render partial="FormErrors" arguments="{object:Reservation}" />
 
 	<f:form action="update" name="reservation" object="{reservation}" noCacheHash="TRUE">
-		<f:render partial="BillingAddress/FormFields" arguments="{billingAddress: '{reservation.billingAddress}'}" />
-		<f:form.submit value="Save" />
+		<f:render partial="BillingAddress/FormFields"
+				  arguments="{prefixFieldName: 'event_registration_billing_address', prefixProperty: 'billingAddress.'}"
+		/>
+		<f:form.submit value="{f:translate(key: 'button.save')}" />
 	</f:form>
 </f:section>

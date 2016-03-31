@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-03-30T15:16:13Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-03-31T14:10:52Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="button.addBillingAddress" approved="yes" xml:space="preserve">
+			<source>add billing address</source>
+			<target>Rechnungsadresse hinzufügen</target>
+		</trans-unit>
+		<trans-unit id="button.addParticipant" approved="yes" xml:space="preserve">
+			<source>add participant</source>
+			<target>Teilnehmer hinzufügen</target>
+		</trans-unit>
 		<trans-unit id="button.applyFilter" approved="yes" xml:space="preserve">
 			<source>apply filter</source>
 			<target>Filter anwenden</target>
@@ -45,6 +53,10 @@
 			<source>Delete Reservation</source>
 			<target>Reservierung löschen</target>
 		</trans-unit>
+		<trans-unit id="button.editBillingAddress" approved="yes" xml:space="preserve">
+			<source>edit billing address</source>
+			<target>Rechnungsadresse bearbeiten</target>
+		</trans-unit>
 		<trans-unit id="button.goToLessonListPage" approved="yes" xml:space="preserve">
 			<source>Go to lessons list</source>
 			<target>Zur Veranstaltungsliste</target>
@@ -52,6 +64,10 @@
 		<trans-unit id="button.proceed" approved="yes" xml:space="preserve">
 			<source>Proceed</source>
 			<target>weiter</target>
+		</trans-unit>
+		<trans-unit id="button.removeBillingAddress" approved="yes" xml:space="preserve">
+			<source>remove billing address</source>
+			<target>Rechnungsadresse löschen</target>
 		</trans-unit>
 		<trans-unit id="button.removeParticipant" approved="yes" xml:space="preserve">
 			<source>Remove Participant</source>
@@ -189,13 +205,29 @@
 			<source>You are not allowed to see this reservation.</source>
 			<target>Sie dürfen diese Reservierung nicht sehen.</target>
 		</trans-unit>
+		<trans-unit id="header.billingAddress" approved="yes" xml:space="preserve">
+			<source>Billing Address</source>
+			<target>Rechnungsadresse</target>
+		</trans-unit>
 		<trans-unit id="header.editBillingAddress" approved="yes" xml:space="preserve">
 			<source>Edit billing address</source>
 			<target>Rechnungsadresse bearbeiten</target>
 		</trans-unit>
+		<trans-unit id="header.editReservation" approved="yes" xml:space="preserve">
+			<source>Edit Reservation</source>
+			<target>Reservierung bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="header.newBillingAddress" approved="yes" xml:space="preserve">
+			<source>Add Billing Address</source>
+			<target>Rechnungsadresse hinzufügen</target>
+		</trans-unit>
 		<trans-unit id="label.abstract" approved="yes" xml:space="preserve">
 			<source>Short description</source>
 			<target>Kurzbeschreibung</target>
+		</trans-unit>
+		<trans-unit id="label.accountingOffice" approved="yes" xml:space="preserve">
+			<source>Accounting Office</source>
+			<target>Rechnungsstelle</target>
 		</trans-unit>
 		<trans-unit id="label.address" approved="yes" xml:space="preserve">
 			<source>Street</source>
@@ -309,6 +341,10 @@
 			<source>Privacy Statetement accepted</source>
 			<target>Datenschutzerklärung akzeptiert</target>
 		</trans-unit>
+		<trans-unit id="label.salutation" approved="yes" xml:space="preserve">
+			<source>Salutation</source>
+			<target>Anrede</target>
+		</trans-unit>
 		<trans-unit id="label.search.field.subject" approved="yes" xml:space="preserve">
 			<source>Subject</source>
 			<target>Suchbegriff</target>
@@ -337,9 +373,17 @@
 			<source>canceled (with costs)</source>
 			<target>storniert (kostenpflichtig)</target>
 		</trans-unit>
+		<trans-unit id="label.street" approved="yes" xml:space="preserve">
+			<source>Street</source>
+			<target>Straße</target>
+		</trans-unit>
 		<trans-unit id="label.subject" approved="yes" xml:space="preserve">
 			<source>Subject</source>
 			<target>Betreff</target>
+		</trans-unit>
+		<trans-unit id="label.vatId" approved="yes" xml:space="preserve">
+			<source>VAT ID</source>
+			<target>USt.-ID / VAT</target>
 		</trans-unit>
 		<trans-unit id="label.zip" approved="yes" xml:space="preserve">
 			<source>Zip</source>
