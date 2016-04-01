@@ -28,6 +28,7 @@ use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -111,7 +112,18 @@ class ReservationControllerTest extends UnitTestCase {
         return $personRepository;
     }
 
-    protected function mockAllowAccessReturnsTrue() {
+	/**
+	 * @return mixed
+	 */
+	protected function mockBillingAddressRepository() {
+		$billingAddressRepository = $this->getMock(
+			BillingAddressRepository::class, ['add', 'update', 'remove'], [], '', false);
+		$this->inject($this->subject, 'billingAddressRepository', $billingAddressRepository);
+
+		return $billingAddressRepository;
+	}
+
+	protected function mockAllowAccessReturnsTrue() {
 		$this->subject->expects($this->once())
 			->method('isAccessAllowed')
 			->will($this->returnValue(TRUE));
@@ -1297,25 +1309,11 @@ class ReservationControllerTest extends UnitTestCase {
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @expectedExceptionCode 1459344863
-     */
-    public function removeBillingAddressActionThrowsExceptionForMissingAddress() {
-        $reservation = new Reservation();
-        $this->mockAllowAccessReturnsTrue();
-        $billingAddress = new BillingAddress();
-        $this->subject->removeBillingAddressAction(
-            $reservation, $billingAddress
-        );
-    }
-
-    /**
-     * @test
      */
     public function removeBillingAddressAddsMessageOnSuccess()
     {
         $this->mockAllowAccessReturnsTrue();
-        $this->mockPersonRepository();
+        $this->mockBillingAddressRepository();
 
         /** @var Reservation $reservation */
         $reservation = $this->getMock(
@@ -1337,7 +1335,7 @@ class ReservationControllerTest extends UnitTestCase {
             ->method('addFlashMessage')
             ->with($expectedKey);
 
-        $this->subject->removeBillingAddressAction($reservation, $mockBillingAddress);
+        $this->subject->removeBillingAddressAction($reservation);
     }
 
     /**
@@ -1346,21 +1344,10 @@ class ReservationControllerTest extends UnitTestCase {
     public function removeBillingAddressRedirectsToEditAction()
     {
         $this->mockAllowAccessReturnsTrue();
-        $this->mockReservationRepository();
-        $this->mockPersonRepository();
-
         /** @var Reservation $mockReservation */
         $mockReservation = $this->getMock(
             Reservation::class, ['getBillingAddress']
         );
-        /** @var BillingAddress $mockBillingAddress */
-        $mockBillingAddress = $this->getMock(
-            BillingAddress::class
-        );
-        $mockReservation->expects($this->any())
-            ->method('getBillingAddress')
-            ->will($this->returnValue($mockBillingAddress));
-
         $this->subject->expects($this->once())
             ->method('redirect')
             ->with(
@@ -1372,7 +1359,7 @@ class ReservationControllerTest extends UnitTestCase {
                 ]
             );
 
-        $this->subject->removeBillingAddressAction($mockReservation, $mockBillingAddress);
+        $this->subject->removeBillingAddressAction($mockReservation);
     }
 
     /**

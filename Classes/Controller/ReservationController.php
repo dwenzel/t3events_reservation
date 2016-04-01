@@ -90,6 +90,14 @@ class ReservationController extends AbstractController
     protected $personRepository = null;
 
     /**
+     * BillingAddress Repository
+     *
+     * @var \CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository
+     * @inject
+     */
+    protected $billingAddressRepository;
+
+    /**
      * @var \Webfox\T3events\Session\SessionInterface
      */
     protected $session;
@@ -474,12 +482,11 @@ class ReservationController extends AbstractController
      * Removes a billing address from reservation
      *
      * @param Reservation $reservation
-     * @param BillingAddress $billingAddress
      * @throws InvalidSourceException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function removeBillingAddressAction(Reservation $reservation, BillingAddress $billingAddress)
+    public function removeBillingAddressAction(Reservation $reservation)
     {
         if (!$this->isAccessAllowed($reservation)) {
             $this->denyAccess();
@@ -487,20 +494,14 @@ class ReservationController extends AbstractController
             return;
         }
 
-        if ($reservation->getBillingAddress() !== $billingAddress) {
-            throw new InvalidSourceException(
-                'Can not remove billing address uid ' . $billingAddress->getUid() . ' from Reservation uid '
-            . $reservation->getUid() . '.',
-                1459344863
+        if ($billingAddress = $reservation->getBillingAddress()) {
+            $reservation->removeBillingAddress();
+            $this->billingAddressRepository->remove($billingAddress);
+            $this->addFlashMessage(
+                $this->translate('message.reservation.removeBillingAddress.success')
             );
         }
 
-        $reservation->removeBillingAddress();
-        $this->personRepository->remove($billingAddress);
-
-        $this->addFlashMessage(
-            $this->translate('message.reservation.removeBillingAddress.success')
-        );
         $this->redirect(
             'edit',
             null,
