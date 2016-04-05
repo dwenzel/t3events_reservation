@@ -142,7 +142,6 @@ class ParticipantControllerTest extends UnitTestCase
     {
         $participant = new Person();
         $reservation = new Reservation();
-        $reservation->initializeObject();
         $reservation->addParticipant($participant);
         $participant->setReservation($reservation);
 
@@ -161,7 +160,6 @@ class ParticipantControllerTest extends UnitTestCase
     {
         $participant = new Person();
         $reservation = new Reservation();
-        $reservation->initializeObject();
         $participant->setReservation($reservation);
 
         return $participant;
