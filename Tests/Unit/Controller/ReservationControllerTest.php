@@ -517,42 +517,6 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function isAccessAllowedReturnsFalseIfObjectIsNotReservation() {
-		$this->subject = $this->getAccessibleMock(
-			ReservationController::class, ['dummy']
-		);
-		$object = $this->getMockForAbstractClass(
-			DomainObjectInterface::class
-		);
-		$this->assertFalse(
-			$this->subject->isAccessAllowed($object)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isAccessAllowedReturnsFalseIfReservationUidIsNotInSession() {
-		$this->subject = $this->getAccessibleMock(
-			ReservationController::class, ['dummy']
-		);
-		$mockSession = $this->mockSession();
-		$object = $this->getMock(
-			Reservation::class
-		);
-		$mockSession->expects($this->once())
-			->method('has')
-			->with('reservationUid')
-			->will($this->returnValue(false));
-
-		$this->assertFalse(
-			$this->subject->isAccessAllowed($object)
-		);
-	}
-
-	/**
-	 * @test
-	 */
 	public function showActionAssignsReservationToView() {
 		$this->mockAllowAccessReturnsTrue();
 		$reservation = new Reservation();

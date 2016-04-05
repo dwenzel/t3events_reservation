@@ -37,8 +37,11 @@ use Webfox\T3events\Session\Typo3Session;
 /**
  * ReservationController
  */
-class ReservationController extends AbstractController
+class ReservationController
+    extends AbstractController
+    implements AccessControlInterface
 {
+    use ReservationAccessTrait;
     const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
 
     /**
@@ -96,11 +99,6 @@ class ReservationController extends AbstractController
      * @inject
      */
     protected $billingAddressRepository;
-
-    /**
-     * @var \Webfox\T3events\Session\SessionInterface
-     */
-    protected $session;
 
     /**
      * Initialize Action
@@ -575,45 +573,6 @@ class ReservationController extends AbstractController
 
         $this->reservationRepository->update($reservation);
         $this->redirect('edit', null, null, ['reservation' => $reservation]);
-    }
-
-    /**
-     * Deny access
-     * Issues an error message and redirects
-     *
-     * @return void
-     */
-    protected function denyAccess()
-    {
-        $this->clearCacheOnError();
-        $this->addFlashMessage(
-            $this->translate(
-                'error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'),
-            '',
-            AbstractMessage::ERROR,
-            true
-        );
-        // todo make redirect target configurable or use AbstractController->handleEntityNotFoundError
-        $this->redirect('list', 'Performance', 't3events', [], $this->settings['schedule']['listPid']);
-    }
-
-    /**
-     * Checks if access is allowed
-     *
-     * @param object $object Object which should be accessed
-     * @return boolean
-     */
-    public function isAccessAllowed($object)
-    {
-        $isAllowed = false;
-        if ($object instanceof Reservation) {
-            $isAllowed = ($this->session->has('reservationUid')
-                && method_exists($object, 'getUid')
-                && ((int)$this->session->get('reservationUid') === $object->getUid())
-            );
-        }
-
-        return $isAllowed;
     }
 
     /**
