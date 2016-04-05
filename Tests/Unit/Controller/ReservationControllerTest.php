@@ -33,12 +33,9 @@ use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -153,6 +150,9 @@ class ReservationControllerTest extends UnitTestCase {
 		return $mockSession;
 	}
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
 	protected function mockSettingsUtility() {
 		$mockSettingsUtility = $this->getMock(
 			SettingsUtility::class, ['getValueByKey', 'getFileStorage']
@@ -1212,51 +1212,6 @@ class ReservationControllerTest extends UnitTestCase {
 
 		$this->subject->updateAction($reservation);
 	}
-
-    /**
-     * @test
-     */
-    public function editParticipantActionDeniesAccess() {
-        $reservation = new Reservation();
-        $participant = new Person();
-        $this->subject->expects($this->once())
-            ->method('isAccessAllowed')
-            ->will($this->returnValue(false));
-        $this->assertDenyAccess();
-        $this->subject->editParticipantAction($reservation, $participant);
-    }
-
-    /**
-     * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @expectedExceptionCode 1459342911
-     */
-    public function editParticipantActionThrowsExceptionForInvalidPersonType()
-    {
-        $reservation = new Reservation();
-        $participant = new Person();
-        $participant->setType('foo');
-        $this->mockAllowAccessReturnsTrue();
-        $this->subject->editParticipantAction(
-            $reservation, $participant
-        );
-    }
-
-    /**
-     * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @expectedExceptionCode 1459343264
-     */
-    public function editParticipantActionThrowsExceptionForMissingParticipant()
-    {
-        $reservation = new Reservation();
-        $participant = new Person();
-        $this->mockAllowAccessReturnsTrue();
-        $this->subject->editParticipantAction(
-            $reservation, $participant
-        );
-    }
-
 
     /**
      * @test

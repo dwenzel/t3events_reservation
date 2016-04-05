@@ -3,7 +3,9 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Controller\AbstractController;
+use CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator;
 
 /***************************************************************
  *  Copyright notice
@@ -46,10 +48,31 @@ class ParticipantController
     }
 
     /**
+     * Edit participant
+     *
+     * @param Person $participant
+     * @throws InvalidSourceException
+     */
+    public function editAction(Person $participant)
+    {
+        $participants = $participant->getReservation()->getParticipants();
+        if (!$participants->contains($participant))
+        {
+            throw new InvalidSourceException(
+                'Can not edit participant uid ' . $participant->getUid()
+                . '. Participant not found in Reservation uid: ' . $participant->getReservation()->getUid() . '.',
+                1459343264
+            );
+        }
+
+        $this->view->assign('participant', $participant);
+    }
+
+    /**
      * Updates a participant
      *
      * @param Person $participant
-     * @validate $participant ParticipantValidator
+     * @validate $participant \CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator
      */
     public function updateAction(Person $participant)
     {

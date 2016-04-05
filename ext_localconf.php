@@ -8,13 +8,15 @@ if (!defined('TYPO3_MODE')) {
 	'Pi1',
 	[
 		'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,
-		editParticipant,updateParticipant,newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update',
+		newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update',
+		'Participant' => 'edit,update'
 	]
 	,
 	// non-cacheable actions
 	[
 		'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,
-		editParticipant,updateParticipant,newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update',
+		newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update',
+        'Participant' => 'edit,update'
 	]
 );
 

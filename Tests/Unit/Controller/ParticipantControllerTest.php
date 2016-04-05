@@ -1,7 +1,8 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
-use CPSIT\IhkofReservation\Domain\Model\Reservation;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Controller\ParticipantController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
@@ -56,6 +57,18 @@ class ParticipantControllerTest extends UnitTestCase
     }
 
     /**
+     * Creates a mock View, injects it and returns it
+     *
+     * @return mixed
+     */
+    protected function mockView() {
+        $view = $this->getMock(ViewInterface::class);
+        $this->inject($this->subject, 'view', $view);
+
+        return $view;
+    }
+
+    /**
      * @test
      */
     public function participantRepositoryCanBeInjected() {
@@ -73,6 +86,7 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function updateActionUpdatesParticipant()
     {
+        /** @var Person $participant */
         $participant = $this->getMock(
             Person::class
         );
@@ -91,6 +105,7 @@ class ParticipantControllerTest extends UnitTestCase
     {
         $this->mockParticipantRepository();
         $participant = new Person();
+        /** @var Reservation $mockReservation */
         $mockReservation = $this->getMock(
             Reservation::class
         );
@@ -106,5 +121,49 @@ class ParticipantControllerTest extends UnitTestCase
                 );
 
         $this->subject->updateAction($participant);
+    }
+
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459343264
+     */
+    public function editActionThrowsExceptionIfReservationDoesNotContainParticipant()
+    {
+        $participant = $this->mockParticipant();
+
+        $this->subject->editAction($participant);
+    }
+
+    /**
+     * @test
+     */
+    public function editActionAssignsVariablesToView()
+    {
+        $participant = new Person();
+        $reservation = new Reservation();
+        $reservation->initializeObject();
+        $reservation->addParticipant($participant);
+        $participant->setReservation($reservation);
+
+        $view = $this->mockView();
+        $view->expects($this->once())
+            ->method('assign')
+            ->with('participant', $participant);
+
+        $this->subject->editAction($participant);
+    }
+
+    /**
+     * @return Person
+     */
+    protected function mockParticipant()
+    {
+        $participant = new Person();
+        $reservation = new Reservation();
+        $reservation->initializeObject();
+        $participant->setReservation($reservation);
+
+        return $participant;
     }
 }

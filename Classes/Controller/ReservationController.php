@@ -347,47 +347,6 @@ class ReservationController
     }
 
     /**
-     * Edit participant
-     *
-     * @param Reservation $reservation
-     * @param Person $participant
-     * @throws InvalidSourceException
-     */
-    public function editParticipantAction(Reservation $reservation, Person $participant)
-    {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
-        if ($participant->getType() !== Person::PERSON_TYPE_PARTICIPANT)
-        {
-            throw new InvalidSourceException(
-                'Invalid person type for ReservationController->editParticipantAction. ' .
-                'Expected ' . Person::class . '::PERSON_TYPE_PARTICIPANT, got class '
-                . get_class($participant) . ' type ' . $participant->getType() . '.',
-                1459342911
-            );
-        }
-
-        if (!$reservation->getParticipants()->contains($participant))
-        {
-            throw new InvalidSourceException(
-                'Can not edit participant uid ' . $participant->getUid()
-                . '. Participant not found in Reservation uid: ' . $reservation->getUid() . '.',
-                1459343264
-            );
-        }
-        $this->view->assignMultiple(
-            [
-                'reservation' => $reservation,
-                'participant' => $participant
-            ]
-        );
-    }
-
-    /**
      * Checkout Action
      *
      * @param Reservation $reservation
