@@ -9,7 +9,7 @@
             name="participant"
             object="{participant}"
             controller="Participant"
-            arguments="{participant: participant}"
+            arguments="{participant: participant, reservation: '{participant.reservation}'}"
             noCacheHash="TRUE">
 		<f:render
 				partial="Participant/FormFields"

@@ -5,6 +5,9 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Session\SessionInterface;
 
 /***************************************************************
@@ -39,17 +42,16 @@ class ReservationAccessTraitTest extends UnitTestCase
     }
 
     /**
-     * @test
+     * @return mixed
      */
-    public function isAccessAllowedReturnsFalseIfObjectIsNotReservation() {
-        $object = $this->getMockForAbstractClass(
-            DomainObjectInterface::class
+    protected function mockObjectManager() {
+        $mockObjectManager = $this->getMock(
+            ObjectManager::class, ['get']
         );
-        $this->assertFalse(
-            $this->subject->isAccessAllowed($object)
-        );
-    }
+        $this->inject($this->subject, 'objectManager', $mockObjectManager);
 
+        return $mockObjectManager;
+    }
 
     /**
      * @return mixed
@@ -61,6 +63,18 @@ class ReservationAccessTraitTest extends UnitTestCase
         $this->inject($this->subject, 'session', $mockSession);
 
         return $mockSession;
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsFalseIfObjectIsNotReservation() {
+        $object = $this->getMockForAbstractClass(
+            DomainObjectInterface::class
+        );
+        $this->assertFalse(
+            $this->subject->isAccessAllowed($object)
+        );
     }
 
     /**
@@ -81,4 +95,23 @@ class ReservationAccessTraitTest extends UnitTestCase
         );
     }
 
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459870578
+     */
+    public function initializeActionThrowsExceptionForMissingReservationArgument()
+    {
+        $this->mockObjectManager();
+        $mockRequest = $this->getMock(
+            Request::class, ['hasArgument']
+        );
+        $this->inject($this->subject, 'request', $mockRequest);
+
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->will($this->returnValue(false));
+
+        $this->subject->initializeAction();
+    }
 }

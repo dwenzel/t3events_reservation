@@ -489,6 +489,12 @@ class ReservationController
         );
     }
 
+    /**
+     * @param Reservation $reservation
+     * @param BillingAddress $newBillingAddress
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     */
     public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress)
     {
         if (!$this->isAccessAllowed($reservation)) {

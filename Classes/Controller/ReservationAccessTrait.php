@@ -3,6 +3,10 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
+use Webfox\T3events\Session\Typo3Session;
 
 /**
  * Class ReservationAccessTrait
@@ -30,6 +34,18 @@ trait ReservationAccessTrait
      * @var array
      */
     protected $settings;
+
+    /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * The current request.
+     *
+     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     */
+    protected $request;
 
     /**
      * Clear cache of current page on error.
@@ -93,9 +109,21 @@ trait ReservationAccessTrait
      * @param object $object Object which should be accessed
      * @return boolean
      */
-    public function isAccessAllowed($object)
+    public function isAccessAllowed($object = null)
     {
         $isAllowed = false;
+        if (
+            $object === null
+            && $this->request->hasArgument('reservation')) {
+            $object = $this->request->getArgument('reservation');
+        }
+
+        if (is_string($object)) {
+            $isAllowed = ($this->session->has('reservationUid')
+                && ($this->session->get('reservationUid') === (int)$object)
+            );
+        }
+
         if ($object instanceof Reservation) {
             $isAllowed = ($this->session->has('reservationUid')
                 && method_exists($object, 'getUid')
@@ -111,18 +139,29 @@ trait ReservationAccessTrait
      * Issues an error message and redirects
      *
      * @return void
+     * @throws InvalidSourceException
      */
     public function denyAccess()
     {
         $this->clearCacheOnError();
-        $this->addFlashMessage(
-            $this->translate(
-                'error.reservation.' . str_replace('Action', '', $this->actionMethodName) . '.accessDenied'),
-            '',
-            AbstractMessage::ERROR,
-            true
+
+        throw new InvalidSourceException(
+            'Access not allowed',
+            1459870578
         );
-        // todo make redirect target configurable or use AbstractController->handleEntityNotFoundError
-        $this->redirect('list', 'Performance', 't3events', [], $this->settings['schedule']['listPid']);
+    }
+
+    /**
+     * initialize action methods
+     *
+     * @throws InvalidSourceException
+     */
+    public function initializeAction()
+    {
+        $this->session = $this->objectManager->get(Typo3Session::class, ReservationController::SESSION_NAME_SPACE);
+
+        if (!$this->isAccessAllowed()) {
+            $this->denyAccess();
+        }
     }
 }

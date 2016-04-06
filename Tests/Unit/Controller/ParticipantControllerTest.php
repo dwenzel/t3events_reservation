@@ -130,9 +130,10 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function editActionThrowsExceptionIfReservationDoesNotContainParticipant()
     {
+        $reservation = new Reservation();
         $participant = $this->mockParticipant();
 
-        $this->subject->editAction($participant);
+        $this->subject->editAction($participant, $reservation);
     }
 
     /**
@@ -150,7 +151,7 @@ class ParticipantControllerTest extends UnitTestCase
             ->method('assign')
             ->with('participant', $participant);
 
-        $this->subject->editAction($participant);
+        $this->subject->editAction($participant, $reservation);
     }
 
     /**

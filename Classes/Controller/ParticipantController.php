@@ -2,6 +2,7 @@
 namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Controller\AbstractController;
@@ -29,7 +30,6 @@ class ParticipantController
     implements AccessControlInterface
 {
     use ReservationAccessTrait;
-
     const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
@@ -51,12 +51,12 @@ class ParticipantController
      * Edit participant
      *
      * @param Person $participant
+     * @param Reservation $reservation
      * @throws InvalidSourceException
      */
-    public function editAction(Person $participant)
+    public function editAction(Person $participant, Reservation $reservation)
     {
-        $participants = $participant->getReservation()->getParticipants();
-        if (!$participants->contains($participant))
+        if (!$reservation->getParticipants()->contains($participant))
         {
             throw new InvalidSourceException(
                 'Can not edit participant uid ' . $participant->getUid()

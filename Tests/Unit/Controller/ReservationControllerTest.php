@@ -175,40 +175,8 @@ class ReservationControllerTest extends UnitTestCase {
 	}
 
 	protected function assertDenyAccess() {
-		$settings = [
-			'schedule' => [
-				'listPid' => '3'
-			]
-		];
-		$this->subject->_set('settings', $settings);
-
 		$this->subject->expects($this->once())
-			->method('clearCacheOnError');
-		$this->subject->_set('actionMethodName', 'fooMethodAction');
-		$expectedErrorMessage = 'error.reservation.fooMethod.accessDenied';
-		$translatedMessage = 'foo';
-		$this->subject->expects($this->once())
-			->method('translate')
-			->with($expectedErrorMessage)
-			->will($this->returnValue($translatedMessage));
-
-		$this->subject->expects($this->once())
-			->method('addFlashMessage')
-			->with(
-				$translatedMessage,
-				'',
-				AbstractMessage::ERROR,
-				true
-			);
-		$this->subject->expects($this->once())
-			->method('redirect')
-			->with(
-				'list',
-				'Performance',
-				't3events',
-				[],
-				$settings['schedule']['listPid']
-			);
+			->method('denyAccess');
 	}
 
 	/**
@@ -238,60 +206,20 @@ class ReservationControllerTest extends UnitTestCase {
 	protected function setUp() {
 		$this->subject = $this->getAccessibleMock(
 			ReservationController::class,
-			['redirect', 'forward', 'addFlashMessage', 'translate', 'isAccessAllowed', 'clearCacheOnError'],
+			[
+                'redirect',
+                'forward',
+                'addFlashMessage',
+                'translate',
+                'isAccessAllowed',
+                'clearCacheOnError',
+                'denyAccess'
+            ],
 			[], '', false);
 		$mockSession = $this->getMock(
 			SessionInterface::class, ['get', 'set', 'has', 'clean'], [], '', false
 		);
 		$this->inject($this->subject, 'session', $mockSession);
-	}
-
-	/**
-	 * @test
-	 */
-	public function showActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->showAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
-	public function editActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->editAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
-	public function deleteActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->deleteAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
-	public function newParticipantActionDeniesAccessIfAccessNotAllowed() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->newParticipantAction($reservation);
 	}
 
 	/**
@@ -313,31 +241,6 @@ class ReservationControllerTest extends UnitTestCase {
 	}
 
 	/**
-	 * @test
-	 */
-	public function removeParticipantActionDeniesAccess() {
-		$reservation = new Reservation();
-		$participant = new Person();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->removeParticipantAction($reservation, $participant);
-	}
-
-	/**
-	 * @test
-	 */
-	public function confirmActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->confirmAction($reservation);
-	}
-
-    /**
      * @test
      */
     public function confirmActionSetsStatusSubmitted() {
@@ -445,18 +348,6 @@ class ReservationControllerTest extends UnitTestCase {
     }
 
     /**
-	 * @test
-	 */
-	public function checkoutActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->checkoutAction($reservation);
-	}
-
-    /**
      * @test
      */
     public function checkoutActionAssignsReservationToView() {
@@ -470,20 +361,7 @@ class ReservationControllerTest extends UnitTestCase {
         $this->subject->checkoutAction($reservation);
     }
 
-    /**
-	 * @test
-	 */
-	public function createParticipantActionDeniesAccess() {
-		$reservation = new Reservation();
-		$participant = new Person();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->createParticipantAction($reservation, $participant);
-	}
-
-	/**
+   	/**
 	 * @test
 	 */
 	public function createActionDeniesAccessIfReservationIsNotNew() {
@@ -1216,19 +1094,6 @@ class ReservationControllerTest extends UnitTestCase {
     /**
      * @test
      */
-    public function removeBillingAddressActionDeniesAccess() {
-        $reservation = new Reservation();
-        $billingAddress = new BillingAddress();
-        $this->subject->expects($this->once())
-            ->method('isAccessAllowed')
-            ->will($this->returnValue(false));
-        $this->assertDenyAccess();
-        $this->subject->removeBillingAddressAction($reservation, $billingAddress);
-    }
-
-    /**
-     * @test
-     */
     public function removeBillingAddressAddsMessageOnSuccess()
     {
         $this->mockAllowAccessReturnsTrue();
@@ -1279,15 +1144,6 @@ class ReservationControllerTest extends UnitTestCase {
             );
 
         $this->subject->removeBillingAddressAction($mockReservation);
-    }
-
-    /**
-     * @test
-     */
-    public function newBillingAddressActionDeniesAccess() {
-        $reservation = new Reservation();
-        $this->assertDenyAccess();
-        $this->subject->newBillingAddressAction($reservation);
     }
 
     /**
