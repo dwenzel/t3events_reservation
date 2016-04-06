@@ -247,7 +247,6 @@ class ReservationControllerTest extends UnitTestCase {
         $mockReservation = $this->getMock(
             Reservation::class, ['setStatus']
         );
-        $this->mockAllowAccessReturnsTrue();
         $this->mockReservationRepository();
 
         $mockReservation->expects($this->once())
@@ -262,7 +261,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function confirmActionAddsFlashMessage() {
         $mockReservation = $this->getMock(Reservation::class);
-        $this->mockAllowAccessReturnsTrue();
         $this->mockReservationRepository();
         $translatedMessage = 'foo';
         $this->subject->expects($this->once())
@@ -300,7 +298,6 @@ class ReservationControllerTest extends UnitTestCase {
         $this->subject->_set('settings', $settings);
 
         $mockReservation = $this->getMock(Reservation::class);
-        $this->mockAllowAccessReturnsTrue();
         $this->mockReservationRepository();
 
         $this->subject->expects($this->once())
@@ -319,7 +316,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function confirmActionUpdatesReservation() {
         $mockReservation = $this->getMock(Reservation::class);
-        $this->mockAllowAccessReturnsTrue();
         $mockRepository = $this->mockReservationRepository();
         $mockRepository->expects($this->once())
             ->method('update')
@@ -331,9 +327,8 @@ class ReservationControllerTest extends UnitTestCase {
     /**
      * @test
      */
-    public function confirmActionForwardToShowAction() {
+    public function confirmActionForwardsToShowAction() {
         $mockReservation = $this->getMock(Reservation::class);
-        $this->mockAllowAccessReturnsTrue();
         $this->mockReservationRepository();
         $this->subject->expects($this->once())
             ->method('forward')
@@ -351,7 +346,6 @@ class ReservationControllerTest extends UnitTestCase {
      * @test
      */
     public function checkoutActionAssignsReservationToView() {
-        $this->mockAllowAccessReturnsTrue();
         $reservation = new Reservation();
         $view = $this->mockView();
         $view->expects($this->once())
@@ -396,7 +390,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function showActionAssignsReservationToView() {
-		$this->mockAllowAccessReturnsTrue();
 		$reservation = new Reservation();
 		$view = $this->mockView();
 		$view->expects($this->once())->method('assign')->with('reservation', $reservation);
@@ -408,7 +401,6 @@ class ReservationControllerTest extends UnitTestCase {
      * @test
      */
     public function showActionCleansSession() {
-        $this->mockAllowAccessReturnsTrue();
         $reservation = new Reservation();
         $this->mockView();
         $session = $this->mockSession();
@@ -475,7 +467,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function editActionAssignsReservationToView() {
-		$this->mockAllowAccessReturnsTrue();
 		$this->mockPersistenceManager();
 		$reservationRepository = $this->mockReservationRepository();
 		$view = $this->mockView();
@@ -501,7 +492,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function createParticipantUpdatesReservationInReservationRepository() {
-		$this->mockAllowAccessReturnsTrue();
 		$this->mockPersistenceManager();
 		$this->mockLessonRepository();
 
@@ -530,8 +520,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function deleteActionRemovesReservationFromReservationRepository() {
-		$this->mockAllowAccessReturnsTrue();
-
 		$reservation = new Reservation();
 
 		$reservationRepository = $this->mockReservationRepository();
@@ -968,20 +956,7 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function editBillingAddressActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->editBillingAddressAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
 	public function editBillingAddressActionAssignsReservationToView() {
-		$this->mockAllowAccessReturnsTrue();
 		$view = $this->mockView();
 
 		$reservation = new Reservation();
@@ -1000,21 +975,7 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function updateActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-
-		$this->subject->updateAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
 	public function updateActionUpdatesReservation() {
-		$this->mockAllowAccessReturnsTrue();
 		$reservationRepository = $this->mockReservationRepository();
 
 		$reservation = new Reservation();
@@ -1030,7 +991,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function updateActionAddsFlashMessageOnSuccess() {
-		$this->mockAllowAccessReturnsTrue();
 		$this->mockReservationRepository();
 		$translatedMessage = 'foo';
 		$reservation = new Reservation();
@@ -1050,7 +1010,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function updateActionRedirectsToEditAction() {
-		$this->mockAllowAccessReturnsTrue();
 		$this->mockReservationRepository();
 		$reservation = new Reservation();
 
@@ -1073,7 +1032,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function removeBillingAddressAddsMessageOnSuccess()
     {
-        $this->mockAllowAccessReturnsTrue();
         $this->mockBillingAddressRepository();
 
         /** @var Reservation $reservation */
@@ -1104,7 +1062,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function removeBillingAddressRedirectsToEditAction()
     {
-        $this->mockAllowAccessReturnsTrue();
         /** @var Reservation $mockReservation */
         $mockReservation = $this->getMock(
             Reservation::class, ['getBillingAddress']
@@ -1128,7 +1085,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function newBillingAddressActionAssignsVariablesToView()
     {
-        $this->mockAllowAccessReturnsTrue();
         $mockReservation = $this->getAccessibleMock(
             Reservation::class
         );
@@ -1149,19 +1105,8 @@ class ReservationControllerTest extends UnitTestCase {
     /**
      * @test
      */
-    public function createBillingAddressActionDeniesAccess() {
-        $reservation = new Reservation();
-        $billingAddress = new BillingAddress();
-        $this->assertDenyAccess();
-        $this->subject->createBillingAddressAction($reservation, $billingAddress);
-    }
-
-    /**
-     * @test
-     */
     public function createBillingAddressActionSetsBillingAddress()
     {
-        $this->mockAllowAccessReturnsTrue();
         $this->mockReservationRepository();
         /** @var Reservation $reservation */
         $reservation = $this->getMock(
@@ -1184,7 +1129,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function createBillingAddressActionAddsBillingAddressToRepository()
     {
-        $this->mockAllowAccessReturnsTrue();
         /** @var Reservation $reservation */
         $reservation = $this->getMock(
             Reservation::class
@@ -1207,7 +1151,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function createBillingAddressUpdatesReservation()
     {
-        $this->mockAllowAccessReturnsTrue();
         /** @var Reservation $reservation */
         $reservation = $this->getMock(
             Reservation::class
@@ -1231,7 +1174,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function createBillingAddressAddsMessageOnSuccess()
     {
-        $this->mockAllowAccessReturnsTrue();
         $this->mockPersonRepository();
         $this->mockReservationRepository();
 
@@ -1260,7 +1202,6 @@ class ReservationControllerTest extends UnitTestCase {
      */
     public function createBillingAddressActionRedirectsToEditAction()
     {
-        $this->mockAllowAccessReturnsTrue();
         $this->mockReservationRepository();
         $this->mockPersonRepository();
 
