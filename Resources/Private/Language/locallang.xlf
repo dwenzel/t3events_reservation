@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-03-31T14:10:52Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-06T07:22:20Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -43,6 +43,9 @@
 		</trans-unit>
 		<trans-unit id="button.editBillingAddress" xml:space="preserve">
 			<source>edit billing address</source>
+		</trans-unit>
+		<trans-unit id="button.editParticipant" xml:space="preserve">
+			<source>edit particpant</source>
 		</trans-unit>
 		<trans-unit id="button.goToLessonListPage" xml:space="preserve">
 			<source>Go to lessons list</source>
