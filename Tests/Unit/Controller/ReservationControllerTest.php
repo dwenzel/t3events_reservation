@@ -542,29 +542,6 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->deleteAction($reservation);
 	}
 
-	/**
-	 * @test
-	 */
-	public function initializeActionSetsSession() {
-		$this->subject = $this->getAccessibleMock(
-			ReservationController::class,
-			['setRequestArguments', 'setReferrerArguments'],
-			[], '', false);
-		$mockObjectManager = $this->mockObjectManager();
-		$mockSession = $this->getMockForAbstractClass(
-			SessionInterface::class
-		);
-		$mockObjectManager->expects($this->once())
-			->method('get')
-			->with(Typo3Session::class, ReservationController::SESSION_NAME_SPACE)
-			->will($this->returnValue($mockSession));
-		$this->subject->initializeAction();
-		$this->assertAttributeEquals(
-			$mockSession,
-			'session',
-			$this->subject
-		);
-	}
 
 	/**
 	 * @test

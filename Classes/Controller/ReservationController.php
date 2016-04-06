@@ -101,15 +101,6 @@ class ReservationController
     protected $billingAddressRepository;
 
     /**
-     * Initialize Action
-     */
-    public function initializeAction()
-    {
-        parent::initializeAction();
-        $this->session = $this->objectManager->get(Typo3Session::class, self::SESSION_NAME_SPACE);
-    }
-
-    /**
      * action show
      *
      * @param Reservation $reservation
