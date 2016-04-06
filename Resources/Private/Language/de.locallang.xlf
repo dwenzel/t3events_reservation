@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-06T07:22:20Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-06T08:01:51Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -216,6 +216,10 @@
 		<trans-unit id="header.editBillingAddress" approved="yes" xml:space="preserve">
 			<source>Edit billing address</source>
 			<target>Rechnungsadresse bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="header.editParticipant" approved="yes" xml:space="preserve">
+			<source>Edit Participant</source>
+			<target>Teilnehmer bearbeiten</target>
 		</trans-unit>
 		<trans-unit id="header.editReservation" approved="yes" xml:space="preserve">
 			<source>Edit Reservation</source>
