@@ -153,12 +153,14 @@ class ReservationAccessTraitTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @expectedExceptionCode 1459870578
      */
-    public function initializeActionThrowsExceptionForMissingReservationArgument()
+    public function isAccessAllowedReturnsFalseForMissingReservationArgument()
     {
-        $this->mockObjectManager();
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with('reservationUid')
+            ->will($this->returnValue(true));
         $mockRequest = $this->getMock(
             Request::class, ['hasArgument']
         );
@@ -166,9 +168,12 @@ class ReservationAccessTraitTest extends UnitTestCase
 
         $mockRequest->expects($this->once())
             ->method('hasArgument')
+            ->with('reservation')
             ->will($this->returnValue(false));
 
-        $this->subject->initializeAction();
+        $this->assertFalse(
+            $this->subject->isAccessAllowed()
+        );
     }
 
     /**
@@ -231,6 +236,28 @@ class ReservationAccessTraitTest extends UnitTestCase
             $mockSession,
             'session',
             $this->subject
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsTrueAllowsNewReservationIfNoReservationInSession()
+    {
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(false));
+
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with('reservationUid')
+            ->will($this->returnValue(false));
+
+        $this->assertTrue(
+            $this->subject->isAccessAllowed()
         );
     }
 }

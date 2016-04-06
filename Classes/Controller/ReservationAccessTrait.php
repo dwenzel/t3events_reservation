@@ -111,27 +111,32 @@ trait ReservationAccessTrait
      */
     public function isAccessAllowed($object = null)
     {
-        $isAllowed = false;
-        if (
-            $object === null
-            && $this->request->hasArgument('reservation')) {
-            $object = $this->request->getArgument('reservation');
-        }
-
-        if (is_string($object)) {
-            $isAllowed = ($this->session->has('reservationUid')
-                && ($this->session->get('reservationUid') === (int)$object)
-            );
-        }
-
         if ($object instanceof Reservation) {
-            $isAllowed = ($this->session->has('reservationUid')
+            return ($this->session->has('reservationUid')
                 && method_exists($object, 'getUid')
                 && ((int)$this->session->get('reservationUid') === $object->getUid())
             );
         }
 
-        return $isAllowed;
+        if ($object === null) {
+            if ($this->request->hasArgument('reservation')) {
+                // allow access if argument reservation matches session value
+                $object = $this->request->getArgument('reservation');
+                if (is_string($object)) {
+                    return ($this->session->has('reservationUid')
+                        && ($this->session->get('reservationUid') === (int)$object)
+                    );
+                }
+            } else {
+                /**
+                 * allow access if no argument 'reservation'
+                 * AND 'reservationUid' not in session
+                 */
+                return !$this->session->has('reservationUid');
+            }
+        }
+
+        return false;
     }
 
     /**
