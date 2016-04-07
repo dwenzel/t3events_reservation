@@ -42,7 +42,14 @@ class ReservationController
     implements AccessControlInterface
 {
     use ReservationAccessTrait;
+    /**
+     * @const Session namespace for reservations
+     */
     const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
+    /**
+     * @const Identifier for reservation in session
+     */
+    const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
 
     /**
      * Persistence Manager
@@ -158,7 +165,7 @@ class ReservationController
         if (
             !is_null($newReservation->getUid())
             || ($this->session instanceof SessionInterface
-                && $this->session->has('reservationUid'))
+                && $this->session->has(self::SESSION_IDENTIFIER_RESERVATION))
         ) {
             $this->denyAccess();
 
@@ -185,7 +192,7 @@ class ReservationController
         );
         $this->reservationRepository->add($newReservation);
         $this->persistenceManager->persistAll();
-        $this->session->set('reservationUid', $newReservation->getUid());
+        $this->session->set(self::SESSION_IDENTIFIER_RESERVATION, $newReservation->getUid());
         $this->forward('edit', null, null, ['reservation' => $newReservation]);
     }
 

@@ -18,6 +18,21 @@ plugin.tx_t3eventsreservation {
 		}
 		reservation {
 			detailPid = {$plugin.tx_t3eventsreservation.settings.reservation.detailPid}
+			default.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			new.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			create.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			edit.errorHandling = pageNotFoundHandler
+			update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			delete.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			checkout.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			confirm.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			newParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			createParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			removeParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			editBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			newBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			createBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			removeBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			confirm {
 				notification {
 					admin {
