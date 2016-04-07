@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
+use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -9,6 +10,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Session\SessionInterface;
+use Webfox\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice
@@ -44,7 +46,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     /**
      * @return mixed
      */
-    protected function mockObjectManager() {
+    protected function mockObjectManager()
+    {
         $mockObjectManager = $this->getMock(
             ObjectManager::class, ['get']
         );
@@ -56,7 +59,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     /**
      * @return mixed
      */
-    protected function mockSession() {
+    protected function mockSession()
+    {
         $mockSession = $this->getMock(
             SessionInterface::class
         );
@@ -66,28 +70,84 @@ class ReservationAccessTraitTest extends UnitTestCase
     }
 
     /**
+     *
+     */
+    protected function mockAllowAccessReturnsTrue()
+    {
+        $this->subject->expects($this->once())
+            ->method('isAccessAllowed')
+            ->will($this->returnValue(true));
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function mockRequest()
+    {
+        $mockRequest = $this->getMock(
+            Request::class, ['hasArgument', 'getArgument']
+        );
+        $this->inject($this->subject, 'request', $mockRequest);
+
+        return $mockRequest;
+    }
+
+    /**
      * @test
      */
-    public function isAccessAllowedReturnsFalseIfObjectIsNotReservation() {
-        $object = $this->getMockForAbstractClass(
-            DomainObjectInterface::class
+    public function isAccessAllowedReturnsTrueForReservationWithMatchingUid()
+    {
+        $validReservationId = 1234;
+        $mockSession = $this->mockSession();
+        $validReservation = $this->getMock(
+            Reservation::class, ['getUid']
         );
-        $this->assertFalse(
-            $this->subject->isAccessAllowed($object)
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(true));
+        $mockRequest->expects($this->once())
+            ->method('getArgument')
+            ->will($this->returnValue($validReservation));
+
+        $validReservation->expects($this->once())
+            ->method('getUid')
+            ->will($this->returnValue($validReservationId));
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(true));
+        $mockSession->expects($this->once())
+            ->method('get')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue($validReservationId));
+
+        $this->assertTrue(
+            $this->subject->isAccessAllowed($validReservation)
         );
     }
 
     /**
      * @test
      */
-    public function isAccessAllowedReturnsFalseIfReservationUidIsNotInSession() {
+    public function isAccessAllowedReturnsFalseIfReservationUidIsNotInSession()
+    {
         $mockSession = $this->mockSession();
         $object = $this->getMock(
             Reservation::class
         );
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(true));
+        $mockRequest->expects($this->once())
+            ->method('getArgument')
+            ->will($this->returnValue($object));
         $mockSession->expects($this->once())
             ->method('has')
-            ->with('reservationUid')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(false));
 
         $this->assertFalse(
@@ -97,12 +157,14 @@ class ReservationAccessTraitTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-     * @expectedExceptionCode 1459870578
      */
-    public function initializeActionThrowsExceptionForMissingReservationArgument()
+    public function isAccessAllowedReturnsFalseForMissingReservationArgument()
     {
-        $this->mockObjectManager();
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(true));
         $mockRequest = $this->getMock(
             Request::class, ['hasArgument']
         );
@@ -110,8 +172,96 @@ class ReservationAccessTraitTest extends UnitTestCase
 
         $mockRequest->expects($this->once())
             ->method('hasArgument')
+            ->with('reservation')
             ->will($this->returnValue(false));
 
+        $this->assertFalse(
+            $this->subject->isAccessAllowed()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsTrueForValidRequestArgumentOfTypeString()
+    {
+        $validReservationId = 1234;
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->will($this->returnValue(true));
+        $mockRequest->expects($this->once())
+            ->method('getArgument')
+            ->will($this->returnValue((string)$validReservationId));
+
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(true));
+        $mockSession->expects($this->once())
+            ->method('get')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue($validReservationId));
+
+        $this->assertTrue(
+            $this->subject->isAccessAllowed()
+        );
+    }
+
+
+    /**
+     * @test
+     */
+    public function initializeActionSetsSession()
+    {
+        $this->subject = $this->getMockForTrait(
+            ReservationAccessTrait::class,
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['isAccessAllowed']
+        );
+        $mockObjectManager = $this->mockObjectManager();
+        $this->mockRequest();
+        $this->mockAllowAccessReturnsTrue();
+        $mockSession = $this->getMockForAbstractClass(
+            SessionInterface::class
+        );
+        $mockObjectManager->expects($this->once())
+            ->method('get')
+            ->with(Typo3Session::class, ReservationController::SESSION_NAME_SPACE)
+            ->will($this->returnValue($mockSession));
+
         $this->subject->initializeAction();
+        $this->assertAttributeEquals(
+            $mockSession,
+            'session',
+            $this->subject
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsTrueAllowsNewReservationIfNoReservationInSession()
+    {
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(false));
+
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(false));
+
+        $this->assertTrue(
+            $this->subject->isAccessAllowed()
+        );
     }
 }

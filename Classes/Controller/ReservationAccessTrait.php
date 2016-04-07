@@ -106,32 +106,40 @@ trait ReservationAccessTrait
     /**
      * Checks if access is allowed
      *
-     * @param object $object Object which should be accessed
      * @return boolean
      */
-    public function isAccessAllowed($object = null)
+    public function isAccessAllowed()
     {
-        $isAllowed = false;
-        if (
-            $object === null
-            && $this->request->hasArgument('reservation')) {
+        $sessionHasReservation = $this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION);
+
+        if ($this->request->hasArgument('reservation')) {
+            $sessionValue = $this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
+
+            // allow access if argument reservation matches session value
             $object = $this->request->getArgument('reservation');
+            if (is_string($object)) {
+                return ($sessionHasReservation
+                    && ($sessionValue === (int)$object)
+                );
+            }
+            if ($object instanceof Reservation) {
+                return ($sessionHasReservation
+                    && method_exists($object, 'getUid')
+                    && ((int)$sessionValue === $object->getUid())
+                );
+            }
+            if (is_array($object) && isset($object['__identity'])) {
+                return ($sessionHasReservation &&  $sessionValue === (int)$object['__identity']);
+            }
+        } else {
+            /**
+             * allow access if no argument 'reservation'
+             * AND ReservationController::SESSION_IDENTIFIER_RESERVATION not in session
+             */
+            return !$sessionHasReservation;
         }
 
-        if (is_string($object)) {
-            $isAllowed = ($this->session->has('reservationUid')
-                && ($this->session->get('reservationUid') === (int)$object)
-            );
-        }
-
-        if ($object instanceof Reservation) {
-            $isAllowed = ($this->session->has('reservationUid')
-                && method_exists($object, 'getUid')
-                && ((int)$this->session->get('reservationUid') === $object->getUid())
-            );
-        }
-
-        return $isAllowed;
+        return false;
     }
 
     /**

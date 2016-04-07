@@ -19,8 +19,7 @@ interface AccessControlInterface
     /**
      * Checks if access is allowed
      *
-     * @param object $object Object which should be accessed
      * @return boolean
      */
-    public function isAccessAllowed($object);
+    public function isAccessAllowed();
 }

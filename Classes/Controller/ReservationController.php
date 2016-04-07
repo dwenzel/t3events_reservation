@@ -42,7 +42,14 @@ class ReservationController
     implements AccessControlInterface
 {
     use ReservationAccessTrait;
+    /**
+     * @const Session namespace for reservations
+     */
     const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
+    /**
+     * @const Identifier for reservation in session
+     */
+    const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
 
     /**
      * Persistence Manager
@@ -101,15 +108,6 @@ class ReservationController
     protected $billingAddressRepository;
 
     /**
-     * Initialize Action
-     */
-    public function initializeAction()
-    {
-        parent::initializeAction();
-        $this->session = $this->objectManager->get(Typo3Session::class, self::SESSION_NAME_SPACE);
-    }
-
-    /**
      * action show
      *
      * @param Reservation $reservation
@@ -117,11 +115,6 @@ class ReservationController
      */
     public function showAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-            return;
-        }
-
         $this->session->clean();
         $this->view->assign('reservation', $reservation);
     }
@@ -172,7 +165,7 @@ class ReservationController
         if (
             !is_null($newReservation->getUid())
             || ($this->session instanceof SessionInterface
-                && $this->session->has('reservationUid'))
+                && $this->session->has(self::SESSION_IDENTIFIER_RESERVATION))
         ) {
             $this->denyAccess();
 
@@ -199,7 +192,7 @@ class ReservationController
         );
         $this->reservationRepository->add($newReservation);
         $this->persistenceManager->persistAll();
-        $this->session->set('reservationUid', $newReservation->getUid());
+        $this->session->set(self::SESSION_IDENTIFIER_RESERVATION, $newReservation->getUid());
         $this->forward('edit', null, null, ['reservation' => $newReservation]);
     }
 
@@ -211,12 +204,6 @@ class ReservationController
      */
     public function editAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
         $this->reservationRepository->update($reservation);
         $this->persistenceManager->persistAll();
 
@@ -235,12 +222,6 @@ class ReservationController
      */
     public function deleteAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
         $this->addFlashMessage(
             $this->translate('message.reservation.delete.success')
         );
@@ -269,10 +250,7 @@ class ReservationController
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null)
     {
         if (
-            !$this->isAccessAllowed($reservation)
-            || !(
-                $reservation->getStatus() === Reservation::STATUS_DRAFT
-                || $reservation->getStatus() === Reservation::STATUS_NEW
+            !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
             )
         ) {
             $this->denyAccess();
@@ -317,11 +295,6 @@ class ReservationController
      */
     public function createParticipantAction(Reservation $reservation, Person $newParticipant)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
         if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
             $reservation->setStatus(Reservation::STATUS_DRAFT);
         }
@@ -354,12 +327,6 @@ class ReservationController
      */
     public function checkoutAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
         $this->view->assign('reservation', $reservation);
     }
 
@@ -371,11 +338,6 @@ class ReservationController
      */
     public function confirmAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
         // @todo optionally read reservation status from settings
         $reservation->setStatus(Reservation::STATUS_SUBMITTED);
         $this->addFlashMessage(
@@ -399,12 +361,6 @@ class ReservationController
      */
     public function removeParticipantAction(Reservation $reservation, Person $participant)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
         $reservation->removeParticipant($participant);
         $reservation->getLesson()->removeParticipant($participant);
         $this->personRepository->remove($participant);
@@ -422,12 +378,6 @@ class ReservationController
      */
     public function editBillingAddressAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
         $this->view->assignMultiple(
             [
                 'reservation' => $reservation,
@@ -445,13 +395,7 @@ class ReservationController
      */
     public function removeBillingAddressAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
-        if ($billingAddress = $reservation->getBillingAddress()) {
+     if ($billingAddress = $reservation->getBillingAddress()) {
             $reservation->removeBillingAddress();
             $this->billingAddressRepository->remove($billingAddress);
             $this->addFlashMessage(
@@ -476,11 +420,6 @@ class ReservationController
      */
     public function newBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress = null)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-            return;
-        }
-
         $this->view->assignMultiple(
             [
                 'newBillingAddress' => $newBillingAddress,
@@ -497,11 +436,6 @@ class ReservationController
      */
     public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-            return;
-        }
-
         $reservation->setBillingAddress($newBillingAddress);
         $this->personRepository->add($newBillingAddress);
         $this->reservationRepository->update($reservation);
@@ -526,12 +460,6 @@ class ReservationController
      */
     public function updateAction(Reservation $reservation)
     {
-        if (!$this->isAccessAllowed($reservation)) {
-            $this->denyAccess();
-
-            return;
-        }
-
         $this->addFlashMessage(
             $this->translate('message.reservation.update.success')
         );
