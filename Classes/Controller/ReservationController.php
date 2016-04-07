@@ -250,10 +250,7 @@ class ReservationController
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null)
     {
         if (
-            !$this->isAccessAllowed($reservation)
-            || !(
-                $reservation->getStatus() === Reservation::STATUS_DRAFT
-                || $reservation->getStatus() === Reservation::STATUS_NEW
+            !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
             )
         ) {
             $this->denyAccess();
