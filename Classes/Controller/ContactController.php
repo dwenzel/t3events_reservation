@@ -1,12 +1,11 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller;
 
-use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
+use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Controller\AbstractController;
-use CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator;
 
 /***************************************************************
  *  Copyright notice
@@ -27,69 +26,73 @@ use CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator;
  ***************************************************************/
 
 /**
- * Class ParticipantController
+ * Class ContactController
  * This should be used as child controller of ReservationController only
  *
  * @package CPSIT\T3eventsReservation\Controller
  */
-class ParticipantController
+class ContactController
     extends AbstractController
     implements AccessControlInterface
 {
     use ReservationAccessTrait;
+
+    /**
+     * @const parent controller
+     */
     const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
-     * @var PersonRepository
+     * @var ContactRepository
      */
-    protected $participantRepository;
+    protected $contactRepository;
 
     /**
-     * Injects the participant repository
+     * Injects the contact repository
      *
-     * @param PersonRepository $participantRepository
+     * @param ContactRepository $contactRepository
      */
-    public function injectParticipantRepository(PersonRepository $participantRepository)
+    public function injectContactRepository(ContactRepository $contactRepository)
     {
-        $this->participantRepository = $participantRepository;
+        $this->contactRepository = $contactRepository;
     }
 
     /**
-     * Edit participant
+     * Edit contact
      *
-     * @param Person $participant
+     * @param Contact $contact
      * @param Reservation $reservation
      * @throws InvalidSourceException
      */
-    public function editAction(Person $participant, Reservation $reservation)
+    public function editAction(Contact $contact, Reservation $reservation)
     {
-        if (!$reservation->getParticipants()->contains($participant))
+        if ($reservation->getContact() !== $contact)
         {
             throw new InvalidSourceException(
-                'Can not edit participant uid ' . $participant->getUid()
-                . '. Participant not found in Reservation uid: ' . $participant->getReservation()->getUid() . '.',
-                1459343264
+                'Can not edit contact uid ' . $contact->getUid()
+                . '. Contact not found in Reservation uid: ' . $reservation->getUid() . '.',
+                1460039887
             );
         }
 
-        $this->view->assign('participant', $participant);
+        $this->view->assign('contact', $contact);
     }
 
     /**
-     * Updates a participant
+     * Updates a contact
      *
-     * @param Person $participant
-     * @validate $participant \CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator
+     * @param Contact $contact
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function updateAction(Person $participant)
+    public function updateAction(Contact $contact)
     {
-        $this->participantRepository->update($participant);
+        $this->contactRepository->update($contact);
         $this->forward(
             'edit',
             self::PARENT_CONTROLLER_NAME,
             null,
-            ['reservation' => $participant->getReservation()]
-            );
+            ['reservation' => $contact->getReservation()]
+        );
     }
-
 }

@@ -41,7 +41,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Hidden
 	 *
-	 * @var \int
+	 * @var int
 	 */
 	protected $hidden;
 
