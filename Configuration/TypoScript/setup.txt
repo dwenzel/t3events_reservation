@@ -16,6 +16,10 @@ plugin.tx_t3eventsreservation {
 		schedule {
 			listPid = {$plugin.tx_t3eventsreservation.settings.schedule.listPid}
 		}
+        contact {
+            edit.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+            update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+        }
 		reservation {
 			detailPid = {$plugin.tx_t3eventsreservation.settings.reservation.detailPid}
 			default.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
@@ -73,5 +77,9 @@ plugin.tx_t3eventsreservation {
 				}
 			}
 		}
+        participant {
+            edit.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+            update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+        }
 	}
 }
