@@ -1,0 +1,130 @@
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_gender">{f:translate(key: 'label.gender', default: 'label.gender')}*</label>
+		<f:form.select
+			property="{prefixProperty}gender"
+			options="{
+						1: '{f:translate(key: \'label.gender.female\')}',
+						2: '{f:translate(key: \'label.gender.male\')}'
+					}"
+			id="{prefixFieldName}_gender"
+			name="{prefixFieldName}_gender"
+			additionalAttributes="{required:'required'}"
+			/>
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_title">{f:translate(key: 'label.title', default: 'label.title')}</label>
+		<f:form.select
+			property="{prefixProperty}title"
+			options="{
+						Prof: '{f:translate(key: \'label.title.0\', default: \'Prof.\')}',
+						Dr: '{f:translate(key: \'label.title.1\', default: \'Dr.\')}'
+					}"
+			prependOptionValue=""
+			prependOptionLabel="{f:translate(key: 'label.title', default: 'label.title')}"
+			id="{prefixFieldName}_title"
+			name="{prefixFieldName}_title"
+			/>
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_prename">{f:translate(key: 'label.firstName', default: 'label.firstName')}*</label>
+		<f:form.textfield
+			property="{prefixProperty}firstName"
+			name="{prefixFieldName}_prename"
+			placeholder="{f:translate(key: 'placeholder.firstName', default: 'placeholder.firstName')}*"
+			id="{prefixFieldName}_prename"
+			required="true"
+			class="floatlabel"
+			/>
+	</div>
+
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_lastName">{f:translate(key: 'label.lastName', default: 'label.lastName')}*</label>
+		<f:form.textfield
+			property="{prefixProperty}lastName"
+			placeholder="{f:translate(key: 'placeholder.lastName', default: 'placeholder.lastName')}*"
+			name="{prefixFieldName}_lastName"
+			id="{prefixFieldName}_lastName"
+			required="true"
+			class="floatlabel" />
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_mail">{f:translate(key: 'label.email', default: 'label.email')}*</label>
+		<f:form.textfield
+			property="{prefixProperty}email"
+			placeholder="{f:translate(key: 'placeholder.email', default: 'placeholder.email')}"
+			name="{prefixFieldName}_mail"
+			id="{prefixFieldName}_mail"
+			required="true"
+			type="email"
+			class="floatlabel" />
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_phone">{f:translate(key: 'label.phone', default: 'label.phone')}</label>
+		<f:form.textfield
+			property="{prefixProperty}phone"
+			placeholder="{f:translate(key: 'placeholder.phone', default: 'placeholder.phone')}"
+			name="{prefixFieldName}_phone"
+			id="{prefixFieldName}_phone"
+			class="floatlabel" />
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_companyName">{f:translate(key: 'label.companyName', default: 'label.companyName')}</label>
+		<f:form.textfield
+			property="{prefixProperty}companyName"
+			placeholder="{f:translate(key: 'placeholder.companyName', default: 'placeholder.companyName')}"
+			name="{prefixFieldName}_companyName"
+			id="{prefixFieldName}_companyName"
+			class="floatlabel" />
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_role">{f:translate(key: 'label.role', default: 'label.role')}</label>
+		<f:form.textfield
+			property="{prefixProperty}role"
+			placeholder="{f:translate(key: 'placeholder.role', default: 'placeholder.role')}"
+			name="{prefixFieldName}_position"
+			id="{prefixFieldName}_role"
+			class="floatlabel" />
+	</div>
+</div>
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_address">{f:translate(key: 'label.address', default: 'label.address')}</label>
+		<f:form.textfield
+			property="{prefixProperty}address"
+			placeholder="{f:translate(key: 'placeholder.address', default: 'placeholder.address')}"
+			name="{prefixFieldName}_address"
+			id="{prefixFieldName}_address"
+			class="floatlabel" />
+	</div>
+</div>
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_zip">{f:translate(key: 'label.zip', default: 'label.zip')}</label>
+		<f:form.textfield
+			property="{prefixProperty}zip"
+			placeholder="PLZ"
+			name="{prefixFieldName}_zip"
+			id="{prefixFieldName}_zip"
+			class="floatlabel" />
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_city">{f:translate(key: 'label.city', default: 'label.city')}</label>
+		<f:form.textfield
+			property="{prefixProperty}city"
+			placeholder="{f:translate(key: 'placeholder.city', default: 'placeholder.city')}"
+			name="{prefixFieldName}_city"
+			id="{prefixFieldName}_city"
+			class="floatlabel" />
+	</div>
+</div>
+

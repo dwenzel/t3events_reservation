@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-06T08:01:51Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-08T09:46:32Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -43,6 +43,9 @@
 		</trans-unit>
 		<trans-unit id="button.editBillingAddress" xml:space="preserve">
 			<source>edit billing address</source>
+		</trans-unit>
+		<trans-unit id="button.editContact" xml:space="preserve">
+			<source>edit contact</source>
 		</trans-unit>
 		<trans-unit id="button.editParticipant" xml:space="preserve">
 			<source>edit particpant</source>
@@ -161,8 +164,14 @@
 		<trans-unit id="header.billingAddress" xml:space="preserve">
 			<source>Billing Address</source>
 		</trans-unit>
+		<trans-unit id="header.contact" xml:space="preserve">
+			<source>Contact</source>
+		</trans-unit>
 		<trans-unit id="header.editBillingAddress" xml:space="preserve">
 			<source>Edit billing address</source>
+		</trans-unit>
+		<trans-unit id="header.editContact" xml:space="preserve">
+			<source>Edit Contact</source>
 		</trans-unit>
 		<trans-unit id="header.editParticipant" xml:space="preserve">
 			<source>Edit Participant</source>
@@ -172,6 +181,9 @@
 		</trans-unit>
 		<trans-unit id="header.newBillingAddress" xml:space="preserve">
 			<source>Add Billing Address</source>
+		</trans-unit>
+		<trans-unit id="header.participants" xml:space="preserve">
+			<source>Participants</source>
 		</trans-unit>
 		<trans-unit id="label.abstract" xml:space="preserve">
 			<source>Short description</source>
@@ -207,6 +219,9 @@
 			<source>City</source>
 		</trans-unit>
 		<trans-unit id="label.company" xml:space="preserve">
+			<source>Company</source>
+		</trans-unit>
+		<trans-unit id="label.companyName" xml:space="preserve">
 			<source>Company</source>
 		</trans-unit>
 		<trans-unit id="label.contact" xml:space="preserve">
@@ -268,6 +283,9 @@
 		</trans-unit>
 		<trans-unit id="label.privacyStatementAccepted" xml:space="preserve">
 			<source>Privacy Statetement accepted</source>
+		</trans-unit>
+		<trans-unit id="label.role" xml:space="preserve">
+			<source>Role</source>
 		</trans-unit>
 		<trans-unit id="label.salutation" xml:space="preserve">
 			<source>Salutation</source>

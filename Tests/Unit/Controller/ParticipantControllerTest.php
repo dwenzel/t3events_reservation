@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
+use CPSIT\T3eventsReservation\Controller\AccessControlInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Controller\ParticipantController;
@@ -66,6 +67,17 @@ class ParticipantControllerTest extends UnitTestCase
         $this->inject($this->subject, 'view', $view);
 
         return $view;
+    }
+
+    /**
+     * @test
+     */
+    public function subjectImplementsAccessControlInterface()
+    {
+        $this->assertInstanceOf(
+            AccessControlInterface::class,
+            $this->subject
+        );
     }
 
     /**
