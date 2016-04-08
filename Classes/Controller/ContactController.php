@@ -2,6 +2,7 @@
 namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
+use CPSIT\T3eventsReservation\Domain\Validator\ContactValidator;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
@@ -82,6 +83,7 @@ class ContactController
      * Updates a contact
      *
      * @param Contact $contact
+     * @validate $contact \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
