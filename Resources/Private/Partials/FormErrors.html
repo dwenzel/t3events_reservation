@@ -1,19 +1,41 @@
-<f:form.validationResults for="{object}">
-	<f:comment>
-		<f:debug title="validationResults">{validationResults}</f:debug>
-		<f:debug title="flattenedErrors">{validationResults.flattenedErrors}</f:debug>
-	</f:comment>
-	<f:if condition="{validationResults.flattenedErrors}">
-		<div class="formErrors">
-			<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="errors">
-				<f:for each="{errors}" as="error">
-					<div class="singleError" data-error-path="error.{propertyPath}.{error.code}">
-						<f:translate key="error.{propertyPath}.{error.code}" default="{error} - {error.code}">
+<f:if condition="{object}">
+<f:then>
+    <f:form.validationResults for="{object}">
+        <f:comment>
+            <f:debug title="validationResults">{validationResults}</f:debug>
+            <f:debug title="flattenedErrors">{validationResults.flattenedErrors}</f:debug>
+        </f:comment>
+        <f:if condition="{validationResults.flattenedErrors}">
+            <div class="formErrors">
+                <f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="errors">
+                    <f:for each="{errors}" as="error">
+                        <div class="singleError" data-error-path="error.{propertyPath}.{error.code}">
+                            <f:translate key="error.{propertyPath}.{error.code}" default="error.{propertyPath}.{error.code}" />>
+                        </div>
+                    </f:for>
+                </f:for>
+            </div>
+        </f:if>
+    </f:form.validationResults>
+</f:then>
+    <f:else>
+        <f:form.validationResults>
+            <f:comment>
+                <f:debug title="validationResults">{validationResults}</f:debug>
+                <f:debug title="flattenedErrors">{validationResults.flattenedErrors}</f:debug>
+            </f:comment>
+            <f:if condition="{validationResults.flattenedErrors}">
+                <div class="formErrors">
+                    <f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="errors">
+                        <f:for each="{errors}" as="error">
+                            <div class="singleError" data-error-path="error.{propertyPath}.{error.code}">
+                                <f:translate key="error.{propertyPath}.{error.code}" default="error.{propertyPath}.{error.code}" />
+                            </div>
+                        </f:for>
+                    </f:for>
+                </div>
+            </f:if>
+        </f:form.validationResults>
+    </f:else>
+</f:if>
 
-						</f:translate>
-					</div>
-				</f:for>
-			</f:for>
-		</div>
-	</f:if>
-</f:form.validationResults>

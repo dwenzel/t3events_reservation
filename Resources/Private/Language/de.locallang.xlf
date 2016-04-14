@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-08T09:46:32Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-14T10:12:24Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -204,6 +204,10 @@
 		<trans-unit id="error.reservation.newParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>
 			<target>Sie dürfen keinen Teilnehmer zu dieser Reservierung hinzufügen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.participants.1347992453" approved="yes" xml:space="preserve">
+			<source>Please, add at least one participant.</source>
+			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu!</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to remove this participant.</source>
