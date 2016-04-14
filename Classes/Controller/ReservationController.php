@@ -364,6 +364,7 @@ class ReservationController
         $reservation->removeParticipant($participant);
         $reservation->getLesson()->removeParticipant($participant);
         $this->personRepository->remove($participant);
+        $this->reservationRepository->update($reservation);
         $this->addFlashMessage(
             $this->translate('message.reservation.removeParticipant.success')
         );
