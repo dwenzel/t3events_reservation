@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-14T10:12:24Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-15T14:16:46Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -284,6 +284,10 @@
 		<trans-unit id="label.availablePlaces" approved="yes" xml:space="preserve">
 			<source>available places</source>
 			<target>verfügbare Plätze</target>
+		</trans-unit>
+		<trans-unit id="label.birthday" approved="yes" xml:space="preserve">
+			<source>Birthday</source>
+			<target>Geburtsdatum</target>
 		</trans-unit>
 		<trans-unit id="label.bodytext" approved="yes" xml:space="preserve">
 			<source>Message</source>
