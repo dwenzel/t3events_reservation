@@ -457,9 +457,6 @@ class ReservationTest extends UnitTestCase {
     public function getNotificationsInitiallyReturnsEmptyObjectStorage()
     {
         $emptyObjectStorage = new ObjectStorage();
-        /*$this->subject = $this->getMock(
-            Reservation::class, ['dummy']
-        );*/
         $this->assertEquals(
             $emptyObjectStorage,
             $this->subject->getNotifications()
