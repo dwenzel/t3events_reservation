@@ -246,7 +246,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     /**
      * @test
      */
-    public function isAccessAllowedReturnsTrueAllowsNewReservationIfNoReservationInSession()
+    public function isAccessAllowedReturnsTrueIfNoReservationInSessionAndNoArgumentReservation()
     {
         $mockRequest = $this->mockRequest();
         $mockRequest->expects($this->once())
@@ -259,6 +259,39 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->method('has')
             ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(false));
+
+        $this->assertTrue(
+            $this->subject->isAccessAllowed()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsTrueIfIdentityMatchesSessionValue()
+    {
+        $sessionValue = 1234;
+        $validRequestArgument = [
+            '__identity' => '1234'
+        ];
+        $mockSession = $this->mockSession();
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(true));
+        $mockRequest->expects($this->once())
+            ->method('getArgument')
+            ->with('reservation')
+            ->will($this->returnValue($validRequestArgument));
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(true));
+        $mockSession->expects($this->once())
+            ->method('get')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue($sessionValue));
 
         $this->assertTrue(
             $this->subject->isAccessAllowed()
