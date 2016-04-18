@@ -3,7 +3,7 @@
 	"type": "typo3-cms-extension",
 	"description": "Reservations is an extension for the TYPO3 CMS. It extends t3events and allows to manage bookings for events.",
 	"keywords": ["TYPO3", "extension", "events", "reservation"],
-	"version": "0.1.0",
+	"version": "0.3.0",
 	"license": ["GPL-2.0+"],
 	"authors": [
 		{
@@ -52,7 +52,7 @@
   },
   "extra": {
 		"branch-alias": {
-			"dev-master": "0.1.x-dev"
+			"dev-master": "0.4.x-dev"
 		},
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
