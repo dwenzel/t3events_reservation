@@ -71,6 +71,7 @@ module.tx_t3eventsreservation {
 		}
 		participant {
 			download {
+				maxItems = 99999
 				fileName {
 					field = reservation.lesson.event.headline
 					default = teilnehmer

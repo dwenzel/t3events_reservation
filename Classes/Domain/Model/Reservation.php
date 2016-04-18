@@ -41,7 +41,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Hidden
 	 *
-	 * @var \int
+	 * @var int
 	 */
 	protected $hidden;
 
@@ -397,6 +397,14 @@ class Reservation extends AbstractEntity {
 	public function setBillingAddress(BillingAddress $billingAddress) {
 		$this->billingAddress = $billingAddress;
 	}
+
+    /**
+     * Removes the billing address.
+     * I.e. sets it to null
+     */
+	public function removeBillingAddress() {
+        $this->billingAddress = null;
+    }
 
 	/**
 	 * @return float

@@ -25,7 +25,10 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use CPSIT\T3eventsReservation\Controller\BillingAddressController;
+use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
+use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
@@ -348,4 +351,154 @@ class ReservationTest extends UnitTestCase {
 			$this->subject->getTotalPrice()
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function removeBillingAddressSetsBillingAddressToNull()
+	{
+		$this->subject->setBillingAddress(new BillingAddress());
+		$this->subject->removeBillingAddress();
+		$this->assertNull(
+			$this->subject->getBillingAddress()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getHiddenInitiallyReturnsNull()
+	{
+		$this->assertNull(
+			$this->subject->getHidden()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function hiddenCanBeSet()
+	{
+		$this->subject->setHidden(true);
+		$this->assertTrue(
+			$this->subject->getHidden()
+		);
+	}
+
+    /**
+     * @test
+     */
+    public function getContactIsParticipantInitiallyReturnsNull()
+    {
+        $this->assertNull(
+            $this->subject->getContactIsParticipant()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function contactIsParticipantCanBeSet()
+    {
+        $this->subject->setContactIsParticipant(true);
+        $this->assertTrue(
+            $this->subject->getContactIsParticipant()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getNoteInitiallyReturnsNull()
+    {
+        $this->assertNull(
+            $this->subject->getNote()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function noteCanBeSet()
+    {
+        $note = 'foo';
+        $this->subject->setNote($note);
+
+        $this->assertSame(
+            $note,
+            $this->subject->getNote()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getDisclaimRevocationInitiallyReturnsFalse()
+    {
+        $this->assertFalse(
+            $this->subject->getDisclaimRevocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function disClaimRevocationCanBeSet()
+    {
+        $this->subject->setDisclaimRevocation(true);
+        $this->assertTrue(
+            $this->subject->getDisclaimRevocation()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getNotificationsInitiallyReturnsEmptyObjectStorage()
+    {
+        $emptyObjectStorage = new ObjectStorage();
+        $this->assertEquals(
+            $emptyObjectStorage,
+            $this->subject->getNotifications()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function notificationsCanBeSet()
+    {
+        $emptyObjectStorage = new ObjectStorage();
+        $this->subject->setNotifications($emptyObjectStorage);
+
+        $this->assertSame(
+            $emptyObjectStorage,
+            $this->subject->getNotifications()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function notificationCanBeAdded()
+    {
+        $notification = new Notification();
+        $this->subject->addNotification($notification);
+        $this->assertTrue(
+            $this->subject->getNotifications()->contains($notification)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function notificationCanBeRemoved()
+    {
+        $notification = new Notification();
+        $this->subject->addNotification($notification);
+        $this->subject->removeNotification($notification);
+        $this->assertFalse(
+            $this->subject->getNotifications()->contains($notification)
+        );
+    }
 }

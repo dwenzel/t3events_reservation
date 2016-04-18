@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-02-19T15:02:38Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-15T14:16:46Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="button.addBillingAddress" xml:space="preserve">
+			<source>add billing address</source>
+		</trans-unit>
+		<trans-unit id="button.addParticipant" xml:space="preserve">
+			<source>add participant</source>
+		</trans-unit>
 		<trans-unit id="button.applyFilter" xml:space="preserve">
 			<source>apply filter</source>
 		</trans-unit>
@@ -35,11 +41,23 @@
 		<trans-unit id="button.deleteReservation" xml:space="preserve">
 			<source>Delete Reservation</source>
 		</trans-unit>
+		<trans-unit id="button.editBillingAddress" xml:space="preserve">
+			<source>edit billing address</source>
+		</trans-unit>
+		<trans-unit id="button.editContact" xml:space="preserve">
+			<source>edit contact</source>
+		</trans-unit>
+		<trans-unit id="button.editParticipant" xml:space="preserve">
+			<source>edit particpant</source>
+		</trans-unit>
 		<trans-unit id="button.goToLessonListPage" xml:space="preserve">
 			<source>Go to lessons list</source>
 		</trans-unit>
 		<trans-unit id="button.proceed" xml:space="preserve">
 			<source>Proceed</source>
+		</trans-unit>
+		<trans-unit id="button.removeBillingAddress" xml:space="preserve">
+			<source>remove billing address</source>
 		</trans-unit>
 		<trans-unit id="button.removeParticipant" xml:space="preserve">
 			<source>Remove Participant</source>
@@ -137,14 +155,44 @@
 		<trans-unit id="error.reservation.newParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.participants.1347992453" xml:space="preserve">
+			<source>Please, add at least one participant.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to remove this participant.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.show.accessDenied" xml:space="preserve">
 			<source>You are not allowed to see this reservation.</source>
 		</trans-unit>
+		<trans-unit id="header.billingAddress" xml:space="preserve">
+			<source>Billing Address</source>
+		</trans-unit>
+		<trans-unit id="header.contact" xml:space="preserve">
+			<source>Contact</source>
+		</trans-unit>
+		<trans-unit id="header.editBillingAddress" xml:space="preserve">
+			<source>Edit billing address</source>
+		</trans-unit>
+		<trans-unit id="header.editContact" xml:space="preserve">
+			<source>Edit Contact</source>
+		</trans-unit>
+		<trans-unit id="header.editParticipant" xml:space="preserve">
+			<source>Edit Participant</source>
+		</trans-unit>
+		<trans-unit id="header.editReservation" xml:space="preserve">
+			<source>Edit Reservation</source>
+		</trans-unit>
+		<trans-unit id="header.newBillingAddress" xml:space="preserve">
+			<source>Add Billing Address</source>
+		</trans-unit>
+		<trans-unit id="header.participants" xml:space="preserve">
+			<source>Participants</source>
+		</trans-unit>
 		<trans-unit id="label.abstract" xml:space="preserve">
 			<source>Short description</source>
+		</trans-unit>
+		<trans-unit id="label.accountingOffice" xml:space="preserve">
+			<source>Accounting Office</source>
 		</trans-unit>
 		<trans-unit id="label.address" xml:space="preserve">
 			<source>Street</source>
@@ -167,6 +215,9 @@
 		<trans-unit id="label.availablePlaces" xml:space="preserve">
 			<source>available places</source>
 		</trans-unit>
+		<trans-unit id="label.birthday" xml:space="preserve">
+			<source>Birthday</source>
+		</trans-unit>
 		<trans-unit id="label.bodytext" xml:space="preserve">
 			<source>Message</source>
 		</trans-unit>
@@ -174,6 +225,9 @@
 			<source>City</source>
 		</trans-unit>
 		<trans-unit id="label.company" xml:space="preserve">
+			<source>Company</source>
+		</trans-unit>
+		<trans-unit id="label.companyName" xml:space="preserve">
 			<source>Company</source>
 		</trans-unit>
 		<trans-unit id="label.contact" xml:space="preserve">
@@ -236,6 +290,12 @@
 		<trans-unit id="label.privacyStatementAccepted" xml:space="preserve">
 			<source>Privacy Statetement accepted</source>
 		</trans-unit>
+		<trans-unit id="label.role" xml:space="preserve">
+			<source>Role</source>
+		</trans-unit>
+		<trans-unit id="label.salutation" xml:space="preserve">
+			<source>Salutation</source>
+		</trans-unit>
 		<trans-unit id="label.search.field.subject" xml:space="preserve">
 			<source>Subject</source>
 		</trans-unit>
@@ -257,8 +317,14 @@
 		<trans-unit id="label.status.4" xml:space="preserve">
 			<source>canceled (with costs)</source>
 		</trans-unit>
+		<trans-unit id="label.street" xml:space="preserve">
+			<source>Street</source>
+		</trans-unit>
 		<trans-unit id="label.subject" xml:space="preserve">
 			<source>Subject</source>
+		</trans-unit>
+		<trans-unit id="label.vatId" xml:space="preserve">
+			<source>VAT ID</source>
 		</trans-unit>
 		<trans-unit id="label.zip" xml:space="preserve">
 			<source>Zip</source>
@@ -283,6 +349,9 @@
 		</trans-unit>
 		<trans-unit id="message.deadLineForLessonExceed" xml:space="preserve">
 			<source>Sorry the reservation deadline for this lesson expired. </source>
+		</trans-unit>
+		<trans-unit id="message.fillInBillingAddress" xml:space="preserve">
+			<source>Please, enter your billing address data.</source>
 		</trans-unit>
 		<trans-unit id="message.fillInCompanyData" xml:space="preserve">
 			<source>Please enter your company name and address.</source>
@@ -323,6 +392,9 @@
 		<trans-unit id="message.reservation.create.success" xml:space="preserve">
 			<source>Your reservation has been created.</source>
 		</trans-unit>
+		<trans-unit id="message.reservation.createBillingAddress.success" xml:space="preserve">
+			<source>The billing address has been saved.</source>
+		</trans-unit>
 		<trans-unit id="message.reservation.createParticipant.success" xml:space="preserve">
 			<source>The participant has been added to your reservation.</source>
 		</trans-unit>
@@ -331,6 +403,9 @@
 		</trans-unit>
 		<trans-unit id="message.reservation.newParticipant.addAtLeastOneParticipant" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
+		</trans-unit>
+		<trans-unit id="message.reservation.removeBillingAddress.success" xml:space="preserve">
+			<source>The billing address has been removed from your reservation.</source>
 		</trans-unit>
 		<trans-unit id="message.reservation.removeParticipant.success" xml:space="preserve">
 			<source>The participant has been removed from your reservation.</source>

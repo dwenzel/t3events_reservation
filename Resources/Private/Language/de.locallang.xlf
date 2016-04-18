@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-19T15:02:38Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-15T14:16:46Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="button.addBillingAddress" approved="yes" xml:space="preserve">
+			<source>add billing address</source>
+			<target>Rechnungsadresse hinzufügen</target>
+		</trans-unit>
+		<trans-unit id="button.addParticipant" approved="yes" xml:space="preserve">
+			<source>add participant</source>
+			<target>Teilnehmer hinzufügen</target>
+		</trans-unit>
 		<trans-unit id="button.applyFilter" approved="yes" xml:space="preserve">
 			<source>apply filter</source>
 			<target>Filter anwenden</target>
@@ -45,6 +53,18 @@
 			<source>Delete Reservation</source>
 			<target>Reservierung löschen</target>
 		</trans-unit>
+		<trans-unit id="button.editBillingAddress" approved="yes" xml:space="preserve">
+			<source>edit billing address</source>
+			<target>Rechnungsadresse bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="button.editContact" approved="yes" xml:space="preserve">
+			<source>edit contact</source>
+			<target>Kontakt bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="button.editParticipant" approved="yes" xml:space="preserve">
+			<source>edit particpant</source>
+			<target>Teilnehmer bearbeiten</target>
+		</trans-unit>
 		<trans-unit id="button.goToLessonListPage" approved="yes" xml:space="preserve">
 			<source>Go to lessons list</source>
 			<target>Zur Veranstaltungsliste</target>
@@ -52,6 +72,10 @@
 		<trans-unit id="button.proceed" approved="yes" xml:space="preserve">
 			<source>Proceed</source>
 			<target>weiter</target>
+		</trans-unit>
+		<trans-unit id="button.removeBillingAddress" approved="yes" xml:space="preserve">
+			<source>remove billing address</source>
+			<target>Rechnungsadresse löschen</target>
 		</trans-unit>
 		<trans-unit id="button.removeParticipant" approved="yes" xml:space="preserve">
 			<source>Remove Participant</source>
@@ -181,6 +205,10 @@
 			<source>You are not allowed to add a participant to this reservation.</source>
 			<target>Sie dürfen keinen Teilnehmer zu dieser Reservierung hinzufügen.</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.participants.1347992453" approved="yes" xml:space="preserve">
+			<source>Please, add at least one participant.</source>
+			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu!</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to remove this participant.</source>
 			<target>Sie dürfen diesen Teilnehmer nicht entfernen.</target>
@@ -189,9 +217,45 @@
 			<source>You are not allowed to see this reservation.</source>
 			<target>Sie dürfen diese Reservierung nicht sehen.</target>
 		</trans-unit>
+		<trans-unit id="header.billingAddress" approved="yes" xml:space="preserve">
+			<source>Billing Address</source>
+			<target>Rechnungsadresse</target>
+		</trans-unit>
+		<trans-unit id="header.contact" approved="yes" xml:space="preserve">
+			<source>Contact</source>
+			<target>Ansprechpartner</target>
+		</trans-unit>
+		<trans-unit id="header.editBillingAddress" approved="yes" xml:space="preserve">
+			<source>Edit billing address</source>
+			<target>Rechnungsadresse bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="header.editContact" approved="yes" xml:space="preserve">
+			<source>Edit Contact</source>
+			<target>Ansprechpartner bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="header.editParticipant" approved="yes" xml:space="preserve">
+			<source>Edit Participant</source>
+			<target>Teilnehmer bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="header.editReservation" approved="yes" xml:space="preserve">
+			<source>Edit Reservation</source>
+			<target>Reservierung bearbeiten</target>
+		</trans-unit>
+		<trans-unit id="header.newBillingAddress" approved="yes" xml:space="preserve">
+			<source>Add Billing Address</source>
+			<target>Rechnungsadresse hinzufügen</target>
+		</trans-unit>
+		<trans-unit id="header.participants" approved="yes" xml:space="preserve">
+			<source>Participants</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
 		<trans-unit id="label.abstract" approved="yes" xml:space="preserve">
 			<source>Short description</source>
 			<target>Kurzbeschreibung</target>
+		</trans-unit>
+		<trans-unit id="label.accountingOffice" approved="yes" xml:space="preserve">
+			<source>Accounting Office</source>
+			<target>Rechnungsstelle</target>
 		</trans-unit>
 		<trans-unit id="label.address" approved="yes" xml:space="preserve">
 			<source>Street</source>
@@ -221,6 +285,10 @@
 			<source>available places</source>
 			<target>verfügbare Plätze</target>
 		</trans-unit>
+		<trans-unit id="label.birthday" approved="yes" xml:space="preserve">
+			<source>Birthday</source>
+			<target>Geburtsdatum</target>
+		</trans-unit>
 		<trans-unit id="label.bodytext" approved="yes" xml:space="preserve">
 			<source>Message</source>
 			<target>Nachricht</target>
@@ -230,6 +298,10 @@
 			<target>Ort</target>
 		</trans-unit>
 		<trans-unit id="label.company" approved="yes" xml:space="preserve">
+			<source>Company</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="label.companyName" approved="yes" xml:space="preserve">
 			<source>Company</source>
 			<target>Firma</target>
 		</trans-unit>
@@ -305,6 +377,14 @@
 			<source>Privacy Statetement accepted</source>
 			<target>Datenschutzerklärung akzeptiert</target>
 		</trans-unit>
+		<trans-unit id="label.role" approved="yes" xml:space="preserve">
+			<source>Role</source>
+			<target>Abteilung/Position</target>
+		</trans-unit>
+		<trans-unit id="label.salutation" approved="yes" xml:space="preserve">
+			<source>Salutation</source>
+			<target>Anrede</target>
+		</trans-unit>
 		<trans-unit id="label.search.field.subject" approved="yes" xml:space="preserve">
 			<source>Subject</source>
 			<target>Suchbegriff</target>
@@ -333,9 +413,17 @@
 			<source>canceled (with costs)</source>
 			<target>storniert (kostenpflichtig)</target>
 		</trans-unit>
+		<trans-unit id="label.street" approved="yes" xml:space="preserve">
+			<source>Street</source>
+			<target>Straße</target>
+		</trans-unit>
 		<trans-unit id="label.subject" approved="yes" xml:space="preserve">
 			<source>Subject</source>
 			<target>Betreff</target>
+		</trans-unit>
+		<trans-unit id="label.vatId" approved="yes" xml:space="preserve">
+			<source>VAT ID</source>
+			<target>USt.-ID / VAT</target>
 		</trans-unit>
 		<trans-unit id="label.zip" approved="yes" xml:space="preserve">
 			<source>Zip</source>
@@ -364,6 +452,10 @@
 		<trans-unit id="message.deadLineForLessonExceed" approved="yes" xml:space="preserve">
 			<source>Sorry the reservation deadline for this lesson expired. </source>
 			<target>Die Anmeldefrist für diesen Termin ist abgelaufen. </target>
+		</trans-unit>
+		<trans-unit id="message.fillInBillingAddress" approved="yes" xml:space="preserve">
+			<source>Please, enter your billing address data.</source>
+			<target>Bitte geben Sie Ihre Rechnungsadresse an.</target>
 		</trans-unit>
 		<trans-unit id="message.fillInCompanyData" approved="yes" xml:space="preserve">
 			<source>Please enter your company name and address.</source>
@@ -417,6 +509,10 @@
 			<source>Your reservation has been created.</source>
 			<target>Ihre Reservierung wurde angelegt.</target>
 		</trans-unit>
+		<trans-unit id="message.reservation.createBillingAddress.success" approved="yes" xml:space="preserve">
+			<source>The billing address has been saved.</source>
+			<target>Die Rechnungsadresse wurde gespeichert.</target>
+		</trans-unit>
 		<trans-unit id="message.reservation.createParticipant.success" approved="yes" xml:space="preserve">
 			<source>The participant has been added to your reservation.</source>
 			<target>Der Teilnehmer wurde zur Reservierung hinzugefügt.</target>
@@ -428,6 +524,10 @@
 		<trans-unit id="message.reservation.newParticipant.addAtLeastOneParticipant" approved="yes" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
 			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu.</target>
+		</trans-unit>
+		<trans-unit id="message.reservation.removeBillingAddress.success" approved="yes" xml:space="preserve">
+			<source>The billing address has been removed from your reservation.</source>
+			<target>Die Rechnungsadresse wurde von der Reservierung entfernt.</target>
 		</trans-unit>
 		<trans-unit id="message.reservation.removeParticipant.success" approved="yes" xml:space="preserve">
 			<source>The participant has been removed from your reservation.</source>

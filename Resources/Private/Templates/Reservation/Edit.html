@@ -1,13 +1,16 @@
 <f:layout name="Default" />
 <f:section name="main">
-	<h1>Reservation bearbeiten</h1>
+	<h1>{f:translate(key: 'header.editReservation', default:'header.editReservation')}</h1>
 
 	<f:flashMessages renderMode="div" />
 
-	<f:render partial="FormErrors" arguments="{object:Reservation}" />
-
-	<f:form action="update" name="reservation" object="{reservation}" noCacheHash="TRUE">
+	<f:render partial="FormErrors" arguments="{object:reservation}" />
+	<f:link.action
+		action="editBillingAddress"
+		arguments="{reservation: reservation}">
+		{f:translate(key: 'button.editBillingAddress', default:'button.editBillingAddress')}</f:link.action>
+	<f:form action="checkout" name="reservation" object="{reservation}" noCacheHash="TRUE">
 		<f:render partial="Reservation/FormFields" arguments="{reservation:reservation}" />
-		<f:form.submit value="Save" />
+		<f:form.submit value="{f:translate(key: 'button.checkout', default: 'check out')}" />
 	</f:form>
 </f:section>

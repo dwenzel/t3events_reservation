@@ -1,0 +1,123 @@
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_salutation">{f:translate(key: 'label.salutation')}</label>
+		<f:form.select
+			property="{prefixProperty}gender"
+			options="{
+						1: '{f:translate(key: \'label.gender.female\')}',
+						2: '{f:translate(key: \'label.gender.male\')}'
+					}"
+			id="{prefixFieldName}_salutation"
+			name="{prefixFieldName}_salutation"
+			/>
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_firstName">{f:translate(key: 'label.first_name')}</label>
+		<f:form.textfield
+			property="{prefixProperty}firstName"
+			name="{prefixFieldName}_firstName"
+			placeholder="{f:translate(key: 'label.first_name')}"
+			id="{prefixFieldName}_firstName"
+			class="floatlabel"
+			/>
+	</div>
+
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_name">{f:translate(key: 'label.name')}</label>
+		<f:form.textfield
+			property="{prefixProperty}lastName"
+			placeholder="{f:translate(key: 'label.name')}"
+			name="{prefixFieldName}_name"
+			id="{prefixFieldName}_name"
+			class="floatlabel" />
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_mail">{f:translate(key: 'label.email')}</label>
+		<f:form.textfield
+			property="{prefixProperty}email"
+			placeholder="{f:translate(key: 'label.email')}"
+			name="{prefixFieldName}_mail"
+			id="{prefixFieldName}_mail"
+			type="email"
+			class="floatlabel" />
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_phone">{f:translate(key: 'label.phone')}</label>
+		<f:form.textfield
+			property="{prefixProperty}phone"
+			placeholder="{f:translate(key: 'label.phone')}"
+			name="{prefixFieldName}_phone"
+			id="{prefixFieldName}_phone"
+			class="floatlabel" />
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_companyName">{f:translate(key: 'label.company')}</label>
+		<f:form.textfield
+			property="{prefixProperty}companyName"
+			placeholder="{f:translate(key: 'label.company')}"
+			name="{prefixFieldName}_companyName"
+			id="{prefixFieldName}_companyName"
+			class="floatlabel" />
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_vatId">{f:translate(key: 'label.vatId')}</label>
+		<f:form.textfield
+			property="{prefixProperty}vatId"
+			placeholder="{f:translate(key: 'label.vatId')}}"
+			name="{prefixFieldName}_vatId"
+			id="{prefixFieldName}_vatId"
+			class="floatlabel" />
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_accountingOffice">{f:translate(key: 'label.accountingOffice')}</label>
+		<f:form.textfield
+			property="{prefixProperty}accountingOffice"
+			placeholder="{f:translate(key: 'label.accountingOffice')}"
+			name="{prefixFieldName}_accountingOffice"
+			id="{prefixFieldName}_accountingOffice"
+			class="floatlabel" />
+	</div>
+</div>
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_street">{f:translate(key: 'label.address')}</label>
+		<f:form.textfield
+			property="{prefixProperty}address"
+			placeholder="{f:translate(key: 'label.address')}"
+			name="{prefixFieldName}_street"
+			id="{prefixFieldName}_street"
+			class="floatlabel" />
+	</div>
+</div>
+<div class="form-row">
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_postcode">{f:translate(key: 'label.zip')}</label>
+		<f:form.textfield
+			property="{prefixProperty}zip"
+			placeholder="PLZ"
+			name="{prefixFieldName}_postcode"
+			id="{prefixFieldName}_postcode"
+			class="floatlabel" />
+	</div>
+	<div class="form-row form-row--half">
+		<label for="{prefixFieldName}_city">{f:translate(key: 'label.city')}</label>
+		<f:form.textfield
+			property="{prefixProperty}city"
+			placeholder="{f:translate(key: 'label.city')}"
+			name="{prefixFieldName}_city"
+			id="{prefixFieldName}_city"
+			class="floatlabel" />
+	</div>
+</div>

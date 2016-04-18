@@ -25,17 +25,24 @@ namespace CPSIT\T3eventsReservations\Tests\Unit\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsReservation\Controller\ReservationController;
+use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
+use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
+use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Domain\Model\Schedule;
+use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
+use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
+use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Domain\Model\Performance;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use Webfox\T3events\Domain\Repository\PerformanceRepository;
@@ -88,10 +95,32 @@ class ReservationControllerTest extends UnitTestCase {
 	 */
 	protected function mockReservationRepository() {
 		$reservationRepository = $this->getMock(
-			ReservationRepository::class, ['add', 'update', 'remove'], [], '', FALSE);
+			ReservationRepository::class, ['add', 'update', 'remove'], [], '', false);
 		$this->inject($this->subject, 'reservationRepository', $reservationRepository);
 
 		return $reservationRepository;
+	}
+
+    /**
+     * @return mixed
+     */
+    protected function mockPersonRepository() {
+        $personRepository = $this->getMock(
+            PersonRepository::class, ['add', 'update', 'remove'], [], '', false);
+        $this->inject($this->subject, 'personRepository', $personRepository);
+
+        return $personRepository;
+    }
+
+	/**
+	 * @return mixed
+	 */
+	protected function mockBillingAddressRepository() {
+		$billingAddressRepository = $this->getMock(
+			BillingAddressRepository::class, ['add', 'update', 'remove'], [], '', false);
+		$this->inject($this->subject, 'billingAddressRepository', $billingAddressRepository);
+
+		return $billingAddressRepository;
 	}
 
 	protected function mockAllowAccessReturnsTrue() {
@@ -124,9 +153,12 @@ class ReservationControllerTest extends UnitTestCase {
 		return $mockSession;
 	}
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
 	protected function mockSettingsUtility() {
 		$mockSettingsUtility = $this->getMock(
-			SettingsUtility::class, ['getValueByKey']
+			SettingsUtility::class, ['getValueByKey', 'getFileStorage']
 		);
 		$this->subject->injectSettingsUtility($mockSettingsUtility);
 
@@ -146,40 +178,8 @@ class ReservationControllerTest extends UnitTestCase {
 	}
 
 	protected function assertDenyAccess() {
-		$settings = [
-			'schedule' => [
-				'listPid' => '3'
-			]
-		];
-		$this->subject->_set('settings', $settings);
-
 		$this->subject->expects($this->once())
-			->method('clearCacheOnError');
-		$this->subject->_set('actionMethodName', 'fooMethodAction');
-		$expectedErrorMessage = 'error.reservation.fooMethod.accessDenied';
-		$translatedMessage = 'foo';
-		$this->subject->expects($this->once())
-			->method('translate')
-			->with($expectedErrorMessage)
-			->will($this->returnValue($translatedMessage));
-
-		$this->subject->expects($this->once())
-			->method('addFlashMessage')
-			->with(
-				$translatedMessage,
-				'',
-				AbstractMessage::ERROR,
-				true
-			);
-		$this->subject->expects($this->once())
-			->method('redirect')
-			->with(
-				'list',
-				'Performance',
-				't3events',
-				[],
-				$settings['schedule']['listPid']
-			);
+			->method('denyAccess');
 	}
 
 	/**
@@ -209,7 +209,15 @@ class ReservationControllerTest extends UnitTestCase {
 	protected function setUp() {
 		$this->subject = $this->getAccessibleMock(
 			ReservationController::class,
-			['redirect', 'forward', 'addFlashMessage', 'translate', 'isAccessAllowed', 'clearCacheOnError'],
+			[
+                'redirect',
+                'forward',
+                'addFlashMessage',
+                'translate',
+                'isAccessAllowed',
+                'clearCacheOnError',
+                'denyAccess'
+            ],
 			[], '', false);
 		$mockSession = $this->getMock(
 			SessionInterface::class, ['get', 'set', 'has', 'clean'], [], '', false
@@ -220,102 +228,136 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function showActionDeniesAccess() {
+	public function newParticipantActionDoesNotDenyAccessIfReservationStatusIsDraft() {
+		$mockRequest = $this->getMock(
+			Request::class
+		);
+		$this->mockView();
+		$this->inject($this->subject, 'request', $mockRequest);
 		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->showAction($reservation);
-	}
+		$reservation->setStatus(Reservation::STATUS_DRAFT);
 
-	/**
-	 * @test
-	 */
-	public function editActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->editAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
-	public function deleteActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->deleteAction($reservation);
-	}
-
-	/**
-	 * @test
-	 */
-	public function newParticipantActionDeniesAccessIfAccessNotAllowed() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
+		$this->subject->expects($this->never())
+			->method('denyAccess');
 		$this->subject->newParticipantAction($reservation);
 	}
 
 	/**
-	 * @test
-	 */
-	public function removeParticipantActionDeniesAccess() {
-		$reservation = new Reservation();
-		$participant = new Person();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->removeParticipantAction($reservation, $participant);
-	}
+     * @test
+     */
+    public function confirmActionSetsStatusSubmitted() {
+        $mockReservation = $this->getMock(
+            Reservation::class, ['setStatus']
+        );
+        $this->mockReservationRepository();
 
-	/**
-	 * @test
-	 */
-	public function confirmActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->confirmAction($reservation);
-	}
+        $mockReservation->expects($this->once())
+            ->method('setStatus')
+            ->with(Reservation::STATUS_SUBMITTED);
 
-	/**
-	 * @test
-	 */
-	public function checkoutActionDeniesAccess() {
-		$reservation = new Reservation();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->checkoutAction($reservation);
-	}
+        $this->subject->confirmAction($mockReservation);
+    }
 
-	/**
-	 * @test
-	 */
-	public function createParticipantActionDeniesAccess() {
-		$reservation = new Reservation();
-		$participant = new Person();
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(false));
-		$this->assertDenyAccess();
-		$this->subject->createParticipantAction($reservation, $participant);
-	}
+    /**
+     * @test
+     */
+    public function confirmActionAddsFlashMessage() {
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockReservationRepository();
+        $translatedMessage = 'foo';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with('message.reservation.confirm.success')
+            ->will($this->returnValue($translatedMessage)
+        );
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($translatedMessage);
 
-	/**
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionSendsNotification() {
+        $this->subject = $this->getAccessibleMock(
+            ReservationController::class,
+            ['sendNotification', 'redirect', 'forward', 'addFlashMessage', 'translate', 'isAccessAllowed', 'clearCacheOnError'],
+            [], '', false);
+        $identifier = 'foo';
+        $configForIdentifier = ['bar'];
+
+        $settings = [
+            'reservation' => [
+                'confirm' => [
+                    'notification' => [
+                        $identifier => $configForIdentifier
+                    ]
+                ]
+            ]
+        ];
+        $this->subject->_set('settings', $settings);
+
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockReservationRepository();
+
+        $this->subject->expects($this->once())
+            ->method('sendNotification')
+            ->with(
+                $mockReservation,
+                $identifier,
+                $configForIdentifier
+            );
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionUpdatesReservation() {
+        $mockReservation = $this->getMock(Reservation::class);
+        $mockRepository = $this->mockReservationRepository();
+        $mockRepository->expects($this->once())
+            ->method('update')
+            ->with($mockReservation);
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function confirmActionForwardsToShowAction() {
+        $mockReservation = $this->getMock(Reservation::class);
+        $this->mockReservationRepository();
+        $this->subject->expects($this->once())
+            ->method('forward')
+            ->with(
+                'show',
+                null,
+                null,
+                ['reservation' => $mockReservation]
+            );
+
+        $this->subject->confirmAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function checkoutActionAssignsReservationToView() {
+        $reservation = new Reservation();
+        $view = $this->mockView();
+        $view->expects($this->once())
+            ->method('assign')
+            ->with('reservation', $reservation);
+
+        $this->subject->checkoutAction($reservation);
+    }
+
+   	/**
 	 * @test
 	 */
 	public function createActionDeniesAccessIfReservationIsNotNew() {
@@ -332,50 +374,43 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function isAccessAllowedReturnsFalseIfObjectIsNotReservation() {
-		$this->subject = $this->getAccessibleMock(
-			ReservationController::class, ['dummy']
-		);
-		$object = $this->getMockForAbstractClass(
-			DomainObjectInterface::class
-		);
-		$this->assertFalse(
-			$this->subject->isAccessAllowed($object)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isAccessAllowedReturnsFalseIfReservationUidIsNotInSession() {
-		$this->subject = $this->getAccessibleMock(
-			ReservationController::class, ['dummy']
-		);
-		$mockSession = $this->mockSession();
-		$object = $this->getMock(
+	public function createActionDeniesAccessReservationIsInSession() {
+		$reservation = $this->getMock(
 			Reservation::class
 		);
+		$mockSession = $this->mockSession();
 		$mockSession->expects($this->once())
 			->method('has')
 			->with('reservationUid')
-			->will($this->returnValue(false));
+			->will($this->returnValue(true));
+		$this->assertDenyAccess();
 
-		$this->assertFalse(
-			$this->subject->isAccessAllowed($object)
-		);
+		$this->subject->createAction($reservation);
 	}
 
 	/**
 	 * @test
 	 */
 	public function showActionAssignsReservationToView() {
-		$this->mockAllowAccessReturnsTrue();
 		$reservation = new Reservation();
 		$view = $this->mockView();
 		$view->expects($this->once())->method('assign')->with('reservation', $reservation);
 
 		$this->subject->showAction($reservation);
 	}
+
+    /**
+     * @test
+     */
+    public function showActionCleansSession() {
+        $reservation = new Reservation();
+        $this->mockView();
+        $session = $this->mockSession();
+        $session->expects($this->once())
+            ->method('clean');
+
+        $this->subject->showAction($reservation);
+    }
 
 	/**
 	 * @test
@@ -434,7 +469,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function editActionAssignsReservationToView() {
-		$this->mockAllowAccessReturnsTrue();
 		$this->mockPersistenceManager();
 		$reservationRepository = $this->mockReservationRepository();
 		$view = $this->mockView();
@@ -460,7 +494,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function createParticipantUpdatesReservationInReservationRepository() {
-		$this->mockAllowAccessReturnsTrue();
 		$this->mockPersistenceManager();
 		$this->mockLessonRepository();
 
@@ -489,8 +522,6 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function deleteActionRemovesReservationFromReservationRepository() {
-		$this->mockAllowAccessReturnsTrue();
-
 		$reservation = new Reservation();
 
 		$reservationRepository = $this->mockReservationRepository();
@@ -504,26 +535,50 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function initializeActionSetsSession() {
-		$this->subject = $this->getAccessibleMock(
-			ReservationController::class,
-			['setRequestArguments', 'setReferrerArguments'],
-			[], '', false);
-		$mockObjectManager = $this->mockObjectManager();
-		$mockSession = $this->getMockForAbstractClass(
-			SessionInterface::class
-		);
-		$mockObjectManager->expects($this->once())
-			->method('get')
-			->with(Typo3Session::class, ReservationController::SESSION_NAME_SPACE)
-			->will($this->returnValue($mockSession));
-		$this->subject->initializeAction();
-		$this->assertAttributeEquals(
-			$mockSession,
-			'session',
-			$this->subject
-		);
+	public function deleteActionClearsSession()
+	{
+		$reservation = new Reservation();
+		$mockSession = $this->mockSession();
+		$this->mockReservationRepository();
+		$mockSession->expects($this->once())
+			->method('clean');
+
+		$this->subject->deleteAction($reservation);
 	}
+
+	/**
+	 * @test
+	 */
+	public function deleteActionRemovesContactFromRepository()
+	{
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getContact']
+		);
+		$mockContact = $this->getMock(
+            Contact::class
+        );
+        $mockReservation->expects($this->once())
+            ->method('getContact')
+            ->will($this->returnValue($mockContact));
+		$this->mockSession();
+		$this->mockReservationRepository();
+		$mockContactRepository = $this->getMock(
+			ContactRepository::class, ['add', 'remove', 'update'],
+            [], '', false
+		);
+        $this->inject(
+            $this->subject,
+            'contactRepository',
+            $mockContactRepository
+        );
+
+        $mockContactRepository->expects($this->once())
+            ->method('remove')
+            ->with($mockContact);
+
+        $this->subject->deleteAction($mockReservation);
+	}
+
 
 	/**
 	 * @test
@@ -736,6 +791,51 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function sendNotificationAddsAttachments() {
+		$reservation = new Reservation();
+		$identifier = 'foo';
+		$fileUtilityConfig = [
+			'foo' => 'bar'
+		];
+		$config = [
+			'attachments' => [
+				'files' => $fileUtilityConfig
+			],
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz',
+		];
+		$mockObjectStorage = $this->getMock(
+			ObjectStorage::class
+		);
+		$mockSettingsUtility = $this->mockSettingsUtility();
+		$mockSettingsUtility->expects($this->once())
+			->method('getFileStorage')
+			->with($reservation, $fileUtilityConfig)
+			->will($this->returnValue($mockObjectStorage));
+		$mockSettingsUtility->expects($this->any())
+			->method('getValueByKey')
+			->will($this->returnValue('barBaz'));
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setAttachments']
+		);
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$this->mockNotificationService();
+		$mockNotification->expects($this->once())
+			->method('setAttachments')
+			->with($mockObjectStorage);
+
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
 	public function sendNotificationGetsTemplateFolderFromSettings() {
 		$settings = ['foo'];
 		$this->subject->_set('settings', $settings);
@@ -780,15 +880,13 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
+		$mockLesson = $this->getMock(
+			BookableInterface::class
 		);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(1));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
+
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_DRAFT));
@@ -815,15 +913,11 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
-		);
+		$mockLesson = $this->getMock(BookableInterface::class);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(1));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
+
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_NEW));
@@ -845,19 +939,15 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
-		);
+
+		$mockLesson = $this->getMock(BookableInterface::class);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(0));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_NEW));
-		$mockReservation->expects($this->once())
+        $mockReservation->expects($this->once())
 			->method('getLesson')
 			->will($this->returnValue($mockLesson));
 		$this->mockRequest();
@@ -885,15 +975,12 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getAccessibleMock(
-			Performance::class, ['getFreePlaces']
-		);
+
+        $mockLesson = $this->getMock(BookableInterface::class);
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(3));
-		$this->subject->expects($this->once())
-			->method('isAccessAllowed')
-			->will($this->returnValue(true));
+
 		$mockReservation->expects($this->any())
 			->method('getStatus')
 			->will($this->returnValue(Reservation::STATUS_NEW));
@@ -911,4 +998,433 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject->newParticipantAction($mockReservation);
 	}
 
+	/**
+	 * @test
+	 */
+	public function editBillingAddressActionAssignsReservationToView() {
+		$view = $this->mockView();
+
+		$reservation = new Reservation();
+
+		$view->expects($this->once())
+			->method('assignMultiple')
+			->with(
+				[
+					'reservation' => $reservation
+				]
+			);
+
+		$this->subject->editBillingAddressAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionUpdatesReservation() {
+		$reservationRepository = $this->mockReservationRepository();
+
+		$reservation = new Reservation();
+
+		$reservationRepository->expects($this->once())
+			->method('update')
+			->with($reservation);
+
+		$this->subject->updateAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionAddsFlashMessageOnSuccess() {
+		$this->mockReservationRepository();
+		$translatedMessage = 'foo';
+		$reservation = new Reservation();
+
+		$this->subject->expects($this->once())
+			->method('translate')
+			->with('message.reservation.update.success')
+			->will($this->returnValue($translatedMessage));
+		$this->subject->expects($this->once())
+			->method('addFlashMessage')
+			->with($translatedMessage);
+
+		$this->subject->updateAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateActionRedirectsToEditAction() {
+		$this->mockReservationRepository();
+		$reservation = new Reservation();
+
+		$this->subject->expects($this->once())
+			->method('redirect')
+			->with(
+				'edit',
+				null,
+				null,
+				[
+					'reservation' => $reservation
+				]
+			);
+
+		$this->subject->updateAction($reservation);
+	}
+
+    /**
+     * @test
+     */
+    public function removeBillingAddressAddsMessageOnSuccess()
+    {
+        $this->mockBillingAddressRepository();
+
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class, ['getBillingAddress']
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $reservation->expects($this->any())
+            ->method('getBillingAddress')
+            ->will($this->returnValue($mockBillingAddress));
+        $expectedKey = 'message.reservation.removeBillingAddress.success';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with($expectedKey)
+            ->will($this->returnValue($expectedKey));
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($expectedKey);
+
+        $this->subject->removeBillingAddressAction($reservation);
+    }
+
+    /**
+     * @test
+     */
+    public function removeBillingAddressRedirectsToEditAction()
+    {
+        /** @var Reservation $mockReservation */
+        $mockReservation = $this->getMock(
+            Reservation::class, ['getBillingAddress']
+        );
+        $this->subject->expects($this->once())
+            ->method('redirect')
+            ->with(
+                'edit',
+                null,
+                null,
+                [
+                    'reservation' => $mockReservation
+                ]
+            );
+
+        $this->subject->removeBillingAddressAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function newBillingAddressActionAssignsVariablesToView()
+    {
+        $mockReservation = $this->getAccessibleMock(
+            Reservation::class
+        );
+
+        $mockView = $this->mockView();
+        $mockView->expects($this->once())
+            ->method('assignMultiple')
+            ->with(
+                [
+                    'newBillingAddress' => null,
+                    'reservation' => $mockReservation
+                ]
+            );
+
+        $this->subject->newBillingAddressAction($mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionSetsBillingAddress()
+    {
+        $this->mockReservationRepository();
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class, ['setBillingAddress']
+        );
+        /** @var BillingAddress $billingAddress */
+        $billingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->mockPersonRepository();
+        $reservation->expects($this->once())
+            ->method('setBillingAddress')
+            ->with($billingAddress);
+
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionAddsBillingAddressToRepository()
+    {
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $billingAddress */
+        $billingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->mockReservationRepository();
+        $mockPersonRepository = $this->mockPersonRepository();
+        $mockPersonRepository->expects($this->once())
+            ->method('add')
+            ->with($billingAddress);
+
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressUpdatesReservation()
+    {
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $billingAddress */
+        $billingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->mockPersonRepository();
+        $mockReservationRepository = $this->mockReservationRepository();
+        $mockReservationRepository->expects($this->once())
+            ->method('update')
+            ->with($reservation);
+
+        $this->subject->createBillingAddressAction($reservation, $billingAddress);
+    }
+
+
+    /**
+     * @test
+     */
+    public function createBillingAddressAddsMessageOnSuccess()
+    {
+        $this->mockPersonRepository();
+        $this->mockReservationRepository();
+
+        /** @var Reservation $reservation */
+        $reservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $expectedKey = 'message.reservation.createBillingAddress.success';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with($expectedKey)
+            ->will($this->returnValue($expectedKey));
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($expectedKey);
+
+        $this->subject->createBillingAddressAction($reservation, $mockBillingAddress);
+    }
+
+    /**
+     * @test
+     */
+    public function createBillingAddressActionRedirectsToEditAction()
+    {
+        $this->mockReservationRepository();
+        $this->mockPersonRepository();
+
+        /** @var Reservation $mockReservation */
+        $mockReservation = $this->getMock(
+            Reservation::class
+        );
+        /** @var BillingAddress $mockBillingAddress */
+        $mockBillingAddress = $this->getMock(
+            BillingAddress::class
+        );
+        $this->subject->expects($this->once())
+            ->method('redirect')
+            ->with(
+                'edit',
+                null,
+                null,
+                [
+                    'reservation' => $mockReservation
+                ]
+            );
+
+        $this->subject->createBillingAddressAction($mockReservation, $mockBillingAddress);
+    }
+
+	/**
+	 * @test
+	 */
+	public function removeParticipantActionRemovesParticipantFromReservation()
+	{
+		$this->mockPersonRepository();
+		$this->mockReservationRepository();
+		$mockParticipant = $this->getMock(
+			Person::class
+		);
+		$mockReservation = $this->getMock(
+			Reservation::class, ['removeParticipant', 'getLesson']
+		);
+		$mockLesson = $this->getMock(
+			Schedule::class
+		);
+		$mockReservation->expects($this->once())
+			->method('removeParticipant')
+			->with($mockParticipant);
+		$mockReservation->expects($this->once())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+
+		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeParticipantActionRemovesParticipantFromLesson()
+	{
+		$this->mockPersonRepository();
+		$this->mockReservationRepository();
+		$mockParticipant = $this->getMock(
+			Person::class
+		);
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getLesson']
+		);
+		$mockLesson = $this->getMock(
+			Schedule::class, ['removeParticipant']
+		);
+		$mockLesson->expects($this->once())
+			->method('removeParticipant')
+			->with($mockParticipant);
+		$mockReservation->expects($this->any())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+
+		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeParticipantActionRemovesParticipantFromRepository()
+	{
+		$mockPersonRepository = $this->mockPersonRepository();
+		$this->mockReservationRepository();
+		$mockParticipant = $this->getMock(
+			Person::class
+		);
+		$mockLesson = $this->getMock(Schedule::class);
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getLesson']
+		);
+		$mockReservation->expects($this->any())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$mockPersonRepository->expects($this->once())
+			->method('remove')
+			->with($mockParticipant);
+
+		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeParticipantActionUpdatesReservation()
+	{
+		$this->mockPersonRepository();
+		$mockReservationRepository = $this->mockReservationRepository();
+		$mockParticipant = $this->getMock(
+			Person::class
+		);
+		$mockLesson = $this->getMock(Schedule::class);
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getLesson']
+		);
+		$mockReservation->expects($this->any())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$mockReservationRepository->expects($this->once())
+			->method('update')
+			->with($mockReservation);
+
+		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeParticipantActionAddsFlashMessage() {
+		$mockLesson = $this->getMock(Schedule::class);
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getLesson']
+		);
+		$mockParticipant = $this->getMock(Person::class);
+		$this->mockReservationRepository();
+		$this->mockPersonRepository();
+
+		$mockReservation->expects($this->any())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+		$translatedMessage = 'foo';
+		$this->subject->expects($this->once())
+			->method('translate')
+			->with('message.reservation.removeParticipant.success')
+			->will($this->returnValue($translatedMessage)
+			);
+		$this->subject->expects($this->once())
+			->method('addFlashMessage')
+			->with($translatedMessage);
+
+		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function removeParticipantActionRedirectsToEditAction() {
+		$mockLesson = $this->getMock(Schedule::class);
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getLesson']
+		);
+		$mockParticipant = $this->getMock(Person::class);
+		$this->mockReservationRepository();
+		$this->mockPersonRepository();
+
+		$mockReservation->expects($this->any())
+			->method('getLesson')
+			->will($this->returnValue($mockLesson));
+
+		$this->subject->expects($this->once())
+			->method('redirect')
+			->with(
+				'edit',
+				null,
+				null,
+				['reservation' => $mockReservation]
+			);
+		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
+	}
 }

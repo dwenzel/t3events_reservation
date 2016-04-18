@@ -16,8 +16,27 @@ plugin.tx_t3eventsreservation {
 		schedule {
 			listPid = {$plugin.tx_t3eventsreservation.settings.schedule.listPid}
 		}
+        contact {
+            edit.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+            update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+        }
 		reservation {
 			detailPid = {$plugin.tx_t3eventsreservation.settings.reservation.detailPid}
+			default.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			new.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			create.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			edit.errorHandling = pageNotFoundHandler
+			update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			delete.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			checkout.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			confirm.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			newParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			createParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			removeParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			editBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			newBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			createBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			removeBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			confirm {
 				notification {
 					admin {
@@ -43,9 +62,24 @@ plugin.tx_t3eventsreservation {
 							noTrimWrap = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.subject.noTrimWrap}
 						}
 						format = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.format}
+						attachments {
+							# list of files, which are attached to the notification
+							# allowed are all file identifiers
+							files {
+								field = lesson.registrationDocuments
+								# fallback if field is empty:
+								# default = file:1,path/to/file,1
+								# attach always:
+								# always = EXT:extension_name/path/to/file
+							}
+						}
 					}
 				}
 			}
 		}
+        participant {
+            edit.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+            update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+        }
 	}
 }
