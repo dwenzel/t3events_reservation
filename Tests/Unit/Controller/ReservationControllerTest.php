@@ -27,9 +27,11 @@ namespace CPSIT\T3eventsReservations\Tests\Unit\Controller;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
+use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
+use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -528,6 +530,53 @@ class ReservationControllerTest extends UnitTestCase {
 			->with($reservation);
 
 		$this->subject->deleteAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function deleteActionClearsSession()
+	{
+		$reservation = new Reservation();
+		$mockSession = $this->mockSession();
+		$this->mockReservationRepository();
+		$mockSession->expects($this->once())
+			->method('clean');
+
+		$this->subject->deleteAction($reservation);
+	}
+
+	/**
+	 * @test
+	 */
+	public function deleteActionRemovesContactFromRepository()
+	{
+		$mockReservation = $this->getMock(
+			Reservation::class, ['getContact']
+		);
+		$mockContact = $this->getMock(
+            Contact::class
+        );
+        $mockReservation->expects($this->once())
+            ->method('getContact')
+            ->will($this->returnValue($mockContact));
+		$this->mockSession();
+		$this->mockReservationRepository();
+		$mockContactRepository = $this->getMock(
+			ContactRepository::class, ['add', 'remove', 'update'],
+            [], '', false
+		);
+        $this->inject(
+            $this->subject,
+            'contactRepository',
+            $mockContactRepository
+        );
+
+        $mockContactRepository->expects($this->once())
+            ->method('remove')
+            ->with($mockContact);
+
+        $this->subject->deleteAction($mockReservation);
 	}
 
 

@@ -108,6 +108,12 @@ class ReservationController
     protected $billingAddressRepository;
 
     /**
+     * @var \CPSIT\T3eventsReservation\Domain\Repository\ContactRepository
+     * @inject
+     */
+    protected $contactRepository;
+
+    /**
      * action show
      *
      * @param Reservation $reservation
@@ -234,9 +240,10 @@ class ReservationController
             $this->companyRepository->remove($company);
         }
         if ($contact = $reservation->getContact()) {
-            $this->personRepository->remove($contact);
+            $this->contactRepository->remove($contact);
         }
         $this->reservationRepository->remove($reservation);
+        $this->session->clean();
     }
 
     /**
