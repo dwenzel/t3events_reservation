@@ -111,32 +111,28 @@ trait ReservationAccessTrait
     public function isAccessAllowed()
     {
         $sessionHasReservation = $this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION);
+        $requestHasReservation = $this->request->hasArgument('reservation');
 
-        if ($this->request->hasArgument('reservation')) {
-            $sessionValue = $this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
-
-            // allow access if argument reservation matches session value
-            $object = $this->request->getArgument('reservation');
-            if (is_string($object)) {
-                return ($sessionHasReservation
-                    && ($sessionValue === (int)$object)
-                );
-            }
-            if ($object instanceof Reservation) {
-                return ($sessionHasReservation
-                    && method_exists($object, 'getUid')
-                    && ((int)$sessionValue === $object->getUid())
-                );
-            }
-            if (is_array($object) && isset($object['__identity'])) {
-                return ($sessionHasReservation &&  $sessionValue === (int)$object['__identity']);
-            }
-        } else {
-            /**
-             * allow access if no argument 'reservation'
-             * AND ReservationController::SESSION_IDENTIFIER_RESERVATION not in session
-             */
+        if (!$requestHasReservation) {
             return !$sessionHasReservation;
+        }
+
+        $sessionValue = (int)$this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
+
+        $argument = $this->request->getArgument('reservation');
+        if (is_string($argument)) {
+            $reservationId =  (int)$argument;
+        }
+        if ($argument instanceof Reservation) {
+            $reservationId = $argument->getUid();
+        }
+        if (is_array($argument) && isset($argument['__identity'])) {
+            $reservationId = (int)$argument['__identity'];
+        }
+
+        if (isset($reservationId)) {
+            // allow access if argument reservation matches session value
+            return ($sessionHasReservation &&  $sessionValue === $reservationId);
         }
 
         return false;
