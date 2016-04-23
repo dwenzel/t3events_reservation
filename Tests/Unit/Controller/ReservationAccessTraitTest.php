@@ -1,14 +1,12 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
+use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Session\SessionInterface;
 use Webfox\T3events\Session\Typo3Session;
 
@@ -62,7 +60,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     protected function mockSession()
     {
         $mockSession = $this->getMock(
-            SessionInterface::class
+            SessionInterface::class, ['has', 'get', 'set', 'clean']
         );
         $this->inject($this->subject, 'session', $mockSession);
 
@@ -124,7 +122,19 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->will($this->returnValue($validReservationId));
 
         $this->assertTrue(
-            $this->subject->isAccessAllowed($validReservation)
+            $this->subject->isAccessAllowed()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function accessErrorHasInitialValue()
+    {
+        $this->assertAttributeSame(
+            Reservation::ERROR_ACCESS_UNKNOWN,
+            'accessError',
+            $this->subject
         );
     }
 
@@ -135,8 +145,11 @@ class ReservationAccessTraitTest extends UnitTestCase
     {
         $mockSession = $this->mockSession();
         $object = $this->getMock(
-            Reservation::class
+            Reservation::class, ['getUid']
         );
+        $object->expects($this->once())
+            ->method('getUid')
+            ->will($this->returnValue(5));
         $mockRequest = $this->mockRequest();
         $mockRequest->expects($this->once())
             ->method('hasArgument')
@@ -150,8 +163,12 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(false));
 
-        $this->assertFalse(
-            $this->subject->isAccessAllowed($object)
+        $this->subject->isAccessAllowed();
+
+        $this->assertAttributeEquals(
+            Reservation::ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT,
+            'accessError',
+            $this->subject
         );
     }
 
@@ -208,7 +225,6 @@ class ReservationAccessTraitTest extends UnitTestCase
             $this->subject->isAccessAllowed()
         );
     }
-
 
     /**
      * @test
