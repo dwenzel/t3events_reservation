@@ -71,6 +71,9 @@ class ReservationControllerSlot implements SingletonInterface
             $handler = $params['config'][0];
             $actionName = $params['config'][1];
             $params[$handler]['actionName'] = $actionName;
+            if ($handler === 'redirect') {
+                $params[$handler]['statusCode'] = 302;
+            }
             if ($this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION)){
                 $reservationId = (string)$this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
                 $params[$handler]['arguments'] = [

@@ -193,4 +193,36 @@ class ReservationControllerSlotTest extends UnitTestCase
             $this->subject->handleEntityNotFoundSlot($params)
         );
     }
+
+    /**
+     * @test
+     */
+    public function handleEntityNotFoundSlotSetsStatusCodeForRedirect()
+    {
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(false));
+
+        $handler = 'redirect';
+        $actionName = 'bar';
+        $params = [
+            'config' => [$handler, $actionName]
+        ];
+        $expectedResult = [
+            'config' => [
+                $handler, $actionName
+            ],
+            $handler => [
+                'actionName' => $actionName,
+                'statusCode' => 302
+            ]
+        ];
+
+        $this->assertSame(
+            [$expectedResult],
+            $this->subject->handleEntityNotFoundSlot($params)
+        );
+    }
 }
