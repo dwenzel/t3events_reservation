@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-15T14:16:46Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-24T09:24:41Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -151,6 +151,9 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.delete.accessDenied" xml:space="preserve">
 			<source>You are not allowed to delete this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.error.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired.&lt;br /&gt;Please choose an event and try again.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>

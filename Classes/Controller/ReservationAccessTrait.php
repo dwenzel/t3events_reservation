@@ -69,11 +69,12 @@ trait ReservationAccessTrait
     abstract protected function clearCacheOnError();
 
     /**
-     * @return int
+     * @return int|false
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     protected function getReservationIdFromRequest()
     {
+        $reservationId = false;
         $argument = $this->request->getArgument('reservation');
         if (is_string($argument)) {
             $reservationId = (int)$argument;
@@ -143,11 +144,11 @@ trait ReservationAccessTrait
         $sessionValue = (int)$this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
         $reservationId = $this->getReservationIdFromRequest();
 
-        if (!$sessionHasReservation) {
+        if (!$sessionHasReservation && $requestHasReservation) {
             $this->accessError = Reservation::ERROR_MISSING_RESERVATION_KEY_IN_SESSION;
         }
 
-        if (isset($reservationId)) {
+        if ((bool)$reservationId) {
             if (!($sessionHasReservation && ($sessionValue === $reservationId))) {
                 $this->accessError = Reservation::ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT;
             }
@@ -171,13 +172,8 @@ trait ReservationAccessTrait
     public function denyAccess()
     {
         $this->clearCacheOnError();
-
-        $controllerName = strtolower($this->request->getControllerName());
-        $actionName = strtolower($this->request->getControllerActionName());
         $this->addFlashMessage(
-            $this->translate(
-                'error.' . $controllerName . '.' . $actionName . '.' . $this->getAccessError(),
-                't3events_reservation'),
+            $this->getErrorFlashMessage(),
             '',
             FlashMessage::ERROR
         );
@@ -200,5 +196,33 @@ trait ReservationAccessTrait
         if (!$this->isAccessAllowed()) {
             $this->denyAccess();
         }
+    }
+
+    /**
+     * error action
+     */
+    public function errorAction()
+    {
+        $this->clearCacheOnError();
+        $this->session->clean();
+        $this->addFlashMessage(
+            $this->getErrorFlashMessage(),
+            '',
+            FlashMessage::ERROR
+        );
+    }
+
+    /**
+     * Gets a localized error message
+     *
+     * @return string
+     */
+    public function getErrorFlashMessage()
+    {
+        $controllerName = strtolower($this->request->getControllerName());
+        $actionName = strtolower($this->request->getControllerActionName());
+        return $this->translate(
+                'error.' . $controllerName . '.' . $actionName . '.' . $this->accessError,
+                't3events_reservation');
     }
 }

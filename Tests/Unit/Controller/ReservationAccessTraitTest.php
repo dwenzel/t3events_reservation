@@ -7,6 +7,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Session\SessionInterface;
 use Webfox\T3events\Session\Typo3Session;
 
@@ -83,7 +84,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     protected function mockRequest()
     {
         $mockRequest = $this->getMock(
-            Request::class, ['hasArgument', 'getArgument']
+            Request::class,
+            ['hasArgument', 'getArgument', 'getControllerName', 'getControllerActionName']
         );
         $this->inject($this->subject, 'request', $mockRequest);
 
@@ -194,6 +196,34 @@ class ReservationAccessTraitTest extends UnitTestCase
 
         $this->assertFalse(
             $this->subject->isAccessAllowed()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedSetsErrorForMissingReservationArgument()
+    {
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(true));
+        $mockRequest = $this->getMock(
+            Request::class, ['hasArgument']
+        );
+        $this->inject($this->subject, 'request', $mockRequest);
+
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(false));
+
+        $this->subject->isAccessAllowed();
+        $this->assertAttributeSame(
+            Reservation::ERROR_INCOMPLETE_RESERVATION_IN_SESSION,
+            'accessError',
+            $this->subject
         );
     }
 
@@ -312,5 +342,135 @@ class ReservationAccessTraitTest extends UnitTestCase
         $this->assertTrue(
             $this->subject->isAccessAllowed()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function getErrorFlashMessageTranslatesMessage()
+    {
+        $controllerName = 'foo';
+        $actionName = 'bar';
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('getControllerName')
+            ->will($this->returnValue($controllerName));
+        $mockRequest->expects($this->once())
+            ->method('getControllerActionName')
+            ->will($this->returnValue($actionName));
+        $expectedKey = 'error.' . $controllerName . '.' . $actionName . '.' . Reservation::ERROR_ACCESS_UNKNOWN;
+        $expectedMessage = 'fooMessage';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with($expectedKey, 't3events_reservation')
+            ->will($this->returnValue($expectedMessage));
+        $this->assertSame(
+            $expectedMessage,
+            $this->subject->getErrorFlashMessage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function errorActionClearsCache()
+    {
+        $this->subject = $this->getMockForTrait(
+        ReservationAccessTrait::class,
+        [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+        );
+
+        $this->mockSession();
+        $this->subject->expects($this->once())
+            ->method('clearCacheOnError');
+        $this->subject->errorAction();
+    }
+
+    /**
+     * @test
+     */
+    public function errorActionCleansSession()
+    {
+        $this->subject = $this->getMockForTrait(
+            ReservationAccessTrait::class,
+            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+        );
+
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('clean');
+        $this->subject->errorAction();
+    }
+
+    /**
+     * @test
+     */
+    public function errorActionAddsFlashMessage()
+    {
+        $this->subject = $this->getMockForTrait(
+            ReservationAccessTrait::class,
+            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+        );
+
+        $this->mockSession();
+        $this->subject->expects($this->once())
+            ->method('getErrorFlashMessage');
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage');
+        $this->subject->errorAction();
+    }
+
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459870578
+     */
+    public function denyAccessClearsCache()
+    {
+        $this->subject = $this->getMockForTrait(
+            ReservationAccessTrait::class,
+            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+        );
+
+        $this->subject->expects($this->once())
+            ->method('clearCacheOnError');
+        $this->subject->denyAccess();
+    }
+
+    /**
+     * @test
+     * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @expectedExceptionCode 1459870578
+     */
+    public function denyAccessAddsFlashMessage()
+    {
+        $this->subject = $this->getMockForTrait(
+            ReservationAccessTrait::class,
+            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+        );
+
+        $this->subject->expects($this->once())
+            ->method('getErrorFlashMessage');
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage');
+        $this->subject->denyAccess();
+    }
+
+    /**
+     * @test
+     */
+    public function initializeActionDeniesAccess()
+    {
+        $this->subject = $this->getMockForTrait(
+            ReservationAccessTrait::class,
+            [], '', true, true, true, ['isAccessAllowed', 'denyAccess']
+        );
+        $this->mockObjectManager();
+        $this->subject->expects($this->once())
+            ->method('isAccessAllowed')
+            ->will($this->returnValue(false));
+        $this->subject->expects($this->once())
+            ->method('denyAccess');
+        $this->subject->initializeAction();
     }
 }

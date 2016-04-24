@@ -1,0 +1,12 @@
+<f:layout name="Default" />
+<f:section name="main">
+	<h2>{f:translate(key: 'title.ReservationError', default: 'title.reservationError')}</h2>
+	<f:flashMessages renderMode="div" />
+	<f:render partial="FormErrors" />
+
+	<f:link.page
+		class="button"
+		pageUid="{settings.lesson.listPid}">{f:translate(key: 'button.goToLessonListPage')}
+	</f:link.page>
+
+</f:section>
