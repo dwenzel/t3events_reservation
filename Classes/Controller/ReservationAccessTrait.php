@@ -2,10 +2,10 @@
 namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use CPSIT\T3eventsReservation\Domain\Model\Person;
+use Webfox\T3events\Controller\FlashMessageTrait;
 use Webfox\T3events\Session\Typo3Session;
 
 /**
@@ -16,6 +16,8 @@ use Webfox\T3events\Session\Typo3Session;
  */
 trait ReservationAccessTrait
 {
+    use FlashMessageTrait;
+
     /**
      * @var \Webfox\T3events\Session\SessionInterface
      */
@@ -48,6 +50,18 @@ trait ReservationAccessTrait
     protected $request;
 
     /**
+     * @var string
+     */
+    protected $accessError = Reservation::ERROR_ACCESS_UNKNOWN;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
+     * @api
+     */
+    protected $flashMessageContainer;
+
+
+    /**
      * Clear cache of current page on error.
      *
      * @return void
@@ -55,21 +69,27 @@ trait ReservationAccessTrait
     abstract protected function clearCacheOnError();
 
     /**
-     * Creates a Message object and adds it to the FlashMessageQueue.
-     *
-     * @param string $messageBody The message
-     * @param string $messageTitle Optional message title
-     * @param integer $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
-     * @param boolean $storeInSession Optional, defines whether the message should be stored in the session (default) or not
-     * @return void
-     * @see \TYPO3\CMS\Extbase\Controller\AbstractController
+     * @return int|false
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    abstract public function addFlashMessage(
-        $messageBody,
-        $messageTitle = '',
-        $severity = AbstractMessage::OK,
-        $storeInSession = true
-    );
+    protected function getReservationIdFromRequest()
+    {
+        $reservationId = false;
+        $argument = $this->request->getArgument('reservation');
+        if (is_string($argument)) {
+            $reservationId = (int)$argument;
+        }
+        if ($argument instanceof Reservation) {
+            $reservationId = $argument->getUid();
+        }
+        if (is_array($argument) && isset($argument['__identity'])) {
+            $reservationId = (int)$argument['__identity'];
+
+            return $reservationId;
+        }
+
+        return $reservationId;
+    }
 
     /**
      * Redirects the request to another action and / or controller.
@@ -110,30 +130,39 @@ trait ReservationAccessTrait
      */
     public function isAccessAllowed()
     {
+        if ($this->request->getControllerActionName() === 'error') {
+            return true;
+        }
+
         $sessionHasReservation = $this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION);
         $requestHasReservation = $this->request->hasArgument('reservation');
 
         if (!$requestHasReservation) {
+            if ($sessionHasReservation) {
+                $this->accessError = Reservation::ERROR_INCOMPLETE_RESERVATION_IN_SESSION;
+            }
+
             return !$sessionHasReservation;
         }
 
         $sessionValue = (int)$this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
+        $reservationId = $this->getReservationIdFromRequest();
 
-        $argument = $this->request->getArgument('reservation');
-        if (is_string($argument)) {
-            $reservationId =  (int)$argument;
-        }
-        if ($argument instanceof Reservation) {
-            $reservationId = $argument->getUid();
-        }
-        if (is_array($argument) && isset($argument['__identity'])) {
-            $reservationId = (int)$argument['__identity'];
+        if (!$sessionHasReservation && $requestHasReservation) {
+            $this->accessError = Reservation::ERROR_MISSING_RESERVATION_KEY_IN_SESSION;
+            return false;
         }
 
-        if (isset($reservationId)) {
+        if ((bool)$reservationId) {
+            if (!($sessionHasReservation && ($sessionValue === $reservationId))) {
+                $this->accessError = Reservation::ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT;
+            }
+
             // allow access if argument reservation matches session value
-            return ($sessionHasReservation &&  $sessionValue === $reservationId);
+            return ($sessionHasReservation && ($sessionValue === $reservationId));
         }
+
+        $this->accessError = Reservation::ERROR_MISSING_SESSION_KEY_AND_REQUEST_ARGUMENT;
 
         return false;
     }
@@ -148,6 +177,11 @@ trait ReservationAccessTrait
     public function denyAccess()
     {
         $this->clearCacheOnError();
+        $this->addFlashMessage(
+            $this->getErrorFlashMessage(),
+            '',
+            FlashMessage::ERROR
+        );
 
         throw new InvalidSourceException(
             'Access not allowed',
@@ -167,5 +201,33 @@ trait ReservationAccessTrait
         if (!$this->isAccessAllowed()) {
             $this->denyAccess();
         }
+    }
+
+    /**
+     * error action
+     */
+    public function errorAction()
+    {
+        $this->clearCacheOnError();
+        $this->session->clean();
+        $this->addFlashMessage(
+            $this->getErrorFlashMessage(),
+            '',
+            FlashMessage::ERROR
+        );
+    }
+
+    /**
+     * Gets a localized error message
+     *
+     * @return string
+     */
+    public function getErrorFlashMessage()
+    {
+        $controllerName = strtolower($this->request->getControllerName());
+        $actionName = strtolower($this->request->getControllerActionName());
+        return $this->translate(
+                'error.' . $controllerName . '.' . $actionName . '.' . $this->accessError,
+                't3events_reservation');
     }
 }

@@ -21,17 +21,17 @@ $EM_CONF[$_EXTKEY] = array (
 	'createDirs' => '',
 	'clearCacheOnLoad' => 0,
 	'version' => '0.3.0',
-	'constraints' => 
+	'constraints' =>
 	array (
-		'depends' => 
+		'depends' =>
 		array (
 			'typo3' => '6.2.0-7.99.99',
-			't3events' => '0.17.1-0.0.0',
+			't3events' => '0.21.0-0.0.0',
 		),
-		'conflicts' => 
+		'conflicts' =>
 		array (
 		),
-		'suggests' => 
+		'suggests' =>
 		array (
 		),
 	),
