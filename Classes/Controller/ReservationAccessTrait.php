@@ -130,6 +130,10 @@ trait ReservationAccessTrait
      */
     public function isAccessAllowed()
     {
+        if ($this->request->getControllerActionName() === 'error') {
+            return true;
+        }
+
         $sessionHasReservation = $this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION);
         $requestHasReservation = $this->request->hasArgument('reservation');
 
@@ -146,6 +150,7 @@ trait ReservationAccessTrait
 
         if (!$sessionHasReservation && $requestHasReservation) {
             $this->accessError = Reservation::ERROR_MISSING_RESERVATION_KEY_IN_SESSION;
+            return false;
         }
 
         if ((bool)$reservationId) {

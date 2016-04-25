@@ -168,7 +168,7 @@ class ReservationAccessTraitTest extends UnitTestCase
         $this->subject->isAccessAllowed();
 
         $this->assertAttributeEquals(
-            Reservation::ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT,
+            Reservation::ERROR_MISSING_RESERVATION_KEY_IN_SESSION,
             'accessError',
             $this->subject
         );

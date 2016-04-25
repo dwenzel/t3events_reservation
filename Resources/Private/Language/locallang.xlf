@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-24T09:24:41Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-25T09:08:25Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -152,8 +152,17 @@
 		<trans-unit id="error.reservation.delete.accessDenied" xml:space="preserve">
 			<source>You are not allowed to delete this reservation.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.edit.mismatchOfReservationKeyInSessionAndRequestArgument" xml:space="preserve">
+			<source>Your request does not match your session cookie.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.error.unknownAccessError" xml:space="preserve">
 			<source>You are not allowed to edit this reservation or your session expired.&lt;br /&gt;Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>

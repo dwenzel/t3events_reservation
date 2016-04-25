@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-24T09:24:41Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-25T09:08:25Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -201,9 +201,21 @@
 			<source>You are not allowed to delete this reservation.</source>
 			<target>Sie dürfen diese Reservierung nicht löschen.</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.edit.mismatchOfReservationKeyInSessionAndRequestArgument" approved="yes" xml:space="preserve">
+			<source>Your request does not match your session cookie.</source>
+			<target>Ihre Anfrage passt nicht zum Session-Cookie.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.error.unknownAccessError" approved="yes" xml:space="preserve">
 			<source>You are not allowed to edit this reservation or your session expired.&lt;br /&gt;Please choose an event and try again.</source>
 			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>
