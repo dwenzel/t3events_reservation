@@ -209,6 +209,62 @@
 			<source>Your session expired!</source>
 			<target>Ihre Sitzung ist abgelaufen!</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.error.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.confirm.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.delete.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.editBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.update.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.error.unknownAccessError" approved="yes" xml:space="preserve">
 			<source>You are not allowed to edit this reservation or your session expired.&lt;br /&gt;Please choose an event and try again.</source>
 			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
