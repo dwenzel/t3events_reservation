@@ -377,7 +377,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     {
         $this->subject = $this->getMockForTrait(
         ReservationAccessTrait::class,
-        [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+        [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
         );
 
         $this->mockSession();
@@ -393,7 +393,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     {
         $this->subject = $this->getMockForTrait(
             ReservationAccessTrait::class,
-            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
         );
 
         $mockSession = $this->mockSession();
@@ -409,7 +409,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     {
         $this->subject = $this->getMockForTrait(
             ReservationAccessTrait::class,
-            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage']
+            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
         );
 
         $this->mockSession();

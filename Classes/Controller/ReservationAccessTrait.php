@@ -3,11 +3,12 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Controller\FlashMessageTrait;
 use Webfox\T3events\Session\Typo3Session;
-use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 
 /**
  * Class ReservationAccessTrait
@@ -121,7 +122,6 @@ trait ReservationAccessTrait
 
     /**
      * Forwards the request to another action and / or controller.
-     *
      * Request is directly transferred to the other action / controller
      * without the need for a new request.
      *
@@ -131,9 +131,14 @@ trait ReservationAccessTrait
      * @param array $arguments Arguments to pass to the target action
      * @return void
      */
-    abstract public function forward($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL);
+    abstract public function forward(
+        $actionName,
+        $controllerName = null,
+        $extensionName = null,
+        array $arguments = null
+    );
 
-        /**
+    /**
      * Translate a given key
      *
      * @param string $key
@@ -170,6 +175,7 @@ trait ReservationAccessTrait
 
         if (!$sessionHasReservation && $requestHasReservation) {
             $this->accessError = Reservation::ERROR_MISSING_RESERVATION_KEY_IN_SESSION;
+
             return false;
         }
 
@@ -234,13 +240,20 @@ trait ReservationAccessTrait
             $validationResult = $this->arguments->getValidationResults();
             if ($validationResult->hasErrors()) {
                 $referringRequest = $this->request->getReferringRequest();
-                if ($referringRequest !== NULL) {
+                if ($referringRequest !== null) {
                     $originalRequest = clone $this->request;
                     $this->request->setOriginalRequest($originalRequest);
                     $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-                    $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+                    $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(),
+                        $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
                 }
             }
+        }
+
+        // clear any previous flashmessage in order to avoid double entries
+        $flashMessageQueue = $this->getFlashMessageQueue();
+        if ($flashMessageQueue instanceof FlashMessageQueue) {
+            $flashMessageQueue->__call('getAllMessagesAndFlush', []);
         }
 
         $this->addFlashMessage(
@@ -260,8 +273,9 @@ trait ReservationAccessTrait
     {
         $controllerName = strtolower($this->request->getControllerName());
         $actionName = strtolower($this->request->getControllerActionName());
+
         return $this->translate(
-                'error.' . $controllerName . '.' . $actionName . '.' . $this->accessError,
-                't3events_reservation');
+            'error.' . $controllerName . '.' . $actionName . '.' . $this->accessError,
+            't3events_reservation');
     }
 }
