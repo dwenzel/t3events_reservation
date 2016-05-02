@@ -50,6 +50,11 @@ trait ReservationAccessTrait
     protected $request;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
+     */
+    protected $arguments;
+
+    /**
      * @var string
      */
     protected $accessError = Reservation::ERROR_ACCESS_UNKNOWN;
@@ -114,6 +119,20 @@ trait ReservationAccessTrait
     );
 
     /**
+     * Forwards the request to another action and / or controller.
+     *
+     * Request is directly transferred to the other action / controller
+     * without the need for a new request.
+     *
+     * @param string $actionName Name of the action to forward to
+     * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
+     * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
+     * @param array $arguments Arguments to pass to the target action
+     * @return void
+     */
+    abstract public function forward($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL);
+
+        /**
      * Translate a given key
      *
      * @param string $key
@@ -209,12 +228,24 @@ trait ReservationAccessTrait
     public function errorAction()
     {
         $this->clearCacheOnError();
-        $this->session->clean();
+
+        $validationResult = $this->arguments->getValidationResults();
+        if ($validationResult->hasErrors()) {
+            $referringRequest = $this->request->getReferringRequest();
+            if ($referringRequest !== NULL) {
+                $originalRequest = clone $this->request;
+                $this->request->setOriginalRequest($originalRequest);
+                $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+                $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+            }
+        }
+
         $this->addFlashMessage(
             $this->getErrorFlashMessage(),
             '',
             FlashMessage::ERROR
         );
+        $this->session->clean();
     }
 
     /**
