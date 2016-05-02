@@ -277,6 +277,14 @@
 			<source>Please finish or delete your current reservation before creating a new one.</source>
 			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.create.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
+		<trans-unit id="error.participant.edit.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.new.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
 			<target>Ihre Sitzung ist abgelaufen!</target>

@@ -212,6 +212,12 @@
 		<trans-unit id="error.reservation.new.incompleteReservationInSession" xml:space="preserve">
 			<source>Please finish or delete your current reservation before creating a new one.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.create.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
+		<trans-unit id="error.participant.edit.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.new.missingReservationKeyInSession" xml:space="preserve">
 			<source>Your session expired!</source>
 		</trans-unit>
