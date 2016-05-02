@@ -7,6 +7,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Controller\FlashMessageTrait;
 use Webfox\T3events\Session\Typo3Session;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 
 /**
  * Class ReservationAccessTrait
@@ -229,14 +230,16 @@ trait ReservationAccessTrait
     {
         $this->clearCacheOnError();
 
-        $validationResult = $this->arguments->getValidationResults();
-        if ($validationResult->hasErrors()) {
-            $referringRequest = $this->request->getReferringRequest();
-            if ($referringRequest !== NULL) {
-                $originalRequest = clone $this->request;
-                $this->request->setOriginalRequest($originalRequest);
-                $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-                $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+        if ($this->arguments instanceof Arguments) {
+            $validationResult = $this->arguments->getValidationResults();
+            if ($validationResult->hasErrors()) {
+                $referringRequest = $this->request->getReferringRequest();
+                if ($referringRequest !== NULL) {
+                    $originalRequest = clone $this->request;
+                    $this->request->setOriginalRequest($originalRequest);
+                    $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+                    $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+                }
             }
         }
 
