@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-15T14:16:46Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-27T15:59:04Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -134,17 +134,47 @@
 		<trans-unit id="error.reservation.checkout.accessDenied" xml:space="preserve">
 			<source>You are not allowed to checkout this reservation.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.checkout.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.confirm.accessDenied" xml:space="preserve">
 			<source>You are not allowed to confirm this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.confirm.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.confirm.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.create.accessDenied" xml:space="preserve">
 			<source>You are not allowed to edit this reservation.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.create.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.create.unknownError" xml:space="preserve">
 			<source>Sorry, we could not create your reservation!</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.createBillingAddress.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.createBillingAddress.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to create a participant for this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.unknownError" xml:space="preserve">
 			<source>Sorry, the participant could not be created!</source>
@@ -152,17 +182,98 @@
 		<trans-unit id="error.reservation.delete.accessDenied" xml:space="preserve">
 			<source>You are not allowed to delete this reservation.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.delete.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.delete.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.mismatchOfReservationKeyInSessionAndRequestArgument" xml:space="preserve">
+			<source>Your request does not match your session cookie.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.editBillingAddress.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.editBillingAddress.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.error.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.error.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
+		<trans-unit id="error.participant.edit.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.newBillingAddress.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.newBillingAddress.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.newParticipant.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.newParticipant.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.participants.1347992453" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.removeBillingAddress.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeBillingAddress.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.accessDenied" xml:space="preserve">
 			<source>You are not allowed to remove this participant.</source>
 		</trans-unit>
+		<trans-unit id="error.reservation.removeParticipant.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeParticipant.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.show.accessDenied" xml:space="preserve">
 			<source>You are not allowed to see this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.show.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.show.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.update.missingReservationKeyInSession" xml:space="preserve">
+			<source>Your session expired!</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.update.unknownAccessError" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
 		</trans-unit>
 		<trans-unit id="header.billingAddress" xml:space="preserve">
 			<source>Billing Address</source>
@@ -454,6 +565,9 @@
 		</trans-unit>
 		<trans-unit id="title.participant" xml:space="preserve">
 			<source>Participant</source>
+		</trans-unit>
+		<trans-unit id="title.reservationError" xml:space="preserve">
+			<source>Error</source>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_audience" xml:space="preserve">
 			<source>Audience</source>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-15T14:16:46Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-27T15:59:04Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -177,21 +177,61 @@
 			<source>You are not allowed to checkout this reservation.</source>
 			<target>Sie dürfen diese Registrierung nicht abschließen.</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.checkout.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.confirm.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to confirm this reservation.</source>
 			<target>Sie dürfen diese Registrierung nicht bestätigen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.confirm.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.confirm.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.create.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to edit this reservation.</source>
 			<target>Sie dürfen dies Reservierung nicht bearbeiten.</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.create.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.create.unknownError" approved="yes" xml:space="preserve">
 			<source>Sorry, we could not create your reservation!</source>
 			<target>Ihre Reservierung konnte nicht erstellt werden!</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.createBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createBillingAddress.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to create a participant for this reservation.</source>
 			<target>Sie dürfen keinen Teilnehmer für diese Reservierung anlegen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.createParticipant.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.unknownError" approved="yes" xml:space="preserve">
 			<source>Sorry, the participant could not be created!</source>
@@ -201,21 +241,121 @@
 			<source>You are not allowed to delete this reservation.</source>
 			<target>Sie dürfen diese Reservierung nicht löschen.</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.delete.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.delete.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.mismatchOfReservationKeyInSessionAndRequestArgument" approved="yes" xml:space="preserve">
+			<source>Your request does not match your session cookie.</source>
+			<target>Ihre Anfrage passt nicht zum Session-Cookie.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.edit.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.editBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.editBillingAddress.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.error.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.error.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
+		<trans-unit id="error.participant.edit.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.new.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newBillingAddress.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>
 			<target>Sie dürfen keinen Teilnehmer zu dieser Reservierung hinzufügen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.newParticipant.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.participants.1347992453" approved="yes" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
 			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu!</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.removeBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeBillingAddress.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to remove this participant.</source>
 			<target>Sie dürfen diesen Teilnehmer nicht entfernen.</target>
 		</trans-unit>
+		<trans-unit id="error.reservation.removeParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.removeParticipant.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.show.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to see this reservation.</source>
 			<target>Sie dürfen diese Reservierung nicht sehen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.show.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.update.missingReservationKeyInSession" approved="yes" xml:space="preserve">
+			<source>Your session expired!</source>
+			<target>Ihre Sitzung ist abgelaufen!</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.update.unknownAccessError" approved="yes" xml:space="preserve">
+			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
+			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
 		</trans-unit>
 		<trans-unit id="header.billingAddress" approved="yes" xml:space="preserve">
 			<source>Billing Address</source>
@@ -592,6 +732,10 @@
 		<trans-unit id="title.participant" approved="yes" xml:space="preserve">
 			<source>Participant</source>
 			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="title.reservationError" approved="yes" xml:space="preserve">
+			<source>Error</source>
+			<target>Fehler</target>
 		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_genre" approved="yes" xml:space="preserve">
 			<source>Product</source>

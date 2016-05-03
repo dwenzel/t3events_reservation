@@ -37,8 +37,13 @@ class Reservation extends AbstractEntity {
 	const STATUS_CANCELED_WITH_COSTS = 4;
 	const STATUS_CLOSED = 5;
 	const STATUS_CANCELED_BY_SUPPLIER = 6;
+	const ERROR_ACCESS_UNKNOWN = 'unknownAccessError';
+    const ERROR_INCOMPLETE_RESERVATION_IN_SESSION = 'incompleteReservationInSession';
+	const ERROR_MISSING_RESERVATION_KEY_IN_SESSION = 'missingReservationKeyInSession';
+    const ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT = 'mismatchOfReservationKeyInSessionAndRequestArgument';
+    const ERROR_MISSING_SESSION_KEY_AND_REQUEST_ARGUMENT = 'requestArgumentAndSessionKeyMissing';
 
-	/**
+    /**
 	 * Hidden
 	 *
 	 * @var int
