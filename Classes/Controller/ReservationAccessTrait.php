@@ -3,6 +3,8 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use Webfox\T3events\Controller\FlashMessageTrait;
@@ -48,6 +50,11 @@ trait ReservationAccessTrait
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
+     */
+    protected $arguments;
 
     /**
      * @var string
@@ -114,6 +121,24 @@ trait ReservationAccessTrait
     );
 
     /**
+     * Forwards the request to another action and / or controller.
+     * Request is directly transferred to the other action / controller
+     * without the need for a new request.
+     *
+     * @param string $actionName Name of the action to forward to
+     * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
+     * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
+     * @param array $arguments Arguments to pass to the target action
+     * @return void
+     */
+    abstract public function forward(
+        $actionName,
+        $controllerName = null,
+        $extensionName = null,
+        array $arguments = null
+    );
+
+    /**
      * Translate a given key
      *
      * @param string $key
@@ -150,6 +175,7 @@ trait ReservationAccessTrait
 
         if (!$sessionHasReservation && $requestHasReservation) {
             $this->accessError = Reservation::ERROR_MISSING_RESERVATION_KEY_IN_SESSION;
+
             return false;
         }
 
@@ -209,12 +235,33 @@ trait ReservationAccessTrait
     public function errorAction()
     {
         $this->clearCacheOnError();
-        $this->session->clean();
+
+        if ($this->arguments instanceof Arguments) {
+            $validationResult = $this->arguments->getValidationResults();
+            if ($validationResult->hasErrors()) {
+                $referringRequest = $this->request->getReferringRequest();
+                if ($referringRequest !== null) {
+                    $originalRequest = clone $this->request;
+                    $this->request->setOriginalRequest($originalRequest);
+                    $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+                    $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(),
+                        $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+                }
+            }
+        }
+
+        // clear any previous flashmessage in order to avoid double entries
+        $flashMessageQueue = $this->getFlashMessageQueue();
+        if ($flashMessageQueue instanceof FlashMessageQueue) {
+            $flashMessageQueue->__call('getAllMessagesAndFlush', []);
+        }
+
         $this->addFlashMessage(
             $this->getErrorFlashMessage(),
             '',
             FlashMessage::ERROR
         );
+        $this->session->clean();
     }
 
     /**
@@ -226,8 +273,9 @@ trait ReservationAccessTrait
     {
         $controllerName = strtolower($this->request->getControllerName());
         $actionName = strtolower($this->request->getControllerActionName());
+
         return $this->translate(
-                'error.' . $controllerName . '.' . $actionName . '.' . $this->accessError,
-                't3events_reservation');
+            'error.' . $controllerName . '.' . $actionName . '.' . $this->accessError,
+            't3events_reservation');
     }
 }

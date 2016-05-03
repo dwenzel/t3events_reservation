@@ -80,6 +80,10 @@ class ReservationControllerSlot implements SingletonInterface
                     'reservation' => $reservationId
                 ];
             }
+            if(isset($params['requestArguments']['reservation'])) {
+                $params[$handler]['controllerName'] = 'Reservation';
+                $params[$handler]['arguments']['reservation'] = $params['requestArguments']['reservation'];
+            }
         }
 
         return [$params];
