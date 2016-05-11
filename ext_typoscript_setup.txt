@@ -80,7 +80,6 @@ module.tx_t3eventsreservation {
 
 			list {
 				maxItems = 99999
-				lessonPeriod = futureOnly
 				filter {
 					genre =
 					eventType =
