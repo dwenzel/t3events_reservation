@@ -752,6 +752,38 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function sendNotificationGetsSenderNameFromSettings() {
+		$settings = ['foo'];
+		$this->subject->_set('settings', $settings);
+		$config = [
+			'fromEmail' => 'foo@bar.com',
+			'toEmail' => 'bar@baz.com',
+			'subject' => 'baz',
+			'senderName' => 'fooName'
+		];
+		$identifier = 'foo';
+		$this->subject->injectSettingsUtility(new SettingsUtility());
+		$reservation = new Reservation();
+		$mockNotification = $this->getMock(
+			Notification::class,
+			['setRecipient', 'setSenderName', 'setSubject', 'setFormat', 'setBodyText']
+		);
+        $mockNotification->expects($this->once())
+            ->method('setSenderName')
+            ->with($config['senderName']);
+
+		$mockObjectManager = $this->mockObjectManager();
+		$mockObjectManager->expects($this->once())
+			->method('get')
+			->with(Notification::class)
+			->will($this->returnValue($mockNotification));
+		$mockNotificationService = $this->mockNotificationService();
+		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
+	}
+
+	/**
+	 * @test
+	 */
 	public function sendNotificationGetsTemplateFileNameFromSettings() {
 		$settings = ['foo'];
 		$this->subject->_set('settings', $settings);
