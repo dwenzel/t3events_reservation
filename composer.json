@@ -32,7 +32,7 @@
     "mikey179/vfsStream": "1.4.*@dev",
     "phpunit/phpunit": "~4.8.0",
     "satooshi/php-coveralls": "dev-master",
-    "webfox/t3events": "dev-master"
+    "webfox/t3events": "dev-develop"
   },
   "autoload": {
     "psr-4": {

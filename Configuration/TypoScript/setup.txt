@@ -40,6 +40,7 @@ plugin.tx_t3eventsreservation {
 			confirm {
 				notification {
 					admin {
+						senderName = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.senderName}
 						fromEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.fromEmail}
 						toEmail = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.admin.toEmail}
 						subject {
@@ -53,6 +54,7 @@ plugin.tx_t3eventsreservation {
 						#}
 					}
 					user {
+						senderName = {$plugin.tx_t3eventsreservation.settings.reservation.confirm.notification.user.senderName}
 						toEmail {
 							field = contact.email
 						}
