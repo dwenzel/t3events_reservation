@@ -112,6 +112,12 @@ module.tx_t3eventsreservation {
 					eventType =
 					periods =
 				}
+				paginate {
+					itemsPerPage = 25
+					insertBelow = 0
+					insertAbove = 1
+					recordsLabel = Reservations
+				}
 			}
 
 			search {

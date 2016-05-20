@@ -22,13 +22,13 @@
 			<f:be.widget.paginate
 				objects="{reservations}"
 				as="paginatedReservations"
-				configuration="{itemsPerPage: 10, maximumNumberOfLinks: 10, recordsLabel: 'Reservierung'}"
+				configuration="{settings.bookings.list.paginate}"
 				>
-				<f:groupedFor each="{paginatedReservations}" as="reservationsByLesson" groupBy="lesson" groupKey="lesson">
+				<f:groupedFor each="{paginatedReservations}" as="reservationsByLesson" groupBy="lesson.uid" groupKey="lesson.uid">
 					<tr class="t3-row-header">
 						<td colspan="4">
 							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
-							- {lesson.event.headline->f:format.crop(maxCharacters: 70)}, {lesson.eventLocation.name}
+							- {lesson.event.headline->f:format.crop(maxCharacters: 70)}, {lesson.eventLocation.name}, - ID {lesson.uid}
 						</td>
 						<td>{lesson.freePlaces} | {lesson.places} Plätze</td>
 						<td></td>
