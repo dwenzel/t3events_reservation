@@ -1,3 +1,12 @@
+2016-05-24         [RELEASE] Release of t3events_reservation 0.5.0 (Dirk Wenzel)
+2016-05-20 a0c6746 [TASK] Use pagination configuration from TypoScript in bookings list template. (Dirk Wenzel)
+2016-05-20 992c4d1 [TASK] obsolete execution flag removed from php files (Dirk Wenzel)
+2016-05-19 3b535c8 [TASK] require minimum stability dev (Dirk Wenzel)
+2016-05-19 8606ab5 [TASK] default TypoScript configuration for sender name in confirmation mails added. Require develop branch of t3events (Dirk Wenzel)
+2016-05-18 c8d7ddf [TASK] ReservationController->sendNotification now sets a senderName for the notification if configured (Dirk Wenzel)
+2016-05-17 6f8570f [BUGFIX] work around for issue in dependency resolver in TYPO3 6.2 (Dirk Wenzel)
+2016-05-11 fff49ca [BUGFIX] obsolete default value for lessonPeriod in TypoScript configuration for ParticipantController->listAction removed. (Dirk Wenzel)
+
 2016-05-03         [RELEASE] Release of t3events_reservation 0.4.0 (Dirk Wenzel)
 2016-05-03 d2385bc [BUGFIX] missing translation added. (Dirk Wenzel)
 2016-05-03 7e9e53f [BUGFIX] settings path for list page id in error template corrected. (Dirk Wenzel)
