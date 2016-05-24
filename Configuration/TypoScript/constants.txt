@@ -20,6 +20,7 @@ plugin.tx_t3eventsreservation {
 			confirm {
 				notification {
 					admin {
+						senderName = example.com
 						fromEmail = no-reply@example.com
 						toEmail = no-reply@example.com
 						subject {
@@ -29,6 +30,7 @@ plugin.tx_t3eventsreservation {
 						format = html
 					}
 					user {
+						senderName = example.com
 						fromEmail = no-reply@example.com
 						subject  {
 							field = lesson.event.headline

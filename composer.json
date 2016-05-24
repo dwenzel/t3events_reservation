@@ -8,7 +8,7 @@
     "events",
     "reservation"
   ],
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": [
     "GPL-2.0+"
   ],
@@ -25,14 +25,15 @@
     }
   ],
   "require": {
-    "typo3/cms": ">=6.2.0,<8.0",
+    "typo3/cms-core": ">=6.2.0,<8.0",
     "webfox/t3events": "0.21.*"
   },
+  "minimum-stability": "dev",
   "require-dev": {
     "mikey179/vfsStream": "1.4.*@dev",
     "phpunit/phpunit": "~4.8.0",
     "satooshi/php-coveralls": "dev-master",
-    "webfox/t3events": "dev-master"
+    "webfox/t3events": "dev-develop"
   },
   "autoload": {
     "psr-4": {
@@ -63,7 +64,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.4.x-dev"
+      "dev-master": "0.5.x-dev"
     },
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",

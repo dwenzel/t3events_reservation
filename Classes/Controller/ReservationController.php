@@ -486,7 +486,7 @@ class ReservationController
     protected function sendNotification(Reservation $reservation, $identifier, $config)
     {
         if (isset($config['fromEmail'])) {
-            $sender = $config['fromEmail'];
+            $fromEmail = $config['fromEmail'];
         } else {
             throw new Exception('Missing sender for email notification', 1454518855);
         }
@@ -522,7 +522,10 @@ class ReservationController
             $notification->setAttachments($filesToAttach);
         }
         $notification->setRecipient($recipientEmail);
-        $notification->setSender($sender);
+        $notification->setSenderEmail($fromEmail);
+        if (isset($config['senderName'])) {
+            $notification->setSenderName($config['senderName']);
+        }
         $notification->setSubject($subject);
         $notification->setFormat($format);
         $bodyText = $this->notificationService->render(
