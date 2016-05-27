@@ -491,12 +491,12 @@ class ReservationController
             throw new Exception('Missing sender for email notification', 1454518855);
         }
 
-        $recipientEmail = $this->settingsUtility->getValueByKey($reservation, $config, 'toEmail');
+        $recipientEmail = $this->settingsUtility->getValue($reservation, $config['toEmail']);
         if (!isset($recipientEmail)) {
             throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
         }
 
-        $subject = $this->settingsUtility->getValueByKey($reservation, $config, 'subject');
+        $subject = $this->settingsUtility->getValue($reservation, $config['subject']);
         if (!isset($subject)) {
             throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
         }
