@@ -61,7 +61,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     protected function mockSession()
     {
         $mockSession = $this->getMock(
-            SessionInterface::class, ['has', 'get', 'set', 'clean']
+            SessionInterface::class, ['has', 'get', 'set', 'clean', 'setNamespace']
         );
         $this->inject($this->subject, 'session', $mockSession);
 

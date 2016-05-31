@@ -220,7 +220,7 @@ class ReservationControllerTest extends UnitTestCase {
             ],
 			[], '', false);
 		$mockSession = $this->getMock(
-			SessionInterface::class, ['get', 'set', 'has', 'clean'], [], '', false
+			SessionInterface::class, ['get', 'set', 'has', 'clean', 'setNamespace'], [], '', false
 		);
 		$this->inject($this->subject, 'session', $mockSession);
 	}
