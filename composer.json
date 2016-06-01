@@ -26,14 +26,14 @@
   ],
   "require": {
     "typo3/cms-core": ">=6.2.0,<8.0",
-    "webfox/t3events": "0.21.*"
+    "webfox/t3events": ">=0.21,<1.0"
   },
   "minimum-stability": "dev",
   "require-dev": {
     "mikey179/vfsStream": "1.4.*@dev",
     "phpunit/phpunit": "~4.8.0",
     "satooshi/php-coveralls": "dev-master",
-    "webfox/t3events": "dev-develop"
+    "webfox/t3events": "dev-develop as 0.22.x-dev"
   },
   "autoload": {
     "psr-4": {
