@@ -26,7 +26,7 @@
   ],
   "require": {
     "typo3/cms-core": ">=6.2.0,<8.0",
-    "webfox/t3events": ">=0.21.*"
+    "webfox/t3events": "0.21.*"
   },
   "minimum-stability": "dev",
   "require-dev": {
