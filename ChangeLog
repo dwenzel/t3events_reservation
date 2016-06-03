@@ -1,3 +1,10 @@
+2016-06-03         [RELEASE] Release of t3events_reservation 0.5.1 (Dirk Wenzel)
+2016-06-01 fc3d200 [BUGFIX] dependency corrected. (Dirk Wenzel)
+2016-06-01 14e959b [BUGFIX] dependency corrected. (Dirk Wenzel)
+2016-06-01 5e35f83 [BUGFIX] fixed error which prevented group headers in bookings list view from displaying. Some missing labels added. Obsolete action links removed. (Dirk Wenzel)
+2016-05-31 1e71bf0 [TASK] Unit test adapted to extended SessionInterface (Dirk Wenzel)
+2016-05-27 3261ef5 [TASK] occurrences of deprecated method SettingsUtility->getValueByKey removed (Dirk Wenzel)
+
 2016-05-24         [RELEASE] Release of t3events_reservation 0.5.0 (Dirk Wenzel)
 2016-05-20 a0c6746 [TASK] Use pagination configuration from TypoScript in bookings list template. (Dirk Wenzel)
 2016-05-20 992c4d1 [TASK] obsolete execution flag removed from php files (Dirk Wenzel)
