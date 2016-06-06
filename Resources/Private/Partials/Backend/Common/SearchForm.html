@@ -4,7 +4,7 @@
 		<f:debug inline="true" title="overwriteDemand">{overwriteDemand}</f:debug>
 		<f:debug inline="true" title="filterOptions">{filterOptions}</f:debug>
 	</f:if>
-	<f:form name="overwriteDemand" action="list">
+	<f:form name="overwriteDemand" action="{f:if(condition: '{actionMethod}', then: '{actionMethod}', else: 'list')}">
 		<f:comment>show subject field</f:comment>
 		<f:if condition="{showSubjectField}">
 			<f:render partial="Common/SearchSubject" arguments="{overwriteDemand: overwriteDemand}" />
