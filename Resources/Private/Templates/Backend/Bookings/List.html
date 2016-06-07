@@ -1,7 +1,8 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:layout name="Default" />
 <f:section name="content">
 	<h1>{f:translate(key: 'header.reservations', default: 'Reservations')}</h1>
-	<f:render partial="Common/SearchForm"
+	<f:render partial="Backend/Common/SearchForm"
 		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.bookings.search.showSubjectField}'}"/>
 	<f:flashMessages renderMode="div" />
 	<div class="list">
@@ -22,19 +23,7 @@
 				as="paginatedReservations"
 				configuration="{settings.bookings.list.paginate}"
 				>
-				<f:groupedFor each="{paginatedReservations}" as="reservationsByLesson" groupBy="lesson" groupKey="lesson">
-					<tr class="t3-row-header">
-						<td colspan="4">
-							<f:format.date format="d.m.Y">{lesson.date}</f:format.date>
-							- {lesson.event.headline->f:format.crop(maxCharacters: 70)}, {lesson.eventLocation.name} - ID {lesson.uid}
-						</td>
-						<td>{lesson.freePlaces} | {lesson.places} {f:translate(key: 'label.places')}</td>
-						<td></td>
-						<td>
-							<f:be.buttons.icon uri="{f:uri.action(action:'download', arguments: {reservations: '{reservationsByLesson}'})}" icon="extensions-t3events_reservation-download-excel-white" title="Buchungen exportieren" />
-						</td>
-					</tr>
-					<f:for each="{reservationsByLesson}" as="reservation">
+					<f:for each="{paginatedReservations}" as="reservation">
 						<tr class="db_list_normal">
 							<td>{reservation.uid}</td>
 							<td>
@@ -60,8 +49,10 @@
 							<td></td>
 						</tr>
 					</f:for>
-				</f:groupedFor>
 			</f:be.widget.paginate>
 		</table>
 	</div>
 </f:section>
+
+<f:comment>Header buttons</f:comment>
+<f:section name="headerButtons" />
