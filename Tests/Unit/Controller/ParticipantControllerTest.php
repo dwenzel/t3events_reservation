@@ -39,7 +39,7 @@ class ParticipantControllerTest extends UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getAccessibleMock(
-            ParticipantController::class, ['forward']
+            ParticipantController::class, ['forward', 'redirect']
         );
     }
 
@@ -113,7 +113,7 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateActionForwardsToDefaultController()
+    public function updateActionRedirectsToDefaultController()
     {
         $this->mockParticipantRepository();
         $participant = new Person();
@@ -124,7 +124,7 @@ class ParticipantControllerTest extends UnitTestCase
         $participant->setReservation($mockReservation);
 
         $this->subject->expects($this->once())
-            ->method('forward')
+            ->method('redirect')
             ->with(
                 'edit',
                 ParticipantController::PARENT_CONTROLLER_NAME,

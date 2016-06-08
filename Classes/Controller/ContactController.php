@@ -90,7 +90,7 @@ class ContactController
     public function updateAction(Contact $contact)
     {
         $this->contactRepository->update($contact);
-        $this->forward(
+        $this->redirect(
             'edit',
             self::PARENT_CONTROLLER_NAME,
             null,

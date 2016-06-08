@@ -15,7 +15,7 @@ plugin.tx_t3eventsreservation {
 			listPid =
 		}
 		reservation {
-			default.errorHandling = forward,edit
+			default.errorHandling = redirect,edit
 			detailPid =
 			confirm {
 				notification {

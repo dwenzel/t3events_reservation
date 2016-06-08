@@ -84,7 +84,7 @@ class ParticipantController
     public function updateAction(Person $participant)
     {
         $this->participantRepository->update($participant);
-        $this->forward(
+        $this->redirect(
             'edit',
             self::PARENT_CONTROLLER_NAME,
             null,

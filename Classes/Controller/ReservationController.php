@@ -356,7 +356,7 @@ class ReservationController
             }
         }
         $this->reservationRepository->update($reservation);
-        $this->forward('show', null, null, ['reservation' => $reservation]);
+        $this->redirect('show', null, null, ['reservation' => $reservation]);
     }
 
     /**
