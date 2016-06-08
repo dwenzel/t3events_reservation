@@ -5,6 +5,8 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Validation\Error;
+use TYPO3\CMS\Extbase\Error\Result;
 
 /***************************************************************
  *  Copyright notice
@@ -43,42 +45,60 @@ class ParticipantValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidReturnsFalseIfObjectIsNotAPerson()
+    public function validateAddsErrorForWrongObjectType()
     {
         $objectOfWrongType = new \stdClass();
-        $this->assertFalse(
-            $this->subject->isValid($objectOfWrongType)
+        $expectedResult = new Result();
+        $expectedError = new Error('Participant must be a Person.', 1465382176);
+        $expectedResult->addError($expectedError);
+        $this->assertEquals(
+            $expectedResult,
+            $this->subject->validate($objectOfWrongType)
         );
     }
 
     /**
      * @test
      */
-    public function isValidReturnsFalseIfPersonHasWrongType()
+    public function validateAddsErrorForWrongPersonType()
     {
         $personWithWrongType = new Person();
         $personWithWrongType->setType('foo');
 
-        $this->assertFalse(
-            $this->subject->isValid($personWithWrongType)
+        $expectedResult = new Result();
+        $expectedError = new Error(
+            'Wrong person type: foo.  Participant must be of type '
+            . Person::class . '::PERSON_TYPE_PARTICIPANT.',
+            1465382335);
+        $expectedResult->addError($expectedError);
+        $this->assertEquals(
+            $expectedResult,
+            $this->subject->validate($personWithWrongType)
         );
     }
 
     /**
      * @test
      */
-    public function isValidReturnsFalseIfReservationIsNotSet()
+    public function validateAddsErrorForMissingReservation()
     {
         $participant = new Person();
-        $this->assertFalse(
-            $this->subject->isValid($participant)
+        $participant->setType(Person::PERSON_TYPE_PARTICIPANT);
+
+        $expectedResult = new Result();
+        $expectedError = new Error('Missing reservation.', 1465389725);
+        $expectedResult->addError($expectedError);
+
+        $this->assertEquals(
+            $expectedResult,
+            $this->subject->validate($participant)
         );
     }
 
     /**
      * @test
      */
-    public function isValidReturnsTrueForValidParticipant()
+    public function validateReturnsEmptyResultForValidParticipant()
     {
         $participant = new Person();
         /** @var Reservation $mockReservation */
@@ -86,8 +106,11 @@ class ParticipantValidatorTest extends UnitTestCase
             Reservation::class
         );
         $participant->setReservation($mockReservation);
-        $this->assertTrue(
-            $this->subject->isValid($participant)
+
+        $expectedResult = new Result();
+        $this->assertEquals(
+            $expectedResult,
+            $this->subject->validate($participant)
         );
     }
 }
