@@ -244,7 +244,7 @@ trait ReservationAccessTrait
                     $originalRequest = clone $this->request;
                     $this->request->setOriginalRequest($originalRequest);
                     $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-                    $this->redirect($referringRequest->getControllerActionName(), $referringRequest->getControllerName(),
+                    $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(),
                         $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
                 }
             }
