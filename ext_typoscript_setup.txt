@@ -69,7 +69,6 @@ module.tx_t3eventsreservation {
 		lesson {
 			list {
 				maxItems = 99999
-				period = futureOnly
 			}
 		}
 		participant {
@@ -106,7 +105,6 @@ module.tx_t3eventsreservation {
 		bookings {
 			list {
 				maxItems = 99999
-				period = futureOnly
 				order = lesson.date|asc,lesson.uid|desc
 				filter {
 					genre =
