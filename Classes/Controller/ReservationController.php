@@ -181,7 +181,7 @@ class ReservationController
         if ($contact = $newReservation->getContact()) {
             $contact->setReservation($newReservation);
         }
-        $newReservation->setStatus(Reservation::STATUS_NEW);
+        $newReservation->setStatus(Reservation::STATUS_DRAFT);
         if ($newReservation->getContactIsParticipant() && is_object($contact)) {
             $participant = new Person();
             foreach (ObjectAccess::getGettableProperties($contact) as $propertyName => $propertyValue) {
