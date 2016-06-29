@@ -68,7 +68,7 @@ module.tx_t3eventsreservation {
 		#common.searchForm.debug = 1
 		lesson {
 			list {
-				period = futureOnly
+				maxItems = 99999
 			}
 		}
 		participant {
@@ -104,7 +104,7 @@ module.tx_t3eventsreservation {
 
 		bookings {
 			list {
-				period = futureOnly
+				maxItems = 99999
 				order = lesson.date|asc,lesson.uid|desc
 				filter {
 					genre =
