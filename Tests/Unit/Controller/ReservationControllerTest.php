@@ -333,7 +333,7 @@ class ReservationControllerTest extends UnitTestCase {
         $mockReservation = $this->getMock(Reservation::class);
         $this->mockReservationRepository();
         $this->subject->expects($this->once())
-            ->method('forward')
+            ->method('redirect')
             ->with(
                 'show',
                 null,

@@ -16,7 +16,7 @@ class ContactValidator extends AbstractValidator {
 	 * @param mixed $contact
 	 * @return bool
 	 */
-	public function isValid($contact) {
+	protected function isValid($contact) {
 		if (!$contact instanceof \Webfox\T3events\Domain\Model\Person) {
 			$this->addError('Contact must be a Person.', 1410958031);
 

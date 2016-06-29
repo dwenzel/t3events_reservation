@@ -25,7 +25,7 @@ plugin.tx_t3eventsreservation {
 			default.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			new.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			create.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
-			edit.errorHandling =  forward,error
+			edit.errorHandling =  redirect,error
 			update.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			delete.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			checkout.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}

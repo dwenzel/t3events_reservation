@@ -36,17 +36,28 @@ class ParticipantValidator extends AbstractValidator
      * @param mixed $participant
      * @return bool
      */
-    public function isValid($participant)
+    protected function isValid($participant)
     {
         if (!$participant instanceof Person) {
+            $this->addError('Participant must be a Person.', 1465382176);
+
             return false;
         }
 
         if ($participant->getType() !== Person::PERSON_TYPE_PARTICIPANT) {
+            $this->addError(
+                'Wrong person type: ' . $participant->getType() . '. '
+                . ' Participant must be of type '
+                . Person::class . '::PERSON_TYPE_PARTICIPANT.',
+                1465382335
+            );
+
             return false;
         }
 
         if (!$participant->getReservation() instanceof Reservation) {
+            $this->addError('Missing reservation.', 1465389725);
+
             return false;
         }
 

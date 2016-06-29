@@ -8,15 +8,15 @@ $ll = 'LLL:EXT:t3events_reservation/Resources/Private/Language/locallang_db.xlf:
 return array(
 	'ctrl' => array(
 		'title' => $ll . 'tx_t3eventsreservation_domain_model_reservation',
-		'label' => 'status',
+		'label' => 'uid',
+		'label_alt' => 'status',
+        'label_alt_force' => true,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
-
 		'versioningWS' => 2,
 		'versioning_followPages' => TRUE,
-
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -45,7 +45,6 @@ return array(
 		'1' => array('showitem' => ''),
 	),
 	'columns' => array(
-
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
@@ -146,7 +145,6 @@ return array(
 				'eval' => ''
 			),
 		),
-
 		// TODO; remove as obsolete due merge with model company into person using contact field
 		'company' => array(
 			'exclude' => 1,
@@ -266,7 +264,6 @@ return array(
 				'readOnly' => 1,
 			),
 		),
-
 		'total_price' => [
 			'exclude' => 0,
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.total_price',
@@ -276,7 +273,6 @@ return array(
 				'eval' => 'double2'
 			],
 		],
-
 		'note' => [
 			'exclude' => 0,
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.note',

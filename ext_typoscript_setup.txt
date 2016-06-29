@@ -57,8 +57,10 @@ module.tx_t3eventsreservation {
 
 	view {
 		templateRootPaths.10 = {$module.tx_t3eventsreservation.view.templateRootPaths.0}
-		partialRootPaths.10 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}
-		partialRootPaths.20 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}Backend/
+		partialRootPaths {
+			0 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}
+			10 = {$module.tx_t3eventsreservation.view.partialRootPaths.10}
+		}
 		layoutRootPaths.10 = {$module.tx_t3eventsreservation.view.layoutRootPaths.0}
 	}
 
@@ -66,7 +68,7 @@ module.tx_t3eventsreservation {
 		#common.searchForm.debug = 1
 		lesson {
 			list {
-				period = futureOnly
+				maxItems = 99999
 			}
 		}
 		participant {
@@ -92,7 +94,6 @@ module.tx_t3eventsreservation {
 					itemsPerPage = 25
 					insertBelow = 0
 					insertAbove = 1
-					recordsLabel = Participants
 				}
 			}
 			search {
@@ -103,7 +104,7 @@ module.tx_t3eventsreservation {
 
 		bookings {
 			list {
-				period = futureOnly
+				maxItems = 99999
 				order = lesson.date|asc,lesson.uid|desc
 				filter {
 					genre =

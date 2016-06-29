@@ -15,9 +15,9 @@ if (!defined('TYPO3_MODE')) {
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'CPSIT.' . $_EXTKEY,
-		'courses',     // Make module a submodule of 'courses'
-		'm1',    // Submodule key
-		'',                        // Position
+		'Events',
+		'm1',
+		'',
 		[
 			'Backend\Bookings' => 'list, show, edit, update, cancel, delete, newParticipant, createParticipant,
 			editParticipant, removeParticipant, newNotification, createNotification, reset, download',
@@ -31,10 +31,10 @@ if (TYPO3_MODE === 'BE') {
 
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'CPSIT.' . $_EXTKEY,
-		'courses',     // Make module a submodule of 'courses'
-		'm3',    // Submodule key
-		'',                        // Position
-		[
+		'Events',
+        'm3',
+        '',
+        [
 			'Backend\Participant' => 'list, download,reset',
 		],
 		[

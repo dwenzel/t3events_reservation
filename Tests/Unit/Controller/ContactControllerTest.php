@@ -36,7 +36,7 @@ class ContactControllerTest extends UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getAccessibleMock(
-            ContactController::class, ['forward']
+            ContactController::class, ['forward', 'redirect']
         );
     }
 
@@ -124,7 +124,7 @@ class ContactControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateActionForwardsToDefaultController()
+    public function updateActionRedirectsToDefaultController()
     {
         $this->mockContactRepository();
         $contact = new Contact();
@@ -135,7 +135,7 @@ class ContactControllerTest extends UnitTestCase
         $contact->setReservation($mockReservation);
 
         $this->subject->expects($this->once())
-            ->method('forward')
+            ->method('redirect')
             ->with(
                 'edit',
                 ContactController::PARENT_CONTROLLER_NAME,
