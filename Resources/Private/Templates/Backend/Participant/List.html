@@ -9,7 +9,7 @@
     </f:if>
     <h1>{f:translate(key: 'header.participants', default: 'Participants')}</h1>
     <f:render partial="Backend/Common/SearchForm"
-              arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.participant.search.showSubjectField}'}"/>
+              arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
     <f:flashMessages renderMode="div"/>
     <div class="list">
         <table class="typo3-dblist tx_t3eventsreservation">
@@ -27,7 +27,7 @@
             </tr>
             <f:be.widget.paginate
                     objects="{participants}"
-                    configuration="{settings.participant.list.paginate}"
+                    configuration="{settings.paginate}"
                     as="paginatedParticipants"
             >
                 <f:for each="{paginatedParticipants}" as="participant">

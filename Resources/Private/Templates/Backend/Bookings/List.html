@@ -3,7 +3,7 @@
 <f:section name="content">
 	<h1>{f:translate(key: 'header.reservations', default: 'Reservations')}</h1>
 	<f:render partial="Backend/Common/SearchForm"
-		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.bookings.search.showSubjectField}'}"/>
+		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
 	<f:flashMessages renderMode="div" />
 	<div class="list">
 		<table class="typo3-dblist tx_t3eventsreservation">
@@ -21,7 +21,7 @@
 			<f:be.widget.paginate
 				objects="{reservations}"
 				as="paginatedReservations"
-				configuration="{settings.bookings.list.paginate}"
+				configuration="{settings.paginate}"
 				>
 					<f:for each="{paginatedReservations}" as="reservation">
 						<tr class="db_list_normal">
