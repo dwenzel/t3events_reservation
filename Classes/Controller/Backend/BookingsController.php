@@ -83,7 +83,7 @@ class BookingsController extends AbstractBackendController
 	 */
 	public function listAction(array $overwriteDemand = NULL) {
 		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $demand */
-		$demand = $this->createDemandFromSettings($this->settings['bookings']['list']);
+		$demand = $this->createDemandFromSettings($this->settings);
 
 		if ($overwriteDemand === NULL) {
 			$overwriteDemand = $this->moduleData->getOverwriteDemand();
@@ -100,8 +100,7 @@ class BookingsController extends AbstractBackendController
 				'reservations' => $reservations,
 				'overwriteDemand' => $overwriteDemand,
 				'demand' => $demand,
-				'filterOptions' => $this->getFilterOptions(
-					$this->settings[$this->settingsUtility->getControllerKey($this)]['list']['filter'])
+				'filterOptions' => $this->getFilterOptions($this->settings['filter'])
 			]
 		);
 	}

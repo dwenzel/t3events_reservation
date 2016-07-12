@@ -94,10 +94,8 @@ class ParticipantController extends AbstractBackendController
 	 * @return void
 	 */
 	public function listAction(array $overwriteDemand = null) {
-		$demand = $this->createDemandFromSettings($this->settings['participant']['list']);
-		$filterOptions = $this->getFilterOptions(
-			$this->settings[$this->settingsUtility->getControllerKey($this)]['list']['filter']
-		);
+		$demand = $this->createDemandFromSettings($this->settings);
+		$filterOptions = $this->getFilterOptions($this->settings['filter']);
 
 		if ($overwriteDemand === null) {
 			$overwriteDemand = $this->moduleData->getOverwriteDemand();
@@ -130,7 +128,7 @@ class ParticipantController extends AbstractBackendController
 	 */
 	public function downloadAction($schedule = null, $ext = 'csv') {
 		if (is_null($schedule)) {
-			$demand = $this->createDemandFromSettings($this->settings['participant']['download']);
+			$demand = $this->createDemandFromSettings($this->settings);
 			$this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
 			$participants = $this->personRepository->findDemanded($demand);
 		} else {

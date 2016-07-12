@@ -468,6 +468,23 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function createActionSetsStatusDraft() {
+		$this->mockPersistenceManager();
+		$this->mockReservationRepository();
+
+		$mockReservation = $this->getMock(
+			Reservation::class, ['setStatus']
+		);
+		$mockReservation->expects($this->once())
+			->method('setStatus')
+			->with(Reservation::STATUS_DRAFT);
+
+		$this->subject->createAction($mockReservation);
+	}
+
+	/**
+	 * @test
+	 */
 	public function editActionAssignsReservationToView() {
 		$this->mockPersistenceManager();
 		$reservationRepository = $this->mockReservationRepository();
