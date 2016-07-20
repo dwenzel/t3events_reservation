@@ -1,58 +1,62 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
-<f:layout name="Default" />
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:layout name="Default"/>
 <f:section name="content">
-	<h1>{f:translate(key: 'header.reservations', default: 'Reservations')}</h1>
-	<f:render partial="Backend/Common/SearchForm"
-		arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
-	<f:flashMessages renderMode="div" />
-	<div class="list">
-		<table class="typo3-dblist tx_t3eventsreservation">
-			<tr class="c-headline">
-				<th>ID</th>
-				<th>
-					<f:translate key="label.status" />
-				</th>
-				<th class="">{f:translate(key: 'label.company', default: 'Company')}</th>
-				<th>{f:translate(key: 'label.contact', default: 'Contact')}</th>
-				<th>{f:translate(key: 'label.participants', default: 'Participants')}</th>
-				<th></th>
-				<th></th>
-			</tr>
-			<f:be.widget.paginate
-				objects="{reservations}"
-				as="paginatedReservations"
-				configuration="{settings.paginate}"
-				>
-					<f:for each="{paginatedReservations}" as="reservation">
-						<tr class="db_list_normal">
-							<td>{reservation.uid}</td>
-							<td>
-								<f:translate key="label.status.{reservation.status}" />
-							</td>
-							<td>{reservation.company.name}</td>
-							<td>
-								<f:if condition="{reservation.contact.gender} == 1">
-                                    {f:translate(key: 'label.gender.female')}
-								</f:if>
-								<f:if condition="{reservation.contact.gender} == 2">
-                                    {f:translate(key: 'label.gender.male')}
-								</f:if>
-								{f:if(condition: '{reservation.contact.lastName}', then: '{reservation.contact.lastName}, ')}{f:if(condition: '{reservation.contact.firstName}', then: '{reservation.contact.firstName}')}
-							</td>
-							<td>{reservation.participants->f:count()}</td>
-							<td>
-								<f:if condition="{reservation.status} <= 2">
-									<f:be.buttons.icon uri="#"
-										additionalAttributes="{onclick: 'window.location.href=\'alt_doc.php?returnUrl=\'+T3_THIS_LOCATION+\'&edit[tx_t3eventsreservation_domain_model_reservation][{reservation.uid}]=edit\'; return false;'}" icon="actions-document-open" title="Edit" />
-								</f:if>
-							</td>
-							<td></td>
-						</tr>
-					</f:for>
-			</f:be.widget.paginate>
-		</table>
-	</div>
+    <h1>{f:translate(key: 'header.reservations', default: 'Reservations')}</h1>
+    <f:render partial="Backend/Common/SearchForm"
+              arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
+    <f:flashMessages renderMode="div"/>
+    <div class="panel panel-space panel-default recordlist">
+        <table class="table table-striped table-hover typo3-dblist nowrap">
+            <thead>
+            <tr class="c-headline">
+                <th>ID</th>
+                <th>
+                    <f:translate key="label.status"/>
+                </th>
+                <th class="">{f:translate(key: 'label.company', default: 'Company')}</th>
+                <th>{f:translate(key: 'label.contact', default: 'Contact')}</th>
+                <th>{f:translate(key: 'label.participants', default: 'Participants')}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <f:be.widget.paginate
+                    objects="{reservations}"
+                    as="paginatedReservations"
+                    configuration="{settings.paginate}"
+            >
+                <f:for each="{paginatedReservations}" as="reservation">
+                    <tr class="db_list_normal">
+                        <td>{reservation.uid}</td>
+                        <td>
+                            <f:translate key="label.status.{reservation.status}"/>
+                        </td>
+                        <td>{reservation.company.name}</td>
+                        <td>
+                            <f:if condition="{reservation.contact.gender} == 1">
+                                {f:translate(key: 'label.gender.female')}
+                            </f:if>
+                            <f:if condition="{reservation.contact.gender} == 2">
+                                {f:translate(key: 'label.gender.male')}
+                            </f:if>
+                            {f:if(condition: '{reservation.contact.lastName}', then: '{reservation.contact.lastName},
+                            ')}{f:if(condition: '{reservation.contact.firstName}', then:
+                            '{reservation.contact.firstName}')}
+                        </td>
+                        <td>{reservation.participants->f:count()}</td>
+                        <td>
+                            <f:if condition="{reservation.status} <= 2">
+                                <f:be.buttons.icon uri="#"
+                                                   additionalAttributes="{onclick: 'window.location.href=\'alt_doc.php?returnUrl=\'+T3_THIS_LOCATION+\'&edit[tx_t3eventsreservation_domain_model_reservation][{reservation.uid}]=edit\'; return false;'}"
+                                                   icon="actions-document-open" title="Edit"/>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+            </f:be.widget.paginate>
+        </table>
+    </div>
 </f:section>
 
 <f:comment>Header buttons</f:comment>
-<f:section name="headerButtons" />
+<f:section name="headerButtons"/>
