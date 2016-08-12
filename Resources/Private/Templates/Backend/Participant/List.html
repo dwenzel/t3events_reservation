@@ -1,4 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:layout name="Default"/>
 <f:section name="content">
     <f:comment>
@@ -11,20 +12,22 @@
     <f:render partial="Backend/Common/SearchForm"
               arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
     <f:flashMessages renderMode="div"/>
-    <div class="list">
-        <table class="typo3-dblist tx_t3eventsreservation">
+    <div class="panel panel-space panel-default recordlist">
+        <table class="typo3-dblist nowrap tx_t3eventsreservation">
+            <thead>
             <tr class="c-headline">
-                <td>{f:translate(key: 'label.id', default: 'ID')}</td>
-                <td class="col-title">{f:translate(key: 'label.name', default: 'Name')}, {f:translate(key:
+                <th>{f:translate(key: 'label.id', default: 'ID')}</th>
+                <th class="col-title">{f:translate(key: 'label.name', default: 'Name')}, {f:translate(key:
                     'label.firstName', default: 'First Name')}
-                </td>
-                <td class="">{f:translate(key: 'label.reservation', default: 'Reservation')} {f:translate(key:
+                </th>
+                <th class="">{f:translate(key: 'label.reservation', default: 'Reservation')} {f:translate(key:
                     'label.id', default: 'ID')} - {f:translate(key: 'label.event', default: 'Event')}
-                </td>
-                <td>{f:translate(key: 'label.date', default: 'Date')} / {f:translate(key: 'label.location', default:
+                </th>
+                <th>{f:translate(key: 'label.date', default: 'Date')} / {f:translate(key: 'label.location', default:
                     'Location')}
-                </td>
+                </th>
             </tr>
+            </thead>
             <f:be.widget.paginate
                     objects="{participants}"
                     configuration="{settings.paginate}"
@@ -47,4 +50,4 @@
 </f:section>
 
 <f:comment>Header buttons</f:comment>
-<f:section name="headerButtons" />
+<f:section name="headerButtons"/>

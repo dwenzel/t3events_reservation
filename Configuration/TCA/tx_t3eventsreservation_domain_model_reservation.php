@@ -166,6 +166,7 @@ return array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'tx_t3events_domain_model_person',
+				'foreign_table' => 'tx_t3events_domain_model_person',
 				'size' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,

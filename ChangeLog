@@ -1,3 +1,8 @@
+2016-08-12         [RELEASE] Release of t3events_reservation 0.8.0 (Dirk Wenzel)
+2016-07-20 8509891 [TASK] markup for records listing in BE module improved. (Dirk Wenzel)
+2016-07-19 5086511 [TASK] foreign table configuration for contact field of reservation added. (Dirk Wenzel)
+2016-07-15 715fe02 [BUGFIX] Correct class path to scheduleDemand in function 'createDemandForLessonsWithExpiredDeadline'. (Erik Rauchstein)
+
 2016-07-12         [RELEASE] Release of t3events_reservation 0.7.0 (Dirk Wenzel)
 2016-07-05 a4a43c7 [TASK] settings path in controllers and templates adapted (after changes in t3events) (Dirk Wenzel)
 2016-06-21 832579b [BUGFIX] label and mark up in list view of bookings controller corrected. (Dirk Wenzel)

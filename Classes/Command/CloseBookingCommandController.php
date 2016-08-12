@@ -330,7 +330,7 @@ class CloseBookingCommandController extends CommandController {
 	 */
 	protected function createDemandForLessonsWithExpiredDeadline($date = 'now') {
 		/** @var \CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand $lessonDemand */
-		$lessonDemand = $this->objectManager->get('\CPSIT\T3eventsCourse\Domain\Model\Dto\LessonDemand');
+		$lessonDemand = $this->objectManager->get(ScheduleDemand::class);
 		$lessonDemand->setDeadlineBefore(new \DateTime($date));
 
 		return $lessonDemand;
