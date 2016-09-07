@@ -199,7 +199,7 @@ class ReservationController
         $this->reservationRepository->add($newReservation);
         $this->persistenceManager->persistAll();
         $this->session->set(self::SESSION_IDENTIFIER_RESERVATION, $newReservation->getUid());
-        $this->forward('edit', null, null, ['reservation' => $newReservation]);
+        $this->redirect('edit', null, null, ['reservation' => $newReservation]);
     }
 
     /**
