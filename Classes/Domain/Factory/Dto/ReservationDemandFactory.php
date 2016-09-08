@@ -46,7 +46,7 @@ use PeriodAwareDemandFactoryTrait;
     static protected $compositeProperties = [
         'search'
     ];
-    
+
     /**
      * Creates a demand object from settings
      *
