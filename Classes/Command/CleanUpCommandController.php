@@ -1,8 +1,14 @@
 <?php
 namespace CPSIT\T3eventsReservation\Command;
 
+use CPSIT\T3eventsReservation\Controller\BillingAddressRepositoryTrait;
+use CPSIT\T3eventsReservation\Controller\ContactRepositoryTrait;
+use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationDemandFactoryTrait;
+use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -30,7 +36,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
  */
 class CleanUpCommandController extends CommandController
 {
-    use ReservationDemandFactoryTrait;
+    use ReservationDemandFactoryTrait, ReservationRepositoryTrait,
+        PersonRepositoryTrait, ContactRepositoryTrait,
+        BillingAddressRepositoryTrait;
 
     /**
      * Deletes reservations
@@ -51,5 +59,92 @@ class CleanUpCommandController extends CommandController
         }
 
         $reservationDemand = $this->reservationDemandFactory->createFromSettings($settings);
+        $reservations = $this->reservationRepository->findDemanded($reservationDemand);
+
+        if (count($reservations))
+        {
+            $participantsToRemove = $this->getParticipantsToRemove($reservations);
+            $contactsToRemove = $this->getContactsToRemove($reservations);
+            $billingAddressesToRemove = $this->getBillingAddressesToRemove($reservations);
+
+            if (!$dryRun)
+            {
+                foreach ($participantsToRemove as $participantToRemove)
+                {
+                    $this->personRepository->remove($participantToRemove);
+                }
+
+                foreach ($contactsToRemove as $contactToRemove)
+                {
+                    $this->contactRepository->remove($contactToRemove);
+                }
+
+                foreach ($billingAddressesToRemove as $billingAddress)
+                {
+                    $this->billingAddressRepository->remove($billingAddress);
+                }
+            }
+        }
     }
+
+    /**
+     * Gets all participants from all reservations
+     *
+     * @param QueryResultInterface|array $reservations
+     * @return array
+     */
+    protected function getParticipantsToRemove($reservations)
+    {
+        $participantsToRemove = [];
+        /** @var Reservation $reservation */
+        foreach ($reservations as $reservation) {
+            $participants = $reservation->getParticipants();
+            foreach ($participants as $participant) {
+                $participantsToRemove[] = $participant;
+            }
+        }
+
+        return $participantsToRemove;
+    }
+
+    /**
+     * Gets all contacts from all reservations
+     *
+     * @param QueryResultInterface|array $reservations
+     * @return array
+     */
+    protected function getContactsToRemove($reservations)
+    {
+        $contactsToRemove = [];
+        /** @var Reservation $reservation */
+        foreach ($reservations as $reservation) {
+            $contact = $reservation->getContact();
+            if ($contact !== null) {
+                $contactsToRemove[] = $contact;
+            }
+        }
+
+        return $contactsToRemove;
+    }
+
+    /**
+     * Gets all billing adresses from all reservations
+     *
+     * @param QueryResultInterface|array $reservations
+     * @return array
+     */
+    protected function getBillingAddressesToRemove($reservations)
+    {
+        $billingAddressesToRemove = [];
+        /** @var Reservation $reservation */
+        foreach ($reservations as $reservation) {
+            $billingAddress = $reservation->getBillingAddress();
+            if ($billingAddress !== null) {
+                $billingAddressesToRemove[] = $billingAddress;
+            }
+        }
+
+        return $billingAddressesToRemove;
+    }
+
 }
