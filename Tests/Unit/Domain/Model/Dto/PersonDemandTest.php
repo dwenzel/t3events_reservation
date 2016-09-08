@@ -187,6 +187,17 @@ class PersonDemandTest extends UnitTestCase
     /**
      * @test
      */
+    public function getStartDateFieldReturnsClassConstant()
+    {
+        $this->assertSame(
+            PersonDemand::START_DATE_FIELD,
+            $this->subject->getStartDateField()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function getAudienceFieldReturnsClassConstant()
     {
         $this->assertSame(

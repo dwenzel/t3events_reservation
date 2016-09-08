@@ -39,7 +39,7 @@ class CleanUpCommandController extends CommandController
      * @param string $period A period name. Allowed: pastOnly, futureOnly, specific, all
      * @param string $lessonDate A string understood by \DateTime constructor.
      */
-    public function deleteReservations($dryRun = true, $period = 'pastOnly', $lessonDate = '')
+    public function deleteReservationsCommand($dryRun = true, $period = 'pastOnly', $lessonDate = '')
     {
         $settings = [
             'period' => $period,

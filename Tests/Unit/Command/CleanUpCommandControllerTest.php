@@ -62,6 +62,6 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->with($settings);
 
-        $this->subject->deleteReservations();
+        $this->subject->deleteReservationsCommand();
     }
 }
