@@ -40,7 +40,7 @@ class PersonDemand extends AbstractDemand
 	/**
 	 * Types
 	 *
-	 * @var \string
+	 * @var string
 	 */
 	protected $types;
 
@@ -61,14 +61,14 @@ class PersonDemand extends AbstractDemand
 	/**
 	 * Period of lesson (in reservation)
 	 *
-	 * @var \string
+	 * @var string
 	 */
 	protected $lessonPeriod;
 
 	/**
-	 * get the types
+	 * gets the types
 	 *
-	 * @return \string
+	 * @return string A comma separated list of type ids
 	 */
 	public function getTypes() {
 		return $this->types;
@@ -77,7 +77,7 @@ class PersonDemand extends AbstractDemand
 	/**
 	 * sets the types
 	 *
-	 * @param \string $types
+	 * @param string $types A comma separated list of type ids
 	 * @return void
 	 */
 	public function setTypes($types) {
@@ -114,7 +114,7 @@ class PersonDemand extends AbstractDemand
 	/**
 	 * Sets the lesson date
 	 *
-	 * @param $date
+	 * @param \DateTime $date The date of the lesson
 	 */
 	public function setLessonDate($date) {
 		$this->lessonDate = $date;
@@ -123,7 +123,7 @@ class PersonDemand extends AbstractDemand
 	/**
 	 * Gets the lesson period (in reservation)
 	 *
-	 * @return string
+	 * @return string A period name. Allowed: all, futureOnly, pastOnly, specific
 	 */
 	public function getLessonPeriod() {
 		return $this->lessonPeriod;
@@ -132,13 +132,15 @@ class PersonDemand extends AbstractDemand
 	/**
 	 * Sets the period of the lesson (in reservation)
 	 *
-	 * @param \string $period
+	 * @param string $period A period name.
 	 */
 	public function setLessonPeriod($period) {
 		$this->lessonPeriod = $period;
 	}
 
 	/**
+	 * Returns the field name for genres in dot notation.
+	 *
 	 * @return string
 	 */
 	public function getGenreField() {
@@ -146,6 +148,8 @@ class PersonDemand extends AbstractDemand
 	}
 
 	/**
+	 * Returns the field name for the event types in dot notation.
+	 *
 	 * @return string
 	 */
 	public function getEventTypeField() {
@@ -153,6 +157,8 @@ class PersonDemand extends AbstractDemand
 	}
 
 	/**
+	 * Returns the field name for categories in dot notation.
+	 *
 	 * @return string
 	 */
 	public function getCategoryField() {
@@ -160,20 +166,24 @@ class PersonDemand extends AbstractDemand
 	}
 
 	/**
-	 * @return mixed
+	 * Returns the field name for the start date in dot notation.
+	 * @return string
 	 */
 	public function getStartDateField() {
 		return self::START_DATE_FIELD;
 	}
 
 	/**
-	 * @return mixed
+	 * Returns the field name for the end date in dot notation.
+	 * @return string
 	 */
 	public function getEndDateField() {
 		return self::END_DATE_FIELD;
 	}
 
 	/**
+	 * Returns the field name for the audience field in dot notation.
+	 *
 	 * @return string
 	 */
 	public function getAudienceField() {
