@@ -51,7 +51,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getAccessibleMock(
-            CleanUpCommandController::class, ['dummy']
+            CleanUpCommandController::class, ['dummy', 'outputLine']
         );
     }
 
@@ -74,7 +74,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     protected function mockReservationRepository()
     {
         $mockReservationRepository = $this->getMock(
-            ReservationRepository::class, ['findDemanded'], [], '', false
+            ReservationRepository::class, ['findDemanded', 'remove'], [], '', false
         );
         $this->subject->injectReservationRepository($mockReservationRepository);
 
@@ -92,7 +92,9 @@ class CleanUpCommandControllerTest extends UnitTestCase
 
         $this->mockReservationRepository();
         $settings = [
-            'period' => 'pastOnly'
+            'period' => 'pastOnly',
+            'storagePages' => '',
+            'limit' => 1000
         ];
         $mockDemandFactory = $this->mockReservationDemandFactory();
         $mockDemandFactory->expects($this->once())
@@ -115,9 +117,13 @@ class CleanUpCommandControllerTest extends UnitTestCase
         $this->mockReservationRepository();
         $period = 'all';
         $lessonDate = 'now';
+        $storagePageIds = 'foo';
+        $limit = 3;
+
         $settings = [
             'period' => $period,
-            'lessonDate' => $lessonDate
+            'storagePages' => $storagePageIds,
+            'limit' => $limit
         ];
         $mockDemandFactory = $this->mockReservationDemandFactory();
 
@@ -126,7 +132,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->with($settings)
             ->will($this->returnValue($mockReservationDemand));
 
-        $this->subject->deleteReservationsCommand(true, $period, $lessonDate);
+        $this->subject->deleteReservationsCommand(true, $period, $lessonDate, $storagePageIds, $limit);
     }
 
     /**

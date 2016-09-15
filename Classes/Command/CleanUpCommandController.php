@@ -9,6 +9,7 @@ use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use Webfox\T3events\Controller\NotificationRepositoryTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -38,50 +39,78 @@ class CleanUpCommandController extends CommandController
 {
     use ReservationDemandFactoryTrait, ReservationRepositoryTrait,
         PersonRepositoryTrait, ContactRepositoryTrait,
-        BillingAddressRepositoryTrait;
+        BillingAddressRepositoryTrait, NotificationRepositoryTrait;
 
     /**
-     * Deletes reservations
+     * Deletes reservations by date and all their related records.
      *
-     * @param bool $dryRun
+     * @param boolean $dryRun If true nothing will be deleted.
      * @param string $period A period name. Allowed: pastOnly, futureOnly, specific, all
-     * @param string $lessonDate A string understood by \DateTime constructor.
+     * @param string $date A string understood by \DateTime constructor.
+     * @param string $storagePageIds Comma separated list of storage page ids. (Required)
+     * @param int $limit Maximum number of reservations to remove.
      */
-    public function deleteReservationsCommand($dryRun = true, $period = 'pastOnly', $lessonDate = '')
-    {
+    public function deleteReservationsCommand(
+        $dryRun = true,
+        $period = 'pastOnly',
+        $date = '',
+        $storagePageIds = '',
+        $limit = 1000
+    ) {
         $settings = [
             'period' => $period,
+            'storagePages' => $storagePageIds,
+            'limit' => $limit
         ];
 
-        if (!empty($lessonDate))
-        {
-            $settings['lessonDate'] = $lessonDate;
+        if (!empty($date) && $period === 'specific') {
+            $settings['periodType'] = 'byDate';
+            $settings['periodEndDate'] = $date;
+            $settings['periodStartDate'] = '01-01-1970';
         }
 
         $reservationDemand = $this->reservationDemandFactory->createFromSettings($settings);
         $reservations = $this->reservationRepository->findDemanded($reservationDemand);
+        $deletedReservations = count($reservations);
 
-        if (count($reservations))
-        {
+        $this->outputLine('Found ' . $deletedReservations . ' matching reservations.');
+
+        if (count($reservations)) {
             $participantsToRemove = $this->getParticipantsToRemove($reservations);
             $contactsToRemove = $this->getContactsToRemove($reservations);
             $billingAddressesToRemove = $this->getBillingAddressesToRemove($reservations);
+            $notificationsToRemove = $this->getNotificationsToRemove($reservations);
+            $this->outputLine('Reservations contain:');
+            $this->outputLine(' ' . count($participantsToRemove) . ' participants');
+            $this->outputLine(' ' . count($contactsToRemove) . ' contacts');
+            $this->outputLine(' ' . count($billingAddressesToRemove) . ' billing addresses');
+            $this->outputLine(' ' . count($notificationsToRemove) . ' notifications');
 
-            if (!$dryRun)
-            {
-                foreach ($participantsToRemove as $participantToRemove)
-                {
+            if (!$dryRun) {
+                $this->outputLine('Removing:');
+                $this->outputLine(' ' . count($participantsToRemove) . ' participants');
+                foreach ($participantsToRemove as $participantToRemove) {
                     $this->personRepository->remove($participantToRemove);
                 }
 
-                foreach ($contactsToRemove as $contactToRemove)
-                {
+                $this->outputLine(' ' . count($contactsToRemove) . ' contacts');
+                foreach ($contactsToRemove as $contactToRemove) {
                     $this->contactRepository->remove($contactToRemove);
                 }
 
-                foreach ($billingAddressesToRemove as $billingAddress)
-                {
+                $this->outputLine(' ' . count($billingAddressesToRemove) . ' billing addresses');
+                foreach ($billingAddressesToRemove as $billingAddress) {
                     $this->billingAddressRepository->remove($billingAddress);
+                }
+
+                $this->outputLine(' ' . count($notificationsToRemove) . ' notifications');
+                foreach ($notificationsToRemove as $notificationToRemove) {
+                    $this->notificationRepository->remove($notificationToRemove);
+                }
+
+                $this->outputLine(' ' . count($reservations) . ' reservations');
+                foreach ($reservations as $reservation) {
+                    $this->reservationRepository->remove($reservation);
                 }
             }
         }
@@ -147,4 +176,23 @@ class CleanUpCommandController extends CommandController
         return $billingAddressesToRemove;
     }
 
+    /**
+     * Gets all notifications from all reservations
+     *
+     * @param QueryResultInterface|array $reservations
+     * @return array
+     */
+    protected function getNotificationsToRemove($reservations)
+    {
+        $notificationsToRemove = [];
+        /** @var Reservation $reservation */
+        foreach ($reservations as $reservation) {
+            $notifications = $reservation->getNotifications();
+            foreach ($notifications as $notification) {
+                $notificationsToRemove[] = $notification;
+            }
+        }
+
+        return $notificationsToRemove;
+    }
 }
