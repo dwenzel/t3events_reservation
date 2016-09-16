@@ -1,3 +1,6 @@
+2016-09-16         [RELEASE] Release of t3events_reservation 0.8.1 (Dirk Wenzel)
+2016-09-07 850ce6e [BUGFIX] fixed fatal error in PageRenderer (memory exhausted) caused by forwarding the request in ReservationController->createAction. (Dirk Wenzel)
+
 2016-08-12         [RELEASE] Release of t3events_reservation 0.8.0 (Dirk Wenzel)
 2016-07-20 8509891 [TASK] markup for records listing in BE module improved. (Dirk Wenzel)
 2016-07-19 5086511 [TASK] foreign table configuration for contact field of reservation added. (Dirk Wenzel)
