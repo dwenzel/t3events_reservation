@@ -24,6 +24,7 @@ use CPSIT\T3eventsReservation\Domain\Factory\Dto\ReservationDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
+use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
@@ -31,6 +32,7 @@ use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Webfox\T3events\Domain\Repository\NotificationRepository;
 
 /**
  * Class CleanUpCommandControllerTest
@@ -108,7 +110,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function deleteReservationCommandPassesArgumentsToDemandFactory()
+    public function deleteReservationsCommandPassesArgumentsToDemandFactory()
     {
         $mockReservationDemand = $this->getMock(
             ReservationDemand::class
@@ -160,7 +162,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function deleteReservationCommandRemovesParticipants()
+    public function deleteReservationsCommandRemovesParticipants()
     {
         $mockReservation = $this->getMock(
             Reservation::class, ['getParticipants']
@@ -206,7 +208,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function deleteReservationCommandRemovesContacts()
+    public function deleteReservationsCommandRemovesContacts()
     {
         $mockReservation = $this->getMock(
             Reservation::class, ['getContact']
@@ -249,7 +251,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function deleteReservationCommandRemovesBillingAddresses()
+    public function deleteReservationsCommandRemovesBillingAddresses()
     {
         $mockReservation = $this->getMock(
             Reservation::class, ['getBillingAddress']
@@ -285,6 +287,80 @@ class CleanUpCommandControllerTest extends UnitTestCase
         $mockBillingAddressRepository->expects($this->once())
             ->method('remove')
             ->with($mockBillingAddress);
+
+        $this->subject->deleteReservationsCommand(false);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteReservationsCommandRemovesNotifications()
+    {
+        $mockReservation = $this->getMock(
+            Reservation::class, ['getNotifications']
+        );
+        $mockReservationResult = [
+            $mockReservation
+        ];
+        $mockNotification = $this->getMock(
+            Notification::class
+        );
+        $mockReservationDemand = $this->getMock(
+            ReservationDemand::class
+        );
+        $mockNotificationRepository = $this->getMock(
+            NotificationRepository::class, ['remove'], [], '', false
+        );
+        $this->subject->injectNotificationRepository($mockNotificationRepository);
+
+        $reservationDemandFactory = $this->mockReservationDemandFactory();
+        $reservationDemandFactory->expects($this->once())
+            ->method('createFromSettings')
+            ->will($this->returnValue($mockReservationDemand));
+
+        $mockReservationRepository = $this->mockReservationRepository();
+
+        $mockReservationRepository->expects($this->once())
+            ->method('findDemanded')
+            ->will($this->returnValue($mockReservationResult));
+
+        $mockReservation->expects($this->once())
+            ->method('getNotifications')
+            ->will($this->returnValue([$mockNotification]));
+        $mockNotificationRepository->expects($this->once())
+            ->method('remove')
+            ->with($mockNotification);
+
+        $this->subject->deleteReservationsCommand(false);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteReservationsCommandRemovesReservations()
+    {
+        $mockReservationDemand = $this->getMock(
+            ReservationDemand::class
+        );
+        $reservationDemandFactory = $this->mockReservationDemandFactory();
+        $reservationDemandFactory->expects($this->once())
+            ->method('createFromSettings')
+            ->will($this->returnValue($mockReservationDemand));
+
+        $mockReservation = $this->getMock(
+            Reservation::class
+        );
+        $reservationsResult = [$mockReservation];
+
+        $mockReservationRepository = $this->mockReservationRepository();
+
+        $mockReservationRepository->expects($this->once())
+            ->method('findDemanded')
+            ->will($this->returnValue($reservationsResult));
+
+        $mockReservationRepository->expects($this->once())
+            ->method('remove')
+            ->with($mockReservation);
 
         $this->subject->deleteReservationsCommand(false);
     }

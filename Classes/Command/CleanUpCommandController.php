@@ -128,6 +128,10 @@ class CleanUpCommandController extends CommandController
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
             $participants = $reservation->getParticipants();
+            if (!count($participants))
+            {
+                continue;
+            }
             foreach ($participants as $participant) {
                 $participantsToRemove[] = $participant;
             }
@@ -188,6 +192,10 @@ class CleanUpCommandController extends CommandController
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
             $notifications = $reservation->getNotifications();
+            if (!count($notifications))
+            {
+                continue;
+            }
             foreach ($notifications as $notification) {
                 $notificationsToRemove[] = $notification;
             }
