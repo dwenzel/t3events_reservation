@@ -117,14 +117,17 @@ class CleanUpCommandControllerTest extends UnitTestCase
         );
 
         $this->mockReservationRepository();
-        $period = 'all';
-        $lessonDate = 'now';
+        $period = 'specific';
+        $date = 'now';
         $storagePageIds = 'foo';
         $limit = 3;
 
         $settings = [
             'period' => $period,
             'storagePages' => $storagePageIds,
+            'periodType' => 'byDate',
+            'periodEndDate' => $date,
+            'periodStartDate' => '01-01-1970',
             'limit' => $limit
         ];
         $mockDemandFactory = $this->mockReservationDemandFactory();
@@ -134,7 +137,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->with($settings)
             ->will($this->returnValue($mockReservationDemand));
 
-        $this->subject->deleteReservationsCommand(true, $period, $lessonDate, $storagePageIds, $limit);
+        $this->subject->deleteReservationsCommand(true, $period, $date, $storagePageIds, $limit);
     }
 
     /**
