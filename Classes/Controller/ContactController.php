@@ -64,6 +64,8 @@ class ContactController
      * @param Contact $contact
      * @param Reservation $reservation
      * @throws InvalidSourceException
+     * @ignorevalidation $contact
+     * @ignorevalidation $reservation
      */
     public function editAction(Contact $contact, Reservation $reservation)
     {
