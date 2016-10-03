@@ -23,7 +23,7 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
 /**
  * Notification for reservations
  */
-class Notification extends \Webfox\T3events\Domain\Model\Notification {
+class Notification extends \DWenzel\T3events\Domain\Model\Notification {
 	/**
 	 * Reservation
 	 *

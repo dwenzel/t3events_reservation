@@ -43,13 +43,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use Webfox\T3events\Domain\Model\Performance;
+use DWenzel\T3events\Domain\Model\Performance;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
-use Webfox\T3events\Domain\Repository\PerformanceRepository;
-use Webfox\T3events\Service\NotificationService;
-use Webfox\T3events\Session\SessionInterface;
-use Webfox\T3events\Session\Typo3Session;
-use Webfox\T3events\Utility\SettingsUtility;
+use DWenzel\T3events\Domain\Repository\PerformanceRepository;
+use DWenzel\T3events\Service\NotificationService;
+use DWenzel\T3events\Session\SessionInterface;
+use DWenzel\T3events\Session\Typo3Session;
+use DWenzel\T3events\Utility\SettingsUtility;
 
 /**
  * Test case for class CPSIT\T3eventsReservations\Controller\ReservationController.

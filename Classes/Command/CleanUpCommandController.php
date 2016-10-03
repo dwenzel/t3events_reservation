@@ -9,7 +9,7 @@ use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use Webfox\T3events\Controller\NotificationRepositoryTrait;
+use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 
 /***************************************************************
  *  Copyright notice

@@ -32,7 +32,7 @@ use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use Webfox\T3events\Domain\Repository\NotificationRepository;
+use DWenzel\T3events\Domain\Repository\NotificationRepository;
 
 /**
  * Class CleanUpCommandControllerTest

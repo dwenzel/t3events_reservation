@@ -1,20 +1,20 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
-use Webfox\T3events\Domain\Model\Dto\AudienceAwareDemandInterface;
-use Webfox\T3events\Domain\Model\Dto\AudienceAwareDemandTrait;
-use Webfox\T3events\Domain\Model\Dto\CategoryAwareDemandInterface;
-use Webfox\T3events\Domain\Model\Dto\CategoryAwareDemandTrait;
-use Webfox\T3events\Domain\Model\Dto\DemandInterface;
-use Webfox\T3events\Domain\Model\Dto\AbstractDemand;
-use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
-use Webfox\T3events\Domain\Model\Dto\EventTypeAwareDemandTrait;
-use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
-use Webfox\T3events\Domain\Model\Dto\GenreAwareDemandTrait;
-use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
-use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
-use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandInterface;
-use Webfox\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\AudienceAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\AudienceAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\CategoryAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\CategoryAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\AbstractDemand;
+use DWenzel\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\EventTypeAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\GenreAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\SearchAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
 
 /**
  * Class PersonDemand

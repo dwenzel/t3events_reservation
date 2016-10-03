@@ -23,7 +23,7 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
 /**
  * Contact
  */
-class Contact extends \Webfox\T3events\Domain\Model\Person {
+class Contact extends \DWenzel\T3events\Domain\Model\Person {
 	use ReservationPersonTrait;
 
 	/**

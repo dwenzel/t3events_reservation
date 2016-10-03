@@ -5,7 +5,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use Webfox\T3events\Controller\AbstractController;
+use DWenzel\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator;
 
 /***************************************************************

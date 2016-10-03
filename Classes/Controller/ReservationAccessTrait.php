@@ -7,8 +7,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use Webfox\T3events\Controller\FlashMessageTrait;
-use Webfox\T3events\Session\Typo3Session;
+use DWenzel\T3events\Controller\FlashMessageTrait;
+use DWenzel\T3events\Session\Typo3Session;
 
 /**
  * Class ReservationAccessTrait
@@ -18,10 +18,10 @@ use Webfox\T3events\Session\Typo3Session;
  */
 trait ReservationAccessTrait
 {
-    use FlashMessageTrait;
+    use \DWenzel\T3events\Controller\FlashMessageTrait;
 
     /**
-     * @var \Webfox\T3events\Session\SessionInterface
+     * @var \DWenzel\T3events\Session\SessionInterface
      */
     protected $session;
 
