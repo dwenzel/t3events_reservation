@@ -31,7 +31,7 @@ use DWenzel\T3events\Domain\Repository\CategoryRepository;
  ***************************************************************/
 class ParticipantController extends AbstractBackendController
 	implements FilterableControllerInterface {
-	use DWenzel\T3events\Controller\FilterableControllerTrait;
+	use FilterableControllerTrait;
 
 	/**
 	 * reservationRepository

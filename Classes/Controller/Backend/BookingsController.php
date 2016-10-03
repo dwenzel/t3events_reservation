@@ -38,7 +38,7 @@ use DWenzel\T3events\Controller\FilterableControllerTrait;
  ***************************************************************/
 class BookingsController extends AbstractBackendController
 	implements FilterableControllerInterface {
-	use DWenzel\T3events\Controller\FilterableControllerTrait;
+	use FilterableControllerTrait;
 
 
 	/**
