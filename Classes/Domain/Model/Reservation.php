@@ -22,7 +22,7 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
 use CPSIT\T3eventsReservation\PriceableInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Webfox\T3events\Domain\Model\Notification;
+use DWenzel\T3events\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 
 /**
@@ -61,7 +61,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * company
 	 *
-	 * @var \Webfox\T3events\Domain\Model\Company
+	 * @var \DWenzel\T3events\Domain\Model\Company
 	 */
 	protected $company = NULL;
 
@@ -90,7 +90,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * lesson
 	 *
-	 * @var \Webfox\T3events\Domain\Model\Performance
+	 * @var \DWenzel\T3events\Domain\Model\Performance
 	 */
 	protected $lesson = NULL;
 
@@ -119,7 +119,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Notifications
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Webfox\T3events\Domain\Model\Notification>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification>
 	 */
 	protected $notifications;
 
@@ -177,7 +177,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Returns the company
 	 *
-	 * @return \Webfox\T3events\Domain\Model\Company $company
+	 * @return \DWenzel\T3events\Domain\Model\Company $company
 	 */
 	public function getCompany() {
 		return $this->company;
@@ -186,10 +186,10 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Sets the company
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Company $company
+	 * @param \DWenzel\T3events\Domain\Model\Company $company
 	 * @return void
 	 */
-	public function setCompany(\Webfox\T3events\Domain\Model\Company $company) {
+	public function setCompany(\DWenzel\T3events\Domain\Model\Company $company) {
 		$this->company = $company;
 	}
 
@@ -278,7 +278,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Returns the lesson
 	 *
-	 * @return \Webfox\T3events\Domain\Model\Performance $lesson
+	 * @return \DWenzel\T3events\Domain\Model\Performance $lesson
 	 */
 	public function getLesson() {
 		return $this->lesson;
@@ -287,10 +287,10 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Sets the lesson
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Performance $lesson
+	 * @param \DWenzel\T3events\Domain\Model\Performance $lesson
 	 * @return void
 	 */
-	public function setLesson(\Webfox\T3events\Domain\Model\Performance $lesson) {
+	public function setLesson(\DWenzel\T3events\Domain\Model\Performance $lesson) {
 		$this->lesson = $lesson;
 	}
 
@@ -353,7 +353,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Adds a Notification
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Notification $notification
+	 * @param \DWenzel\T3events\Domain\Model\Notification $notification
 	 * @return void
 	 */
 	public function addNotification(Notification $notification) {
@@ -363,17 +363,17 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Removes a Notification
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Notification $notificationToRemove The Notification to be removed
+	 * @param \DWenzel\T3events\Domain\Model\Notification $notificationToRemove The Notification to be removed
 	 * @return void
 	 */
-	public function removeNotification(\Webfox\T3events\Domain\Model\Notification $notificationToRemove) {
+	public function removeNotification(\DWenzel\T3events\Domain\Model\Notification $notificationToRemove) {
 		$this->notifications->detach($notificationToRemove);
 	}
 
 	/**
 	 * Returns the notifications
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Webfox\T3events\Domain\Model\Notification> $notifications
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
 	 */
 	public function getNotifications() {
 		return $this->notifications;
@@ -382,7 +382,7 @@ class Reservation extends AbstractEntity {
 	/**
 	 * Sets the notifications
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Webfox\T3events\Domain\Model\Notification> $notifications
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
 	 * @return void
 	 */
 	public function setNotifications(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $notifications) {

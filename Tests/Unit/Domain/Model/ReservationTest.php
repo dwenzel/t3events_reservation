@@ -34,8 +34,8 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Webfox\T3events\Domain\Model\Company;
-use Webfox\T3events\Domain\Model\Performance;
+use DWenzel\T3events\Domain\Model\Company;
+use DWenzel\T3events\Domain\Model\Performance;
 
 /**
  * Test case for class \CPSIT\T3eventsReservation\Domain\Model\Reservation.

@@ -8,8 +8,8 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use Webfox\T3events\Session\SessionInterface;
-use Webfox\T3events\Session\Typo3Session;
+use DWenzel\T3events\Session\SessionInterface;
+use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice

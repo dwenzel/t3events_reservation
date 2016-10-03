@@ -4,8 +4,8 @@ namespace CPSIT\T3eventsReservation\Slot;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use Webfox\T3events\Session\SessionInterface;
-use Webfox\T3events\Session\Typo3Session;
+use DWenzel\T3events\Session\SessionInterface;
+use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice
@@ -27,7 +27,7 @@ use Webfox\T3events\Session\Typo3Session;
 class ReservationControllerSlot implements SingletonInterface
 {
     /**
-     * @var \Webfox\T3events\Session\SessionInterface
+     * @var \DWenzel\T3events\Session\SessionInterface
      */
     protected $session;
 

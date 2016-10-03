@@ -2,11 +2,11 @@
 namespace CPSIT\T3eventsReservation\Domain\Factory\Dto;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use Webfox\T3events\Domain\Factory\Dto\AbstractDemandFactory;
-use Webfox\T3events\Domain\Factory\Dto\DemandFactoryInterface;
-use Webfox\T3events\Domain\Factory\Dto\PeriodAwareDemandFactoryTrait;
-use Webfox\T3events\Domain\Model\Dto\DemandInterface;
-use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
+use DWenzel\T3events\Domain\Factory\Dto\AbstractDemandFactory;
+use DWenzel\T3events\Domain\Factory\Dto\DemandFactoryInterface;
+use DWenzel\T3events\Domain\Factory\Dto\PeriodAwareDemandFactoryTrait;
+use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -26,10 +26,10 @@ use Webfox\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 class ReservationDemandFactory
-extends AbstractDemandFactory
+extends \DWenzel\T3events\Domain\Factory\Dto\AbstractDemandFactory
 implements DemandFactoryInterface
 {
-use PeriodAwareDemandFactoryTrait;
+use \DWenzel\T3events\Domain\Factory\Dto\PeriodAwareDemandFactoryTrait;
 
     /**
      * Class name of the object created by this factory
