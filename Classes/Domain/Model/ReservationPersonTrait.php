@@ -28,7 +28,6 @@ trait ReservationPersonTrait {
 	 * reservation
 	 *
 	 * @var \CPSIT\T3eventsReservation\Domain\Model\Reservation
-	 * @lazy
 	 */
 	protected $reservation;
 
