@@ -49,7 +49,7 @@ class ReservationRepository
 	 * @return array
 	 */
 	public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {
-		/** @var  \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $demand */
+		/** @var ReservationDemand $demand */
 		$constraints = [];
 		if ($demand->getLessonDeadline()) {
 			$constraints[] = $query->logicalAnd(

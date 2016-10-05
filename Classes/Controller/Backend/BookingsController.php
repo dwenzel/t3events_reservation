@@ -10,7 +10,6 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use DWenzel\T3events\Controller\AbstractBackendController;
@@ -358,7 +357,7 @@ class BookingsController extends AbstractBackendController
 	/**
 	 * new notification action
 	 *
-	 * @param \array $reservations
+	 * @param array $reservations
 	 * @param \CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson
 	 * @param \DWenzel\T3events\Domain\Model\Notification $newNotification
 	 * @ignorevalidation $newNotification
@@ -381,7 +380,7 @@ class BookingsController extends AbstractBackendController
 	 * Sends a notification to all contact persons of the given lesson/reservations
 	 *
 	 * @param \DWenzel\T3events\Domain\Model\Notification $newNotification
-	 * @param \array $reservations
+	 * @param array $reservations
 	 */
 	public function createNotificationAction($newNotification, $reservations) {
 		$uidList = implode(',', $reservations);

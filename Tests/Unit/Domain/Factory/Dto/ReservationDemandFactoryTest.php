@@ -214,9 +214,12 @@ class ReservationDemandFactoryTest extends UnitTestCase
             ['search', 'bar']
         ];
     }
+
     /**
      * @test
      * @dataProvider skippedPropertiesDataProvider
+     * @param $propertyName
+     * @param $propertyValue
      */
     public function createFromSettingsDoesNotSetSkippedValues($propertyName, $propertyValue) {
         $settings = [

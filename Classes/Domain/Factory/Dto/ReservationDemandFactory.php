@@ -26,10 +26,10 @@ use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 class ReservationDemandFactory
-extends \DWenzel\T3events\Domain\Factory\Dto\AbstractDemandFactory
+extends AbstractDemandFactory
 implements DemandFactoryInterface
 {
-use \DWenzel\T3events\Domain\Factory\Dto\PeriodAwareDemandFactoryTrait;
+use PeriodAwareDemandFactoryTrait;
 
     /**
      * Class name of the object created by this factory

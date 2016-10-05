@@ -7,7 +7,6 @@ use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Controller\FilterableControllerTrait;
-use DWenzel\T3events\Domain\Model\Performance;
 use DWenzel\T3events\Domain\Repository\AudienceRepository;
 use DWenzel\T3events\Domain\Repository\CategoryRepository;
 
@@ -162,7 +161,7 @@ class ParticipantController extends AbstractBackendController
 	/**
 	 * Create demand from settings
 	 *
-	 * @param \array $settings
+	 * @param array $settings
 	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
 	 */
 	protected function createDemandFromSettings($settings) {
@@ -198,7 +197,7 @@ class ParticipantController extends AbstractBackendController
 			OR $demand->getLessonPeriod() === 'pastOnly'
 		) {
 			$timeZone = new \DateTimeZone(date_default_timezone_get());
-			$demand->setLessonDate(new \DateTime('midnight'), $timeZone);
+			$demand->setLessonDate(new \DateTime('midnight', $timeZone));
 		}
 
 		return $demand;

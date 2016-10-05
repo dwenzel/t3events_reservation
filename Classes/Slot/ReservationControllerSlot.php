@@ -4,7 +4,6 @@ namespace CPSIT\T3eventsReservation\Slot;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use DWenzel\T3events\Session\SessionInterface;
 use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
@@ -39,7 +38,7 @@ class ReservationControllerSlot implements SingletonInterface
     /**
      * Injects the session and sets its namespace ReservationController::SESSION_NAME_SPACE
      *
-     * @param Typo3Session $typo3Session
+     * @param \DWenzel\T3events\Session\Typo3Session $typo3Session
      */
     public function injectSession(Typo3Session $typo3Session)
     {

@@ -19,11 +19,12 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use DWenzel\T3events\Domain\Model\Person as BasePerson;
 
 /**
  * Contact
  */
-class Contact extends \DWenzel\T3events\Domain\Model\Person {
+class Contact extends BasePerson {
 	use ReservationPersonTrait;
 
 	/**
@@ -31,5 +32,5 @@ class Contact extends \DWenzel\T3events\Domain\Model\Person {
 	 *
 	 * @var string
 	 */
-	protected $type = Person::PERSON_TYPE_CONTACT;
+	protected $type = BasePerson::PERSON_TYPE_CONTACT;
 }

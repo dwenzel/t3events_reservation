@@ -5,7 +5,6 @@ use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Slot\ReservationControllerSlot;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
@@ -63,7 +62,7 @@ class ReservationControllerSlotTest extends UnitTestCase
      */
     protected function mockSession()
     {
-        /** @var \DWenzel\T3events\Session\Typo3Session $mockSession */
+        /** @var Typo3Session $mockSession */
         $mockSession = $this->getMock(
             Typo3Session::class, ['has', 'get', 'setNamspace'], [], '', false
         );
@@ -90,7 +89,7 @@ class ReservationControllerSlotTest extends UnitTestCase
      */
     public function sessionCanBeInjected()
     {
-        /** @var \DWenzel\T3events\Session\Typo3Session $mockSession */
+        /** @var Typo3Session $mockSession */
         $mockSession = $this->getMock(
             Typo3Session::class, ['dummy'], [], '', false
         );
@@ -108,7 +107,7 @@ class ReservationControllerSlotTest extends UnitTestCase
      */
     public function injectSessionSetsSessionNamespace()
     {
-        /** @var \DWenzel\T3events\Session\Typo3Session $mockSession */
+        /** @var Typo3Session $mockSession */
         $mockSession = $this->getMock(
             Typo3Session::class, ['dummy'], [], '', false
         );

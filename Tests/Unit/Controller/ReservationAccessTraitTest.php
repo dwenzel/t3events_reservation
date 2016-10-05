@@ -7,7 +7,6 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use DWenzel\T3events\Session\SessionInterface;
 use DWenzel\T3events\Session\Typo3Session;
 

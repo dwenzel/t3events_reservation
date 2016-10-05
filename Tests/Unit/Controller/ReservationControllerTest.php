@@ -42,13 +42,11 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use DWenzel\T3events\Domain\Model\Performance;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Domain\Repository\PerformanceRepository;
 use DWenzel\T3events\Service\NotificationService;
 use DWenzel\T3events\Session\SessionInterface;
-use DWenzel\T3events\Session\Typo3Session;
 use DWenzel\T3events\Utility\SettingsUtility;
 
 /**
@@ -794,7 +792,7 @@ class ReservationControllerTest extends UnitTestCase {
 			->method('get')
 			->with(Notification::class)
 			->will($this->returnValue($mockNotification));
-		$mockNotificationService = $this->mockNotificationService();
+		$this->mockNotificationService();
 		$this->subject->_callRef('sendNotification', $reservation, $identifier, $config);
 	}
 
@@ -942,7 +940,7 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation->expects($this->once())
 			->method('getLesson')
 			->will($this->returnValue($mockLesson));
-		$mockRequest = $this->mockRequest();
+		$this->mockRequest();
 		$mockView = $this->mockView();
 		$mockView->expects($this->once())
 			->method('assignMultiple')

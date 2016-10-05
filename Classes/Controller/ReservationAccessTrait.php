@@ -18,7 +18,7 @@ use DWenzel\T3events\Session\Typo3Session;
  */
 trait ReservationAccessTrait
 {
-    use \DWenzel\T3events\Controller\FlashMessageTrait;
+    use FlashMessageTrait;
 
     /**
      * @var \DWenzel\T3events\Session\SessionInterface

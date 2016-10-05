@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Validator;
 
+use DWenzel\T3events\Domain\Model\Person;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
@@ -17,7 +18,7 @@ class ContactValidator extends AbstractValidator {
 	 * @return bool
 	 */
 	protected function isValid($contact) {
-		if (!$contact instanceof \DWenzel\T3events\Domain\Model\Person) {
+		if (!$contact instanceof Person) {
 			$this->addError('Contact must be a Person.', 1410958031);
 
 			return FALSE;

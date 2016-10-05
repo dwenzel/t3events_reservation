@@ -32,13 +32,12 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use DWenzel\T3events\Domain\Model\Performance;
 use DWenzel\T3events\Session\SessionInterface;
-use DWenzel\T3events\Session\Typo3Session;
 
 /**
  * ReservationController
  */
 class ReservationController
-    extends \DWenzel\T3events\Controller\AbstractController
+    extends AbstractController
     implements AccessControlInterface
 {
     use ReservationAccessTrait;
@@ -544,9 +543,9 @@ class ReservationController
     /**
      * Translate a given key
      *
-     * @param \string $key
-     * @param \string $extension
-     * @param \array $arguments
+     * @param string $key
+     * @param string $extension
+     * @param array $arguments
      * @codeCoverageIgnore
      * @return string
      */

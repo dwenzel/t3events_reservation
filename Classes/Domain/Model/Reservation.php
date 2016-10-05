@@ -20,434 +20,480 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsReservation\PriceableInterface;
+use DWenzel\T3events\Domain\Model\Company;
+use DWenzel\T3events\Domain\Model\Notification;
+use DWenzel\T3events\Domain\Model\Performance;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use DWenzel\T3events\Domain\Model\Notification;
-use CPSIT\T3eventsReservation\Domain\Model\Person;
 
 /**
  * Reservation
  */
-class Reservation extends AbstractEntity {
+class Reservation extends AbstractEntity
+{
 
-	const STATUS_NEW = 0;
-	const STATUS_DRAFT = 1;
-	const STATUS_SUBMITTED = 2;
-	const STATUS_CANCELED_NO_CHARGE = 3;
-	const STATUS_CANCELED_WITH_COSTS = 4;
-	const STATUS_CLOSED = 5;
-	const STATUS_CANCELED_BY_SUPPLIER = 6;
-	const ERROR_ACCESS_UNKNOWN = 'unknownAccessError';
+    const ERROR_ACCESS_UNKNOWN = 'unknownAccessError';
+
     const ERROR_INCOMPLETE_RESERVATION_IN_SESSION = 'incompleteReservationInSession';
-	const ERROR_MISSING_RESERVATION_KEY_IN_SESSION = 'missingReservationKeyInSession';
+
     const ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT = 'mismatchOfReservationKeyInSessionAndRequestArgument';
+
+    const ERROR_MISSING_RESERVATION_KEY_IN_SESSION = 'missingReservationKeyInSession';
+
     const ERROR_MISSING_SESSION_KEY_AND_REQUEST_ARGUMENT = 'requestArgumentAndSessionKeyMissing';
 
+    const STATUS_CANCELED_BY_SUPPLIER = 6;
+
+    const STATUS_CANCELED_NO_CHARGE = 3;
+
+    const STATUS_CANCELED_WITH_COSTS = 4;
+
+    const STATUS_CLOSED = 5;
+
+    const STATUS_DRAFT = 1;
+
+    const STATUS_NEW = 0;
+
+    const STATUS_SUBMITTED = 2;
+
     /**
-	 * Hidden
-	 *
-	 * @var int
-	 */
-	protected $hidden;
+     * billing address
+     *
+     * @var \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
+     */
+    protected $billingAddress = null;
 
+    /**
+     * company
+     *
+     * @var \DWenzel\T3events\Domain\Model\Company
+     */
+    protected $company = null;
 
-	/**
-	 * status
-	 *
-	 * @var integer
-	 */
-	protected $status = 0;
+    /**
+     * Responsible contact person for reservation.
+     *
+     * @var \CPSIT\T3eventsReservation\Domain\Model\Contact
+     * @validate \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
+     */
+    protected $contact = null;
 
-	/**
-	 * company
-	 *
-	 * @var \DWenzel\T3events\Domain\Model\Company
-	 */
-	protected $company = NULL;
+    /**
+     * Contact is participant
+     *
+     * @var boolean
+     */
+    protected $contactIsParticipant;
 
-	/**
-	 * billing address
-	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
-	 */
-	protected $billingAddress = NULL;
+    /**
+     * Disclaimer of revocation statement
+     *
+     * @var boolean
+     */
+    protected $disclaimRevocation = false;
 
-	/**
-	 * Responsible contact person for reservation.
-	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Model\Contact
-	 * @validate \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
-	 */
-	protected $contact = NULL;
+    /**
+     * Hidden
+     *
+     * @var int
+     */
+    protected $hidden;
 
-	/**
-	 * participants
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
-	 */
-	protected $participants = NULL;
+    /**
+     * lesson
+     *
+     * @var \DWenzel\T3events\Domain\Model\Performance|Schedule
+     */
+    protected $lesson = null;
 
-	/**
-	 * lesson
-	 *
-	 * @var \DWenzel\T3events\Domain\Model\Performance
-	 */
-	protected $lesson = NULL;
+    /**
+     * note
+     *
+     * @var string
+     */
+    protected $note;
 
-	/**
-	 * Privacy statement
-	 *
-	 * @var \boolean
-	 * @validate Boolean(is=true)
-	 */
-	protected $privacyStatementAccepted = FALSE;
+    /**
+     * Notifications
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification>
+     */
+    protected $notifications;
 
-	/**
-	 * Disclaimer of revocation statement
-	 *
-	 * @var \boolean
-	 */
-	protected $disclaimRevocation = FALSE;
+    /**
+     * participants
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
+     */
+    protected $participants = null;
 
-	/**
-	 * Contact is participant
-	 *
-	 * @var \boolean
-	 */
-	protected $contactIsParticipant;
+    /**
+     * Privacy statement
+     *
+     * @var boolean
+     * @validate Boolean(is=true)
+     */
+    protected $privacyStatementAccepted = false;
 
-	/**
-	 * Notifications
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification>
-	 */
-	protected $notifications;
+    /**
+     * status
+     *
+     * @var integer
+     */
+    protected $status = 0;
 
-	/**
-	 * total price
-	 *
-	 * @var \float
-	 */
-	protected $totalPrice = 0.0;
+    /**
+     * total price
+     *
+     * @var float
+     */
+    protected $totalPrice = 0.0;
 
-	/**
-	 * note
-	 *
-	 * @var \string
-	 */
-	protected $note;
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
 
-	/**
-	 * Returns hidden
-	 *
-	 * @return \int
-	 */
-	public function getHidden() {
-		return $this->hidden;
-	}
+    /**
+     * Initializes all ObjectStorage properties
+     * Do not modify this method!
+     * It will be rewritten on each save in the extension builder
+     * You may modify the constructor of this class instead
+     *
+     * @return void
+     */
+    protected function initStorageObjects()
+    {
+        $this->participants = new ObjectStorage();
+        $this->notifications = new ObjectStorage();
+    }
 
-	/**
-	 * Sets hidden
-	 *
-	 * @param \int $hidden
-	 */
-	public function setHidden($hidden) {
-		$this->hidden = $hidden;
-	}
+    /**
+     * Adds a Notification
+     *
+     * @param Notification $notification
+     * @return void
+     */
+    public function addNotification(Notification $notification)
+    {
+        $this->notifications->attach($notification);
+    }
 
-	/**
-	 * Returns the status
-	 *
-	 * @return integer $status
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
+    /**
+     * Adds a Person
+     *
+     * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
+     * @return void
+     */
+    public function addParticipant(Person $participant)
+    {
+        $this->participants->attach($participant);
+        $this->updateTotalPrice();
+    }
 
-	/**
-	 * Sets the status
-	 *
-	 * @param integer $status
-	 * @return void
-	 */
-	public function setStatus($status) {
-		$this->status = $status;
-	}
+    /**
+     * updates the total price
+     */
+    protected function updateTotalPrice()
+    {
+        if ($lesson = $this->getLesson()) {
+            if ($lesson instanceof PriceableInterface) {
+                $totalPrice = $lesson->getPrice() * $this->participants->count();
+                $this->setTotalPrice($totalPrice);
+            }
+        }
+    }
 
-	/**
-	 * Returns the company
-	 *
-	 * @return \DWenzel\T3events\Domain\Model\Company $company
-	 */
-	public function getCompany() {
-		return $this->company;
-	}
+    /**
+     * Returns the lesson
+     *
+     * @return Performance $lesson
+     */
+    public function getLesson()
+    {
+        return $this->lesson;
+    }
 
-	/**
-	 * Sets the company
-	 *
-	 * @param \DWenzel\T3events\Domain\Model\Company $company
-	 * @return void
-	 */
-	public function setCompany(\DWenzel\T3events\Domain\Model\Company $company) {
-		$this->company = $company;
-	}
+    /**
+     * Sets the lesson
+     *
+     * @param \DWenzel\T3events\Domain\Model\Performance $lesson
+     * @return void
+     */
+    public function setLesson(Performance $lesson)
+    {
+        $this->lesson = $lesson;
+    }
 
-	/**
-	 * Returns the contact
-	 *
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Contact $contact
-	 */
-	public function getContact() {
-		return $this->contact;
-	}
+    /**
+     * @return \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
+     */
+    public function getBillingAddress()
+    {
+        return $this->billingAddress;
+    }
 
-	/**
-	 * Sets the contact
-	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Contact $contact
-	 * @return void
-	 */
-	public function setContact(\CPSIT\T3eventsReservation\Domain\Model\Contact $contact) {
-		$this->contact = $contact;
-	}
+    /**
+     * @param \CPSIT\T3eventsReservation\Domain\Model\BillingAddress $billingAddress
+     */
+    public function setBillingAddress(BillingAddress $billingAddress)
+    {
+        $this->billingAddress = $billingAddress;
+    }
 
-	/**
-	 * __construct
-	 */
-	public function __construct() {
-		//Do not remove the next line: It would break the functionality
-		$this->initStorageObjects();
-	}
+    /**
+     * Returns the company
+     *
+     * @return Company $company
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
 
-	/**
-	 * Initializes all ObjectStorage properties
-	 * Do not modify this method!
-	 * It will be rewritten on each save in the extension builder
-	 * You may modify the constructor of this class instead
-	 *
-	 * @return void
-	 */
-	protected function initStorageObjects() {
-		$this->participants = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->notifications = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
+    /**
+     * Sets the company
+     *
+     * @param \DWenzel\T3events\Domain\Model\Company $company
+     * @return void
+     */
+    public function setCompany(Company $company)
+    {
+        $this->company = $company;
+    }
 
-	/**
-	 * Adds a Person
-	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
-	 * @return void
-	 */
-	public function addParticipant(Person $participant) {
-		$this->participants->attach($participant);
-		$this->updateTotalPrice();
-	}
+    /**
+     * Returns the contact
+     *
+     * @return Contact $contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
 
-	/**
-	 * Removes a Person
-	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participantToRemove The Person to be removed
-	 * @return void
-	 */
-	public function removeParticipant(\CPSIT\T3eventsReservation\Domain\Model\Person $participantToRemove) {
-		$this->participants->detach($participantToRemove);
-		$this->updateTotalPrice();
-	}
+    /**
+     * Sets the contact
+     *
+     * @param Contact $contact
+     * @return void
+     */
+    public function setContact(Contact $contact)
+    {
+        $this->contact = $contact;
+    }
 
-	/**
-	 * Returns the participants
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person> $participants
-	 */
-	public function getParticipants() {
-		return $this->participants;
-	}
+    /**
+     * Get contact is participant
+     *
+     * @return boolean
+     */
+    public function getContactIsParticipant()
+    {
+        return $this->contactIsParticipant;
+    }
 
-	/**
-	 * Sets the participants
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person> $participants
-	 * @return void
-	 */
-	public function setParticipants(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $participants) {
-		$this->participants = $participants;
-		$this->updateTotalPrice();
-	}
+    /**
+     * Set contact is participant
+     *
+     * @var boolean $contactIsParticipant
+     * @return void
+     */
+    public function setContactIsParticipant($contactIsParticipant)
+    {
+        $this->contactIsParticipant = $contactIsParticipant;
+    }
 
-	/**
-	 * Returns the lesson
-	 *
-	 * @return \DWenzel\T3events\Domain\Model\Performance $lesson
-	 */
-	public function getLesson() {
-		return $this->lesson;
-	}
+    /**
+     * Get the disclaim of revocation
+     *
+     * @return boolean
+     */
+    public function getDisclaimRevocation()
+    {
+        return $this->disclaimRevocation;
+    }
 
-	/**
-	 * Sets the lesson
-	 *
-	 * @param \DWenzel\T3events\Domain\Model\Performance $lesson
-	 * @return void
-	 */
-	public function setLesson(\DWenzel\T3events\Domain\Model\Performance $lesson) {
-		$this->lesson = $lesson;
-	}
+    /**
+     * Set the disclaim of revocation
+     *
+     * @param boolean $disclaimRevocation
+     */
+    public function setDisclaimRevocation($disclaimRevocation)
+    {
+        $this->disclaimRevocation = $disclaimRevocation;
+    }
 
-	/**
-	 * Get the privacy statement accepted
-	 *
-	 * @return \boolean
-	 */
-	public function getPrivacyStatementAccepted() {
-		return $this->privacyStatementAccepted;
-	}
+    /**
+     * Returns hidden
+     *
+     * @return int
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
 
-	/**
-	 * Sets the privacy statement accepted
-	 *
-	 * @param \boolean $accepted
-	 * @return void
-	 */
-	public function setPrivacyStatementAccepted($accepted) {
-		$this->privacyStatementAccepted = $accepted;
-	}
+    /**
+     * Sets hidden
+     *
+     * @param int $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+    }
 
-	/**
-	 * Get the disclaim of revocation
-	 *
-	 * @return boolean
-	 */
-	public function getDisclaimRevocation() {
-		return $this->disclaimRevocation;
-	}
+    /**
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
 
-	/**
-	 * Set the disclaim of revocation
-	 *
-	 * @param boolean $disclaimRevocation
-	 */
-	public function setDisclaimRevocation($disclaimRevocation) {
-		$this->disclaimRevocation = $disclaimRevocation;
-	}
+    /**
+     * @param string $note
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+    }
 
-	/**
-	 * Get contact is participant
-	 *
-	 * @return \boolean
-	 */
-	public function getContactIsParticipant() {
-		return $this->contactIsParticipant;
-	}
+    /**
+     * Returns the notifications
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
 
-	/**
-	 * Set contact is participant
-	 *
-	 * @var \boolean $contactIsParticipant
-	 * @return void
-	 */
-	public function setContactIsParticipant($contactIsParticipant) {
-		$this->contactIsParticipant = $contactIsParticipant;
-	}
+    /**
+     * Sets the notifications
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
+     * @return void
+     */
+    public function setNotifications(ObjectStorage $notifications)
+    {
+        $this->notifications = $notifications;
+    }
 
-	/**
-	 * Adds a Notification
-	 *
-	 * @param \DWenzel\T3events\Domain\Model\Notification $notification
-	 * @return void
-	 */
-	public function addNotification(Notification $notification) {
-		$this->notifications->attach($notification);
-	}
+    /**
+     * Returns the participants
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person> $participants
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
+    }
 
-	/**
-	 * Removes a Notification
-	 *
-	 * @param \DWenzel\T3events\Domain\Model\Notification $notificationToRemove The Notification to be removed
-	 * @return void
-	 */
-	public function removeNotification(\DWenzel\T3events\Domain\Model\Notification $notificationToRemove) {
-		$this->notifications->detach($notificationToRemove);
-	}
+    /**
+     * Sets the participants
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person> $participants
+     * @return void
+     */
+    public function setParticipants(ObjectStorage $participants)
+    {
+        $this->participants = $participants;
+        $this->updateTotalPrice();
+    }
 
-	/**
-	 * Returns the notifications
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
-	 */
-	public function getNotifications() {
-		return $this->notifications;
-	}
+    /**
+     * Get the privacy statement accepted
+     *
+     * @return boolean
+     */
+    public function getPrivacyStatementAccepted()
+    {
+        return $this->privacyStatementAccepted;
+    }
 
-	/**
-	 * Sets the notifications
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
-	 * @return void
-	 */
-	public function setNotifications(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $notifications) {
-		$this->notifications = $notifications;
-	}
+    /**
+     * Sets the privacy statement accepted
+     *
+     * @param boolean $accepted
+     * @return void
+     */
+    public function setPrivacyStatementAccepted($accepted)
+    {
+        $this->privacyStatementAccepted = $accepted;
+    }
 
-	/**
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
-	 */
-	public function getBillingAddress() {
-		return $this->billingAddress;
-	}
+    /**
+     * Returns the status
+     *
+     * @return integer $status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
-	/**
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\BillingAddress $billingAddress
-	 */
-	public function setBillingAddress(BillingAddress $billingAddress) {
-		$this->billingAddress = $billingAddress;
-	}
+    /**
+     * Sets the status
+     *
+     * @param integer $status
+     * @return void
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPrice()
+    {
+        return $this->totalPrice;
+    }
+
+    /**
+     * @param float $totalPrice
+     */
+    public function setTotalPrice($totalPrice)
+    {
+        $this->totalPrice = $totalPrice;
+    }
 
     /**
      * Removes the billing address.
      * I.e. sets it to null
      */
-	public function removeBillingAddress() {
+    public function removeBillingAddress()
+    {
         $this->billingAddress = null;
     }
 
-	/**
-	 * @return float
-	 */
-	public function getTotalPrice() {
-		return $this->totalPrice;
-	}
+    /**
+     * Removes a Notification
+     *
+     * @param \DWenzel\T3events\Domain\Model\Notification $notificationToRemove The Notification to be removed
+     * @return void
+     */
+    public function removeNotification(Notification $notificationToRemove)
+    {
+        $this->notifications->detach($notificationToRemove);
+    }
 
-	/**
-	 * @param float $totalPrice
-	 */
-	public function setTotalPrice($totalPrice) {
-		$this->totalPrice = $totalPrice;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getNote() {
-		return $this->note;
-	}
-
-	/**
-	 * @param string $note
-	 */
-	public function setNote($note) {
-		$this->note = $note;
-	}
-
-	/**
-	 * updates the total price
-	 */
-	protected function updateTotalPrice() {
-		if ($lesson = $this->getLesson()) {
-			if ($lesson instanceof PriceableInterface) {
-				$totalPrice = $lesson->getPrice() * $this->participants->count();
-				$this->setTotalPrice($totalPrice);
-			}
-		}
-	}
+    /**
+     * Removes a Person
+     *
+     * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participantToRemove The Person to be removed
+     * @return void
+     */
+    public function removeParticipant(Person $participantToRemove)
+    {
+        $this->participants->detach($participantToRemove);
+        $this->updateTotalPrice();
+    }
 }

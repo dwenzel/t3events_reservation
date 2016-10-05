@@ -38,7 +38,7 @@ trait BillingAddressRepositoryTrait
     /**
      * Injects the reservation repository
      *
-     * @inject
+     * @param \CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository $billingAddressRepository
      */
     public function injectBillingAddressRepository(BillingAddressRepository $billingAddressRepository)
     {

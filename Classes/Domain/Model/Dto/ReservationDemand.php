@@ -76,7 +76,7 @@ class ReservationDemand extends AbstractDemand
 	/**
 	 * Minimum Age (in seconds)
 	 *
-	 * @var \int
+	 * @var int
 	 */
 	protected $minAge;
 

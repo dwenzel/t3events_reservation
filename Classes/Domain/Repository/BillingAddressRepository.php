@@ -19,22 +19,10 @@ namespace CPSIT\T3eventsReservation\Domain\Repository;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
 use DWenzel\T3events\Domain\Repository\AbstractDemandedRepository;
-use DWenzel\T3events\Domain\Repository\AudienceConstraintRepositoryInterface;
-use DWenzel\T3events\Domain\Repository\AudienceConstraintRepositoryTrait;
-use DWenzel\T3events\Domain\Repository\CategoryConstraintRepositoryInterface;
-use DWenzel\T3events\Domain\Repository\CategoryConstraintRepositoryTrait;
 use DWenzel\T3events\Domain\Repository\DemandedRepositoryInterface;
-use DWenzel\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
-use DWenzel\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
-use DWenzel\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
-use DWenzel\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
-use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
-use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryTrait;
 
 /**
  * The repository for billing addresses
