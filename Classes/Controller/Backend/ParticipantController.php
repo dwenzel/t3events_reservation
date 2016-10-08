@@ -1,14 +1,24 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
+use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
+use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
+use DWenzel\T3events\Controller\AudienceRepositoryTrait;
+use DWenzel\T3events\Controller\CategoryRepositoryTrait;
+use DWenzel\T3events\Controller\CompanyRepositoryTrait;
+use DWenzel\T3events\Controller\DemandTrait;
+use DWenzel\T3events\Controller\DownloadTrait;
+use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
+use DWenzel\T3events\Controller\ModuleDataTrait;
+use DWenzel\T3events\Controller\NotificationRepositoryTrait;
+use DWenzel\T3events\Controller\SearchTrait;
+use DWenzel\T3events\Controller\TranslateTrait;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Controller\FilterableControllerTrait;
-use DWenzel\T3events\Domain\Repository\AudienceRepository;
-use DWenzel\T3events\Domain\Repository\CategoryRepository;
 
 /***************************************************************
  *  Copyright notice
@@ -28,63 +38,20 @@ use DWenzel\T3events\Domain\Repository\CategoryRepository;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+/**
+ * Class ParticipantController
+ * 
+ * @package CPSIT\T3eventsReservation\Controller\Backend
+ */
 class ParticipantController extends AbstractBackendController
 	implements FilterableControllerInterface {
-	use FilterableControllerTrait;
-
-	/**
-	 * reservationRepository
-	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
-	 * @inject
-	 */
-	protected $reservationRepository = null;
-
-	/**
-	 * Company Repository
-	 *
-	 * @var \DWenzel\T3events\Domain\Repository\CompanyRepository
-	 * @inject
-	 */
-	protected $companyRepository = null;
-
-	/**
-	 * Participant Repository
-	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
-	 * @inject
-	 */
-	protected $personRepository = null;
-
-	/**
-	 * @var \DWenzel\T3events\Domain\Repository\CategoryRepository
-	 */
-	protected $categoryRepository;
-
-	/**
-	 * injectCategoryRepository
-	 *
-	 * @param \DWenzel\T3events\Domain\Repository\CategoryRepository $categoryRepository
-	 * @return void
-	 */
-	public function injectCategoryRepository(CategoryRepository $categoryRepository) {
-		$this->categoryRepository = $categoryRepository;
-	}
-
-	/**
-	 * @var \DWenzel\T3events\Domain\Repository\AudienceRepository
-	 */
-	protected $audienceRepository;
-
-	/**
-	 * injectAudienceRepository
-	 *
-	 * @param \DWenzel\T3events\Domain\Repository\AudienceRepository $audienceRepository
-	 * @return void
-	 */
-	public function injectAudienceRepository(AudienceRepository $audienceRepository) {
-		$this->audienceRepository = $audienceRepository;
-	}
+	use EntityNotFoundHandlerTrait, TranslateTrait, ReservationRepositoryTrait,
+        SearchTrait, DemandTrait, AudienceRepositoryTrait,
+        ModuleDataTrait, DownloadTrait, CompanyRepositoryTrait,
+        NotificationRepositoryTrait, CategoryRepositoryTrait,
+        FilterableControllerTrait, PersonRepositoryTrait,
+        CategoryRepositoryTrait, CompanyRepositoryTrait;
 
 	/**
 	 * List action
