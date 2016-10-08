@@ -52,8 +52,8 @@ class ParticipantController extends AbstractBackendController
 	use EntityNotFoundHandlerTrait, TranslateTrait, ReservationRepositoryTrait,
         SearchTrait, DemandTrait, AudienceRepositoryTrait,
         EventTypeRepositoryTrait, GenreRepositoryTrait, VenueRepositoryTrait,
-        ModuleDataTrait, DownloadTrait, CompanyRepositoryTrait,
-        NotificationRepositoryTrait, CategoryRepositoryTrait,
+        ModuleDataTrait, DownloadTrait,
+        NotificationRepositoryTrait,
         FilterableControllerTrait, PersonRepositoryTrait,
         CategoryRepositoryTrait, CompanyRepositoryTrait;
 
