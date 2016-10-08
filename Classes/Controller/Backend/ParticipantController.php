@@ -10,10 +10,13 @@ use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\DownloadTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
+use DWenzel\T3events\Controller\EventTypeRepositoryTrait;
+use DWenzel\T3events\Controller\GenreRepositoryTrait;
 use DWenzel\T3events\Controller\ModuleDataTrait;
 use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
+use DWenzel\T3events\Controller\VenueRepositoryTrait;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
@@ -41,13 +44,14 @@ use DWenzel\T3events\Controller\FilterableControllerTrait;
 
 /**
  * Class ParticipantController
- * 
+ *
  * @package CPSIT\T3eventsReservation\Controller\Backend
  */
 class ParticipantController extends AbstractBackendController
 	implements FilterableControllerInterface {
 	use EntityNotFoundHandlerTrait, TranslateTrait, ReservationRepositoryTrait,
         SearchTrait, DemandTrait, AudienceRepositoryTrait,
+        EventTypeRepositoryTrait, GenreRepositoryTrait, VenueRepositoryTrait,
         ModuleDataTrait, DownloadTrait, CompanyRepositoryTrait,
         NotificationRepositoryTrait, CategoryRepositoryTrait,
         FilterableControllerTrait, PersonRepositoryTrait,
