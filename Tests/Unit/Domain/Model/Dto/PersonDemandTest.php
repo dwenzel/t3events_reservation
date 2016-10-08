@@ -132,11 +132,11 @@ class PersonDemandTest extends UnitTestCase
     public function lessonPeriodCanBeSet()
     {
         $types = 'foo';
-        $this->subject->setlessonPeriod($types);
+        $this->subject->setLessonPeriod($types);
 
         $this->assertEquals(
             $types,
-            $this->subject->getlessonPeriod()
+            $this->subject->getLessonPeriod()
         );
     }
 

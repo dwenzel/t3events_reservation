@@ -54,7 +54,7 @@ trait RequiredPropertiesTrait
      * @return void
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
-    protected function validateRequiredProperties($object, $requiredProperties)
+    public function validateRequiredProperties($object, $requiredProperties)
     {
         foreach ($requiredProperties as $propertyName => $errorCode) {
             $propertyValue = ObjectAccess::getProperty($object, $propertyName);
