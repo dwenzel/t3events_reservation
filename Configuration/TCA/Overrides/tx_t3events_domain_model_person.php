@@ -3,17 +3,17 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 $ll = 'LLL:EXT:t3events_reservation/Resources/Private/Language/locallang_db.xlf:';
-$tmpColumns = array(
-	'reservation' => array(
-		'label' => 'LLL: Reservation',
-		'config' => array(
+$tmpColumns = [
+	'reservation' => [
+		'label' => $ll. 'tx_t3events_domain_model_person.reservation',
+		'config' => [
 			'type' => 'select',
 			'foreign_table' => 'tx_t3eventsreservation_domain_model_reservation',
 			'maxitems' => 1,
 			'minitems' => 1,
 			'readOnly' => 1
-		),
-	),
+		],
+	],
 	'birthplace' => [
 		'label' => $ll . 'tx_t3events_domain_model_person.birthplace',
 		'config' => [
@@ -50,7 +50,7 @@ $tmpColumns = array(
 			'eval' => 'trim'
 		],
 	],
-);
+];
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
 	'tx_t3events_domain_model_person',

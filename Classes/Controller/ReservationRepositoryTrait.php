@@ -1,10 +1,9 @@
 <?php
-namespace CPSIT\T3eventsReservation\Domain\Model;
+namespace CPSIT\T3eventsReservation\Controller;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2014 Dirk Wenzel <wenzel@cps-it.de>, CPS IT
- *           Boerge Franck <franck@cps-it.de>, CPS IT
+ *  (c) 2016 Dirk Wenzel <dirk.wenzel@cps-it.de>
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -19,18 +18,31 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use DWenzel\T3events\Domain\Model\Person as BasePerson;
+use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 
 /**
- * Contact
+ * Class ReservationRepositoryTrait
+ * Provides a ReservationRepository
+ *
+ * @package CPSIT\T3eventsReservation\Controller
  */
-class Contact extends BasePerson {
-	use ReservationPersonTrait;
+trait ReservationRepositoryTrait
+{
+    /**
+     * Reservation repository
+     *
+     * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
+     */
+    protected $reservationRepository;
 
-	/**
-	 * Record type
-	 *
-	 * @var string
-	 */
-	protected $type = BasePerson::PERSON_TYPE_CONTACT;
+    /**
+     * Injects the reservation repository
+     *
+     * @param \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository $reservationRepository
+     */
+    public function injectReservationRepository(ReservationRepository $reservationRepository)
+    {
+        $this->reservationRepository = $reservationRepository;
+    }
+
 }

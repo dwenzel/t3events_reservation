@@ -1,7 +1,7 @@
 config.tx_extbase {
 	persistence {
 		classes {
-			Webfox\T3events\Domain\Model\Performance {
+			DWenzel\T3events\Domain\Model\Performance {
 				subclasses {
 					Tx_T3eventsReservation_Schedule = CPSIT\T3eventsReservation\Domain\Model\Schedule
 				}
@@ -33,7 +33,7 @@ config.tx_extbase {
 					recordType = Tx_T3eventsReservation_Participant
 				}
 			}
-			Webfox\T3events\Domain\Model\Person {
+			DWenzel\T3events\Domain\Model\Person {
 				subclasses {
 					Tx_T3events_Contact = CPSIT\T3eventsReservation\Domain\Model\Contact
 					Tx_T3eventsReservation_Participant = CPSIT\T3eventsReservation\Domain\Model\Person

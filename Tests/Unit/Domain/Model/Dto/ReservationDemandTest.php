@@ -167,6 +167,16 @@ class ReservationDemandTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getAudienceFieldReturnsClassConstant() {
+		$this->assertSame(
+			ReservationDemand::AUDIENCE_FIELD,
+			$this->subject->getAudienceField()
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getEventTypeFieldReturnsClassConstant() {
 		$this->assertSame(
 			ReservationDemand::EVENT_TYPE_FIELD,

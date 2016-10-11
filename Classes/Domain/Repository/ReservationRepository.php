@@ -21,17 +21,17 @@ namespace CPSIT\T3eventsReservation\Domain\Repository;
  ***************************************************************/
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Webfox\T3events\Domain\Model\Dto\DemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use Webfox\T3events\Domain\Repository\AbstractDemandedRepository;
-use Webfox\T3events\Domain\Repository\AudienceConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\AudienceConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\PeriodConstraintRepositoryTrait;
+use DWenzel\T3events\Domain\Repository\AbstractDemandedRepository;
+use DWenzel\T3events\Domain\Repository\AudienceConstraintRepositoryInterface;
+use DWenzel\T3events\Domain\Repository\AudienceConstraintRepositoryTrait;
+use DWenzel\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
+use DWenzel\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
+use DWenzel\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
+use DWenzel\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
+use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
+use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryTrait;
 
 /**
  * The repository for Reservations
@@ -45,11 +45,11 @@ class ReservationRepository
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @param \Webfox\T3events\Domain\Model\Dto\DemandInterface $demand
+	 * @param \DWenzel\T3events\Domain\Model\Dto\DemandInterface $demand
 	 * @return array
 	 */
 	public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {
-		/** @var  \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $demand */
+		/** @var ReservationDemand $demand */
 		$constraints = [];
 		if ($demand->getLessonDeadline()) {
 			$constraints[] = $query->logicalAnd(

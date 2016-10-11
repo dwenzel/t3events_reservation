@@ -25,7 +25,6 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use CPSIT\T3eventsReservation\Controller\BillingAddressController;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
@@ -34,8 +33,8 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Webfox\T3events\Domain\Model\Company;
-use Webfox\T3events\Domain\Model\Performance;
+use DWenzel\T3events\Domain\Model\Company;
+use DWenzel\T3events\Domain\Model\Performance;
 
 /**
  * Test case for class \CPSIT\T3eventsReservation\Domain\Model\Reservation.

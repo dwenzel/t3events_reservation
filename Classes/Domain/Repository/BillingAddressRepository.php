@@ -19,22 +19,10 @@ namespace CPSIT\T3eventsReservation\Domain\Repository;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use Webfox\T3events\Domain\Model\Dto\DemandInterface;
-use Webfox\T3events\Domain\Repository\AbstractDemandedRepository;
-use Webfox\T3events\Domain\Repository\AudienceConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\AudienceConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\CategoryConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\CategoryConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\DemandedRepositoryInterface;
-use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\EventTypeConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
-use Webfox\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
-use Webfox\T3events\Domain\Repository\PeriodConstraintRepositoryTrait;
+use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
+use DWenzel\T3events\Domain\Repository\AbstractDemandedRepository;
+use DWenzel\T3events\Domain\Repository\DemandedRepositoryInterface;
 
 /**
  * The repository for billing addresses
@@ -46,7 +34,7 @@ class BillingAddressRepository
 	 * Returns an array of constraints created from a given demand object.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @param \Webfox\T3events\Domain\Model\Dto\DemandInterface $demand
+	 * @param \DWenzel\T3events\Domain\Model\Dto\DemandInterface $demand
 	 * @return array<\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constraint>
 	 */
 	public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {

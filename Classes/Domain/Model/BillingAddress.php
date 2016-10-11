@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model;
 
+use DWenzel\T3events\Domain\Model\Person as BasePerson;
 
 /***************************************************************
  *  Copyright notice
@@ -19,7 +20,7 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class BillingAddress extends \Webfox\T3events\Domain\Model\Person {
+class BillingAddress extends BasePerson {
 	const PERSON_TYPE_BILLING_ADDRESS = 'Tx_T3eventsReservation_BillingAddress';
 
 	/**

@@ -25,14 +25,13 @@
   ],
   "require": {
     "typo3/cms-core": ">=6.2.0,<8.0",
-    "webfox/t3events": ">=0.27.0,<1.0"
+    "dwenzel/t3events": "^0.29.0"
   },
-  "minimum-stability": "dev",
   "require-dev": {
     "mikey179/vfsStream": "1.4.*@dev",
     "phpunit/phpunit": "~4.8.0",
     "satooshi/php-coveralls": "dev-master",
-    "webfox/t3events": "dev-develop as 0.26.x-dev"
+    "dwenzel/t3events": "dev-develop"
   },
   "autoload": {
     "psr-4": {
@@ -63,7 +62,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.8.x-dev"
+      "dev-master": "0.9.x-dev"
     },
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",

@@ -10,13 +10,12 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use Webfox\T3events\Controller\AbstractBackendController;
+use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use Webfox\T3events\Controller\FilterableControllerInterface;
-use Webfox\T3events\Controller\FilterableControllerTrait;
+use DWenzel\T3events\Controller\FilterableControllerInterface;
+use DWenzel\T3events\Controller\FilterableControllerTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -358,9 +357,9 @@ class BookingsController extends AbstractBackendController
 	/**
 	 * new notification action
 	 *
-	 * @param \array $reservations
+	 * @param array $reservations
 	 * @param \CPSIT\T3eventsCourse\Domain\Model\Schedule $lesson
-	 * @param \Webfox\T3events\Domain\Model\Notification $newNotification
+	 * @param \DWenzel\T3events\Domain\Model\Notification $newNotification
 	 * @ignorevalidation $newNotification
 	 * @return void
 	 */
@@ -380,8 +379,8 @@ class BookingsController extends AbstractBackendController
 	 * create notification action
 	 * Sends a notification to all contact persons of the given lesson/reservations
 	 *
-	 * @param \Webfox\T3events\Domain\Model\Notification $newNotification
-	 * @param \array $reservations
+	 * @param \DWenzel\T3events\Domain\Model\Notification $newNotification
+	 * @param array $reservations
 	 */
 	public function createNotificationAction($newNotification, $reservations) {
 		$uidList = implode(',', $reservations);

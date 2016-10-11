@@ -2,7 +2,7 @@
 namespace CPSIT\T3eventsReservation\Domain\Model;
 
 use CPSIT\T3eventsReservation\PriceableInterface;
-use Webfox\T3events\Domain\Model\Performance;
+use DWenzel\T3events\Domain\Model\Performance;
 
 /***************************************************************
  *

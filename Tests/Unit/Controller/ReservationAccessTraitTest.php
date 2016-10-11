@@ -7,9 +7,8 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use Webfox\T3events\Session\SessionInterface;
-use Webfox\T3events\Session\Typo3Session;
+use DWenzel\T3events\Session\SessionInterface;
+use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice
@@ -389,7 +388,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     /**
      * @test
      */
-    public function errorActionCleansSession()
+    public function errorActionClearsSession()
     {
         $this->subject = $this->getMockForTrait(
             ReservationAccessTrait::class,
@@ -472,5 +471,20 @@ class ReservationAccessTraitTest extends UnitTestCase
         $this->subject->expects($this->once())
             ->method('denyAccess');
         $this->subject->initializeAction();
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsTrueForErrorAction()
+    {
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('getControllerActionName')
+            ->will($this->returnValue('error'));
+
+        $this->assertTrue(
+            $this->subject->isAccessAllowed()
+        );
     }
 }

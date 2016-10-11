@@ -3,13 +3,12 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use Webfox\T3events\Controller\AbstractBackendController;
+use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
-use Webfox\T3events\Controller\FilterableControllerInterface;
-use Webfox\T3events\Controller\FilterableControllerTrait;
-use Webfox\T3events\Domain\Model\Performance;
-use Webfox\T3events\Domain\Repository\AudienceRepository;
-use Webfox\T3events\Domain\Repository\CategoryRepository;
+use DWenzel\T3events\Controller\FilterableControllerInterface;
+use DWenzel\T3events\Controller\FilterableControllerTrait;
+use DWenzel\T3events\Domain\Repository\AudienceRepository;
+use DWenzel\T3events\Domain\Repository\CategoryRepository;
 
 /***************************************************************
  *  Copyright notice
@@ -44,7 +43,7 @@ class ParticipantController extends AbstractBackendController
 	/**
 	 * Company Repository
 	 *
-	 * @var \Webfox\T3events\Domain\Repository\CompanyRepository
+	 * @var \DWenzel\T3events\Domain\Repository\CompanyRepository
 	 * @inject
 	 */
 	protected $companyRepository = null;
@@ -58,14 +57,14 @@ class ParticipantController extends AbstractBackendController
 	protected $personRepository = null;
 
 	/**
-	 * @var \Webfox\T3events\Domain\Repository\CategoryRepository
+	 * @var \DWenzel\T3events\Domain\Repository\CategoryRepository
 	 */
 	protected $categoryRepository;
 
 	/**
 	 * injectCategoryRepository
 	 *
-	 * @param \Webfox\T3events\Domain\Repository\CategoryRepository $categoryRepository
+	 * @param \DWenzel\T3events\Domain\Repository\CategoryRepository $categoryRepository
 	 * @return void
 	 */
 	public function injectCategoryRepository(CategoryRepository $categoryRepository) {
@@ -73,14 +72,14 @@ class ParticipantController extends AbstractBackendController
 	}
 
 	/**
-	 * @var \Webfox\T3events\Domain\Repository\AudienceRepository
+	 * @var \DWenzel\T3events\Domain\Repository\AudienceRepository
 	 */
 	protected $audienceRepository;
 
 	/**
 	 * injectAudienceRepository
 	 *
-	 * @param \Webfox\T3events\Domain\Repository\AudienceRepository $audienceRepository
+	 * @param \DWenzel\T3events\Domain\Repository\AudienceRepository $audienceRepository
 	 * @return void
 	 */
 	public function injectAudienceRepository(AudienceRepository $audienceRepository) {
@@ -162,7 +161,7 @@ class ParticipantController extends AbstractBackendController
 	/**
 	 * Create demand from settings
 	 *
-	 * @param \array $settings
+	 * @param array $settings
 	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
 	 */
 	protected function createDemandFromSettings($settings) {
@@ -198,7 +197,7 @@ class ParticipantController extends AbstractBackendController
 			OR $demand->getLessonPeriod() === 'pastOnly'
 		) {
 			$timeZone = new \DateTimeZone(date_default_timezone_get());
-			$demand->setLessonDate(new \DateTime('midnight'), $timeZone);
+			$demand->setLessonDate(new \DateTime('midnight', $timeZone));
 		}
 
 		return $demand;

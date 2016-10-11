@@ -5,8 +5,7 @@ use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Slot\ReservationControllerSlot;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use Webfox\T3events\Session\Typo3Session;
+use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice

@@ -22,7 +22,9 @@ if (!defined('TYPO3_MODE')) {
 	]
 );
 
+// Register command controllers for Scheduler and CLI
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CloseBooking'] = 'CPSIT\\T3eventsReservation\\Command\\CloseBookingCommandController';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CleanUp'] = 'CPSIT\\T3eventsReservation\\Command\\CleanUpCommandController';
 
 // connect slots to signals
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */

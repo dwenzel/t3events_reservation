@@ -51,9 +51,9 @@ if (TYPO3_MODE === 'BE') {
 
 // add sprite icons
 \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-	array(
+	[
 		'download-excel-white' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_white.png',
 		'download-excel-blue' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_blue.png',
-	),
+	],
 	$_EXTKEY
 );

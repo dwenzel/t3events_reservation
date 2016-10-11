@@ -27,12 +27,11 @@ use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use Webfox\T3events\Controller\AbstractController;
+use DWenzel\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use Webfox\T3events\Domain\Model\Performance;
-use Webfox\T3events\Session\SessionInterface;
-use Webfox\T3events\Session\Typo3Session;
+use DWenzel\T3events\Domain\Model\Performance;
+use DWenzel\T3events\Session\SessionInterface;
 
 /**
  * ReservationController
@@ -62,7 +61,7 @@ class ReservationController
     /**
      * Notification Service
      *
-     * @var \Webfox\T3events\Service\NotificationService
+     * @var \DWenzel\T3events\Service\NotificationService
      * @inject
      */
     protected $notificationService;
@@ -78,7 +77,7 @@ class ReservationController
     /**
      * Lesson Repository
      *
-     * @var \Webfox\T3events\Domain\Repository\PerformanceRepository
+     * @var \DWenzel\T3events\Domain\Repository\PerformanceRepository
      * @inject
      */
     protected $lessonRepository = null;
@@ -86,7 +85,7 @@ class ReservationController
     /**
      * Company Repository
      *
-     * @var \Webfox\T3events\Domain\Repository\CompanyRepository
+     * @var \DWenzel\T3events\Domain\Repository\CompanyRepository
      * @inject
      */
     protected $companyRepository = null;
@@ -544,9 +543,9 @@ class ReservationController
     /**
      * Translate a given key
      *
-     * @param \string $key
-     * @param \string $extension
-     * @param \array $arguments
+     * @param string $key
+     * @param string $extension
+     * @param array $arguments
      * @codeCoverageIgnore
      * @return string
      */
