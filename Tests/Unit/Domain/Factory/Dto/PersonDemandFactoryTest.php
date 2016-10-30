@@ -194,6 +194,8 @@ class PersonDemandFactoryTest extends UnitTestCase
     /**
      * @test
      * @dataProvider skippedPropertiesDataProvider
+     * @param string $propertyName
+     * @param string $propertyValue
      */
     public function createFromSettingsDoesNotSetSkippedValues($propertyName, $propertyValue)
     {
