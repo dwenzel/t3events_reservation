@@ -1,6 +1,19 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
 
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use DWenzel\T3events\Domain\Model\Dto\AudienceAwareDemandInterface;
 use DWenzel\T3events\Domain\Model\Dto\AudienceAwareDemandTrait;
 use DWenzel\T3events\Domain\Model\Dto\CategoryAwareDemandInterface;
@@ -11,6 +24,8 @@ use DWenzel\T3events\Domain\Model\Dto\EventTypeAwareDemandInterface;
 use DWenzel\T3events\Domain\Model\Dto\EventTypeAwareDemandTrait;
 use DWenzel\T3events\Domain\Model\Dto\GenreAwareDemandInterface;
 use DWenzel\T3events\Domain\Model\Dto\GenreAwareDemandTrait;
+use DWenzel\T3events\Domain\Model\Dto\OrderAwareDemandInterface;
+use DWenzel\T3events\Domain\Model\Dto\OrderAwareDemandTrait;
 use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
 use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandTrait;
 use DWenzel\T3events\Domain\Model\Dto\SearchAwareDemandInterface;
@@ -22,13 +37,16 @@ use DWenzel\T3events\Domain\Model\Dto\SearchAwareDemandTrait;
  * @package CPSIT\T3eventsCourse\Domain\Model\Dto
  */
 class PersonDemand extends AbstractDemand
-	implements DemandInterface, SearchAwareDemandInterface,
-	GenreAwareDemandInterface, EventTypeAwareDemandInterface,
-	CategoryAwareDemandInterface, PeriodAwareDemandInterface,
-	AudienceAwareDemandInterface {
-	use SearchAwareDemandTrait, GenreAwareDemandTrait,
-		EventTypeAwareDemandTrait, CategoryAwareDemandTrait,
-		PeriodAwareDemandTrait, AudienceAwareDemandTrait;
+	implements DemandInterface,
+    AudienceAwareDemandInterface, CategoryAwareDemandInterface,
+    EventTypeAwareDemandInterface, GenreAwareDemandInterface,
+    OrderAwareDemandInterface, PeriodAwareDemandInterface,
+    SearchAwareDemandInterface
+	 {
+	use AudienceAwareDemandTrait, CategoryAwareDemandTrait,
+        EventTypeAwareDemandTrait, GenreAwareDemandTrait,
+        OrderAwareDemandTrait, PeriodAwareDemandTrait,
+        SearchAwareDemandTrait;
 
 	const GENRE_FIELD = 'reservation.lesson.event.genre';
 	const EVENT_TYPE_FIELD = 'reservation.lesson.event.eventType';
