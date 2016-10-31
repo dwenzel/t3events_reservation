@@ -331,6 +331,30 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
+    public function listActionDoesNotSetEmptyPropertiesInDemand()
+    {
+        // we use an existing property from parent
+        $propertyName = 'uidList';
+        $settings = [
+            $propertyName => ''
+        ];
+        $this->inject($this->subject, 'settings', $settings);
+        $createdDemand = $this->mockObjectManagerCreatesDemand();
+        $createdDemand->expects($this->never())
+            ->method('setUidList');
+
+        $this->subject->listAction();
+
+        $this->assertAttributeSame(
+            null,
+            $propertyName,
+            $createdDemand
+        );
+    }
+
+    /**
+     * @test
+     */
     public function listActionGetsOverwriteDemandFromModuleData()
     {
         $this->mockObjectManagerCreatesDemand();
