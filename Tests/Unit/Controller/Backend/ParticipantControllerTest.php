@@ -17,14 +17,18 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller\Backend;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\PersonDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Domain\Model\Dto\ModuleData;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use CPSIT\T3eventsReservation\Controller\Backend\ParticipantController;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Class ParticipantControllerTest
@@ -35,7 +39,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 class ParticipantControllerTest extends UnitTestCase
 {
     /**
-     * @var ParticipantController | \PHPUnit_Framework_MockObject_MockObject
+     * @var ParticipantController | \PHPUnit_Framework_MockObject_MockObject | AccessibleObjectInterface
      */
     protected $subject;
 
@@ -63,10 +67,11 @@ class ParticipantControllerTest extends UnitTestCase
      * @var PersonDemandFactory | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $demandFactory;
+
     /**
      * set up
      */
-    
+
     public function setUp()
     {
         /**
@@ -76,7 +81,13 @@ class ParticipantControllerTest extends UnitTestCase
          * change this when class does not inherit from AbstractBackendController anymore
          */
         $this->subject = $this->getAccessibleMock(
-            ParticipantController::class, ['getFilterOptions', 'overwriteDemandObject'], [], '', false
+            ParticipantController::class,
+            [
+                'getFilterOptions',
+                'overwriteDemandObject',
+                'getContentForDownload',
+                'translate'
+            ], [], '', false
         );
         $this->moduleData = $this->getMock(
             ModuleData::class, ['getOverwriteDemand', 'setOverwriteDemand', 'setDemand']
@@ -317,7 +328,6 @@ class ParticipantControllerTest extends UnitTestCase
         );
     }
 
-
     /**
      * @test
      */
@@ -385,5 +395,142 @@ class ParticipantControllerTest extends UnitTestCase
 
         $this->subject->listAction($overwriteDemand);
 
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionGetsPersonDemandFromObjectManagerIfScheduleIsNull()
+    {
+        $mockPersonDemand = $this->getMock(
+            PersonDemand::class
+        );
+        $this->objectManager->expects($this->once())
+            ->method('get')
+            ->with(PersonDemand::class)
+            ->will($this->returnValue($mockPersonDemand));
+
+        $this->subject->downloadAction();
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionGetsOverwriteDemandFromModuleDataIfScheduleIsNull()
+    {
+        $this->mockObjectManagerCreatesDemand();
+        $this->moduleData->expects($this->once())
+            ->method('getOverwriteDemand');
+        $this->subject->downloadAction();
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionOverwritesDemandObjectIfScheduleIsNull()
+    {
+        $mockDemand = $this->mockObjectManagerCreatesDemand();
+        $this->subject->expects($this->once())
+            ->method('overwriteDemandObject')
+            ->with($mockDemand);
+        $this->subject->downloadAction();
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionGetParticipantsFromRepositoryIfScheduleIsNull()
+    {
+        $mockDemand = $this->mockObjectManagerCreatesDemand();
+        $this->personRepository->expects($this->once())
+            ->method('findDemanded')
+            ->with($mockDemand);
+        $this->subject->downloadAction();
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionAssignsVariablesToView()
+    {
+        $mockResult = $this->getMock(
+            QueryResultInterface::class
+        );
+        $this->mockObjectManagerCreatesDemand();
+        $this->personRepository->expects($this->once())
+            ->method('findDemanded')
+            ->will($this->returnValue($mockResult));
+        $this->view->expects($this->once())
+            ->method('assign')
+            ->with('participants', $mockResult);
+        $this->subject->downloadAction();
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionGetsContentForDownloadIfScheduleIsNull()
+    {
+        $this->mockObjectManagerCreatesDemand();
+        $this->subject->expects($this->once())
+            ->method('getContentForDownload')
+            ->with('csv');
+        $this->subject->downloadAction();
+    }
+
+    /**
+     * @test
+     */
+    public function downloadActionGetsParticipantsFromSchedule()
+    {
+        $mockSchedule = $this->getMock(Schedule::class, ['getParticipants']);
+        $mockObjectStorageWithParticipant = $this->getMock(ObjectStorage::class, ['rewind', 'current']);
+        $mockPerson = $this->getMock(Person::class);
+
+        $mockSchedule->expects($this->once())
+            ->method('getParticipants')
+            ->will($this->returnValue($mockObjectStorageWithParticipant));
+        $mockObjectStorageWithParticipant->expects($this->once())
+            ->method('rewind');
+        $mockObjectStorageWithParticipant->expects($this->once())
+            ->method('current')
+            ->will($this->returnValue($mockPerson));
+        $this->subject->expects($this->once())
+            ->method('getContentForDownload')
+            ->with('csv', $mockPerson);
+
+        $this->subject->downloadAction($mockSchedule);
+    }
+
+    /**
+     * @test
+     */
+    public function getErrorFlashMessageInitiallyReturnsFalse()
+    {
+        $this->assertFalse(
+            $this->subject->_call('getErrorFlashMessage')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getErrorFlashMessageReturnsTranslatedMessage()
+    {
+        $actionMethodName = 'barAction';
+        $this->inject($this->subject, 'actionMethodName', $actionMethodName);
+        $defaultKey = 'error' . '.participant.'
+            . str_replace('Action', '', $actionMethodName)
+            . '.' . $this->subject->_get('errorMessage');
+        $expectedMessage = 'foo';
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with($defaultKey, 't3events', null)
+            ->will($this->returnValue($expectedMessage));
+
+        $this->assertSame(
+            $expectedMessage,
+            $this->subject->_call('getErrorFlashMessage')
+        );
     }
 }
