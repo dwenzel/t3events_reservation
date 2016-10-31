@@ -14,6 +14,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use CPSIT\T3eventsReservation\Domain\Factory\Dto\PersonDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
@@ -22,6 +23,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use CPSIT\T3eventsReservation\Controller\Backend\ParticipantController;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
@@ -56,9 +58,15 @@ class ParticipantControllerTest extends UnitTestCase
      * @var ObjectManagerInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $objectManager;
+
+    /**
+     * @var PersonDemandFactory | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $demandFactory;
     /**
      * set up
      */
+    
     public function setUp()
     {
         /**
@@ -77,9 +85,14 @@ class ParticipantControllerTest extends UnitTestCase
         $this->personRepository = $this->getMock(
             PersonRepository::class, ['findDemanded'], [], '', false
         );
-        $this->objectManager = $this->getMockForAbstractClass(ObjectManagerInterface::class);
-        $this->subject->injectObjectManager($this->objectManager);
 
+        $this->objectManager = $this->getMock(ObjectManager::class, ['get']);
+        $this->demandFactory = $this->getMock(
+            PersonDemandFactory::class, ['dummy']
+        );
+        $this->demandFactory->injectObjectManager($this->objectManager);
+        $this->subject->injectObjectManager($this->objectManager);
+        $this->subject->injectPersonDemandFactory($this->demandFactory);
         $this->subject->injectPersonRepository($this->personRepository);
         $this->inject($this->subject, 'view', $this->view);
         $this->inject($this->subject, 'moduleData', $this->moduleData);
@@ -194,7 +207,6 @@ class ParticipantControllerTest extends UnitTestCase
             ['audiences', '5,8', '5,8'],
             ['categories', '7,8', '7,8'],
             ['genres', '3,4', '3,4'],
-            ['types', '9,4', '9,4'],
             ['lessonPeriod', 'futureOnly', 'futureOnly'],
             ['eventTypes', '1,2', '1,2'],
             ['categoryConjunction', 'and', 'and'],
@@ -265,6 +277,46 @@ class ParticipantControllerTest extends UnitTestCase
             $createdDemand
         );
     }
+
+    /**
+     * Data provider for skipped properties
+     *
+     * @return array
+     */
+    public function skippedPropertiesDataProvider()
+    {
+        return [
+            ['types', 'types', '9,4', 'Tx_T3eventsReservation_Participant'],
+            ['periodType', 'periodType', 'foo', null]
+        ];
+    }
+
+    /**
+     * Make sure some properties are *not* set directly because
+     * they require a special logic or must have a certain value
+     * @test
+     * @dataProvider skippedPropertiesDataProvider
+     * @param string $settingsKey
+     * @param string $propertyName
+     * @param string|int|null|bool $settingsValue
+     * @param mixed $expectedValue
+     */
+    public function createFromSettingsSkipsCompositeProperties($settingsKey, $propertyName, $settingsValue, $expectedValue)
+    {
+        $settings = [
+            $settingsKey => $settingsValue
+        ];
+        $this->inject($this->subject, 'settings', $settings);
+        $createdDemand = $this->mockObjectManagerCreatesDemand();
+        $this->subject->listAction();
+
+        $this->assertAttributeSame(
+            $expectedValue,
+            $propertyName,
+            $createdDemand
+        );
+    }
+
 
     /**
      * @test

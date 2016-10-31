@@ -111,7 +111,6 @@ class PersonDemandFactoryTest extends UnitTestCase
             ['audiences', '5,8', '5,8'],
             ['categories', '7,8', '7,8'],
             ['genres', '3,4', '3,4'],
-            ['types', '9,4', '9,4'],
             ['lessonPeriod', 'futureOnly', 'futureOnly'],
             ['eventTypes', '1,2', '1,2'],
             ['categoryConjunction', 'and', 'and'],
@@ -187,11 +186,14 @@ class PersonDemandFactoryTest extends UnitTestCase
     {
         return [
             ['foo', ''],
-            ['search', 'bar']
+            ['search', 'bar'],
+            ['types', '9,4']
         ];
     }
 
     /**
+     * Make sure properties in compositeProperties attribute are not set directly
+     *
      * @test
      * @dataProvider skippedPropertiesDataProvider
      * @param string $propertyName

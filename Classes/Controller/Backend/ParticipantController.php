@@ -1,6 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
+use CPSIT\T3eventsReservation\Controller\PersonDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
@@ -49,13 +50,15 @@ use DWenzel\T3events\Controller\FilterableControllerTrait;
  */
 class ParticipantController extends AbstractBackendController
 	implements FilterableControllerInterface {
-	use EntityNotFoundHandlerTrait, TranslateTrait, ReservationRepositoryTrait,
-        SearchTrait, DemandTrait, AudienceRepositoryTrait,
-        EventTypeRepositoryTrait, GenreRepositoryTrait, VenueRepositoryTrait,
-        ModuleDataTrait, DownloadTrait,
-        NotificationRepositoryTrait,
-        FilterableControllerTrait, PersonRepositoryTrait,
-        CategoryRepositoryTrait, CompanyRepositoryTrait;
+	use
+        AudienceRepositoryTrait, CategoryRepositoryTrait,
+        CompanyRepositoryTrait, DemandTrait,  DownloadTrait,
+        EntityNotFoundHandlerTrait, EventTypeRepositoryTrait,
+        FilterableControllerTrait, GenreRepositoryTrait,
+        ModuleDataTrait, NotificationRepositoryTrait,
+        PersonRepositoryTrait, PersonDemandFactoryTrait,
+        ReservationRepositoryTrait, SearchTrait,
+        TranslateTrait, VenueRepositoryTrait;
 
 	/**
 	 * List action
@@ -151,6 +154,7 @@ class ParticipantController extends AbstractBackendController
 					$demand->setCategories($propertyValue);
 					break;
 				// all following fall through (see below)
+                case 'types':
 				case 'periodType':
 				case 'periodStart':
 				case 'periodEndDate':

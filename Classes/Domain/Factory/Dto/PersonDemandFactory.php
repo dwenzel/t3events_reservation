@@ -45,7 +45,8 @@ class PersonDemandFactory
      * @var array
      */
     static protected $mappedProperties = [
-        'maxItems' => 'limit'
+        'maxItems' => 'limit',
+        'category' => 'categories'
     ];
 
     /**
@@ -56,7 +57,7 @@ class PersonDemandFactory
      * @var array
      */
     static protected $compositeProperties = [
-        'search'
+        'search', 'types'
     ];
 
     /**
