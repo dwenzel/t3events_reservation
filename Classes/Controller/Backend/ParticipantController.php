@@ -1,7 +1,6 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
-/***************************************************************
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,10 +14,9 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
-use CPSIT\T3eventsReservation\Controller\PersonDemandFactoryTrait;
+use CPSIT\T3eventsReservation\Controller\ParticipantDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
-use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use DWenzel\T3events\Controller\AudienceRepositoryTrait;
 use DWenzel\T3events\Controller\CategoryRepositoryTrait;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
@@ -32,7 +30,6 @@ use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
 use DWenzel\T3events\Controller\VenueRepositoryTrait;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
@@ -52,7 +49,7 @@ class ParticipantController extends AbstractBackendController
         EntityNotFoundHandlerTrait, EventTypeRepositoryTrait,
         FilterableControllerTrait, GenreRepositoryTrait,
         ModuleDataTrait, NotificationRepositoryTrait,
-        PersonRepositoryTrait, PersonDemandFactoryTrait,
+        PersonRepositoryTrait, ParticipantDemandFactoryTrait,
         ReservationRepositoryTrait, SearchTrait,
         TranslateTrait, VenueRepositoryTrait;
 
@@ -69,7 +66,7 @@ class ParticipantController extends AbstractBackendController
      */
     public function listAction(array $overwriteDemand = null)
     {
-        $demand = $this->createDemandFromSettings($this->settings);
+        $demand = $this->demandFactory->createFromSettings($this->settings);
         $filterOptions = $this->getFilterOptions($this->settings['filter']);
 
         if ($overwriteDemand === null) {
@@ -104,7 +101,7 @@ class ParticipantController extends AbstractBackendController
     public function downloadAction($schedule = null, $ext = 'csv')
     {
         if (is_null($schedule)) {
-            $demand = $this->createDemandFromSettings($this->settings);
+            $demand = $this->demandFactory->createFromSettings($this->settings);
             $this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
             $participants = $this->personRepository->findDemanded($demand);
         } else {
@@ -139,49 +136,16 @@ class ParticipantController extends AbstractBackendController
 
     /**
      * Create demand from settings
+     * This method is only for backwards compatibility
      *
      * @param array $settings
      * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
+     * @deprecated Use ParticipantDemandFactory with $this->demandFactory->createFromSettings
+     * instead (provided by ParticipantDemandFactoryTrait)
      */
     protected function createDemandFromSettings($settings)
     {
-        /**@var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
-        $demand = $this->objectManager->get(PersonDemand::class);
-        $demand->setTypes((string)Person::PERSON_TYPE_PARTICIPANT);
-        foreach ($settings as $propertyName => $propertyValue) {
-            if (empty($propertyValue)) {
-                continue;
-            }
-            switch ($propertyName) {
-                case 'maxItems':
-                    $demand->setLimit($propertyValue);
-                    break;
-                case 'category':
-                    $demand->setCategories($propertyValue);
-                    break;
-                // all following fall through (see below)
-                case 'types':
-                case 'periodType':
-                case 'periodStart':
-                case 'periodEndDate':
-                case 'periodDuration':
-                case 'search':
-                    break;
-                default:
-                    if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
-                        ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
-                    }
-            }
-        }
-
-        if ($demand->getLessonPeriod() === 'futureOnly'
-            OR $demand->getLessonPeriod() === 'pastOnly'
-        ) {
-            $timeZone = new \DateTimeZone(date_default_timezone_get());
-            $demand->setLessonDate(new \DateTime('midnight', $timeZone));
-        }
-
-        return $demand;
+        return $this->demandFactory->createFromSettings($settings);
     }
 
 }

@@ -14,8 +14,8 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
-use CPSIT\T3eventsReservation\Domain\Factory\Dto\PersonDemandFactory;
-use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
+use CPSIT\T3eventsReservation\Domain\Factory\Dto\ParticipantDemandFactory;
+use CPSIT\T3eventsReservation\Domain\Model\Dto\ParticipantDemand;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
@@ -64,7 +64,7 @@ class ParticipantControllerTest extends UnitTestCase
     protected $objectManager;
 
     /**
-     * @var PersonDemandFactory | \PHPUnit_Framework_MockObject_MockObject
+     * @var ParticipantDemandFactory | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $demandFactory;
 
@@ -99,11 +99,11 @@ class ParticipantControllerTest extends UnitTestCase
 
         $this->objectManager = $this->getMock(ObjectManager::class, ['get']);
         $this->demandFactory = $this->getMock(
-            PersonDemandFactory::class, ['dummy']
+            ParticipantDemandFactory::class, ['dummy']
         );
         $this->demandFactory->injectObjectManager($this->objectManager);
         $this->subject->injectObjectManager($this->objectManager);
-        $this->subject->injectPersonDemandFactory($this->demandFactory);
+        $this->subject->injectParticipantDemandFactory($this->demandFactory);
         $this->subject->injectPersonRepository($this->personRepository);
         $this->inject($this->subject, 'view', $this->view);
         $this->inject($this->subject, 'moduleData', $this->moduleData);
@@ -116,12 +116,11 @@ class ParticipantControllerTest extends UnitTestCase
      */
     protected function mockObjectManagerCreatesDemand()
     {
-        /** @var PersonDemand $mockDemand */
+        /** @var ParticipantDemand $mockDemand */
         $mockDemand = $this->getMock(
-            PersonDemand::class, ['dummy']
+            ParticipantDemand::class, ['dummy']
         );
-        $mockObjectManager = $this->objectManager;
-        $mockObjectManager->expects($this->once())
+        $this->objectManager->expects($this->once())
             ->method('get')
             ->will($this->returnValue($mockDemand));
         return $mockDemand;
@@ -141,15 +140,15 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function listActionGetsPersonDemandFromObjectManager()
+    public function listActionGetsParticipantDemandFromObjectManager()
     {
-        $mockPersonDemand = $this->getMock(
-            PersonDemand::class
+        $mockParticipantDemand = $this->getMock(
+            ParticipantDemand::class
         );
         $this->objectManager->expects($this->once())
             ->method('get')
-            ->with(PersonDemand::class)
-            ->will($this->returnValue($mockPersonDemand));
+            ->with(ParticipantDemand::class)
+            ->will($this->returnValue($mockParticipantDemand));
 
         $this->subject->listAction();
     }
@@ -175,36 +174,36 @@ class ParticipantControllerTest extends UnitTestCase
      * @param string $lessonPeriod
      * @param \DateTime $expectedDate
      */
-    public function listActionGetsPersonDemandWithLessonDateByPeriod($lessonPeriod, $expectedDate)
+    public function listActionGetsParticipantDemandWithLessonDateByPeriod($lessonPeriod, $expectedDate)
     {
         $settings = [
             'lessonPeriod' => $lessonPeriod
         ];
         $this->inject($this->subject, 'settings', $settings);
-        /** @var PersonDemand | \PHPUnit_Framework_MockObject_MockObject $mockPersonDemand */
-        $mockPersonDemand = $this->mockObjectManagerCreatesDemand();
+        /** @var ParticipantDemand | \PHPUnit_Framework_MockObject_MockObject $mockParticipantDemand */
+        $mockParticipantDemand = $this->mockObjectManagerCreatesDemand();
 
         $this->subject->listAction();
 
         $this->assertEquals(
             $expectedDate,
-            $mockPersonDemand->getLessonDate()
+            $mockParticipantDemand->getLessonDate()
         );
     }
 
     /**
      * @test
      */
-    public function listActionGetsPersonDemandWithCorrectType()
+    public function listActionGetsParticipantDemandWithCorrectType()
     {
-        /** @var PersonDemand | \PHPUnit_Framework_MockObject_MockObject $mockPersonDemand */
-        $mockPersonDemand = $this->mockObjectManagerCreatesDemand();
+        /** @var ParticipantDemand | \PHPUnit_Framework_MockObject_MockObject $mockParticipantDemand */
+        $mockParticipantDemand = $this->mockObjectManagerCreatesDemand();
 
         $this->subject->listAction();
 
         $this->assertEquals(
             Person::PERSON_TYPE_PARTICIPANT,
-            $mockPersonDemand->getTypes()
+            $mockParticipantDemand->getTypes()
         );
     }
 
@@ -424,15 +423,15 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function downloadActionGetsPersonDemandFromObjectManagerIfScheduleIsNull()
+    public function downloadActionGetsParticipantDemandFromObjectManagerIfScheduleIsNull()
     {
-        $mockPersonDemand = $this->getMock(
-            PersonDemand::class
+        $mockParticipantDemand = $this->getMock(
+            ParticipantDemand::class
         );
         $this->objectManager->expects($this->once())
             ->method('get')
-            ->with(PersonDemand::class)
-            ->will($this->returnValue($mockPersonDemand));
+            ->with(ParticipantDemand::class)
+            ->will($this->returnValue($mockParticipantDemand));
 
         $this->subject->downloadAction();
     }
@@ -509,7 +508,7 @@ class ParticipantControllerTest extends UnitTestCase
     {
         $mockSchedule = $this->getMock(Schedule::class, ['getParticipants']);
         $mockObjectStorageWithParticipant = $this->getMock(ObjectStorage::class, ['rewind', 'current']);
-        $mockPerson = $this->getMock(Person::class);
+        $mockParticipant = $this->getMock(Person::class);
 
         $mockSchedule->expects($this->once())
             ->method('getParticipants')
@@ -518,10 +517,10 @@ class ParticipantControllerTest extends UnitTestCase
             ->method('rewind');
         $mockObjectStorageWithParticipant->expects($this->once())
             ->method('current')
-            ->will($this->returnValue($mockPerson));
+            ->will($this->returnValue($mockParticipant));
         $this->subject->expects($this->once())
             ->method('getContentForDownload')
-            ->with('csv', $mockPerson);
+            ->with('csv', $mockParticipant);
 
         $this->subject->downloadAction($mockSchedule);
     }
