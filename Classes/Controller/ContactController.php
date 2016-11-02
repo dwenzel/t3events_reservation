@@ -4,8 +4,9 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use DWenzel\T3events\Controller\AbstractController;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 
 /***************************************************************
  *  Copyright notice
@@ -58,6 +59,46 @@ class ContactController
     }
 
     /**
+     * New contact
+     *
+     * @param Contact|null $contact
+     * @param Reservation $reservation
+     * @ignorevalidation $contact
+     */
+    public function newAction(Contact $contact = null, Reservation $reservation)
+    {
+        $originalRequest = $this->request->getOriginalRequest();
+        if (
+            $originalRequest instanceof Request
+            && $originalRequest->hasArgument('contact')
+        ) {
+            $contact = $originalRequest->getArgument('contact');
+        }
+
+        $templateVariables = [
+            'contact' => $contact,
+            'reservation' => $reservation
+        ];
+        $this->view->assignMultiple($templateVariables);
+    }
+
+    /**
+     * Create a contact
+     *
+     * @param Contact $contact
+     */
+    public function createAction(Contact $contact)
+    {
+        $this->contactRepository->add($contact);
+        $this->redirect(
+            'edit',
+            self::PARENT_CONTROLLER_NAME,
+            null,
+            ['reservation' => $contact->getReservation()]
+        );
+    }
+
+    /**
      * Edit contact
      *
      * @param Contact $contact
@@ -68,8 +109,7 @@ class ContactController
      */
     public function editAction(Contact $contact, Reservation $reservation)
     {
-        if ($reservation->getContact() !== $contact)
-        {
+        if ($reservation->getContact() !== $contact) {
             throw new InvalidSourceException(
                 'Can not edit contact uid ' . $contact->getUid()
                 . '. Contact not found in Reservation uid: ' . $reservation->getUid() . '.',
