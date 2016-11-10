@@ -1,30 +1,26 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller;
 
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use DWenzel\T3events\Controller\AbstractController;
+use DWenzel\T3events\Controller\RoutingTrait;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-
-/***************************************************************
- *  Copyright notice
- *  (c) 2016 Dirk Wenzel <dirk.wenzel@cps-it.de>
- *  All rights reserved
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
 /**
  * Class ContactController
@@ -36,7 +32,7 @@ class ContactController
     extends AbstractController
     implements AccessControlInterface
 {
-    use ReservationAccessTrait;
+    use ReservationAccessTrait, RoutingTrait;
 
     /**
      * @const parent controller
@@ -90,12 +86,7 @@ class ContactController
     public function createAction(Contact $contact)
     {
         $this->contactRepository->add($contact);
-        $this->redirect(
-            'edit',
-            self::PARENT_CONTROLLER_NAME,
-            null,
-            ['reservation' => $contact->getReservation()]
-        );
+        $this->dispatch(['reservation' => $contact->getReservation()]);
     }
 
     /**
@@ -131,11 +122,6 @@ class ContactController
     public function updateAction(Contact $contact)
     {
         $this->contactRepository->update($contact);
-        $this->redirect(
-            'edit',
-            self::PARENT_CONTROLLER_NAME,
-            null,
-            ['reservation' => $contact->getReservation()]
-        );
+        $this->dispatch(['reservation' => $contact->getReservation()]);
     }
 }

@@ -30,7 +30,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t
 /** @var DWenzel\T3events\Service\RouteLoader $routeLoader */
 $routeLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DWenzel\T3events\Service\RouteLoader::class);
 $dataProviderClasses = [
-    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ReservationControllerDefaults::class
+    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ReservationControllerDefaults::class,
+    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ParticipantControllerDefaults::class,
+    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ContactControllerDefaults::class
 ];
 foreach ($dataProviderClasses as $providerClass) {
     $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($providerClass);
