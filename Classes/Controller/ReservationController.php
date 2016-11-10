@@ -22,6 +22,8 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use DWenzel\T3events\Controller\RoutableControllerInterface;
+use DWenzel\T3events\Controller\RoutingTrait;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
@@ -38,9 +40,9 @@ use DWenzel\T3events\Session\SessionInterface;
  */
 class ReservationController
     extends AbstractController
-    implements AccessControlInterface
+    implements AccessControlInterface, RoutableControllerInterface
 {
-    use ReservationAccessTrait;
+    use ReservationAccessTrait, RoutingTrait;
     /**
      * @const Session namespace for reservations
      */
@@ -198,7 +200,8 @@ class ReservationController
         $this->reservationRepository->add($newReservation);
         $this->persistenceManager->persistAll();
         $this->session->set(self::SESSION_IDENTIFIER_RESERVATION, $newReservation->getUid());
-        $this->redirect('edit', null, null, ['reservation' => $newReservation]);
+
+        $this->dispatch(['reservation' => $newReservation]);
     }
 
     /**
@@ -317,12 +320,7 @@ class ReservationController
             );
         }
 
-        $this->redirect(
-            'edit',
-            null,
-            null,
-            ['reservation' => $reservation]
-        );
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
@@ -355,7 +353,7 @@ class ReservationController
             }
         }
         $this->reservationRepository->update($reservation);
-        $this->redirect('show', null, null, ['reservation' => $reservation]);
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
@@ -375,7 +373,7 @@ class ReservationController
             $this->translate('message.reservation.removeParticipant.success')
         );
 
-        $this->redirect('edit', null, null, ['reservation' => $reservation]);
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
@@ -410,12 +408,7 @@ class ReservationController
             );
         }
 
-        $this->redirect(
-            'edit',
-            null,
-            null,
-            ['reservation' => $reservation]
-        );
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
@@ -450,12 +443,7 @@ class ReservationController
             $this->translate('message.reservation.createBillingAddress.success')
         );
 
-        $this->redirect(
-            'edit',
-            null,
-            null,
-            ['reservation' => $reservation]
-        );
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
@@ -472,7 +460,7 @@ class ReservationController
         );
 
         $this->reservationRepository->update($reservation);
-        $this->redirect('edit', null, null, ['reservation' => $reservation]);
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
