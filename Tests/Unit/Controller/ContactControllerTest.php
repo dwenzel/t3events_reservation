@@ -248,25 +248,6 @@ class ContactControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function createActionAssignsVariablesToView()
-    {
-        $this->markTestSkipped();
-        $mockContact = $this->getMock(Contact::class);
-
-        $expectedVariables = [
-            'contact' => $mockContact,
-            'settings' => $this->settings
-        ];
-        $this->view->expects($this->once())
-            ->method('assignMultiple')
-            ->with($expectedVariables);
-
-        $this->subject->createAction($mockContact);
-    }
-
-    /**
-     * @test
-     */
     public function createActionRedirectsToDefaultController()
     {
         $this->mockContactRepository();
