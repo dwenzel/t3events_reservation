@@ -17,8 +17,9 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use DWenzel\T3events\Controller\AbstractController;
+use DWenzel\T3events\Controller\RoutingTrait;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 
 /**
  * Class ParticipantController
@@ -30,7 +31,7 @@ class ParticipantController
     extends AbstractController
     implements AccessControlInterface
 {
-    use ReservationAccessTrait;
+    use ReservationAccessTrait, RoutingTrait;
     const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
@@ -77,12 +78,7 @@ class ParticipantController
     public function updateAction(Person $participant)
     {
         $this->participantRepository->update($participant);
-        $this->redirect(
-            'edit',
-            self::PARENT_CONTROLLER_NAME,
-            null,
-            ['reservation' => $participant->getReservation()]
-        );
+        $this->dispatch(['reservation' => $participant->getReservation()]);
     }
 
 }

@@ -1,31 +1,29 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use CPSIT\T3eventsReservation\Controller\AccessControlInterface;
 use CPSIT\T3eventsReservation\Controller\ContactController;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
 
-/***************************************************************
- *  Copyright notice
- *  (c) 2016 Dirk Wenzel <dirk.wenzel@cps-it.de>
- *  All rights reserved
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 class ContactControllerTest extends UnitTestCase
 {
     /**
@@ -33,23 +31,65 @@ class ContactControllerTest extends UnitTestCase
      */
     protected $subject;
 
+    /**
+     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $request;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ContactRepository
+     */
+    protected $repository;
+
+    /**
+     * @var ViewInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $view;
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
+
     public function setUp()
     {
         $this->subject = $this->getAccessibleMock(
-            ContactController::class, ['forward', 'redirect']
+            ContactController::class, ['dispatch']
         );
+        $this->mockRequest();
+        $this->mockView();
+        $this->mockContactRepository();
+        $this->inject($this->subject, 'settings', $this->settings);
     }
 
     /**
      * Creates a mock View, injects it and returns it
      *
-     * @return mixed
+     * @return ViewInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function mockView() {
-        $view = $this->getMock(ViewInterface::class);
-        $this->inject($this->subject, 'view', $view);
+    protected function mockView()
+    {
+        $this->view = $this->getMock(ViewInterface::class);
+        $this->inject($this->subject, 'view', $this->view);
 
-        return $view;
+        return $this->view;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function mockRequest()
+    {
+        $this->request = $this->getMock(
+            Request::class, ['getOriginalRequest', 'hasArgument', 'getArgument']
+        );
+        $this->inject(
+            $this->subject,
+            'request',
+            $this->request
+        );
+
+        return $this->request;
     }
 
     /**
@@ -57,12 +97,12 @@ class ContactControllerTest extends UnitTestCase
      */
     protected function mockContactRepository()
     {
-        $repository = $this->getMock(
+        $this->repository = $this->getMock(
             ContactRepository::class, ['add', 'remove', 'update'], [], '', false
         );
 
-        $this->subject->injectContactRepository($repository);
-        return $repository;
+        $this->subject->injectContactRepository($this->repository);
+        return $this->repository;
     }
 
     /**
@@ -124,7 +164,7 @@ class ContactControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateActionRedirectsToDefaultController()
+    public function updateActionCallsDispatch()
     {
         $this->mockContactRepository();
         $contact = new Contact();
@@ -135,14 +175,85 @@ class ContactControllerTest extends UnitTestCase
         $contact->setReservation($mockReservation);
 
         $this->subject->expects($this->once())
-            ->method('redirect')
-            ->with(
-                'edit',
-                ContactController::PARENT_CONTROLLER_NAME,
-                null,
-                ['reservation' => $mockReservation]
-            );
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
 
         $this->subject->updateAction($contact);
+    }
+
+    /**
+     * @test
+     */
+    public function newActionAssignsVariablesToView()
+    {
+        $mockContact = $this->getMock(Contact::class);
+        $mockReservation = $this->getMock(Reservation::class);
+
+        $expectedVariables = [
+            'contact' => $mockContact,
+            'reservation' => $mockReservation
+        ];
+        $view = $this->mockView();
+        $view->expects($this->once())
+            ->method('assignMultiple')
+            ->with($expectedVariables);
+
+        $this->subject->newAction($mockContact, $mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function newActionRestoresContactFromRequest()
+    {
+        $contactFromRequest = $this->getMock(Contact::class);
+        $mockReservation = $this->getMock(Reservation::class);
+
+        $this->request->expects($this->once())
+            ->method('getOriginalRequest')
+            ->will($this->returnValue($this->request));
+        $this->request->expects($this->once())
+            ->method('hasArgument')
+            ->with('contact')
+            ->will($this->returnValue(true));
+        $this->request->expects($this->once())
+            ->method('getArgument')
+            ->with('contact')
+            ->will($this->returnValue($contactFromRequest));
+
+        $this->subject->newAction(null, $mockReservation);
+    }
+
+    /**
+     * @test
+     */
+    public function createActionAddsContactToRepository()
+    {
+        $mockContact = $this->getMock(Contact::class);
+        $mockRepository = $this->mockContactRepository();
+        $mockRepository->expects($this->once())
+            ->method('add')
+            ->with($mockContact);
+        $this->subject->createAction($mockContact);
+    }
+
+    /**
+     * @test
+     */
+    public function createActionCallsDispatch()
+    {
+        $this->mockContactRepository();
+        $contact = new Contact();
+        /** @var Reservation $mockReservation */
+        $mockReservation = $this->getMock(
+            Reservation::class
+        );
+        $contact->setReservation($mockReservation);
+
+        $this->subject->expects($this->once())
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
+
+        $this->subject->createAction($contact);
     }
 }
