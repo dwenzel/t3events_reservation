@@ -86,7 +86,12 @@ class ContactController
     public function createAction(Contact $contact)
     {
         $this->contactRepository->add($contact);
-        $this->dispatch(['reservation' => $contact->getReservation()]);
+
+        if ($reservation = $contact->getReservation())
+        {
+            $reservation->setContact($contact);
+        }
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**

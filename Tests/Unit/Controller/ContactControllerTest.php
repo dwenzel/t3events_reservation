@@ -240,6 +240,28 @@ class ContactControllerTest extends UnitTestCase
     /**
      * @test
      */
+    public function createActionSetsReservationContact()
+    {
+        $mockContact = $this->getMock(
+            Contact::class, ['getReservation']
+        );
+        $mockReservation = $this->getMock(
+            Reservation::class, ['setContact']
+        );
+        $this->mockContactRepository();
+
+        $mockContact->expects($this->once())
+            ->method('getReservation')
+            ->will($this->returnValue($mockReservation));
+        $mockReservation->expects($this->once())
+            ->method('setContact')
+            ->with($mockContact);
+        $this->subject->createAction($mockContact);
+    }
+
+    /**
+     * @test
+     */
     public function createActionCallsDispatch()
     {
         $this->mockContactRepository();

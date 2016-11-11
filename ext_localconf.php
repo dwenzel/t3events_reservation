@@ -10,7 +10,7 @@ if (!defined('TYPO3_MODE')) {
         'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,
 		newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update,error',
         'Participant' => 'edit,update,error',
-        'Contact' => 'edit,update,error'
+        'Contact' => 'new,edit,create,update,error'
     ]
     ,
     // non-cacheable actions
@@ -18,7 +18,7 @@ if (!defined('TYPO3_MODE')) {
         'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,
 		newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update,error',
         'Participant' => 'edit,update,error',
-        'Contact' => 'edit,update,error'
+        'Contact' => 'new,edit,create,update,error'
     ]
 );
 
