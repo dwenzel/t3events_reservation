@@ -61,6 +61,11 @@ class ReservationControllerTest extends UnitTestCase {
 	 */
 	protected $subject = NULL;
 
+    /**
+     * @var Request |\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $request;
+
 	/**
 	 * Creates a mock PersistenceManager, injects it to
 	 * subject and returns the mock
@@ -73,7 +78,7 @@ class ReservationControllerTest extends UnitTestCase {
 		);
 		$this->inject($this->subject, 'persistenceManager', $mockPersistenceManager);
 
-		return $mockPersistenceManager;
+        return $mockPersistenceManager;
 	}
 
 	/**
@@ -208,8 +213,7 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->subject = $this->getAccessibleMock(
 			ReservationController::class,
 			[
-                'redirect',
-                'forward',
+                'dispatch',
                 'addFlashMessage',
                 'translate',
                 'isAccessAllowed',
@@ -221,7 +225,8 @@ class ReservationControllerTest extends UnitTestCase {
 			SessionInterface::class, ['get', 'set', 'has', 'clean', 'setNamespace'], [], '', false
 		);
 		$this->inject($this->subject, 'session', $mockSession);
-	}
+        $this->request = $this->mockRequest();
+    }
 
 	/**
 	 * @test
@@ -281,8 +286,9 @@ class ReservationControllerTest extends UnitTestCase {
     public function confirmActionSendsNotification() {
         $this->subject = $this->getAccessibleMock(
             ReservationController::class,
-            ['sendNotification', 'redirect', 'forward', 'addFlashMessage', 'translate', 'isAccessAllowed', 'clearCacheOnError'],
+            ['sendNotification', 'dispatch', 'addFlashMessage', 'translate', 'isAccessAllowed', 'clearCacheOnError'],
             [], '', false);
+        $this->mockRequest();
         $identifier = 'foo';
         $configForIdentifier = ['bar'];
 
@@ -327,17 +333,12 @@ class ReservationControllerTest extends UnitTestCase {
     /**
      * @test
      */
-    public function confirmActionForwardsToShowAction() {
+    public function confirmActionCallsDispatch() {
         $mockReservation = $this->getMock(Reservation::class);
         $this->mockReservationRepository();
         $this->subject->expects($this->once())
-            ->method('redirect')
-            ->with(
-                'show',
-                null,
-                null,
-                ['reservation' => $mockReservation]
-            );
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
 
         $this->subject->confirmAction($mockReservation);
     }
@@ -1101,20 +1102,13 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function updateActionRedirectsToEditAction() {
+	public function updateActionCallsDispatch() {
 		$this->mockReservationRepository();
 		$reservation = new Reservation();
 
 		$this->subject->expects($this->once())
-			->method('redirect')
-			->with(
-				'edit',
-				null,
-				null,
-				[
-					'reservation' => $reservation
-				]
-			);
+			->method('dispatch')
+			->with(['reservation' => $reservation]);
 
 		$this->subject->updateAction($reservation);
 	}
@@ -1152,22 +1146,15 @@ class ReservationControllerTest extends UnitTestCase {
     /**
      * @test
      */
-    public function removeBillingAddressRedirectsToEditAction()
+    public function removeBillingAddressCallsDispatch()
     {
         /** @var Reservation $mockReservation */
         $mockReservation = $this->getMock(
             Reservation::class, ['getBillingAddress']
         );
         $this->subject->expects($this->once())
-            ->method('redirect')
-            ->with(
-                'edit',
-                null,
-                null,
-                [
-                    'reservation' => $mockReservation
-                ]
-            );
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
 
         $this->subject->removeBillingAddressAction($mockReservation);
     }
@@ -1292,7 +1279,7 @@ class ReservationControllerTest extends UnitTestCase {
     /**
      * @test
      */
-    public function createBillingAddressActionRedirectsToEditAction()
+    public function createBillingAddressActionCallsDispatch()
     {
         $this->mockReservationRepository();
         $this->mockPersonRepository();
@@ -1306,15 +1293,8 @@ class ReservationControllerTest extends UnitTestCase {
             BillingAddress::class
         );
         $this->subject->expects($this->once())
-            ->method('redirect')
-            ->with(
-                'edit',
-                null,
-                null,
-                [
-                    'reservation' => $mockReservation
-                ]
-            );
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
 
         $this->subject->createBillingAddressAction($mockReservation, $mockBillingAddress);
     }
@@ -1451,7 +1431,7 @@ class ReservationControllerTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function removeParticipantActionRedirectsToEditAction() {
+	public function removeParticipantActionCallsDispatch() {
 		$mockLesson = $this->getMock(Schedule::class);
 		$mockReservation = $this->getMock(
 			Reservation::class, ['getLesson']
@@ -1465,13 +1445,8 @@ class ReservationControllerTest extends UnitTestCase {
 			->will($this->returnValue($mockLesson));
 
 		$this->subject->expects($this->once())
-			->method('redirect')
-			->with(
-				'edit',
-				null,
-				null,
-				['reservation' => $mockReservation]
-			);
+			->method('dispatch')
+			->with(['reservation' => $mockReservation]);
 		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
 	}
 }

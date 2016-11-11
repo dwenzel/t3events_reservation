@@ -1,6 +1,19 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use CPSIT\T3eventsReservation\Controller\AccessControlInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
@@ -9,23 +22,10 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
-/***************************************************************
- *  Copyright notice
- *  (c) 2016 Dirk Wenzel <dirk.wenzel@cps-it.de>
- *  All rights reserved
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+/**
+ * Class ParticipantControllerTest
+ * @package CPSIT\T3eventsReservation\Tests\Unit\Controller
+ */
 class ParticipantControllerTest extends UnitTestCase
 {
     /**
@@ -39,7 +39,7 @@ class ParticipantControllerTest extends UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getAccessibleMock(
-            ParticipantController::class, ['forward', 'redirect']
+            ParticipantController::class, ['dispatch']
         );
     }
 
@@ -62,7 +62,8 @@ class ParticipantControllerTest extends UnitTestCase
      *
      * @return mixed
      */
-    protected function mockView() {
+    protected function mockView()
+    {
         $view = $this->getMock(ViewInterface::class);
         $this->inject($this->subject, 'view', $view);
 
@@ -83,7 +84,8 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function participantRepositoryCanBeInjected() {
+    public function participantRepositoryCanBeInjected()
+    {
         $mockRepository = $this->mockParticipantRepository();
 
         $this->assertAttributeSame(
@@ -113,7 +115,7 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateActionRedirectsToDefaultController()
+    public function updateActionCallsDispatch()
     {
         $this->mockParticipantRepository();
         $participant = new Person();
@@ -124,13 +126,8 @@ class ParticipantControllerTest extends UnitTestCase
         $participant->setReservation($mockReservation);
 
         $this->subject->expects($this->once())
-            ->method('redirect')
-            ->with(
-                'edit',
-                ParticipantController::PARENT_CONTROLLER_NAME,
-                null,
-                ['reservation' => $mockReservation]
-                );
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
 
         $this->subject->updateAction($participant);
     }
