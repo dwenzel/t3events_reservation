@@ -1,22 +1,25 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller;
+
 /**
  * This file is part of the TYPO3 CMS project.
+ *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
+ *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
+ *
  * The TYPO3 project - inspiring people to share!
  */
 
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
+use DWenzel\T3events\Controller\AbstractController;
 use DWenzel\T3events\Controller\RoutingTrait;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use DWenzel\T3events\Controller\AbstractController;
-
 
 /**
  * Class ParticipantController
@@ -55,8 +58,7 @@ class ParticipantController
      */
     public function editAction(Person $participant, Reservation $reservation)
     {
-        if (!$reservation->getParticipants()->contains($participant))
-        {
+        if (!$reservation->getParticipants()->contains($participant)) {
             throw new InvalidSourceException(
                 'Can not edit participant uid ' . $participant->getUid()
                 . '. Participant not found in Reservation uid: ' . $participant->getReservation()->getUid() . '.',

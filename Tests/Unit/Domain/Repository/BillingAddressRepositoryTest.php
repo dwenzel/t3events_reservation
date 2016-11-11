@@ -53,7 +53,7 @@ class BillingAddressRepositoryTest extends UnitTestCase {
 
 		$this->assertEquals(
 			[],
-			$this->fixture->_callRef('createConstraintsFromDemand', $query, $demand)
+			$this->fixture->createConstraintsFromDemand($query, $demand)
 		);
 	}
 
