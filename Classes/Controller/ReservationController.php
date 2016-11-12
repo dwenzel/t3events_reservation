@@ -1,35 +1,37 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller;
 
-/***************************************************************
- *  Copyright notice
- *  (c) 2014 Dirk Wenzel <wenzel@cps-it.de>, CPS IT
- *           Boerge Franck <franck@cps-it.de>, CPS IT
- *  All rights reserved
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use DWenzel\T3events\Controller\CompanyRepositoryTrait;
+use DWenzel\T3events\Controller\DemandTrait;
+use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
+use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Controller\RoutableControllerInterface;
 use DWenzel\T3events\Controller\RoutingTrait;
+use DWenzel\T3events\Controller\SearchTrait;
+use DWenzel\T3events\Controller\SettingsUtilityTrait;
+use DWenzel\T3events\Controller\TranslateTrait;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use DWenzel\T3events\Controller\AbstractController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use DWenzel\T3events\Domain\Model\Performance;
@@ -39,26 +41,25 @@ use DWenzel\T3events\Session\SessionInterface;
  * ReservationController
  */
 class ReservationController
-    extends AbstractController
+    extends ActionController
     implements AccessControlInterface, RoutableControllerInterface
 {
-    use ReservationAccessTrait, RoutingTrait;
+    use BillingAddressRepositoryTrait, ContactRepositoryTrait,
+        CompanyRepositoryTrait, DemandTrait,
+        EntityNotFoundHandlerTrait, PersistenceManagerTrait,
+        PersonRepositoryTrait, ReservationAccessTrait,
+        ReservationRepositoryTrait, RoutingTrait,
+        SearchTrait, SettingsUtilityTrait, TranslateTrait;
+
     /**
      * @const Session namespace for reservations
      */
     const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
+
     /**
      * @const Identifier for reservation in session
      */
     const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
-
-    /**
-     * Persistence Manager
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     * @inject
-     */
-    protected $persistenceManager;
 
     /**
      * Notification Service
@@ -69,50 +70,12 @@ class ReservationController
     protected $notificationService;
 
     /**
-     * reservationRepository
-     *
-     * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
-     * @inject
-     */
-    protected $reservationRepository = null;
-
-    /**
      * Lesson Repository
      *
      * @var \DWenzel\T3events\Domain\Repository\PerformanceRepository
      * @inject
      */
     protected $lessonRepository = null;
-
-    /**
-     * Company Repository
-     *
-     * @var \DWenzel\T3events\Domain\Repository\CompanyRepository
-     * @inject
-     */
-    protected $companyRepository = null;
-
-    /**
-     * Participant Repository
-     *
-     * @var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
-     * @inject
-     */
-    protected $personRepository = null;
-
-    /**
-     * BillingAddress Repository
-     *
-     * @var \CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository
-     * @inject
-     */
-    protected $billingAddressRepository;
-
-    /**
-     * @var \CPSIT\T3eventsReservation\Domain\Repository\ContactRepository
-     * @inject
-     */
-    protected $contactRepository;
 
     /**
      * action show
@@ -259,8 +222,8 @@ class ReservationController
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null)
     {
         if (
-            !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
-            )
+        !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
+        )
         ) {
             $this->denyAccess();
 
@@ -400,7 +363,7 @@ class ReservationController
      */
     public function removeBillingAddressAction(Reservation $reservation)
     {
-     if ($billingAddress = $reservation->getBillingAddress()) {
+        if ($billingAddress = $reservation->getBillingAddress()) {
             $reservation->removeBillingAddress();
             $this->billingAddressRepository->remove($billingAddress);
             $this->addFlashMessage(

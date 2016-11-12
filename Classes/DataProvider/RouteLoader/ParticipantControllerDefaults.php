@@ -33,7 +33,8 @@ class ParticipantControllerDefaults implements RouteLoaderDataProviderInterface
     {
         $configuration = [];
         $methods = [
-            'update' => 'edit'
+            'update' => 'edit',
+            'create' => 'edit'
         ];
         $prefix = ParticipantController::class . Route::ORIGIN_SEPARATOR;
 

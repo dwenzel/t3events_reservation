@@ -16,9 +16,13 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
-use DWenzel\T3events\Controller\AbstractController;
+use DWenzel\T3events\Controller\DemandTrait;
+use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
 use DWenzel\T3events\Controller\RoutingTrait;
+use DWenzel\T3events\Controller\SearchTrait;
+use DWenzel\T3events\Controller\SettingsUtilityTrait;
+use DWenzel\T3events\Controller\TranslateTrait;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 
@@ -29,30 +33,18 @@ use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
  * @package CPSIT\T3eventsReservation\Controller
  */
 class ContactController
-    extends AbstractController
+    extends ActionController
     implements AccessControlInterface
 {
-    use ReservationAccessTrait, RoutingTrait;
+    use ContactRepositoryTrait, DemandTrait,
+        EntityNotFoundHandlerTrait, ReservationAccessTrait,
+        RoutingTrait, SearchTrait, SettingsUtilityTrait,
+        TranslateTrait;
 
     /**
      * @const parent controller
      */
     const PARENT_CONTROLLER_NAME = 'Reservation';
-
-    /**
-     * @var ContactRepository
-     */
-    protected $contactRepository;
-
-    /**
-     * Injects the contact repository
-     *
-     * @param ContactRepository $contactRepository
-     */
-    public function injectContactRepository(ContactRepository $contactRepository)
-    {
-        $this->contactRepository = $contactRepository;
-    }
 
     /**
      * New contact
@@ -87,8 +79,7 @@ class ContactController
     {
         $this->contactRepository->add($contact);
 
-        if ($reservation = $contact->getReservation())
-        {
+        if ($reservation = $contact->getReservation()) {
             $reservation->setContact($contact);
         }
         $this->dispatch(['reservation' => $reservation]);

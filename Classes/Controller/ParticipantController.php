@@ -14,39 +14,89 @@ namespace CPSIT\T3eventsReservation\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
-use DWenzel\T3events\Controller\AbstractController;
+use DWenzel\T3events\Controller\DemandTrait;
+use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
+use DWenzel\T3events\Controller\PerformanceRepositoryTrait;
+use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Controller\RoutingTrait;
+use DWenzel\T3events\Controller\SearchTrait;
+use DWenzel\T3events\Controller\SettingsUtilityTrait;
+use DWenzel\T3events\Controller\TranslateTrait;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
 
 /**
  * Class ParticipantController
+ * Creates, updates and deletes participants for reservations.
  * This should be used as child controller of ReservationController only
  *
  * @package CPSIT\T3eventsReservation\Controller
  */
 class ParticipantController
-    extends AbstractController
+    extends ActionController
     implements AccessControlInterface
 {
-    use ReservationAccessTrait, RoutingTrait;
+    use DemandTrait, EntityNotFoundHandlerTrait,
+        PerformanceRepositoryTrait, PersonRepositoryTrait,
+        PersistenceManagerTrait, ReservationAccessTrait,
+        ReservationRepositoryTrait, RoutingTrait,
+        SettingsUtilityTrait, TranslateTrait, SearchTrait;
     const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
-     * @var PersonRepository
+     * New participant action
+     *
+     * @param Reservation $reservation
+     * @param Person|null $participant
+     * @ignorevalidation $participant
      */
-    protected $participantRepository;
+    public function newAction(Reservation $reservation, Person $participant = null)
+    {
+        $originalRequest = $this->request->getOriginalRequest();
+        if (
+            $originalRequest instanceof Request
+            && $originalRequest->hasArgument('participant')
+        ) {
+            $participant = $originalRequest->getArgument('participant');
+        }
+
+        $templateVariables = [
+            'participant' => $participant,
+            'reservation' => $reservation
+        ];
+        $this->view->assignMultiple($templateVariables);
+    }
 
     /**
-     * Injects the participant repository
+     * Create participant action
      *
-     * @param PersonRepository $participantRepository
+     * @param Reservation $reservation
+     * @param Person $participant
      */
-    public function injectParticipantRepository(PersonRepository $participantRepository)
+    public function createAction(Reservation $reservation, Person $participant)
     {
-        $this->participantRepository = $participantRepository;
+        $lesson = $reservation->getLesson();
+        $messageKey = 'message.participant.create.failure.notBookable';
+        if ($lesson instanceof BookableInterface) {
+            $messageKey = 'message.participant.create.failure.noFreePlaces';
+            if ($lesson->getFreePlaces()) {
+                $participant->setReservation($reservation);
+                $participant->setType(Person::PERSON_TYPE_PARTICIPANT);
+                $reservation->addParticipant($participant);
+                $lesson->addParticipant($participant);
+                $this->reservationRepository->update($reservation);
+                $this->performanceRepository->update($lesson);
+                $this->persistenceManager->persistAll();
+                $messageKey = 'message.participant.create.success';
+            }
+        }
+        $this->addFlashMessage($this->translate($messageKey));
+
+        $this->dispatch(['reservation' => $reservation]);
     }
 
     /**
@@ -77,7 +127,7 @@ class ParticipantController
      */
     public function updateAction(Person $participant)
     {
-        $this->participantRepository->update($participant);
+        $this->personRepository->update($participant);
         $this->dispatch(['reservation' => $participant->getReservation()]);
     }
 
