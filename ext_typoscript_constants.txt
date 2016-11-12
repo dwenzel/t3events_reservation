@@ -1,12 +1,12 @@
 module.tx_t3eventsreservation {
 	view {
-		templateRootPaths.0 = EXT:t3events_reservation/Resources/Private/Templates/
+		templateRootPaths{
+		    10 = EXT:t3events_reservation/Resources/Private/Templates/
+		}
 		partialRootPaths {
-			0 = EXT:t3events/Resources/Private/Partials/
 			10 = EXT:t3events_reservation/Resources/Private/Partials/
 		}
 		layoutRootPaths {
-            0 = EXT:t3events/Resources/Private/Layouts/Backend/
             10 = EXT:t3events_reservation/Resources/Private/Layouts/Backend/
         }
 	}

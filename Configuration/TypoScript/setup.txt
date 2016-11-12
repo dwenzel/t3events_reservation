@@ -1,14 +1,16 @@
 plugin.tx_t3eventsreservation {
 	view {
-		templateRootPath = {$plugin.tx_t3eventsreservation.view.templateRootPath}
 		templateRootPaths {
 			10 = {$plugin.tx_t3eventsreservation.view.templateRootPath}
+			20 = {$plugin.tx_t3events.view.templateRootPath}
 		}
 		partialRootPaths {
 			10 = {$plugin.tx_t3eventsreservation.view.partialRootPath}
+			20 = {$plugin.tx_t3events.view.partialRootPath}
 		}
 		layoutRootPaths {
 			10 = {$plugin.tx_t3eventsreservation.view.layoutRootPath}
+			20 = {$plugin.tx_t3events.view.layoutRootPath}
 		}
 	}
 

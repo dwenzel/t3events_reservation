@@ -4,7 +4,7 @@
 	<h1>{f:translate(key: 'title.confirmReservation')}</h1>
 	<f:render partial="Reservation/LessonProperties" arguments="{lesson: '{reservation.lesson}'}" />
 
-	<f:flashMessages renderMode="div" />
+	<f:flashMessages />
 	<f:render partial="Reservation/Properties" arguments="{reservation:reservation}" />
 
 	<f:form action="confirm"

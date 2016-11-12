@@ -50,10 +50,28 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3eventsreservation_domain_model_reservation');
 
 // add sprite icons
-\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-	[
-		'download-excel-white' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_white.png',
-		'download-excel-blue' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_blue.png',
-	],
-	$_EXTKEY
-);
+if (class_exists(\TYPO3\CMS\Backend\Sprite\SpriteManager::class)) {
+    $icons = [
+        'download-excel-white' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_white.png',
+        'download-excel-blue' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_blue.png',
+    ];
+    \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
+        $icons,
+        $_EXTKEY
+    );
+}
+if (class_exists(\TYPO3\CMS\Core\Imaging\IconRegistry::class)) {
+    $icons = [
+        'download-excel-white' => 'Resources/Public/Icons/icon_excel_white.png',
+        'download-excel-blue' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_blue.png',
+    ];
+    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    foreach ($icons as $identifier=>$path) {
+        $iconRegistry->registerIcon(
+            $identifier,
+            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            ['source' => 'EXT:' . $_EXTKEY . $path]
+        );
+    }
+}

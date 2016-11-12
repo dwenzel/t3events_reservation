@@ -11,7 +11,7 @@
     <h1>{f:translate(key: 'header.participants', default: 'Participants')}</h1>
     <f:render partial="Backend/Common/SearchForm"
               arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
-    <f:flashMessages renderMode="div"/>
+    <f:flashMessages />
     <div class="panel panel-space panel-default recordlist">
         <table class="typo3-dblist nowrap tx_t3eventsreservation">
             <thead>
