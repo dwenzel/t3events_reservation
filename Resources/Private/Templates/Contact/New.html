@@ -1,0 +1,19 @@
+<f:layout name="Default" />
+<f:section name="main">
+	<h1>{f:translate(key: 'header.newContact', default: 'header.newContact')}</h1>
+
+	<f:flashMessages />
+	<f:render partial="FormErrors" arguments="{object:Contact}" />
+
+	<f:form action="create"
+            name="contact"
+            object="{contact}"
+            controller="Contact"
+            noCacheHash="TRUE">
+        <f:form.hidden property="reservation" value="reservation" />
+		<f:render
+				partial="Contact/FormFields"
+                arguments="{contact: contact}" />
+		<f:form.submit value="{f:translate(key: 'button.save', default: 'button.save')}" />
+	</f:form>
+</f:section>

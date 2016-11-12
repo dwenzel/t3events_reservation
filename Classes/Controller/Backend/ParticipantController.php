@@ -1,9 +1,22 @@
 <?php
 namespace CPSIT\T3eventsReservation\Controller\Backend;
 
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use CPSIT\T3eventsReservation\Controller\ParticipantDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
-use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use DWenzel\T3events\Controller\AudienceRepositoryTrait;
 use DWenzel\T3events\Controller\CategoryRepositoryTrait;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
@@ -17,30 +30,10 @@ use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
 use DWenzel\T3events\Controller\VenueRepositoryTrait;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Controller\FilterableControllerTrait;
-
-/***************************************************************
- *  Copyright notice
- *  (c) 2014 Dirk Wenzel <wenzel@cps-it.de>, CPS IT
- *           Boerge Franck <franck@cps-it.de>, CPS IT
- *  All rights reserved
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
 /**
  * Class ParticipantController
@@ -48,130 +41,111 @@ use DWenzel\T3events\Controller\FilterableControllerTrait;
  * @package CPSIT\T3eventsReservation\Controller\Backend
  */
 class ParticipantController extends AbstractBackendController
-	implements FilterableControllerInterface {
-	use EntityNotFoundHandlerTrait, TranslateTrait, ReservationRepositoryTrait,
-        SearchTrait, DemandTrait, AudienceRepositoryTrait,
-        EventTypeRepositoryTrait, GenreRepositoryTrait, VenueRepositoryTrait,
-        ModuleDataTrait, DownloadTrait,
-        NotificationRepositoryTrait,
-        FilterableControllerTrait, PersonRepositoryTrait,
-        CategoryRepositoryTrait, CompanyRepositoryTrait;
+    implements FilterableControllerInterface
+{
+    use
+        AudienceRepositoryTrait, CategoryRepositoryTrait,
+        CompanyRepositoryTrait, DemandTrait, DownloadTrait,
+        EntityNotFoundHandlerTrait, EventTypeRepositoryTrait,
+        FilterableControllerTrait, GenreRepositoryTrait,
+        ModuleDataTrait, NotificationRepositoryTrait,
+        PersonRepositoryTrait, ParticipantDemandFactoryTrait,
+        ReservationRepositoryTrait, SearchTrait,
+        TranslateTrait, VenueRepositoryTrait;
 
-	/**
-	 * List action
-	 *
-	 * @param array $overwriteDemand
-	 * @return void
-	 */
-	public function listAction(array $overwriteDemand = null) {
-		$demand = $this->createDemandFromSettings($this->settings);
-		$filterOptions = $this->getFilterOptions($this->settings['filter']);
+    /**
+     * @var string
+     */
+    protected $errorMessage = 'unknownError';
 
-		if ($overwriteDemand === null) {
-			$overwriteDemand = $this->moduleData->getOverwriteDemand();
-		} else {
-			$this->moduleData->setOverwriteDemand($overwriteDemand);
-		}
+    /**
+     * List action
+     *
+     * @param array $overwriteDemand
+     * @return void
+     */
+    public function listAction(array $overwriteDemand = null)
+    {
+        $demand = $this->demandFactory->createFromSettings($this->settings);
+        $filterOptions = $this->getFilterOptions($this->settings['filter']);
 
-		$this->overwriteDemandObject($demand, $overwriteDemand);
-		$this->moduleData->setDemand($demand);
+        if ($overwriteDemand === null) {
+            $overwriteDemand = $this->moduleData->getOverwriteDemand();
+        } else {
+            $this->moduleData->setOverwriteDemand($overwriteDemand);
+        }
 
-		$participants = $this->personRepository->findDemanded($demand);
+        $this->overwriteDemandObject($demand, $overwriteDemand);
+        $this->moduleData->setDemand($demand);
 
-		$this->view->assignMultiple(
-			[
-				'participants' => $participants,
-				'overwriteDemand' => $overwriteDemand,
-				'demand' => $demand,
-				'filterOptions' => $filterOptions
-			]
-		);
-	}
+        $participants = $this->personRepository->findDemanded($demand);
 
-	/**
-	 * Download action
-	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Schedule $schedule
-	 * @ignorevalidation $schedule
-	 * @param string $ext File extension for download
-	 * @return string
-	 */
-	public function downloadAction($schedule = null, $ext = 'csv') {
-		if (is_null($schedule)) {
-			$demand = $this->createDemandFromSettings($this->settings);
-			$this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
-			$participants = $this->personRepository->findDemanded($demand);
-		} else {
-			$participants = $schedule->getParticipants();
-			$participants->rewind();
-			/** @var Person $objectForFileName */
-			$objectForFileName = $participants->current();
-		}
-		$this->view->assign('participants', $participants);
+        $this->view->assignMultiple(
+            [
+                'participants' => $participants,
+                'overwriteDemand' => $overwriteDemand,
+                'demand' => $demand,
+                'filterOptions' => $filterOptions
+            ]
+        );
+    }
 
-		return $this->getContentForDownload($ext, $objectForFileName);
-	}
+    /**
+     * Download action
+     *
+     * @param \CPSIT\T3eventsReservation\Domain\Model\Schedule $schedule
+     * @ignorevalidation $schedule
+     * @param string $ext File extension for download
+     * @return string
+     */
+    public function downloadAction($schedule = null, $ext = 'csv')
+    {
+        if (is_null($schedule)) {
+            $demand = $this->demandFactory->createFromSettings($this->settings);
+            $this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
+            $participants = $this->personRepository->findDemanded($demand);
+        } else {
+            $participants = $schedule->getParticipants();
+            $participants->rewind();
+            /** @var Person $objectForFileName */
+            $objectForFileName = $participants->current();
+        }
+        $this->view->assign('participants', $participants);
 
-	/**
-	 * Returns custom error flash messages, or
-	 * display no flash message at all on errors.
-	 *
-	 * @return string|boolean The flash message or false if no flash message should be set
-	 * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
-	 */
-	protected function getErrorFlashMessage() {
-		$key = 'error' . '.participant.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
-		$message = $this->translate($key);
-		if ($message == null) {
-			return false;
-		} else {
-			return $message;
-		}
-	}
+        return $this->getContentForDownload($ext, $objectForFileName);
+    }
 
-	/**
-	 * Create demand from settings
-	 *
-	 * @param array $settings
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
-	 */
-	protected function createDemandFromSettings($settings) {
-		/**@var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
-		$demand = $this->objectManager->get(PersonDemand::class);
-		$demand->setTypes((string) Person::PERSON_TYPE_PARTICIPANT);
-		foreach ($settings as $propertyName => $propertyValue) {
-			if (empty($propertyValue)) {
-				continue;
-			}
-			switch ($propertyName) {
-				case 'maxItems':
-					$demand->setLimit($propertyValue);
-					break;
-				case 'category':
-					$demand->setCategories($propertyValue);
-					break;
-				// all following fall through (see below)
-				case 'periodType':
-				case 'periodStart':
-				case 'periodEndDate':
-				case 'periodDuration':
-				case 'search':
-					break;
-				default:
-					if (ObjectAccess::isPropertySettable($demand, $propertyName)) {
-						ObjectAccess::setProperty($demand, $propertyName, $propertyValue);
-					}
-			}
-		}
+    /**
+     * Returns custom error flash messages, or
+     * display no flash message at all on errors.
+     *
+     * @return string|boolean The flash message or false if no flash message should be set
+     * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+     */
+    protected function getErrorFlashMessage()
+    {
+        $key = 'error' . '.participant.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
+        // todo use correct extension key t3events_course
+        $message = $this->translate($key);
+        if ($message == null) {
+            return false;
+        }
 
-		if ($demand->getLessonPeriod() === 'futureOnly'
-			OR $demand->getLessonPeriod() === 'pastOnly'
-		) {
-			$timeZone = new \DateTimeZone(date_default_timezone_get());
-			$demand->setLessonDate(new \DateTime('midnight', $timeZone));
-		}
+        return $message;
+    }
 
-		return $demand;
-	}
+    /**
+     * Create demand from settings
+     * This method is only for backwards compatibility
+     *
+     * @param array $settings
+     * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand
+     * @deprecated Use ParticipantDemandFactory with $this->demandFactory->createFromSettings
+     * instead (provided by ParticipantDemandFactoryTrait)
+     */
+    protected function createDemandFromSettings($settings)
+    {
+        return $this->demandFactory->createFromSettings($settings);
+    }
 
 }
