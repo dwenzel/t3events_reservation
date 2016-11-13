@@ -35,7 +35,7 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 class ParticipantControllerTest extends UnitTestCase
 {
     /**
-     * @var ParticipantController
+     * @var ParticipantController|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
@@ -59,6 +59,7 @@ class ParticipantControllerTest extends UnitTestCase
         );
         $this->mockRequest();
         $this->mockView();
+        $this->mockPersonRepository();
         $this->mockPerformanceRepository();
         $this->mockReservationRepository();
         $this->persistenceManager = $this->getMockForAbstractClass(
@@ -208,6 +209,23 @@ class ParticipantControllerTest extends UnitTestCase
         $mockReservation->expects($this->atLeastOnce())
             ->method('getLesson')
             ->will($this->returnValue($bookableItem));
+        return $mockReservation;
+    }
+
+    /**
+     * @return Reservation|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function mockReservationWithLesson()
+    {
+        $mockReservation = $this->getMock(
+            Reservation::class, ['getLesson']
+        );
+        $mockLesson = $this->getMockForAbstractClass(
+            BookableInterface::class
+        );
+        $mockReservation->expects($this->atLeastOnce())
+            ->method('getLesson')
+            ->will($this->returnValue($mockLesson));
         return $mockReservation;
     }
 
@@ -518,6 +536,112 @@ class ParticipantControllerTest extends UnitTestCase
             ->with($translatedMessage);
 
         $this->subject->createAction($mockReservation, $mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeActionRemovesParticipantFromReservation()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockReservation = $this->getMock(
+            Reservation::class, ['removeParticipant']
+        );
+        $mockReservation->expects($this->once())
+            ->method('removeParticipant')
+            ->with($mockParticipant);
+
+        $this->subject->removeAction($mockReservation, $mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeActionRemovesParticipantFromLesson()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockReservation = $this->getMock(
+            Reservation::class, ['getLesson']
+        );
+        $mockLesson = $this->getMockForAbstractClass(
+            BookableInterface::class, ['removeParticipant']
+        );
+        $mockReservation->expects($this->atLeastOnce())
+            ->method('getLesson')
+            ->will($this->returnValue($mockLesson));
+        $mockLesson->expects($this->once())
+            ->method('removeParticipant')
+            ->with($mockParticipant);
+
+        $this->subject->removeAction($mockReservation, $mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeActionRemovesParticipantFromRepository()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockReservation = $this->mockReservationWithLesson();
+        $mockRepository = $this->mockPersonRepository();
+        $mockRepository->expects($this->once())
+            ->method('remove')
+            ->with($mockParticipant);
+
+        $this->subject->removeAction($mockReservation, $mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeActionUpdatesReservationInRepository()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockReservation = $this->mockReservationWithLesson();
+        $mockRepository = $this->mockReservationRepository();
+        $mockRepository->expects($this->once())
+            ->method('update')
+            ->with($mockReservation);
+
+        $this->subject->removeAction($mockReservation, $mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeActionAddsFlashMessage()
+    {
+        $translatedMessage = 'foo';
+        $mockParticipant = $this->getMock(Person::class);
+        $mockReservation = $this->mockReservationWithLesson();
+
+        $this->subject->expects($this->once())
+            ->method('translate')
+            ->with('message.participant.remove.success')
+            ->will($this->returnValue($translatedMessage));
+
+        $this->subject->expects($this->once())
+            ->method('addFlashMessage')
+            ->with($translatedMessage);
+
+        $this->subject->removeAction($mockReservation, $mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeActionCallsDispatch()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockReservation = $this->getMock(
+            Reservation::class
+        );
+
+        $this->subject->expects($this->once())
+            ->method('dispatch')
+            ->with(['reservation' => $mockReservation]);
+
+        $this->subject->removeAction($mockReservation, $mockParticipant);
     }
 
 }

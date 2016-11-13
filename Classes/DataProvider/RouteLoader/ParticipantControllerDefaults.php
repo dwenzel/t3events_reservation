@@ -32,15 +32,18 @@ class ParticipantControllerDefaults implements RouteLoaderDataProviderInterface
     public function getConfiguration()
     {
         $configuration = [];
+        // origin => target
         $methods = [
             'update' => 'edit',
-            'create' => 'edit'
+            'create' => 'edit',
+            'remove' => 'edit'
         ];
         $prefix = ParticipantController::class . Route::ORIGIN_SEPARATOR;
 
         foreach ($methods as $origin => $actionName) {
             $options = [
                 'actionName' => $actionName,
+                // default target controller
                 'controllerName' => ParticipantController::PARENT_CONTROLLER_NAME,
                 'extensionName' => null,
                 'arguments' => null,

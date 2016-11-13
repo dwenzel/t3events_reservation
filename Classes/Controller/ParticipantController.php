@@ -131,4 +131,24 @@ class ParticipantController
         $this->dispatch(['reservation' => $participant->getReservation()]);
     }
 
+
+    /**
+     * Removes a participant from the reservation its
+     * lesson and deletes it.
+     *
+     * @param Reservation $reservation
+     * @param Person $participant
+     */
+    public function removeAction(Reservation $reservation, Person $participant)
+    {
+        $reservation->removeParticipant($participant);
+        $lesson = $reservation->getLesson();
+        if ($lesson instanceof BookableInterface) {
+            $lesson->removeParticipant($participant);
+        }
+        $this->personRepository->remove($participant);
+        $this->reservationRepository->update($reservation);
+        $this->addFlashMessage($this->translate('message.participant.remove.success'));
+        $this->dispatch(['reservation' => $reservation]);
+    }
 }
