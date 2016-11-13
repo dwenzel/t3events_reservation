@@ -10,7 +10,8 @@ if (!defined('TYPO3_MODE')) {
         'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,
 		newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update,error',
         'Participant' => 'edit,update,error',
-        'Contact' => 'new,edit,create,update,error'
+        'Contact' => 'new,edit,create,update,remove,error',
+        'BillingAddress' => 'new,edit,create,update,remove,error',
     ]
     ,
     // non-cacheable actions
@@ -18,7 +19,8 @@ if (!defined('TYPO3_MODE')) {
         'Reservation' => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,
 		newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update,error',
         'Participant' => 'edit,update,error',
-        'Contact' => 'new,edit,create,update,error'
+        'Contact' => 'new,edit,create,update,remove,error',
+        'BillingAddress' => 'new,edit,create,update,remove,error',
     ]
 );
 
@@ -32,7 +34,8 @@ $routeLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DWenzel\T3e
 $dataProviderClasses = [
     \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ReservationControllerDefaults::class,
     \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ParticipantControllerDefaults::class,
-    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ContactControllerDefaults::class
+    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\ContactControllerDefaults::class,
+    \CPSIT\T3eventsReservation\DataProvider\RouteLoader\BillingAddressControllerDefaults::class
 ];
 foreach ($dataProviderClasses as $providerClass) {
     $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($providerClass);
