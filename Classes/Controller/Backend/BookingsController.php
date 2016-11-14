@@ -59,6 +59,11 @@ class BookingsController extends AbstractBackendController
         TranslateTrait, VenueRepositoryTrait;
 
     /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY =  't3events_reservation';
+
+    /**
      * List action
      *
      * @param array $overwriteDemand

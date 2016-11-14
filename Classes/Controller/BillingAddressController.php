@@ -43,7 +43,13 @@ class BillingAddressController
         ReservationAccessTrait, ReservationRepositoryTrait,
         RoutingTrait, SettingsUtilityTrait,
         SearchTrait, TranslateTrait;
+
     const PARENT_CONTROLLER_NAME = 'Reservation';
+
+    /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY =  't3events_reservation';
 
     /**
      * New billing address action
@@ -82,7 +88,6 @@ class BillingAddressController
 
         $this->dispatch(['reservation' => $reservation]);
     }
-
 
     /**
      * Edit a billing address

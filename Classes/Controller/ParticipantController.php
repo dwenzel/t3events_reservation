@@ -45,7 +45,13 @@ class ParticipantController
         PersistenceManagerTrait, ReservationAccessTrait,
         ReservationRepositoryTrait, RoutingTrait,
         SettingsUtilityTrait, TranslateTrait, SearchTrait;
+
     const PARENT_CONTROLLER_NAME = 'Reservation';
+
+    /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY =  't3events_reservation';
 
     /**
      * New participant action

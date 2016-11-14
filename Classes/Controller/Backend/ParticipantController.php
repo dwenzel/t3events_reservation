@@ -54,6 +54,11 @@ class ParticipantController extends AbstractBackendController
         TranslateTrait, VenueRepositoryTrait;
 
     /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY =  't3events_reservation';
+
+    /**
      * @var string
      */
     protected $errorMessage = 'unknownError';

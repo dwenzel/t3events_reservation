@@ -62,6 +62,11 @@ class ReservationController
     const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
 
     /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY =  't3events_reservation';
+
+    /**
      * Notification Service
      *
      * @var \DWenzel\T3events\Service\NotificationService
@@ -488,20 +493,5 @@ class ReservationController
         $reservation->addNotification($notification);
 
         return $this->notificationService->send($notification);
-    }
-
-
-    /**
-     * Translate a given key
-     *
-     * @param string $key
-     * @param string $extension
-     * @param array $arguments
-     * @codeCoverageIgnore
-     * @return string
-     */
-    public function translate($key, $extension = 't3events_reservation', $arguments = null)
-    {
-        return parent::translate($key, $extension, $arguments);
     }
 }

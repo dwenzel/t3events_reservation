@@ -47,6 +47,11 @@ class ContactController
     const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY =  't3events_reservation';
+
+    /**
      * New contact
      *
      * @param Contact|null $contact
