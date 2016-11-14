@@ -151,17 +151,6 @@ class ReservationController
             $contact->setReservation($newReservation);
         }
         $newReservation->setStatus(Reservation::STATUS_DRAFT);
-        if ($newReservation->getContactIsParticipant() && is_object($contact)) {
-            $participant = new Person();
-            foreach (ObjectAccess::getGettableProperties($contact) as $propertyName => $propertyValue) {
-                if (ObjectAccess::isPropertySettable($participant, $propertyName)) {
-                    ObjectAccess::setProperty($participant, $propertyName, $propertyValue);
-                }
-            }
-            $participant->setType(Person::PERSON_TYPE_PARTICIPANT);
-            $newReservation->addParticipant($participant);
-            $newReservation->getLesson()->addParticipant($participant);
-        }
         $this->addFlashMessage(
             $this->translate('message.reservation.create.success')
         );

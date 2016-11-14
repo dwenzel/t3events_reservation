@@ -21,6 +21,7 @@ use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
 use DWenzel\T3events\Controller\RoutingTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
+use DWenzel\T3events\Controller\SignalInterface;
 use DWenzel\T3events\Controller\TranslateTrait;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
@@ -34,7 +35,7 @@ use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
  */
 class ContactController
     extends ActionController
-    implements AccessControlInterface
+    implements AccessControlInterface, SignalInterface
 {
     use ContactRepositoryTrait, DemandTrait,
         EntityNotFoundHandlerTrait, ReservationAccessTrait,
