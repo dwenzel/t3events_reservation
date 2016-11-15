@@ -51,10 +51,9 @@ class PersonDemandFactoryTest extends UnitTestCase
     }
 
     /**
-     * @param $settings
-     * @return \DWenzel\T3events\Domain\Model\Dto\DemandInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return \DWenzel\T3events\Domain\Model\Dto\DemandInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function mockObjectManagerCreatesDemand($settings)
+    protected function mockObjectManagerCreatesDemand()
     {
         /** @var PersonDemand $mockDemand */
         $mockDemand = $this->getMock(
@@ -135,7 +134,7 @@ class PersonDemandFactoryTest extends UnitTestCase
         $settings = [
             $propertyName => $settingsValue
         ];
-        $this->mockObjectManagerCreatesDemand($settings);
+        $this->mockObjectManagerCreatesDemand();
         $createdDemand = $this->subject->createFromSettings($settings);
 
         $this->assertAttributeSame(
@@ -169,7 +168,7 @@ class PersonDemandFactoryTest extends UnitTestCase
         $settings = [
             $settingsKey => $settingsValue
         ];
-        $this->mockObjectManagerCreatesDemand($settings);
+        $this->mockObjectManagerCreatesDemand();
         $createdDemand = $this->subject->createFromSettings($settings);
 
         $this->assertAttributeSame(
@@ -187,7 +186,8 @@ class PersonDemandFactoryTest extends UnitTestCase
         return [
             ['foo', ''],
             ['search', 'bar'],
-            ['types', '9,4']
+            ['types', '9,4'],
+            ['lessonDeadline', 'midnight']
         ];
     }
 
@@ -201,18 +201,22 @@ class PersonDemandFactoryTest extends UnitTestCase
      */
     public function createFromSettingsDoesNotSetSkippedValues($propertyName, $propertyValue)
     {
+        $objectManager = $this->mockObjectManager();
         $settings = [
             $propertyName => $propertyValue
         ];
-        $mockDemand = $this->mockObjectManagerCreatesDemand($settings);
+        $method = 'set' . ucfirst($propertyName);
 
-        $createdDemand = $this->subject->createFromSettings($settings);
-
-
-        $this->assertEquals(
-            $createdDemand,
-            $mockDemand
+        $mockDemand = $this->getMock(
+            PersonDemand::class, [$method]
         );
+        $objectManager->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($mockDemand));
+        $mockDemand->expects($this->any())
+            ->method($method)
+            ->with($this->logicalNot($this->equalTo($propertyValue)));
+        $this->subject->createFromSettings($settings);
     }
 
     /**
@@ -226,7 +230,7 @@ class PersonDemandFactoryTest extends UnitTestCase
         ];
         $expectedOrder = 'foo|bar';
 
-        $this->mockObjectManagerCreatesDemand($settings);
+        $this->mockObjectManagerCreatesDemand();
 
         $createdDemand = $this->subject->createFromSettings($settings);
 
@@ -263,7 +267,7 @@ class PersonDemandFactoryTest extends UnitTestCase
             'lessonPeriod' => $lessonPeriod
         ];
 
-        $this->mockObjectManagerCreatesDemand($settings);
+        $this->mockObjectManagerCreatesDemand();
         /** @var PersonDemand $createdDemand */
         $createdDemand = $this->subject->createFromSettings($settings);
 
@@ -273,4 +277,25 @@ class PersonDemandFactoryTest extends UnitTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function createFromSettingsSetsLessonDeadline()
+    {
+        $settings = [
+            'lessonDeadline' => 'yesterday'
+        ];
+
+        $timeZone = new \DateTimeZone(date_default_timezone_get());
+        $expectedDeadline = new \DateTime($settings['lessonDeadline'], $timeZone);
+
+        $this->mockObjectManagerCreatesDemand();
+        /** @var PersonDemand $createdDemand */
+        $createdDemand = $this->subject->createFromSettings($settings);
+
+        $this->assertEquals(
+            $expectedDeadline,
+            $createdDemand->getLessonDeadline()
+        );
+    }
 }

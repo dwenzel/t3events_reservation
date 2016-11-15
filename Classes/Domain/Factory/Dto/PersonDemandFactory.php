@@ -57,7 +57,7 @@ class PersonDemandFactory
      * @var array
      */
     static protected $compositeProperties = [
-        'search', 'types'
+        'search', 'types', 'lessonDeadline'
     ];
 
     /**
@@ -76,6 +76,13 @@ class PersonDemandFactory
         }
 
         $this->applySettings($demand, $settings);
+
+        if (!empty($settings['lessonDeadline'])){
+            $timeZone = new \DateTimeZone(date_default_timezone_get());
+            $demand->setLessonDeadline(
+                new \DateTime($settings['lessonDeadline'], $timeZone)
+            );
+        }
 
         if ($demand->getLessonPeriod() === 'futureOnly'
             OR $demand->getLessonPeriod() === 'pastOnly'
