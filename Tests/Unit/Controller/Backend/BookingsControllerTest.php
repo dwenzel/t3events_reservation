@@ -4,11 +4,13 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller\Backend;
 use CPSIT\T3eventsReservation\Controller\Backend\BookingsController;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\ReservationDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Domain\Model\Dto\ModuleData;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -68,7 +70,7 @@ class BookingsControllerTest extends UnitTestCase
         );
         $this->moduleData = $this->getMock(
             ModuleData::class,
-            ['getOverwriteDemand', 'setOverwriteDemand']
+            ['getOverwriteDemand', 'setOverwriteDemand', 'setDemand']
         );
         $this->inject($this->subject, 'moduleData', $this->moduleData);
         $this->reservationRepository = $this->getMock(
@@ -124,5 +126,58 @@ class BookingsControllerTest extends UnitTestCase
             ->with($demand, $overwriteDemand);
 
         $this->subject->listAction($overwriteDemand);
+    }
+
+    /**
+     * @test
+     */
+    public function listActionSetsDemandInModuleData()
+    {
+        $demand = $this->getMock(ReservationDemand::class);
+        $this->demandFactory->expects($this->once())
+            ->method('createFromSettings')
+            ->with($this->settings)
+            ->will($this->returnValue($demand));
+        $this->moduleData->expects($this->once())
+            ->method('setDemand')
+            ->with($demand);
+
+        $this->subject->listAction();
+    }
+
+    /**
+     * @test
+     */
+    public function listActionAssignsVariablesToView()
+    {
+        $settings = [
+            'filter' => ['foo']
+        ];
+        $this->inject($this->subject, 'settings', $settings);
+        $filterOptions = ['bar'];
+        $reservations = $this->getMockForAbstractClass(QueryResultInterface::class);
+        $demand = $this->getMock(ReservationDemand::class);
+        $this->demandFactory->expects($this->once())
+            ->method('createFromSettings')
+            ->with($settings)
+            ->will($this->returnValue($demand));
+        $this->reservationRepository->expects($this->once())
+            ->method('findDemanded')
+            ->with($demand)
+            ->will($this->returnValue($reservations));
+        $this->subject->expects($this->once())
+            ->method('getFilterOptions')
+            ->with($settings['filter'])
+            ->will($this->returnValue($filterOptions));
+        $expectedVariables = [
+            'reservations' => $reservations,
+            'overwriteDemand' => null,
+            'demand' => $demand,
+            'filterOptions' => $filterOptions
+        ];
+        $this->view->expects($this->once())
+            ->method('assignMultiple')
+            ->with($expectedVariables);
+        $this->subject->listAction();
     }
 }

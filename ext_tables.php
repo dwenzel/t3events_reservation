@@ -19,8 +19,7 @@ if (TYPO3_MODE === 'BE') {
 		'm1',
 		'',
 		[
-			'Backend\Bookings' => 'list, show, edit, update, cancel, delete, newParticipant, createParticipant,
-			editParticipant, removeParticipant, newNotification, createNotification, reset, download',
+			'Backend\Bookings' => 'list,reset',
 		],
 		[
 			'access' => 'user,group',
@@ -35,7 +34,7 @@ if (TYPO3_MODE === 'BE') {
         'm3',
         '',
         [
-			'Backend\Participant' => 'list, download,reset',
+			'Backend\Participant' => 'list,reset',
 		],
 		[
 			'access' => 'user,group',
