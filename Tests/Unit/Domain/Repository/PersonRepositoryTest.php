@@ -413,5 +413,65 @@ class PersonRepositoryTest extends UnitTestCase {
 
         $this->subject->createConstraintsFromDemand($query, $demand);
     }
+
+    /**
+     * @test
+     */
+    public function createConstraintsFromDemandCreatesAudienceConstraints() {
+        $this->subject = $this->getAccessibleMock(
+            PersonRepository::class,
+            [   'createAudienceConstraints',
+                'combineConstraints'
+            ], [], '', false);
+        /** @var DemandInterface $demand */
+        $demand = $this->getMockForAbstractClass(
+            PersonDemand::class, [], '', true, true, true,
+            []
+        );
+        $query = $this->getMock(
+            QueryInterface::class,
+            [], [], '', false
+        );
+
+        $this->subject->expects($this->once())
+            ->method('createAudienceConstraints')
+            ->with($query, $demand);
+
+        $this->subject->createConstraintsFromDemand($query, $demand);
+    }
+
+    /**
+     * @test
+     */
+    public function createConstraintsFromDemandCombinesAudienceConstraints() {
+        $this->subject = $this->getAccessibleMock(
+            PersonRepository::class,
+            [
+                'createAudienceConstraints',
+                'combineConstraints'
+            ], [], '', false);
+        /** @var DemandInterface $demand */
+        $demand = $this->getMockForAbstractClass(
+            PersonDemand::class, [], '', true, true, true,
+            []
+        );
+        $query = $this->getMock(
+            QueryInterface::class,
+            [], [], '', false
+        );
+
+        $constraints = [];
+        $mockAudienceConstraints = ['foo'];
+
+        $this->subject->expects($this->once())
+            ->method('createAudienceConstraints')
+            ->will($this->returnValue($mockAudienceConstraints)
+            );
+        $this->subject->expects($this->once())
+            ->method('combineConstraints')
+            ->with($query, $constraints, $mockAudienceConstraints);
+
+        $this->subject->createConstraintsFromDemand($query, $demand);
+    }
 }
 
