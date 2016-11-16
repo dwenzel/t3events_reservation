@@ -93,7 +93,7 @@ class PersonRepositoryTest extends UnitTestCase {
         );
         $query = $this->getMock(
             Query::class,
-            ['greaterThan', 'logicalAnd'],
+            ['lessThan', 'logicalAnd'],
             [], '', false
         );
         $constraint = $this->getMockForAbstractClass(ConstraintInterface::class);
@@ -103,7 +103,7 @@ class PersonRepositoryTest extends UnitTestCase {
             ->method('getLessonDeadline')
             ->will($this->returnValue($dateTime));
         $query->expects($this->once())
-            ->method('greaterThan')
+            ->method('lessThan')
             ->with('reservation.lesson.deadline', $dateTime->getTimestamp())
             ->will($this->returnValue($constraint));
         $query->expects($this->once())

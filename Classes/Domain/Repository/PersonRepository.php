@@ -69,7 +69,7 @@ class PersonRepository
         $deadline = $demand->getLessonDeadline();
 		if (!empty($deadline)) {
 			$constraints[] = $query->logicalAnd(
-				$query->greaterThan(
+				$query->lessThan(
 				    'reservation.lesson.deadline',
                     $deadline->getTimestamp()
                 )
