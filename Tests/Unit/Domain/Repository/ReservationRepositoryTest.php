@@ -11,30 +11,30 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
+use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
-use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
+use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 
 /**
- * Test case for class \DWenzel\T3eventsReservation\Domain\Repository\PersonRepository.
+ * Test case for class \DWenzel\T3eventsReservation\Domain\Repository\ReservationRepository.
  *
  * @author Dirk Wenzel <dirk.wenzel@cps-it.de>
- * @coversDefaultClass \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
+ * @coversDefaultClass \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
  */
-class PersonRepositoryTest extends UnitTestCase {
+class ReservationRepositoryTest extends UnitTestCase {
 
 	/**
-	 * @var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository | \PHPUnit_Framework_MockObject_MockObject | \TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository | \PHPUnit_Framework_MockObject_MockObject | \TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $subject;
 
 	public function setUp() {
 		$this->subject = $this->getAccessibleMock(
-			PersonRepository::class,
+			ReservationRepository::class,
 			['dummy'], [], '', FALSE);
 	}
 
@@ -43,7 +43,7 @@ class PersonRepositoryTest extends UnitTestCase {
 	 * @covers ::createConstraintsFromDemand
 	 */
 	public function createConstraintsFromDemandInitiallyReturnsEmptyArray() {
-		$demand = $this->getMock(PersonDemand::class);
+		$demand = $this->getMock(ReservationDemand::class);
 		$query = $this->getMock(QueryInterface::class, [], [], '', FALSE);
 
 		$this->assertEquals(
@@ -52,35 +52,6 @@ class PersonRepositoryTest extends UnitTestCase {
 		);
 	}
 
-	/**
-     * @test
-     */
-	public function createConstraintsFromDemandAddsTypeConstraints()
-    {
-        $types = '1,3';
-        $demand = $this->getMock(
-            PersonDemand::class,
-            ['getTypes']
-        );
-        $query = $this->getMock(
-            Query::class,
-            ['equals', 'logicalAnd'],
-            [], '', false
-        );
-
-        $demand->expects($this->atLeastOnce())
-            ->method('getTypes')
-            ->will($this->returnValue($types));
-        $query->expects($this->exactly(2))
-            ->method('equals')
-            ->withConsecutive(
-                ['type', 1],
-                ['type', 3]
-            );
-
-        $this->subject->createConstraintsFromDemand($query, $demand);
-    }
-
     /**
      * @test
      */
@@ -88,7 +59,7 @@ class PersonRepositoryTest extends UnitTestCase {
     {
         $deadline = 'yesterday';
         $demand = $this->getMock(
-            PersonDemand::class,
+            ReservationDemand::class,
             ['getLessonDeadline']
         );
         $query = $this->getMock(
@@ -104,7 +75,7 @@ class PersonRepositoryTest extends UnitTestCase {
             ->will($this->returnValue($dateTime));
         $query->expects($this->once())
             ->method('lessThan')
-            ->with('reservation.lesson.deadline', $dateTime->getTimestamp())
+            ->with('lesson.deadline', $dateTime->getTimestamp())
             ->will($this->returnValue($constraint));
         $query->expects($this->once())
             ->method('logicalAnd')
@@ -113,19 +84,48 @@ class PersonRepositoryTest extends UnitTestCase {
         $this->subject->createConstraintsFromDemand($query, $demand);
     }
 
+    /**
+     * @test
+     */
+    public function createConstraintsFromDemandAddsMinAgeConstraints()
+    {
+        $minAge = 500;
+        $demand = $this->getMock(
+            ReservationDemand::class,
+            ['getMinAge']
+        );
+        $query = $this->getMock(
+            Query::class,
+            ['lessThan', 'logicalAnd'],
+            [], '', false
+        );
+        $constraint = $this->getMockForAbstractClass(ConstraintInterface::class);
+        $demand->expects($this->atLeastOnce())
+            ->method('getMinAge')
+            ->will($this->returnValue($minAge));
+        $query->expects($this->once())
+            ->method('lessThan')
+            ->with('tstamp', time() - $minAge)
+            ->will($this->returnValue($constraint));
+        $query->expects($this->once())
+            ->method('logicalAnd')
+            ->with($constraint);
+
+        $this->subject->createConstraintsFromDemand($query, $demand);
+    }
 
     /**
      * @test
      */
     public function createConstraintsFromDemandCreatesPeriodConstraints() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [   'createPeriodConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -145,14 +145,14 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCombinesPeriodConstraintsLogicalAnd() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [
                 'createPeriodConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -179,13 +179,13 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCreatesGenreConstraints() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [   'createGenreConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -205,14 +205,14 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCombinesGenreConstraintsLogicalAnd() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [
                 'createGenreConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -239,13 +239,13 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCreatesSearchConstraints() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [   'createSearchConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -265,14 +265,14 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCombinesSearchConstraintsLogicalOr() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [
                 'createSearchConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -299,13 +299,13 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCreatesEventTypeConstraints() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [   'createEventTypeConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -325,14 +325,14 @@ class PersonRepositoryTest extends UnitTestCase {
      */
     public function createConstraintsFromDemandCombinesEventTypeConstraints() {
         $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
+            ReservationRepository::class,
             [
                 'createEventTypeConstraints',
                 'combineConstraints'
             ], [], '', false);
         /** @var DemandInterface $demand */
         $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
+            ReservationDemand::class, [], '', true, true, true,
             []
         );
         $query = $this->getMock(
@@ -350,66 +350,6 @@ class PersonRepositoryTest extends UnitTestCase {
         $this->subject->expects($this->once())
             ->method('combineConstraints')
             ->with($query, $constraints, $mockEventTypeConstraints);
-
-        $this->subject->createConstraintsFromDemand($query, $demand);
-    }
-
-    /**
-     * @test
-     */
-    public function createConstraintsFromDemandCreatesCategoryConstraints() {
-        $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
-            [   'createCategoryConstraints',
-                'combineConstraints'
-            ], [], '', false);
-        /** @var DemandInterface $demand */
-        $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
-            []
-        );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
-
-        $this->subject->expects($this->once())
-            ->method('createCategoryConstraints')
-            ->with($query, $demand);
-
-        $this->subject->createConstraintsFromDemand($query, $demand);
-    }
-
-    /**
-     * @test
-     */
-    public function createConstraintsFromDemandCombinesCategoryConstraintsLogicalAnd() {
-        $this->subject = $this->getAccessibleMock(
-            PersonRepository::class,
-            [
-                'createCategoryConstraints',
-                'combineConstraints'
-            ], [], '', false);
-        /** @var DemandInterface $demand */
-        $demand = $this->getMockForAbstractClass(
-            PersonDemand::class, [], '', true, true, true,
-            []
-        );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
-
-        $constraints = [];
-        $mockCategoryConstraints = ['foo'];
-
-        $this->subject->expects($this->once())
-            ->method('createCategoryConstraints')
-            ->will($this->returnValue($mockCategoryConstraints)
-            );
-        $this->subject->expects($this->once())
-            ->method('combineConstraints')
-            ->with($query, $constraints, $mockCategoryConstraints);
 
         $this->subject->createConstraintsFromDemand($query, $demand);
     }
