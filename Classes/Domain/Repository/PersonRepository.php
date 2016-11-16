@@ -19,9 +19,10 @@ namespace CPSIT\T3eventsReservation\Domain\Repository;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use DWenzel\T3events\Domain\Repository\DemandedRepositoryInterface;
+use DWenzel\T3events\Domain\Repository\DemandedRepositoryTrait;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
-use DWenzel\T3events\Domain\Repository\AbstractDemandedRepository;
 use DWenzel\T3events\Domain\Repository\AudienceConstraintRepositoryInterface;
 use DWenzel\T3events\Domain\Repository\AudienceConstraintRepositoryTrait;
 use DWenzel\T3events\Domain\Repository\CategoryConstraintRepositoryInterface;
@@ -32,16 +33,17 @@ use DWenzel\T3events\Domain\Repository\GenreConstraintRepositoryInterface;
 use DWenzel\T3events\Domain\Repository\GenreConstraintRepositoryTrait;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryTrait;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * The repository for Persons
  */
 class PersonRepository
-	extends AbstractDemandedRepository
-	implements GenreConstraintRepositoryInterface, CategoryConstraintRepositoryInterface,
+	extends Repository
+	implements DemandedRepositoryInterface, GenreConstraintRepositoryInterface, CategoryConstraintRepositoryInterface,
 	EventTypeConstraintRepositoryInterface, PeriodConstraintRepositoryInterface,
 	AudienceConstraintRepositoryInterface {
-	use GenreConstraintRepositoryTrait, EventTypeConstraintRepositoryTrait,
+	use DemandedRepositoryTrait, GenreConstraintRepositoryTrait, EventTypeConstraintRepositoryTrait,
 		CategoryConstraintRepositoryTrait, PeriodConstraintRepositoryTrait,
 		AudienceConstraintRepositoryTrait;
 	/**
@@ -64,17 +66,14 @@ class PersonRepository
 				$constraints[] = $query->logicalAnd($personConstraints);
 			}
 		}
-		if ($demand->getLessonDeadline()) {
+        $deadline = $demand->getLessonDeadline();
+		if (!empty($deadline)) {
 			$constraints[] = $query->logicalAnd(
-				$query->lessThan('lesson.deadline', $demand->getLessonDeadline())
+				$query->greaterThan(
+				    'reservation.lesson.deadline',
+                    $deadline->getTimestamp()
+                )
 			);
-		}
-		if ($demand->getLessonDate()) {
-			if ($demand->getLessonPeriod() === 'futureOnly') {
-				$constraints[] = $query->greaterThanOrEqual('reservation.lesson.date', $demand->getLessonDate());
-			} elseif ($demand->getLessonPeriod() === 'pastOnly') {
-				$constraints[] = $query->lessThanOrEqual('reservation.lesson.date', $demand->getLessonDate());
-			}
 		}
 		if ((bool) $genreConstraints = $this->createGenreConstraints($query, $demand)) {
 			$this->combineConstraints($query, $constraints, $genreConstraints, $demand->getCategoryConjunction());
