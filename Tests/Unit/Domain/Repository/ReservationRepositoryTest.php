@@ -353,5 +353,99 @@ class ReservationRepositoryTest extends UnitTestCase {
 
         $this->subject->createConstraintsFromDemand($query, $demand);
     }
+
+    /**
+     * @test
+     */
+    public function createConstraintsFromDemandCreatesAudienceConstraints() {
+        $this->subject = $this->getAccessibleMock(
+            ReservationRepository::class,
+            [   'createAudienceConstraints',
+                'combineConstraints'
+            ], [], '', false);
+        /** @var DemandInterface $demand */
+        $demand = $this->getMockForAbstractClass(
+            ReservationDemand::class, [], '', true, true, true,
+            []
+        );
+        $query = $this->getMock(
+            QueryInterface::class,
+            [], [], '', false
+        );
+
+        $this->subject->expects($this->once())
+            ->method('createAudienceConstraints')
+            ->with($query, $demand);
+
+        $this->subject->createConstraintsFromDemand($query, $demand);
+    }
+
+    /**
+     * @test
+     */
+    public function createConstraintsFromDemandCombinesAudienceConstraints() {
+        $this->subject = $this->getAccessibleMock(
+            ReservationRepository::class,
+            [
+                'createAudienceConstraints',
+                'combineConstraints'
+            ], [], '', false);
+        /** @var DemandInterface $demand */
+        $demand = $this->getMockForAbstractClass(
+            ReservationDemand::class, [], '', true, true, true,
+            []
+        );
+        $query = $this->getMock(
+            QueryInterface::class,
+            [], [], '', false
+        );
+
+        $constraints = [];
+        $mockAudienceConstraints = ['foo'];
+
+        $this->subject->expects($this->once())
+            ->method('createAudienceConstraints')
+            ->will($this->returnValue($mockAudienceConstraints)
+            );
+        $this->subject->expects($this->once())
+            ->method('combineConstraints')
+            ->with($query, $constraints, $mockAudienceConstraints);
+
+        $this->subject->createConstraintsFromDemand($query, $demand);
+    }
+
+
+    /**
+     * @test
+     */
+    public function createConstraintsFromDemandAddsStatusConstraints()
+    {
+        $status = '1,3';
+        $demand = $this->getMock(
+            ReservationDemand::class,
+            ['getStatus']
+        );
+        $query = $this->getMock(
+            Query::class,
+            ['equals', 'logicalOr'],
+            [], '', false
+        );
+        $mockStatusConstraints = ['foo'];
+
+        $demand->expects($this->atLeastOnce())
+            ->method('getStatus')
+            ->will($this->returnValue($status));
+        $query->expects($this->exactly(2))
+            ->method('equals')
+            ->withConsecutive(
+                ['status', 1],
+                ['status', 3]
+            )
+            ->will($this->returnValue($mockStatusConstraints));
+        $query->expects(($this->once()))
+            ->method('logicalOr')
+            ->with([$mockStatusConstraints, $mockStatusConstraints]);
+        $this->subject->createConstraintsFromDemand($query, $demand);
+    }
 }
 
