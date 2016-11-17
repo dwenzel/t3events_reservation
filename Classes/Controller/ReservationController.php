@@ -105,7 +105,6 @@ class ReservationController
      */
     public function newAction(Performance $lesson = null, Reservation $newReservation = null)
     {
-        //@todo: check for existing session key and prevent creating new reservation
         if (is_null($lesson)) {
             $error = 'message.selectLesson';
         } elseif (!$lesson->getFreePlaces()) {
@@ -115,8 +114,6 @@ class ReservationController
             $this->addFlashMessage(
                 $this->translate($error), '', AbstractMessage::ERROR, true
             );
-            // todo make redirect target configurable or use AbstractController->handleEntityNotFoundError
-            $this->redirect('list', 'Performance', 't3events', [], $this->settings['schedule']['listPid']);
         }
         if ($this->request->getOriginalRequest() instanceof Request) {
             $newReservation = $this->request->getOriginalRequest()->getArgument('newReservation');
