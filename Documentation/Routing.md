@@ -7,7 +7,7 @@ _Reservations_ provides a flexible mechanism which allows to route requests betw
 When a routable action has been finished, the router determines which action should be called next.  
 The diagram below shows the default routing. 
 
-Currently the routing can only be configured by programming. Please see section outlook for upcoming features.
+Currently the routing can only be configured by programming. Please see section [Outlook](#outlook) for upcoming features.
 
 ![Default routing](./Images/Reservation-Flow.png)
 see [pdf](Reservation-Flow.pdf) and [svg](./Images/Reservation-Flow.svg) version

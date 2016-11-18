@@ -6,9 +6,9 @@ t3events_reservation
 Reservations is an extension for the TYPO3 CMS. It extends t3events and allows to manage bookings for events.
 
 ## Table of contents
-- [Installation and requirements](/Documentation/INSTALL.md)
-- [Configuration](/Documentation/CONFIGURATION.md)
-- [Routing](/Documentation/ROUTING.md)
+- [Installation and requirements](/Documentation/Install.md)
+- [Configuration](/Documentation/Configuration.md)
+- [Routing](/Documentation/Routing.md)
 - [Validation](/Documentation/Validation.md)
 
 ## Credits

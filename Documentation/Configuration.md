@@ -15,9 +15,10 @@ module.tx_t3eventsreservation.persistence.storagePid = <id of storage folder for
 You will need two plugins: 
 
 * one for list and detail views of events (Please see t3events documentation for details)
-* on for  the reservation forms 
+* one for  the reservation forms 
 
-Create a new page and insert a plugin of type *Reservation* (Create a *General Plugin* and select )
+Create a new page and insert a plugin of type *Reservation* (Create a *General Plugin* and select _Reservations_)
+Add your storage folder to the _Record Storage Page_ selection.
 
 ![Reservation Plugin](./Images/create-reservation-plugin.png)
 
@@ -75,5 +76,5 @@ You will need a link from the events detail or list view to your registration pl
 
 ```
 
-This link should point to your reservation plugin page. Clicking it should present an _new reservation_ form now. 
+This link should point to your reservation plugin page. Clicking it should present an _new reservation_ form now. If you experience redirect, please check your argument for [validity](./Validation.md).
 
