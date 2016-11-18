@@ -9,7 +9,7 @@ Reservations is an extension for the TYPO3 CMS. It extends t3events and allows t
 - [Installation and requirements](/Documentation/INSTALL.md)
 - [Configuration](/Documentation/CONFIGURATION.md)
 - [Routing](/Documentation/ROUTING.md)
-- [Validation](/Documentation/VALIDATION.md)
+- [Validation](/Documentation/Validation.md)
 
 ## Credits
 Thanks for contribution and feedback

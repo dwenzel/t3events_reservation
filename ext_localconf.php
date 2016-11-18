@@ -38,6 +38,7 @@ $dataProviderClasses = [
     \CPSIT\T3eventsReservation\DataProvider\RouteLoader\BillingAddressControllerDefaults::class
 ];
 foreach ($dataProviderClasses as $providerClass) {
+    /** @var \DWenzel\T3events\DataProvider\RouteLoader\RouteLoaderDataProviderInterface $dataProvider */
     $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($providerClass);
     $routeLoader->loadFromProvider($dataProvider);
 }
