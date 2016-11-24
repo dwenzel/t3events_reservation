@@ -56,6 +56,8 @@ module.tx_t3eventsreservation {
 	}
 
 	view {
+		# templateRootPath settings is necessary for notification templates!
+		templateRootPath = {$plugin.tx_t3eventsreservation.view.templateRootPath}
 		templateRootPaths {
 			10 = {$module.tx_t3events.view.templateRootPaths.10}
 			20 = {$module.tx_t3eventsreservation.view.templateRootPaths.10}
