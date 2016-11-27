@@ -1,5 +1,5 @@
 <?php
-namespace DWenzel\T3eventsReservation\Tests\Unit\Domain\Factory\Dto;
+namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Factory\Dto;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace DWenzel\T3eventsReservation\Tests\Unit\Domain\Factory\Dto;
  */
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
-use DWenzel\T3eventsReservation\Domain\Factory\Dto\ScheduleDemandFactory;
+use CPSIT\T3eventsReservation\Domain\Factory\Dto\ScheduleDemandFactory;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use DWenzel\T3events\Domain\Factory\Dto\PerformanceDemandFactory;

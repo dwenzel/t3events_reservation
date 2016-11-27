@@ -25,7 +25,7 @@ use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
 use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
 
 /**
- * Test case for class \DWenzel\T3eventsReservation\Domain\Repository\BillingAddressRepository.
+ * Test case for class \CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository.
  *
  * @author Dirk Wenzel <dirk.wenzel@cps-it.de>
  * @coversDefaultClass \CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository

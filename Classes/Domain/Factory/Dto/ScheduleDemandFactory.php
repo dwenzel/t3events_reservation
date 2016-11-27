@@ -1,5 +1,5 @@
 <?php
-namespace DWenzel\T3eventsReservation\Domain\Factory\Dto;
+namespace CPSIT\T3eventsReservation\Domain\Factory\Dto;
 
 /***************************************************************
  *  Copyright notice
