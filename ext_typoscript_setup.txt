@@ -1,4 +1,9 @@
 config.tx_extbase {
+	objects {
+		DWenzel\T3events\Domain\Repository\TaskRepositoryInterface {
+			className = CPSIT\T3eventsReservation\Domain\Repository\TaskRepository
+		}
+	}
 	persistence {
 		classes {
 			DWenzel\T3events\Domain\Model\Performance {
@@ -53,6 +58,7 @@ config.tx_extbase {
 			DWenzel\T3events\Domain\Model\Task {
 				className = CPSIT\T3eventsReservation\Domain\Model\Task
 			}
+
 		}
 	}
 }

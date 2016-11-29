@@ -13,7 +13,6 @@ namespace CPSIT\T3eventsReservation\Command;
 
 use CPSIT\T3eventsReservation\Controller\ScheduleDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Controller\ScheduleRepositoryTrait;
-use CPSIT\T3eventsReservation\Controller\TaskRepositoryTrait;
 use DWenzel\T3events\Command\TaskCommandController as BaseController;
 use CPSIT\T3eventsReservation\Domain\Model\Task;
 
@@ -24,8 +23,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Task;
  */
 class TaskCommandController extends BaseController
 {
-    use ScheduleDemandFactoryTrait, ScheduleRepositoryTrait,
-        TaskRepositoryTrait;
+    use ScheduleDemandFactoryTrait, ScheduleRepositoryTrait;
 
     /**
      * Get the performances matching a tasks constraints
