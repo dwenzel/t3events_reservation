@@ -19,13 +19,8 @@ namespace CPSIT\T3eventsReservation\Domain\Factory\Dto;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use DWenzel\T3events\Domain\Factory\Dto\AbstractDemandFactory;
-use DWenzel\T3events\Domain\Factory\Dto\DemandFactoryInterface;
-use DWenzel\T3events\Domain\Factory\Dto\PerformanceDemandFactory;
-use DWenzel\T3events\Domain\Factory\Dto\PeriodAwareDemandFactoryTrait;
-use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
-use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
+use DWenzel\T3events\Domain\Factory\Dto\PerformanceDemandFactory;
 
 /**
  * Class ScheduleDemandFactory
@@ -36,7 +31,6 @@ use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
 class ScheduleDemandFactory
     extends PerformanceDemandFactory
 {
-    use PeriodAwareDemandFactoryTrait;
     /**
      * Class name of the object created by this factory.
      */
