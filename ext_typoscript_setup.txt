@@ -45,6 +45,14 @@ config.tx_extbase {
 					tableName = tx_t3events_domain_model_notification
 				}
 			}
+			CPSIT\T3eventsReservation\Domain\Model\Task {
+				mapping {
+					tableName = tx_t3events_domain_model_task
+				}
+			}
+			DWenzel\T3events\Domain\Model\Task {
+				className = CPSIT\T3eventsReservation\Domain\Model\Task
+			}
 		}
 	}
 }
