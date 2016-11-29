@@ -109,3 +109,10 @@ CREATE TABLE tx_t3eventsreservation_performance_participants_person_mm (
 CREATE TABLE tx_t3events_domain_model_notification (
 	reservation int(11) unsigned DEFAULT '0' NOT NULL
 );
+
+#
+# Table structure for table 'tx_t3events_domain_model_task'
+#
+CREATE TABLE tx_t3events_domain_model_task (
+ deadline_period varchar(255) DEFAULT '' NOT NULL,
+);

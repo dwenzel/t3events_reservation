@@ -203,6 +203,15 @@
 		<trans-unit id="tx_t3eventsreservation_domain_model_schedule.tab.extended" xml:space="preserve">
 			<source>Details</source>
 		</trans-unit>
+		<trans-unit id="label.deadlinePeriod" xml:space="preserve">
+			<source>Deadline</source>
+		</trans-unit>
+		<trans-unit id="label.deadlinePeriod.past" xml:space="preserve">
+			<source>Past</source>
+		</trans-unit>
+		<trans-unit id="label.deadlinePeriod.future" xml:space="preserve">
+			<source>Future</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>
