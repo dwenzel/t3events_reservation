@@ -25,8 +25,9 @@ if (!defined('TYPO3_MODE')) {
 );
 
 // Register command controllers for Scheduler and CLI
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CloseBooking'] = 'CPSIT\\T3eventsReservation\\Command\\CloseBookingCommandController';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CleanUp'] = 'CPSIT\\T3eventsReservation\\Command\\CleanUpCommandController';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CloseBooking'] = \CPSIT\T3eventsReservation\Command\CloseBookingCommandController::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CleanUp'] = \CPSIT\T3eventsReservation\Command\CleanUpCommandController::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_Task'] = \CPSIT\T3eventsReservation\Command\TaskCommandController::class;
 
 // Add default routing
 /** @var DWenzel\T3events\Service\RouteLoader $routeLoader */
