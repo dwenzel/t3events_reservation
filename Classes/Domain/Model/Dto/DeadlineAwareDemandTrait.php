@@ -10,18 +10,31 @@ namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
  * LICENSE.txt file that was distributed with this source code.
  * The TYPO3 project - inspiring people to share!
  */
-interface DeadlineAwareDemandInterface
+trait DeadlineAwareDemandTrait
 {
+    /**
+     * Deadline period
+     *
+     * @var string
+     */
+    protected $deadlinePeriod;
+
     /**
      * Gets the deadline period
      *
      * @return string A string
      */
-    public function getDeadlinePeriod();
+    public function getDeadlinePeriod()
+    {
+        return $this->deadlinePeriod;
+    }
 
     /**
      * Sets the deadline period
      * @param string $period
      */
-    public function setDeadlinePeriod($period);
+    public function setDeadlinePeriod($period)
+    {
+        $this->deadlinePeriod = $period;
+    }
 }

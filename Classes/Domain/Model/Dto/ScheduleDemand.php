@@ -11,7 +11,6 @@ namespace CPSIT\T3eventsReservation\Domain\Model\Dto;
  * The TYPO3 project - inspiring people to share!
  */
 
-use CPSIT\T3eventsReservation\Domain\Factory\Dto\DeadlineAwareDemandTrait;
 use DWenzel\T3events\Domain\Model\Dto\PerformanceDemand;
 
 /**

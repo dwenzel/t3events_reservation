@@ -11,7 +11,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model\Dto;
  * The TYPO3 project - inspiring people to share!
  */
 
-use CPSIT\T3eventsReservation\Domain\Factory\Dto\DeadlineAwareDemandTrait;
+use CPSIT\T3eventsReservation\Domain\Model\Dto\DeadlineAwareDemandTrait;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -33,56 +33,31 @@ extends UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getMockForTrait(
-            DeadlineAwareDemandTrait::class
+            \CPSIT\T3eventsReservation\Domain\Model\Dto\DeadlineAwareDemandTrait::class
         );
     }
 
     /**
      * @test
      */
-    public function getDeadlineBeforeInitiallyReturnsNull()
+    public function getDeadlinePeriodInitiallyReturnsNull()
     {
         $this->assertNull(
-            $this->subject->getDeadlineBefore()
+            $this->subject->getDeadlinePeriod()
         );
     }
 
     /**
      * @test
      */
-    public function deadlineBeforeCanBeSet()
+    public function deadlinePeriodCanBeSet()
     {
-        $deadline = $this->getMock(\DateTime::class);
-        $this->subject->setDeadlineBefore($deadline);
+        $period = 'foo';
+        $this->subject->setDeadlinePeriod($period);
 
         $this->assertSame(
-            $deadline,
-            $this->subject->getDeadlineBefore()
+            $period,
+            $this->subject->getDeadlinePeriod()
         );
     }
-
-    /**
-     * @test
-     */
-    public function getDeadlineAfterInitiallyReturnsNull()
-    {
-        $this->assertNull(
-            $this->subject->getDeadlineAfter()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function deadlineAfterCanBeSet()
-    {
-        $deadline = $this->getMock(\DateTime::class);
-        $this->subject->setDeadlineAfter($deadline);
-
-        $this->assertSame(
-            $deadline,
-            $this->subject->getDeadlineAfter()
-        );
-    }
-
 }
