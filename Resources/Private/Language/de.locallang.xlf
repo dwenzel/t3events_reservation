@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-04-27T15:59:04Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-12-01T14:54:45Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -173,9 +173,17 @@
 			<source>Please accept the privacy statement!</source>
 			<target>Bitte akzeptieren Sie die Datenschutzvereinbarung!</target>
 		</trans-unit>
+		<trans-unit id="error.participant.edit.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
+		</trans-unit>
 		<trans-unit id="error.reservation.checkout.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to checkout this reservation.</source>
 			<target>Sie dürfen diese Registrierung nicht abschließen.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.checkout.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -200,6 +208,10 @@
 		<trans-unit id="error.reservation.create.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to edit this reservation.</source>
 			<target>Sie dürfen dies Reservierung nicht bearbeiten.</target>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.incompleteReservationInSession" approved="yes" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.create.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -274,18 +286,6 @@
 			<target>Sie dürfen diese Reservierung nicht bearbeiten oder Ihre Sitzung ist abgelaufen. Bitte wählen sie eine Veranstaltung zum Buchen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.new.incompleteReservationInSession" approved="yes" xml:space="preserve">
-			<source>Please finish or delete your current reservation before creating a new one.</source>
-			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
-		</trans-unit>
-		<trans-unit id="error.reservation.create.incompleteReservationInSession" approved="yes" xml:space="preserve">
-			<source>Please finish or delete your current reservation before creating a new one.</source>
-			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
-		</trans-unit>
-		<trans-unit id="error.reservation.checkout.incompleteReservationInSession" approved="yes" xml:space="preserve">
-			<source>Please finish or delete your current reservation before creating a new one.</source>
-			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
-		</trans-unit>
-		<trans-unit id="error.participant.edit.incompleteReservationInSession" approved="yes" xml:space="preserve">
 			<source>Please finish or delete your current reservation before creating a new one.</source>
 			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
 		</trans-unit>
@@ -500,6 +500,18 @@
 		<trans-unit id="label.participants" approved="yes" xml:space="preserve">
 			<source>Participants</source>
 			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="label.period.all" approved="yes" xml:space="preserve">
+			<source>all</source>
+			<target>alle</target>
+		</trans-unit>
+		<trans-unit id="label.period.futureOnly" approved="yes" xml:space="preserve">
+			<source>upcoming only</source>
+			<target>nur zukünftige</target>
+		</trans-unit>
+		<trans-unit id="label.period.pastOnly" approved="yes" xml:space="preserve">
+			<source>past only</source>
+			<target>nur vergangene</target>
 		</trans-unit>
 		<trans-unit id="label.phone" approved="yes" xml:space="preserve">
 			<source>Phone</source>
