@@ -10,6 +10,16 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  * @package CPSIT\T3eventsReservation\Domain\Validator
  */
 class ContactValidator extends AbstractValidator {
+    use RequiredPropertiesTrait;
+
+    /**
+     * Required properties
+     *
+     * @var array
+     */
+    protected static $requiredProperties = [
+        'email' => 1410958066
+    ];
 
 	/**
 	 * Is contact valid
@@ -21,15 +31,15 @@ class ContactValidator extends AbstractValidator {
 		if (!$contact instanceof Person) {
 			$this->addError('Contact must be a Person.', 1410958031);
 
-			return FALSE;
-		}
-		$email = $contact->getEmail();
-		if (is_null($email) OR $email === '') {
-			$this->addError('E-Mail must not be empty.', 1410958066);
-
-			return FALSE;
+			return false;
 		}
 
-		return TRUE;
+		 $this->validateRequiredProperties($contact, static::$requiredProperties);
+
+        if($this->result->hasErrors()) {
+            return false;
+        }
+
+        return true;
 	}
 }

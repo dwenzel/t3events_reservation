@@ -4,7 +4,7 @@
 		<f:debug title="lesson">{lesson}</f:debug>
 	</f:if>
 		<f:render partial="Reservation/LessonProperties" arguments="{lesson: lesson}" />
-		<f:flashMessages renderMode="div" />
+		<f:flashMessages />
 		<f:if condition="{lesson.freePlaces} > 0">
 			<f:then>
 				<f:render partial="FormErrors" arguments="{object:Reservation}" />

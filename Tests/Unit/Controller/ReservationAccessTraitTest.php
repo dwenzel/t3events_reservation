@@ -30,10 +30,13 @@ use DWenzel\T3events\Session\Typo3Session;
 class ReservationAccessTraitTest extends UnitTestCase
 {
     /**
-     * @var ReservationAccessTrait
+     * @var ReservationAccessTrait | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
+    /**
+     * set up subject
+     */
     public function setUp()
     {
         $this->subject = $this->getMockForTrait(
@@ -68,7 +71,7 @@ class ReservationAccessTraitTest extends UnitTestCase
     }
 
     /**
-     *
+     * make subjects method isAccessAllowed return true for
      */
     protected function mockAllowAccessReturnsTrue()
     {
@@ -306,6 +309,39 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->will($this->returnValue(false));
 
         $this->assertTrue(
+            $this->subject->isAccessAllowed()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isAccessAllowedReturnsFalseIfReservationInSessionAnArgumentReservationDoNotMatch()
+    {
+        $reservationIdInSession = 5;
+        $reservationIdInRequest = 6;
+        $mockRequest = $this->mockRequest();
+        $mockRequest->expects($this->once())
+            ->method('hasArgument')
+            ->with('reservation')
+            ->will($this->returnValue(true));
+        $mockRequest->expects($this->once())
+            ->method('getArgument')
+            ->with('reservation')
+            ->will($this->returnValue($reservationIdInRequest));
+
+        $mockSession = $this->mockSession();
+        $mockSession->expects($this->once())
+            ->method('has')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue(true));
+
+        $mockSession->expects($this->once())
+            ->method('get')
+            ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
+            ->will($this->returnValue($reservationIdInSession));
+
+        $this->assertFalse(
             $this->subject->isAccessAllowed()
         );
     }

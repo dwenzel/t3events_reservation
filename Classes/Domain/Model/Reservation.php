@@ -21,7 +21,6 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  ***************************************************************/
 use CPSIT\T3eventsReservation\PriceableInterface;
 use DWenzel\T3events\Domain\Model\Company;
-use DWenzel\T3events\Domain\Model\Notification;
 use DWenzel\T3events\Domain\Model\Performance;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -116,7 +115,7 @@ class Reservation extends AbstractEntity
     /**
      * Notifications
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification>
      */
     protected $notifications;
 
@@ -367,7 +366,7 @@ class Reservation extends AbstractEntity
     /**
      * Returns the notifications
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification> $notifications
      */
     public function getNotifications()
     {
@@ -377,7 +376,7 @@ class Reservation extends AbstractEntity
     /**
      * Sets the notifications
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\DWenzel\T3events\Domain\Model\Notification> $notifications
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification> $notifications
      * @return void
      */
     public function setNotifications(ObjectStorage $notifications)
@@ -477,7 +476,7 @@ class Reservation extends AbstractEntity
     /**
      * Removes a Notification
      *
-     * @param \DWenzel\T3events\Domain\Model\Notification $notificationToRemove The Notification to be removed
+     * @param \CPSIT\T3eventsReservation\Domain\Model\Notification $notificationToRemove The Notification to be removed
      * @return void
      */
     public function removeNotification(Notification $notificationToRemove)

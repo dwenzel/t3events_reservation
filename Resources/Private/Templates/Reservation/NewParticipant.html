@@ -6,7 +6,7 @@
 	</f:if>
 	<f:render partial="Reservation/LessonProperties" arguments="{lesson: reservation.lesson}" />
 	<hr />
-	<f:flashMessages renderMode="div" />
+	<f:flashMessages />
 
 	<f:if condition="{f:count(subject: reservation.participants)}> 0">
 		<h3>Teilnehmer</h3>

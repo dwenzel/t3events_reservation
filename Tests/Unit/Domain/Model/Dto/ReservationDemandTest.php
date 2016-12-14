@@ -70,7 +70,7 @@ class ReservationDemandTest extends UnitTestCase {
 	 */
 	public function getLessonDeadLineInitiallyReturnsNull() {
 		$this->assertNull(
-			$this->subject->getLessonDeadLine()
+			$this->subject->getLessonDeadline()
 		);
 	}
 
@@ -80,11 +80,11 @@ class ReservationDemandTest extends UnitTestCase {
 	public function lessonDeadLineCanBeSet() {
 		$lessonDeadLine = new \DateTime();
 
-		$this->subject->setLessonDeadLine($lessonDeadLine);
+		$this->subject->setLessonDeadline($lessonDeadLine);
 
 		$this->assertSame(
 			$lessonDeadLine,
-			$this->subject->getLessonDeadLine()
+			$this->subject->getLessonDeadline()
 		);
 	}
 

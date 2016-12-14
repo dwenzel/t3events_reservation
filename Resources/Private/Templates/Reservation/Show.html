@@ -1,7 +1,7 @@
 <f:layout name="Default" />
 <f:section name="main">
 	<h2>{f:translate(key: 'title.ReservationDetails')}</h2>
-	<f:flashMessages renderMode="div" />
+	<f:flashMessages />
 	<f:render partial="Reservation/LessonProperties" arguments="{lesson: '{reservation.lesson}'}" />
 
 	<f:format.html>

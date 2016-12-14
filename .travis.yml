@@ -1,35 +1,51 @@
 language: php
-
-php: 
-  - 5.5
-  - 5.6
-
-env: 
-  global: 
-    secure: S8QheEMVpSRsPPIhYQZ4tUCTbxpM7csZ0GydJaPY8p/FAEnZLiH6xcsiTGKOljva5HDelCdBvunaWtUO/+CdKIgsdbQGbqc1aWmG6gr+ShQk4X3KzeAA91AFmkJOR6Jv69lUTm6Uo9AKs1JtuVZsOa1aoOmfApohqFuXsRBNXlg=
-  matrix: 
-  - TYPO3_VERSION=7.6.*
-
+matrix:
+  fast_finish: true
+  include:
+  - php: 5.5
+    env: TYPO3_VERSION=^6.2
+  - php: 5.6
+    env: TYPO3_VERSION=^7.6
+  - php: 7.0
+    env: TYPO3_VERSION=^7.6 COVERAGE=1
+  - php: 7.0
+    env: TYPO3_VERSION=^8
+env:
+  global:
+  - secure: MnesJZcRgL8YigdE8OB7oxujqrnrh07E0Orhhpjc2JrukC+zVwQ7ogX3gvlBoTynGSBOCq2hf0HpItqFTG8r4jWqirUbHwYMo2GX1A+bfzL0bhh38anLgnZ+6oOxKx6ffOqUBLQ4Unppz/KtqJx+KrIz5buVPUL38NDNSMIgqvqKBRk9NEEzd0V9c2WY1vEKM/ZjGM0Y+UzgH4t5xRzwBUBPVa0Yo7zSZFANjALaUUgASbdzVDkaXyL2RbXYrozXCnrtij62JexM+qAR4NPNFpKuizzJjb7Pwrv4qMmjCUcnq9ExqxqlZHxprskyPQi0cAQFd3W6K6Lw+DarQHtYhRCn5gmAjoxI8t8q5UbrZ2FWqSAFBzw8ac8D0xDQSaFMj37rCKqey5er1F8uVVffGPEtlE21W9Dfg4B7ED9prlUVskski66oF1SxOBvDexRa0sHlzy0YlK6uLEDfNYcVAb5dDt0/g93mX5j+bszoCfX3OCiYU0KaNg2e0zQ4twtmHdO/CqoDTEWIu9SdUwfi8ikyVFCUuw/rqM4uYLI4ShYe4VO5w3UFO4QRa/LbmkqOmF/2ifAOJI7/nnGsKfuXJXKCTcGd9TSk4l+n/zJ6/3cmLr5NI0eBnz9DJiU1u1XcFqnRnB7ks9VdOZkEceZlOsxFkX3mDHNtR9wrcGlMa5c=
 cache:
   directories:
-    - $HOME/.composer/cache
-
+  - $HOME/.composer/cache
 before_install:
-  - composer self-update
-  - composer --version
-
-before_script: 
-  - composer require typo3/cms=$TYPO3_VERSION
-  - git checkout composer.json
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
-
-script: 
-- >
-  echo;
-  .Build/bin/phpunit --colors -c Tests/Build/UnitTests.xml Tests/Unit/ --coverage-clover .Build/log/coverage/clover.xml
-
-- >
-  echo;
-  export COVERALLS_SERVICE_NAME=travis-ci;
-  .Build/bin/coveralls -v
-
+- composer self-update
+- composer --version
+before_script:
+- composer require typo3/cms=$TYPO3_VERSION
+- git checkout composer.json
+- export TYPO3_PATH_WEB=$PWD/.Build/Web
+script:
+- |
+  if [[ "$COVERAGE" != "1" ]]; then
+    echo;
+    echo "Running unit tests";
+    .Build/bin/phpunit --colors -c Tests/Build/UnitTests.xml Tests/Unit/
+  fi
+- |
+  if [[ "$COVERAGE" == "1" ]]; then
+    echo;
+    echo "Running unit tests";
+    .Build/bin/phpunit --colors -c Tests/Build/UnitTests.xml Tests/Unit/ --coverage-clover .Build/log/coverage/clover.xml
+  fi
+after_script:
+- |
+  if [[ "$COVERAGE" == "1" ]]; then
+    export COVERALLS_SERVICE_NAME=travis-ci;
+    echo;
+    echo "Running coveralls";
+    .Build/bin/coveralls -v
+  fi
+after_success:
+- |
+  if [[ "$COVERAGE" == "1" ]]; then
+    bash <(curl -s https://codecov.io/bash)
+  fi

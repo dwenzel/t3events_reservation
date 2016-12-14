@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-27T15:59:04Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-12-01T14:54:45Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -131,8 +131,14 @@
 		<trans-unit id="error.newReservation.privacyStatementAccepted.1361959228 " xml:space="preserve">
 			<source>Please accept the privacy statement!</source>
 		</trans-unit>
+		<trans-unit id="error.participant.edit.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
+		</trans-unit>
 		<trans-unit id="error.reservation.checkout.accessDenied" xml:space="preserve">
 			<source>You are not allowed to checkout this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.checkout.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.checkout.missingReservationKeyInSession" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -151,6 +157,9 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.create.accessDenied" xml:space="preserve">
 			<source>You are not allowed to edit this reservation.</source>
+		</trans-unit>
+		<trans-unit id="error.reservation.create.incompleteReservationInSession" xml:space="preserve">
+			<source>Please finish or delete your current reservation before creating a new one.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.create.missingReservationKeyInSession" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -210,15 +219,6 @@
 			<source>You are not allowed to edit this reservation or your session expired. Please choose an event and try again.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.new.incompleteReservationInSession" xml:space="preserve">
-			<source>Please finish or delete your current reservation before creating a new one.</source>
-		</trans-unit>
-		<trans-unit id="error.reservation.create.incompleteReservationInSession" xml:space="preserve">
-			<source>Please finish or delete your current reservation before creating a new one.</source>
-		</trans-unit>
-		<trans-unit id="error.participant.edit.incompleteReservationInSession" xml:space="preserve">
-			<source>Please finish or delete your current reservation before creating a new one.</source>
-		</trans-unit>
-		<trans-unit id="error.reservation.checkout.incompleteReservationInSession" xml:space="preserve">
 			<source>Please finish or delete your current reservation before creating a new one.</source>
 		</trans-unit>
 		<trans-unit id="error.reservation.new.missingReservationKeyInSession" xml:space="preserve">
@@ -388,6 +388,15 @@
 		</trans-unit>
 		<trans-unit id="label.participants" xml:space="preserve">
 			<source>Participants</source>
+		</trans-unit>
+		<trans-unit id="label.period.all" xml:space="preserve">
+			<source>all</source>
+		</trans-unit>
+		<trans-unit id="label.period.futureOnly" xml:space="preserve">
+			<source>upcoming only</source>
+		</trans-unit>
+		<trans-unit id="label.period.pastOnly" xml:space="preserve">
+			<source>past only</source>
 		</trans-unit>
 		<trans-unit id="label.phone" xml:space="preserve">
 			<source>Phone</source>

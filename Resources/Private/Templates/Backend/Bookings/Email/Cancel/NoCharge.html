@@ -1,7 +1,0 @@
-<f:render partial="Email/Salutation" arguments="{reservation: reservation}" />
-wir bedauern, dass Sie an unserer Veranstaltung  "{reservation.lesson.course.headline}" am {f:format.date(date: '{reservation.lesson.date}', format: 'd.m.Y')} nicht teilnehmen können und bestätigen die kostenfreie Stornierung für:
-<br>
-<br>
-<f:render partial="Email/Participants" arguments="{participants: '{reservation.participants}'}" />
-
-<f:render partial="Email/Signature" arguments="{baseUrl: baseUrl}" />

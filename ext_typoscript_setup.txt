@@ -1,4 +1,9 @@
 config.tx_extbase {
+	objects {
+		DWenzel\T3events\Domain\Repository\TaskRepositoryInterface {
+			className = CPSIT\T3eventsReservation\Domain\Repository\TaskRepository
+		}
+	}
 	persistence {
 		classes {
 			DWenzel\T3events\Domain\Model\Performance {
@@ -45,6 +50,15 @@ config.tx_extbase {
 					tableName = tx_t3events_domain_model_notification
 				}
 			}
+			CPSIT\T3eventsReservation\Domain\Model\Task {
+				mapping {
+					tableName = tx_t3events_domain_model_task
+				}
+			}
+			DWenzel\T3events\Domain\Model\Task {
+				className = CPSIT\T3eventsReservation\Domain\Model\Task
+			}
+
 		}
 	}
 }
@@ -56,12 +70,20 @@ module.tx_t3eventsreservation {
 	}
 
 	view {
-		templateRootPaths.10 = {$module.tx_t3eventsreservation.view.templateRootPaths.0}
-		partialRootPaths {
-			0 = {$module.tx_t3eventsreservation.view.partialRootPaths.0}
-			10 = {$module.tx_t3eventsreservation.view.partialRootPaths.10}
+		# templateRootPath settings is necessary for notification templates!
+		templateRootPath = {$plugin.tx_t3eventsreservation.view.templateRootPath}
+		templateRootPaths {
+			10 = {$module.tx_t3events.view.templateRootPaths.10}
+			20 = {$module.tx_t3eventsreservation.view.templateRootPaths.10}
 		}
-		layoutRootPaths.10 = {$module.tx_t3eventsreservation.view.layoutRootPaths.0}
+		partialRootPaths {
+			10 = {$module.tx_t3events.view.partialRootPaths.10}
+			20 = {$module.tx_t3eventsreservation.view.partialRootPaths.10}
+		}
+		layoutRootPaths {
+			10 = {$module.tx_t3events.view.layoutRootPaths.0}
+			20 = {$module.tx_t3eventsreservation.view.layoutRootPaths.0}
+		}
 	}
 
 	settings {
