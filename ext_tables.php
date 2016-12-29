@@ -13,7 +13,14 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Reservations');
 
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    $versionNumber = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+    $pathReservationIcon = 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/list.svg';
+    if ($versionNumber < 7000000) {
+        $pathReservationIcon = 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_reservation.png';
+        $pathParticipantIcon = 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_participant.png';
+    }
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'CPSIT.' . $_EXTKEY,
 		'Events',
 		'm1',
@@ -23,7 +30,7 @@ if (TYPO3_MODE === 'BE') {
 		],
 		[
 			'access' => 'user,group',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/list.svg',
+			'icon' => $pathReservationIcon,
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m1.xlf',
 		]
 	);
@@ -38,7 +45,7 @@ if (TYPO3_MODE === 'BE') {
 		],
 		[
 			'access' => 'user,group',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_participant.png',
+			'icon' => $pathParticipantIcon,
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m3.xlf',
 		]
 	);
@@ -73,4 +80,4 @@ if (class_exists(\TYPO3\CMS\Core\Imaging\IconRegistry::class)) {
             ['source' => 'EXT:' . $_EXTKEY . $path]
         );
     }
-}
+}unset($pathParticipantIcon, $pathReservationIcon, $path, $iconRegistry, $identifier, $icons);
