@@ -9,7 +9,7 @@ $GLOBALS['TCA']['tx_t3events_domain_model_performance']['palettes']['paletteLess
 ];
 $extbaseType = 'Tx_T3eventsReservation_Schedule';
 $scheduleShowItems = '
-						sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource;;1,
+						sys_language_uid, l10n_parent, l10n_diffsource,
         				--palette--;;paletteTitle,
         				--palette--;;paletteTime,
 						--palette--;;paletteLessonDates,

@@ -38,7 +38,7 @@ return [
 							billing_address, privacy_statement_accepted, disclaim_revocation, total_price, note,
 							--div--;' . $ll . 'tabs.participants, participants,
 							--div--;' . $ll . 'tabs.notifications, notifications,
-							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, sys_language_uid, l10n_parent, l10n_diffsource, hidden, starttime, endtime'
 		],
 	],
 	'palettes' => [
