@@ -23,7 +23,7 @@ if (TYPO3_MODE === 'BE') {
 		],
 		[
 			'access' => 'user,group',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_reservation.png',
+			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/list.svg',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m1.xlf',
 		]
 	);
