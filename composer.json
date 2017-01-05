@@ -25,7 +25,7 @@
   ],
   "require": {
     "typo3/cms-core": ">=6.2.0,<8.99.99",
-    "dwenzel/t3events": "^0.30.0"
+    "dwenzel/t3events": "^0.31.0"
   },
   "require-dev": {
     "mikey179/vfsStream": "1.4.*@dev",
