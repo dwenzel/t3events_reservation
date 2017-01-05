@@ -30,8 +30,7 @@
   "require-dev": {
     "mikey179/vfsStream": "1.4.*@dev",
     "phpunit/phpunit": "~4.8.0",
-    "satooshi/php-coveralls": "dev-master",
-    "dwenzel/t3events": "dev-develop"
+    "satooshi/php-coveralls": "dev-master"
   },
   "autoload": {
     "psr-4": {
