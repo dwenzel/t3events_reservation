@@ -1,3 +1,11 @@
+2017-01-05         [RELEASE] Release of t3events_reservation 0.10.1 (Dirk Wenzel)
+2017-01-02 81a57a6 [TASK] make property participants of BookableScheduleTrait lazy loading (Dirk Wenzel)
+2016-12-30 d82f2d4 [TASK] deprecated settings replaced in table configuration. (Dirk Wenzel)
+2016-12-30 04b02db [TASK] deprecated settings replaced in table configuration. (Dirk Wenzel)
+2016-12-29 cf692fc [TASK] fixed error caused by wrong icon type unter TYPO3 version 6.2 (Dirk Wenzel)
+2016-12-29 690c670 [TASK] new icon for reservation module added. (Dirk Wenzel)
+2016-12-29 95ed73c [BUGFIX] layout path and section name in list template corrected. (Dirk Wenzel)
+
 2016-12-14         [RELEASE] Release of t3events_reservation 0.10.0 (Dirk Wenzel)
 2016-12-02 1774124 [BUGFIX] restored TypoScript configuration for class replacement which was removed by mistake (Dirk Wenzel)
 2016-12-01 03a1eeb [TASK] class constant and localized strings added. (Dirk Wenzel)

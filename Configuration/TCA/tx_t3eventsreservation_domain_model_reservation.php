@@ -27,7 +27,7 @@ return [
 			'endtime' => 'endtime',
 		],
 		'searchFields' => 'status,company,contact, billing_address, participants,lesson,',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3events_reservation') . 'Resources/Public/Icons/tx_t3eventsreservation_domain_model_reservation.gif'
+		'iconfile' => 'EXT:t3events_reservation/Resources/Public/Icons/tx_t3eventsreservation_domain_model_reservation.gif'
 	],
 	'interface' => [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, status, company, contact, billing_address, participants, lesson, notifications, total_price, note',
@@ -38,7 +38,7 @@ return [
 							billing_address, privacy_statement_accepted, disclaim_revocation, total_price, note,
 							--div--;' . $ll . 'tabs.participants, participants,
 							--div--;' . $ll . 'tabs.notifications, notifications,
-							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, starttime, endtime'
+							--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, sys_language_uid, l10n_parent, l10n_diffsource, hidden, starttime, endtime'
 		],
 	],
 	'palettes' => [
@@ -50,7 +50,8 @@ return [
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => [
 				'type' => 'select',
-				'foreign_table' => 'sys_language',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => [
 					['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
@@ -64,7 +65,8 @@ return [
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',
-				'items' => [
+                'renderType' => 'selectSingle',
+                'items' => [
 					['', 0],
 				],
 				'foreign_table' => 'tx_t3eventsreservation_domain_model_reservation',
@@ -131,7 +133,8 @@ return [
 			'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.status',
 			'config' => [
 				'type' => 'select',
-				'items' => [
+                'renderType' => 'selectSingle',
+                'items' => [
 					[$ll . 'tx_t3eventsreservation_domain_model_reservation.status.0', 0], // new - neu
 					[$ll . 'tx_t3eventsreservation_domain_model_reservation.status.1', 1], // draft - Entwurf
 					[$ll . 'tx_t3eventsreservation_domain_model_reservation.status.2', 2], // submitted - gebucht

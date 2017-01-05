@@ -12,8 +12,16 @@ if (!defined('TYPO3_MODE')) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Reservations');
 
+$versionNumber = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    $pathReservationIcon = 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/list.svg';
+    if ($versionNumber < 7000000) {
+        $pathReservationIcon = 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_reservation.png';
+        $pathParticipantIcon = 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_participant.png';
+    }
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'CPSIT.' . $_EXTKEY,
 		'Events',
 		'm1',
@@ -23,7 +31,7 @@ if (TYPO3_MODE === 'BE') {
 		],
 		[
 			'access' => 'user,group',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_reservation.png',
+			'icon' => $pathReservationIcon,
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m1.xlf',
 		]
 	);
@@ -38,7 +46,7 @@ if (TYPO3_MODE === 'BE') {
 		],
 		[
 			'access' => 'user,group',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_participant.png',
+			'icon' => $pathParticipantIcon,
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_m3.xlf',
 		]
 	);
@@ -49,7 +57,7 @@ if (TYPO3_MODE === 'BE') {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3eventsreservation_domain_model_reservation');
 
 // add sprite icons
-if (class_exists(\TYPO3\CMS\Backend\Sprite\SpriteManager::class)) {
+if ($versionNumber < 7000000) {
     $icons = [
         'download-excel-white' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_white.png',
         'download-excel-blue' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_blue.png',
@@ -59,7 +67,7 @@ if (class_exists(\TYPO3\CMS\Backend\Sprite\SpriteManager::class)) {
         $_EXTKEY
     );
 }
-if (class_exists(\TYPO3\CMS\Core\Imaging\IconRegistry::class)) {
+if ($versionNumber >= 7000000) {
     $icons = [
         'download-excel-white' => 'Resources/Public/Icons/icon_excel_white.png',
         'download-excel-blue' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_excel_blue.png',
@@ -73,4 +81,4 @@ if (class_exists(\TYPO3\CMS\Core\Imaging\IconRegistry::class)) {
             ['source' => 'EXT:' . $_EXTKEY . $path]
         );
     }
-}
+}unset($pathParticipantIcon, $pathReservationIcon, $path, $iconRegistry, $identifier, $icons);

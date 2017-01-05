@@ -15,6 +15,7 @@ trait BookableScheduleTrait
      * Participants of this course.
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
+     * @lazy
      */
     protected $participants = null;
 
