@@ -50,7 +50,7 @@ class ContactController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * New contact

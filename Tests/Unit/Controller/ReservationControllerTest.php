@@ -520,6 +520,7 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockLesson = $this->getMock(
 			Performance::class, ['getFreePlaces', 'addParticipant']
 		);
+		$this->inject($reservation, 'lesson', $mockLesson);
 		$reservation->expects($this->any())
 			->method('getLesson')
 			->will($this->returnValue($mockLesson));
@@ -1312,41 +1313,11 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getMock(
 			Reservation::class, ['removeParticipant', 'getLesson']
 		);
-		$mockLesson = $this->getMock(
-			Schedule::class
-		);
+		$mockLesson = $this->getMock(Schedule::class);
+		$mockReservation->setLesson($mockLesson);
 		$mockReservation->expects($this->once())
 			->method('removeParticipant')
 			->with($mockParticipant);
-		$mockReservation->expects($this->once())
-			->method('getLesson')
-			->will($this->returnValue($mockLesson));
-
-		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
-	}
-
-	/**
-	 * @test
-	 */
-	public function removeParticipantActionRemovesParticipantFromLesson()
-	{
-		$this->mockPersonRepository();
-		$this->mockReservationRepository();
-		$mockParticipant = $this->getMock(
-			Person::class
-		);
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getLesson']
-		);
-		$mockLesson = $this->getMock(
-			Schedule::class, ['removeParticipant']
-		);
-		$mockLesson->expects($this->once())
-			->method('removeParticipant')
-			->with($mockParticipant);
-		$mockReservation->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($mockLesson));
 
 		$this->subject->removeParticipantAction($mockReservation, $mockParticipant);
 	}
@@ -1358,16 +1329,8 @@ class ReservationControllerTest extends UnitTestCase {
 	{
 		$mockPersonRepository = $this->mockPersonRepository();
 		$this->mockReservationRepository();
-		$mockParticipant = $this->getMock(
-			Person::class
-		);
-		$mockLesson = $this->getMock(Schedule::class);
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getLesson']
-		);
-		$mockReservation->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($mockLesson));
+		$mockParticipant = $this->getMock(Person::class);
+		$mockReservation = $this->getMock(Reservation::class);
 		$mockPersonRepository->expects($this->once())
 			->method('remove')
 			->with($mockParticipant);
@@ -1382,16 +1345,8 @@ class ReservationControllerTest extends UnitTestCase {
 	{
 		$this->mockPersonRepository();
 		$mockReservationRepository = $this->mockReservationRepository();
-		$mockParticipant = $this->getMock(
-			Person::class
-		);
-		$mockLesson = $this->getMock(Schedule::class);
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getLesson']
-		);
-		$mockReservation->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($mockLesson));
+		$mockParticipant = $this->getMock(Person::class);
+		$mockReservation = $this->getMock(Reservation::class);
 		$mockReservationRepository->expects($this->once())
 			->method('update')
 			->with($mockReservation);
@@ -1403,17 +1358,11 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function removeParticipantActionAddsFlashMessage() {
-		$mockLesson = $this->getMock(Schedule::class);
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getLesson']
-		);
+		$mockReservation = $this->getMock(Reservation::class);
 		$mockParticipant = $this->getMock(Person::class);
 		$this->mockReservationRepository();
 		$this->mockPersonRepository();
 
-		$mockReservation->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($mockLesson));
 		$translatedMessage = 'foo';
 		$this->subject->expects($this->once())
 			->method('translate')
@@ -1432,17 +1381,10 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function removeParticipantActionCallsDispatch() {
-		$mockLesson = $this->getMock(Schedule::class);
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getLesson']
-		);
+		$mockReservation = $this->getMock(Reservation::class);
 		$mockParticipant = $this->getMock(Person::class);
 		$this->mockReservationRepository();
 		$this->mockPersonRepository();
-
-		$mockReservation->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($mockLesson));
 
 		$this->subject->expects($this->once())
 			->method('dispatch')
