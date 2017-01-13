@@ -26,8 +26,8 @@ use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 
 /**
  * Class ParticipantController
@@ -51,7 +51,7 @@ class ParticipantController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * New participant action
@@ -93,7 +93,6 @@ class ParticipantController
                 $participant->setReservation($reservation);
                 $participant->setType(Person::PERSON_TYPE_PARTICIPANT);
                 $reservation->addParticipant($participant);
-                $lesson->addParticipant($participant);
                 $this->reservationRepository->update($reservation);
                 $this->performanceRepository->update($lesson);
                 $this->persistenceManager->persistAll();
@@ -148,10 +147,6 @@ class ParticipantController
     public function removeAction(Reservation $reservation, Person $participant)
     {
         $reservation->removeParticipant($participant);
-        $lesson = $reservation->getLesson();
-        if ($lesson instanceof BookableInterface) {
-            $lesson->removeParticipant($participant);
-        }
         $this->personRepository->remove($participant);
         $this->reservationRepository->update($reservation);
         $this->addFlashMessage($this->translate('message.participant.remove.success'));

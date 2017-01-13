@@ -17,6 +17,8 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
@@ -26,16 +28,13 @@ use DWenzel\T3events\Controller\RoutingTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
+use DWenzel\T3events\Domain\Model\Performance;
+use DWenzel\T3events\Session\SessionInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use CPSIT\T3eventsReservation\Domain\Model\Person;
-use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use DWenzel\T3events\Domain\Model\Performance;
-use DWenzel\T3events\Session\SessionInterface;
 
 /**
  * ReservationController
@@ -64,7 +63,7 @@ class ReservationController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * Notification Service
@@ -265,7 +264,6 @@ class ReservationController
             $newParticipant->setReservation($reservation);
             $newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
             $reservation->addParticipant($newParticipant);
-            $reservation->getLesson()->addParticipant($newParticipant);
             $this->reservationRepository->update($reservation);
             $this->lessonRepository->update($reservation->getLesson());
             $this->persistenceManager->persistAll();
@@ -320,7 +318,6 @@ class ReservationController
     public function removeParticipantAction(Reservation $reservation, Person $participant)
     {
         $reservation->removeParticipant($participant);
-        $reservation->getLesson()->removeParticipant($participant);
         $this->personRepository->remove($participant);
         $this->reservationRepository->update($reservation);
         $this->addFlashMessage(

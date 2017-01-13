@@ -16,6 +16,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
 use CPSIT\T3eventsReservation\Controller\AccessControlInterface;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
+use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Domain\Repository\PerformanceRepository;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -26,6 +27,7 @@ use CPSIT\T3eventsReservation\Controller\ParticipantController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 
 /**
@@ -160,15 +162,16 @@ class ParticipantControllerTest extends UnitTestCase
         $mockReservation = $this->getMock(
             Reservation::class, ['getLesson']
         );
-        $bookableItem = $this->getMockForAbstractClass(
-            BookableInterface::class
+        $schedule = $this->getMock(
+            Schedule::class, ['getFreePlaces', 'addParticipant']
         );
-        $bookableItem->expects($this->atLeastOnce())
+        $this->inject($mockReservation, 'lesson', $schedule);
+        $schedule->expects($this->atLeastOnce())
             ->method('getFreePlaces')
             ->will($this->returnValue(1));
         $mockReservation->expects($this->atLeastOnce())
             ->method('getLesson')
-            ->will($this->returnValue($bookableItem));
+            ->will($this->returnValue($schedule));
         return $mockReservation;
     }
 
@@ -181,14 +184,14 @@ class ParticipantControllerTest extends UnitTestCase
         $mockReservation = $this->getMock(
             Reservation::class, ['getLesson']
         );
-        $bookableItem = $this->getMockForAbstractClass(
+        $nonBookableItem = $this->getMockForAbstractClass(
             DomainObjectInterface::class
         );
-        $bookableItem->expects($this->never())
+        $nonBookableItem->expects($this->never())
             ->method('getFreePlaces');
         $mockReservation->expects($this->atLeastOnce())
             ->method('getLesson')
-            ->will($this->returnValue($bookableItem));
+            ->will($this->returnValue($nonBookableItem));
         return $mockReservation;
     }
 
@@ -217,13 +220,15 @@ class ParticipantControllerTest extends UnitTestCase
      */
     protected function mockReservationWithLesson()
     {
+        /** @var Reservation|\PHPUnit_Framework_MockObject_MockObject $mockReservation */
         $mockReservation = $this->getMock(
             Reservation::class, ['getLesson']
         );
-        $mockLesson = $this->getMockForAbstractClass(
-            BookableInterface::class
+        $mockLesson = $this->getMock(
+            Schedule::class
         );
-        $mockReservation->expects($this->atLeastOnce())
+        $mockReservation->setLesson($mockLesson);
+        $mockReservation->expects($this->any())
             ->method('getLesson')
             ->will($this->returnValue($mockLesson));
         return $mockReservation;
@@ -296,8 +301,13 @@ class ParticipantControllerTest extends UnitTestCase
     public function editActionAssignsVariablesToView()
     {
         $participant = new Person();
-        $reservation = new Reservation();
-        $reservation->addParticipant($participant);
+        $participantStorage = new ObjectStorage();
+        $participantStorage->attach($participant);
+
+        $reservation = $this->getMock(Reservation::class, ['getParticipants']);
+        $reservation->expects($this->atLeastOnce())
+            ->method('getParticipants')
+            ->will($this->returnValue($participantStorage));
         $participant->setReservation($reservation);
 
         $view = $this->mockView();
@@ -424,9 +434,6 @@ class ParticipantControllerTest extends UnitTestCase
         $mockReservation->expects($this->once())
             ->method('addParticipant')
             ->with($mockParticipant);
-        $bookableItem->expects($this->once())
-            ->method('addParticipant')
-            ->with($mockParticipant);
 
         $this->subject->createAction($mockReservation, $mockParticipant);
     }
@@ -548,28 +555,6 @@ class ParticipantControllerTest extends UnitTestCase
             Reservation::class, ['removeParticipant']
         );
         $mockReservation->expects($this->once())
-            ->method('removeParticipant')
-            ->with($mockParticipant);
-
-        $this->subject->removeAction($mockReservation, $mockParticipant);
-    }
-
-    /**
-     * @test
-     */
-    public function removeActionRemovesParticipantFromLesson()
-    {
-        $mockParticipant = $this->getMock(Person::class);
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getLesson']
-        );
-        $mockLesson = $this->getMockForAbstractClass(
-            BookableInterface::class, ['removeParticipant']
-        );
-        $mockReservation->expects($this->atLeastOnce())
-            ->method('getLesson')
-            ->will($this->returnValue($mockLesson));
-        $mockLesson->expects($this->once())
             ->method('removeParticipant')
             ->with($mockParticipant);
 

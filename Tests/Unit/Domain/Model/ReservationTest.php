@@ -26,6 +26,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
+use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
@@ -54,6 +55,8 @@ class ReservationTest extends UnitTestCase {
 		$this->subject = $this->getAccessibleMock(
 			Reservation::class, ['dummy']
 		);
+		$mockLesson = $this->getMock(Schedule::class);
+		$this->inject($this->subject, 'lesson', $mockLesson);
 	}
 
 	/**
@@ -191,7 +194,8 @@ class ReservationTest extends UnitTestCase {
 	 * @test
 	 */
 	public function getLessonReturnsInitialValueForLesson() {
-		$this->assertNull(
+		$this->subject = $this->getMock(Reservation::class, ['dummy']);
+	    $this->assertNull(
 			$this->subject->getLesson()
 		);
 	}
@@ -261,8 +265,9 @@ class ReservationTest extends UnitTestCase {
 		$firstParticipant = new Person();
 		$secondParticipant = new Person();
 		$lesson = $this->getMock(
-			Schedule::class, ['getPrice']
+			Schedule::class, ['getPrice', 'addParticipant']
 		);
+		$this->inject($this->subject, 'lesson', $lesson);
 
 		$lesson->expects($this->any())
 			->method('getPrice')
@@ -286,7 +291,7 @@ class ReservationTest extends UnitTestCase {
 	 */
 	public function removeParticipantUpdatesTotalPrice() {
 		$this->subject = $this->getAccessibleMock(
-			Reservation::class, ['getLesson']
+			Reservation::class, ['dummy']
 		);
 		$singlePrice = 123.45;
 		$totalPrice = $singlePrice;
@@ -296,19 +301,14 @@ class ReservationTest extends UnitTestCase {
 		$objectStorageContainingTwoParticipants->attach($firstParticipant);
 		$objectStorageContainingTwoParticipants->attach($secondParticipant);
 
-		$lesson = $this->getMock(
-			Schedule::class, ['getPrice']
-		);
+		$lesson = $this->getMock(Schedule::class, ['getPrice', 'removeParticipant', 'addParticipant']);
+		$this->subject->setLesson($lesson);
 
 		$lesson->expects($this->any())
 			->method('getPrice')
 			->will($this->returnValue($singlePrice));
-		$this->subject->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($lesson));
 
-		$this->subject->setParticipants($objectStorageContainingTwoParticipants);
-
+		$this->inject($this->subject, 'participants', $objectStorageContainingTwoParticipants);
 		$this->subject->removeParticipant($secondParticipant);
 
 		$this->assertSame(
@@ -322,7 +322,7 @@ class ReservationTest extends UnitTestCase {
 	 */
 	public function setParticipantsUpdatesTotalPrice() {
 		$this->subject = $this->getAccessibleMock(
-			Reservation::class, ['getLesson']
+			Reservation::class, ['dummy']
 		);
 		$singlePrice = 123.45;
 		$totalPrice = 2 * $singlePrice;
@@ -332,16 +332,11 @@ class ReservationTest extends UnitTestCase {
 		$objectStorageContainingTwoParticipants->attach($firstParticipant);
 		$objectStorageContainingTwoParticipants->attach($secondParticipant);
 
-		$lesson = $this->getMock(
-			Schedule::class, ['getPrice']
-		);
-
+		$lesson = $this->getMock(Schedule::class, ['getPrice', 'addParticipant', 'removeParticipant']);
+		$this->subject->setLesson($lesson);
 		$lesson->expects($this->any())
 			->method('getPrice')
 			->will($this->returnValue($singlePrice));
-		$this->subject->expects($this->any())
-			->method('getLesson')
-			->will($this->returnValue($lesson));
 
 		$this->subject->setParticipants($objectStorageContainingTwoParticipants);
 
@@ -351,7 +346,51 @@ class ReservationTest extends UnitTestCase {
 		);
 	}
 
-	/**
+    /**
+     * @test
+     */
+    public function setParticipantsRemovesOldParticipantsFromLesson()
+    {
+        $objectStorageContainingOldParticipants = new ObjectStorage();
+        $oldParticipant = new Person();
+        $objectStorageContainingOldParticipants->attach($oldParticipant);
+
+        $objectStorageContainingNewParticipants = new ObjectStorage();
+        $newParticipant = new Person();
+        $objectStorageContainingNewParticipants->attach($newParticipant);
+
+        $lesson = $this->getMock(Schedule::class, ['removeParticipant', 'addParticipant']);
+        $this->subject->setLesson($lesson);
+        $this->inject($this->subject, 'participants', $objectStorageContainingOldParticipants);
+        $lesson->expects($this->once())
+            ->method('removeParticipant')
+            ->with($oldParticipant);
+        $this->subject->setParticipants($objectStorageContainingNewParticipants);
+    }
+
+    /**
+     * @test
+     */
+    public function setParticipantsAddsNewParticipantsToLesson()
+    {
+        $objectStorageContainingOldParticipants = new ObjectStorage();
+        $oldParticipant = new Person();
+        $objectStorageContainingOldParticipants->attach($oldParticipant);
+
+        $objectStorageContainingNewParticipants = new ObjectStorage();
+        $newParticipant = new Person();
+        $objectStorageContainingNewParticipants->attach($newParticipant);
+
+        $lesson = $this->getMock(Schedule::class, ['removeParticipant', 'addParticipant']);
+        $this->subject->setLesson($lesson);
+        $this->inject($this->subject, 'participants', $objectStorageContainingOldParticipants);
+        $lesson->expects($this->once())
+            ->method('addParticipant')
+            ->with($newParticipant);
+        $this->subject->setParticipants($objectStorageContainingNewParticipants);
+    }
+
+    /**
 	 * @test
 	 */
 	public function removeBillingAddressSetsBillingAddressToNull()
@@ -499,5 +538,35 @@ class ReservationTest extends UnitTestCase {
         $this->assertFalse(
             $this->subject->getNotifications()->contains($notification)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function addParticipantAddsParticipantToLesson()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockLesson = $this->getMock(Schedule::class, ['addParticipant']);
+        $this->subject->setLesson($mockLesson);
+        $mockLesson->expects($this->once())
+            ->method('addParticipant')
+            ->with($mockParticipant);
+
+        $this->subject->addParticipant($mockParticipant);
+    }
+
+    /**
+     * @test
+     */
+    public function removeParticipantRemovesParticipantFromLesson()
+    {
+        $mockParticipant = $this->getMock(Person::class);
+        $mockLesson = $this->getMock(Schedule::class, ['removeParticipant']);
+        $this->subject->setLesson($mockLesson);
+        $mockLesson->expects($this->once())
+            ->method('removeParticipant')
+            ->with($mockParticipant);
+
+        $this->subject->removeParticipant($mockParticipant);
     }
 }

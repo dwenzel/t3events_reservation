@@ -191,6 +191,7 @@ class Reservation extends AbstractEntity
     public function addParticipant(Person $participant)
     {
         $this->participants->attach($participant);
+        $this->lesson->addParticipant($participant);
         $this->updateTotalPrice();
     }
 
@@ -199,12 +200,11 @@ class Reservation extends AbstractEntity
      */
     protected function updateTotalPrice()
     {
-        if ($lesson = $this->getLesson()) {
-            if ($lesson instanceof PriceableInterface) {
-                $totalPrice = $lesson->getPrice() * $this->participants->count();
-                $this->setTotalPrice($totalPrice);
-            }
+        if ($this->lesson instanceof PriceableInterface) {
+            $totalPrice = $this->lesson->getPrice() * $this->participants->count();
+            $this->setTotalPrice($totalPrice);
         }
+
     }
 
     /**
@@ -402,6 +402,14 @@ class Reservation extends AbstractEntity
      */
     public function setParticipants(ObjectStorage $participants)
     {
+        /** @var Person $oldParticipant */
+        foreach ($this->participants as $oldParticipant) {
+            $this->lesson->removeParticipant($oldParticipant);
+        }
+        /** @var Person $newParticipant */
+        foreach ($participants as $newParticipant) {
+            $this->lesson->addParticipant($newParticipant);
+        }
         $this->participants = $participants;
         $this->updateTotalPrice();
     }
@@ -493,6 +501,7 @@ class Reservation extends AbstractEntity
     public function removeParticipant(Person $participantToRemove)
     {
         $this->participants->detach($participantToRemove);
+        $this->lesson->removeParticipant($participantToRemove);
         $this->updateTotalPrice();
     }
 }
