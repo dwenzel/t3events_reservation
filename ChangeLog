@@ -1,3 +1,6 @@
+2017-01-13         [RELEASE] Release of t3events_reservation 0.10.2 (Dirk Wenzel)
+2017-01-06 04660b8 [BUGFIX] Fixed error where participants were not updated in lesson when added to Reservation. (Dirk Wenzel)
+
 2017-01-05         [RELEASE] Release of t3events_reservation 0.10.1 (Dirk Wenzel)
 2017-01-02 81a57a6 [TASK] make property participants of BookableScheduleTrait lazy loading (Dirk Wenzel)
 2016-12-30 d82f2d4 [TASK] deprecated settings replaced in table configuration. (Dirk Wenzel)
