@@ -17,18 +17,11 @@
       "role": "Developer"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/dwenzel/t3events.git"
-    }
-  ],
   "require": {
-    "typo3/cms-core": ">=6.2.0,<8.99.99",
-    "dwenzel/t3events": "^0.31.0"
+    "typo3/cms": ">=6.2",
+    "dwenzel/t3events": ">=0.31.0"
   },
   "require-dev": {
-    "mikey179/vfsStream": "1.4.*@dev",
     "phpunit/phpunit": "~4.8.0",
     "satooshi/php-coveralls": "dev-master"
   },
@@ -69,4 +62,3 @@
     }
   }
 }
-
