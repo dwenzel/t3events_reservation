@@ -16,7 +16,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Factory\Dto;
 
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\ParticipantDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ParticipantDemand;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 

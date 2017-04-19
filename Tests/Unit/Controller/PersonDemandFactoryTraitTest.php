@@ -16,7 +16,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
 use CPSIT\T3eventsReservation\Controller\PersonDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\PersonDemandFactory;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 class PersonDemandFactoryTraitTest extends UnitTestCase
 {

@@ -12,7 +12,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
  */
 
 use CPSIT\T3eventsReservation\Domain\Model\Task;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Class TaskTest

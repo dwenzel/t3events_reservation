@@ -2,7 +2,7 @@
 namespace CPSIT\T3eventsReservation\Tests\Unit\DataProvider\RouteLoader;
 
 use CPSIT\T3eventsReservation\DataProvider\RouteLoader\ContactControllerDefaults;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * This file is part of the TYPO3 CMS project.

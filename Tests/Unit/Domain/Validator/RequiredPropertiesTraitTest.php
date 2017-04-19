@@ -21,7 +21,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Validator;
  ***************************************************************/
 
 use CPSIT\T3eventsReservation\Domain\Validator\RequiredPropertiesTrait;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Class RequiredPropertiesTraitTest

@@ -3,7 +3,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
 use CPSIT\T3eventsReservation\Controller\ReservationDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\ReservationDemandFactory;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /***************************************************************
  *  Copyright notice

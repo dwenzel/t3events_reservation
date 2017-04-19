@@ -14,7 +14,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model\Dto;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\DeadlineAwareDemandInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
 use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Class ScheduleDemandTest

@@ -4,7 +4,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Repository;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
 use CPSIT\T3eventsReservation\Domain\Repository\ScheduleRepository;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**

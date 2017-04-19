@@ -23,7 +23,7 @@ use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Domain\Repository\PerformanceRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;

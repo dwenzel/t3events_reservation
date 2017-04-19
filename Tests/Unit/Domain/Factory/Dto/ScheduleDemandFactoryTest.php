@@ -16,7 +16,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Factory\Dto;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\ScheduleDemandFactory;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use DWenzel\T3events\Domain\Factory\Dto\PerformanceDemandFactory;
 use DWenzel\T3events\Domain\Model\Dto\PerformanceDemand;

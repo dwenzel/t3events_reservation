@@ -21,7 +21,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model\Dto;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ParticipantDemand;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Class PersonDemandTest
