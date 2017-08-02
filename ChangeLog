@@ -1,3 +1,10 @@
+2017-08-02         [RELEASE] Release of t3events_reservation 0.11.0 (Dirk Wenzel)
+2017-04-25 896d864 [TASK] travis-ci: use custom UnitTests.xml instead of those from testing frame work, obsolete configuration for coveralls service removed. (Dirk Wenzel)
+2017-04-19 f29efec [TASK] use nimut/testing-framework, drop coveralls reports (Dirk Wenzel)
+2017-03-07 e09ccd2 [TASK] require-dev phpunit/phpunit:<=4.8.0,<5.4 (Dirk Wenzel)
+2017-01-17 8742494 [TASK] composer.json updated. Obsolete package mikey179/vfsStream removed, typo3/cms-core replaced by typo3/cms (Dirk Wenzel)
+2017-01-17 bd80d5d [TASK] SVG icon for backend module added. (Dirk Wenzel)
+
 2017-01-13         [RELEASE] Release of t3events_reservation 0.10.2 (Dirk Wenzel)
 2017-01-06 04660b8 [BUGFIX] Fixed error where participants were not updated in lesson when added to Reservation. (Dirk Wenzel)
 
