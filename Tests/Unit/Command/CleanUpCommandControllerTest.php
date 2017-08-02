@@ -31,7 +31,7 @@ use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use DWenzel\T3events\Domain\Repository\NotificationRepository;
 
 /**

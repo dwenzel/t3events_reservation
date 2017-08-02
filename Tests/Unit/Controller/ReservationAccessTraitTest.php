@@ -4,7 +4,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use DWenzel\T3events\Session\SessionInterface;

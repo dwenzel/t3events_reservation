@@ -25,7 +25,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
 use CPSIT\T3eventsReservation\Domain\Model\Task;
 use CPSIT\T3eventsReservation\Domain\Repository\ScheduleRepository;
 use DWenzel\T3events\Domain\Repository\TaskRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Class TaskCommandControllerTest

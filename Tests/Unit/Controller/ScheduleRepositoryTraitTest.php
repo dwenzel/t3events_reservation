@@ -13,7 +13,7 @@ namespace CPSIT\T3eventsReservation\Tests\Controller;
 
 use CPSIT\T3eventsReservation\Controller\ScheduleRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Repository\ScheduleRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Class ScheduleRepositoryTraitTest

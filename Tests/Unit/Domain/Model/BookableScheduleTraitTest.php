@@ -3,7 +3,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
 
 use CPSIT\T3eventsReservation\Domain\Model\BookableScheduleTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 

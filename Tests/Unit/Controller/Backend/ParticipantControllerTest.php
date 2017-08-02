@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use CPSIT\T3eventsReservation\Controller\Backend\ParticipantController;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;

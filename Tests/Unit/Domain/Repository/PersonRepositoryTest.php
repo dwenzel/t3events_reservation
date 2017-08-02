@@ -15,7 +15,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 

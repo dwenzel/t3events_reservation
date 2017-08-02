@@ -16,9 +16,7 @@ env:
 cache:
   directories:
   - $HOME/.composer/cache
-before_install:
-- composer self-update
-- composer --version
+
 before_script:
 - composer require typo3/cms=$TYPO3_VERSION
 - git checkout composer.json
@@ -28,7 +26,7 @@ script:
   if [[ "$COVERAGE" != "1" ]]; then
     echo;
     echo "Running unit tests";
-    .Build/bin/phpunit --colors -c Tests/Build/UnitTests.xml Tests/Unit/
+    .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
   fi
 - |
   if [[ "$COVERAGE" == "1" ]]; then
@@ -36,16 +34,9 @@ script:
     echo "Running unit tests";
     .Build/bin/phpunit --colors -c Tests/Build/UnitTests.xml Tests/Unit/ --coverage-clover .Build/log/coverage/clover.xml
   fi
-after_script:
-- |
-  if [[ "$COVERAGE" == "1" ]]; then
-    export COVERALLS_SERVICE_NAME=travis-ci;
-    echo;
-    echo "Running coveralls";
-    .Build/bin/coveralls -v
-  fi
+
 after_success:
 - |
   if [[ "$COVERAGE" == "1" ]]; then
-    bash <(curl -s https://codecov.io/bash)
+    bash <(curl -s https://codecov.io/bash) -B $TRAVIS_BRANCH
   fi

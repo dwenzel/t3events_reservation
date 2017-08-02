@@ -8,7 +8,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Domain\Model\Dto\ModuleData;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 

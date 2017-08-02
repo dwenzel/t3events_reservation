@@ -1,7 +1,7 @@
 <?php
 namespace CPSIT\T3eventsReservation\Tests\Controller;
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use CPSIT\T3eventsReservation\Controller\BillingAddressRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Repository\BillingAddressRepository;
 

@@ -32,7 +32,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use DWenzel\T3events\Domain\Model\Company;
 use DWenzel\T3events\Domain\Model\Performance;
