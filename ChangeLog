@@ -1,3 +1,6 @@
+2018-03-13         [RELEASE] Release of t3events_reservation 0.11.1 (Dirk Wenzel)
+2018-03-08 32c44fa [BUGFIX] missing @lazy annotation added in Notification, Reservation and ReservationPersonTrait thus preventing slow queries when many registrations/participants/notifications exist for an event or schedule. (Dirk Wenzel)
+
 2017-08-02         [RELEASE] Release of t3events_reservation 0.11.0 (Dirk Wenzel)
 2017-04-25 896d864 [TASK] travis-ci: use custom UnitTests.xml instead of those from testing frame work, obsolete configuration for coveralls service removed. (Dirk Wenzel)
 2017-04-19 f29efec [TASK] use nimut/testing-framework, drop coveralls reports (Dirk Wenzel)
