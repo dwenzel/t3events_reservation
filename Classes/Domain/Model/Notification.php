@@ -28,6 +28,7 @@ class Notification extends \DWenzel\T3events\Domain\Model\Notification {
 	 * Reservation
 	 *
 	 * @var \CPSIT\T3eventsReservation\Domain\Model\Reservation
+     * @lazy
 	 */
 	protected $reservation;
 

@@ -116,6 +116,7 @@ class Reservation extends AbstractEntity
      * Notifications
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification>
+     * @lazy
      */
     protected $notifications;
 
@@ -123,6 +124,7 @@ class Reservation extends AbstractEntity
      * participants
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
+     * @lazy
      */
     protected $participants = null;
 
