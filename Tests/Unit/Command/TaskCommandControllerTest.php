@@ -66,9 +66,11 @@ class TaskCommandControllerTest extends UnitTestCase
      */
     protected function mockScheduleDemandFactory()
     {
-        $mockDemandFactory = $this->getMock(
-            ScheduleDemandFactory::class, ['createFromSettings'], [], '', false
-        );
+        /** @var ScheduleDemandFactory|\PHPUnit_Framework_MockObject_MockObject $mockDemandFactory */
+        $mockDemandFactory = $this->getMockBuilder(ScheduleDemandFactory::class)
+            ->setMethods(['createFromSettings'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->subject->injectScheduleDemandFactory($mockDemandFactory);
         $this->scheduleDemandFactory = $mockDemandFactory;
 
@@ -80,9 +82,9 @@ class TaskCommandControllerTest extends UnitTestCase
      */
     protected function mockScheduleRepository()
     {
-        $mockScheduleRepository = $this->getMock(
-            ScheduleRepository::class, ['findDemanded'], [], '', false
-        );
+        /** @var ScheduleRepository|\PHPUnit_Framework_MockObject_MockObject $mockScheduleRepository */
+        $mockScheduleRepository = $this->getMockBuilder(ScheduleRepository::class)
+            ->setMethods(['findDemanded'])->disableOriginalConstructor()->getMock();
         $this->subject->injectScheduleRepository($mockScheduleRepository);
         $this->scheduleRepository = $mockScheduleRepository;
 
@@ -95,10 +97,9 @@ class TaskCommandControllerTest extends UnitTestCase
     public function getPerformancesForTaskGetsScheduleDemandFromFactory()
     {
         $settings = [];
-        $mockTask = $this->getMock(Task::class);
-        $mockDemand = $this->getMock(
-            ScheduleDemand::class
-        );
+        /** @var Task|\PHPUnit_Framework_MockObject_MockObject $mockTask */
+        $mockTask = $this->getMockBuilder(Task::class)->getMock();
+        $mockDemand = $this->getMockBuilder(ScheduleDemand::class)->getMock();
         $this->subject->expects($this->once())
             ->method('getSettingsForDemand')
             ->with($mockTask)
@@ -120,10 +121,10 @@ class TaskCommandControllerTest extends UnitTestCase
         $settings = [
             'deadlinePeriod' => $deadlinePeriod
         ];
-        $mockTask = $this->getMock(Task::class, ['getDeadlinePeriod']);
-        $mockDemand = $this->getMock(
-            ScheduleDemand::class
-        );
+        /** @var Task|\PHPUnit_Framework_MockObject_MockObject $mockTask */
+        $mockTask = $this->getMockBuilder(Task::class)
+            ->setMethods(['getDeadlinePeriod'])->getMock();
+        $mockDemand = $this->getMockBuilder(ScheduleDemand::class)->getMock();
 
         $mockTask->expects($this->atLeastOnce())
             ->method('getDeadlinePeriod')
@@ -136,5 +137,4 @@ class TaskCommandControllerTest extends UnitTestCase
 
         $this->subject->getPerformancesForTask($mockTask);
     }
-
 }

@@ -48,6 +48,16 @@ class CleanUpCommandControllerTest extends UnitTestCase
     protected $subject;
 
     /**
+     * @var ReservationRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $reservationRepository;
+
+    /**
+     * @var  PersonRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $personRepository;
+
+    /**
      * set up the subject
      */
     public function setUp()
@@ -55,6 +65,11 @@ class CleanUpCommandControllerTest extends UnitTestCase
         $this->subject = $this->getAccessibleMock(
             CleanUpCommandController::class, ['dummy', 'outputLine']
         );
+        $this->mockReservationRepository();
+        $this->personRepository = $this->getMockBuilder(PersonRepository::class)
+            ->setMethods(['remove'])->disableOriginalConstructor()
+            ->getMock();
+        $this->subject->injectPersonRepository($this->personRepository);
     }
 
     /**
@@ -62,25 +77,28 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     protected function mockReservationDemandFactory()
     {
-        $mockDemandFactory = $this->getMock(
-            ReservationDemandFactory::class, ['createFromSettings'], [], '', false
-        );
+        $mockDemandFactory = $this->getMockBuilder(
+            ReservationDemandFactory::class)
+        ->setMethods(['createFromSettings'])
+        ->getMock();
         $this->subject->injectReservationDemandFactory($mockDemandFactory);
 
         return $mockDemandFactory;
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return ReservationRepository|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function mockReservationRepository()
     {
-        $mockReservationRepository = $this->getMock(
-            ReservationRepository::class, ['findDemanded', 'remove'], [], '', false
-        );
-        $this->subject->injectReservationRepository($mockReservationRepository);
+        /** @var ReservationRepository|\PHPUnit_Framework_MockObject_MockObject $mockReservationRepository */
+        $this->reservationRepository = $this->getMockBuilder(ReservationRepository::class)
+            ->setMethods(['findDemanded', 'remove'])
+            ->disableOriginalConstructor()->getMock();
 
-        return $mockReservationRepository;
+        $this->subject->injectReservationRepository($this->reservationRepository);
+
+        return $this->reservationRepository;
     }
 
     /**
@@ -88,11 +106,10 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationGetsReservationDemandFromFactory()
     {
-        $mockReservationDemand = $this->getMock(
-        ReservationDemand::class
-        );
-
-        $this->mockReservationRepository();
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
+        $emptyQueryResult = [];
+        $this->reservationRepository->expects($this->atLeast(1))
+            ->method('findDemanded')->will($this->returnValue($emptyQueryResult));
         $settings = [
             'period' => 'pastOnly',
             'storagePages' => '',
@@ -112,11 +129,9 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandPassesArgumentsToDemandFactory()
     {
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->getMock();
 
-        $this->mockReservationRepository();
         $period = 'specific';
         $date = 'now';
         $storagePageIds = 'foo';
@@ -136,6 +151,9 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->with($settings)
             ->will($this->returnValue($mockReservationDemand));
+        $emptyQueryResult = [];
+        $this->reservationRepository->expects($this->atLeast(1))
+            ->method('findDemanded')->will($this->returnValue($emptyQueryResult));
 
         $this->subject->deleteReservationsCommand(true, $period, $date, $storagePageIds, $limit);
     }
@@ -145,19 +163,19 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandDemandsReservations()
     {
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
+        $emptyQueryResult = [];
+
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->getMock();
         $reservationDemandFactory = $this->mockReservationDemandFactory();
         $reservationDemandFactory->expects($this->once())
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
 
-        $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->atLeast(1))
             ->method('findDemanded')
-            ->with($mockReservationDemand);
+            ->with($mockReservationDemand)
+            ->will($this->returnValue($emptyQueryResult));
 
         $this->subject->deleteReservationsCommand();
     }
@@ -167,24 +185,21 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandRemovesParticipants()
     {
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getParticipants']
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getParticipants'])->getMock();
         $mockReservationResult = [
           $mockReservation
         ];
-        $mockParticipant = $this->getMock(
-            Person::class
-        );
+        $mockParticipant = $this->getMockBuilder(Person::class)->getMock();
         $participants = [
           $mockParticipant
         ];
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
-        $mockPersonRepository = $this->getMock(
-            PersonRepository::class, ['remove'], [], '', false
-        );
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
+        /** @var PersonRepository|\PHPUnit_Framework_MockObject_MockObject $mockPersonRepository */
+        $mockPersonRepository = $this->getMockBuilder(PersonRepository::class)
+            ->setMethods(['remove'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->subject->injectPersonRepository($mockPersonRepository);
 
         $reservationDemandFactory = $this->mockReservationDemandFactory();
@@ -192,9 +207,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
 
-        $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->once())
             ->method('findDemanded')
             ->will($this->returnValue($mockReservationResult));
 
@@ -213,21 +226,17 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandRemovesContacts()
     {
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getContact']
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getContact'])->getMock();
         $mockReservationResult = [
             $mockReservation
         ];
-        $mockContact = $this->getMock(
-            Contact::class
-        );
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
-        $mockContactRepository = $this->getMock(
-            ContactRepository::class, ['remove'], [], '', false
-        );
+        $mockContact = $this->getMockBuilder(Contact::class)->getMock();
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
+        /** @var ContactRepository|\PHPUnit_Framework_MockObject_MockObject $mockContactRepository */
+        $mockContactRepository = $this->getMockBuilder(ContactRepository::class)
+            ->setMethods(['remove'])
+            ->disableOriginalConstructor()->getMock();
         $this->subject->injectContactRepository($mockContactRepository);
 
         $reservationDemandFactory = $this->mockReservationDemandFactory();
@@ -235,9 +244,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
 
-        $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->once())
             ->method('findDemanded')
             ->will($this->returnValue($mockReservationResult));
 
@@ -256,21 +263,16 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandRemovesBillingAddresses()
     {
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getBillingAddress']
-        );
-        $mockReservationResult = [
-            $mockReservation
-        ];
-        $mockBillingAddress = $this->getMock(
-            BillingAddress::class
-        );
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
-        $mockBillingAddressRepository = $this->getMock(
-            BillingAddressRepository::class, ['remove'], [], '', false
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getBillingAddress'])->getMock();
+        $mockReservationResult = [$mockReservation];
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
+        /** @var BillingAddressRepository|\PHPUnit_Framework_MockObject_MockObject $mockBillingAddressRepository */
+        $mockBillingAddressRepository = $this->getMockBuilder(BillingAddressRepository::class)
+            ->setMethods(['remove'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->subject->injectBillingAddressRepository($mockBillingAddressRepository);
 
         $reservationDemandFactory = $this->mockReservationDemandFactory();
@@ -278,9 +280,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
 
-        $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->once())
             ->method('findDemanded')
             ->will($this->returnValue($mockReservationResult));
 
@@ -299,21 +299,17 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandRemovesNotifications()
     {
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getNotifications']
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+        ->setMethods(['getNotifications'])->getMock();
         $mockReservationResult = [
             $mockReservation
         ];
-        $mockNotification = $this->getMock(
-            Notification::class
-        );
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
-        $mockNotificationRepository = $this->getMock(
-            NotificationRepository::class, ['remove'], [], '', false
-        );
+        $mockNotification = $this->getMockBuilder(Notification::class)->getMock();
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
+        /** @var NotificationRepository|\PHPUnit_Framework_MockObject_MockObject $mockNotificationRepository */
+        $mockNotificationRepository = $this->getMockBuilder(NotificationRepository::class)
+            ->setMethods(['remove'])
+            ->disableOriginalConstructor()->getMock();
         $this->subject->injectNotificationRepository($mockNotificationRepository);
 
         $reservationDemandFactory = $this->mockReservationDemandFactory();
@@ -321,9 +317,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
 
-        $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->once())
             ->method('findDemanded')
             ->will($this->returnValue($mockReservationResult));
 
@@ -342,26 +336,26 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     public function deleteReservationsCommandRemovesReservations()
     {
-        $mockReservationDemand = $this->getMock(
-            ReservationDemand::class
-        );
+        $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->getMock();
         $reservationDemandFactory = $this->mockReservationDemandFactory();
         $reservationDemandFactory->expects($this->once())
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
+        $mockParticipant = $this->getMockBuilder(Person::class)->getMock();
 
-        $mockReservation = $this->getMock(
-            Reservation::class
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getParticipants'])
+            ->getMock();
+        $mockReservation->expects($this->any())->method('getParticipants')
+            ->will($this->returnValue([$mockParticipant]));
         $reservationsResult = [$mockReservation];
 
-        $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->once())
             ->method('findDemanded')
             ->will($this->returnValue($reservationsResult));
 
-        $mockReservationRepository->expects($this->once())
+        $this->reservationRepository->expects($this->once())
             ->method('remove')
             ->with($mockReservation);
 
