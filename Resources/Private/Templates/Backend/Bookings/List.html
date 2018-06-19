@@ -7,7 +7,7 @@
               arguments="{demand: '{demand}', overwriteDemand: '{overwriteDemand}', filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
     <f:flashMessages />
     <div class="panel panel-space panel-default recordlist">
-        <table class="table table-striped table-hover typo3-dblist nowrap">
+        <table class="table table-striped table-hover typo3-dblist">
             <thead>
             <tr class="c-headline">
                 <th>ID</th>
@@ -46,9 +46,9 @@
                         <td>{reservation.participants->f:count()}</td>
                         <td>
                             <f:if condition="{reservation.status} <= 2">
-                                <f:be.buttons.icon uri="#"
-                                                   additionalAttributes="{onclick: 'window.location.href=\'alt_doc.php?returnUrl=\'+T3_THIS_LOCATION+\'&edit[tx_t3eventsreservation_domain_model_reservation][{reservation.uid}]=edit\'; return false;'}"
-                                                   icon="actions-document-open" title="Edit"/>
+                                <a class="action-open"
+                                   title="Edit"
+                                   href="{ts:be.editRecord(parameters:'edit[tx_t3eventsreservation_domain_model_reservation][{reservation.uid}]=edit&moduleName=Events_T3eventsReservationM1')}">{course.headline}</a>
                             </f:if>
                         </td>
                     </tr>
