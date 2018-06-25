@@ -14,7 +14,7 @@
 	<f:for each="{reservation.participants}" as="participant">
 		<f:render partial="Participant/Short" arguments="{reservation: reservation, participant: participant}" />
 	</f:for>
-	<f:render partial="FormErrors" arguments="{object:Reservation}" />
+	<f:render partial="FormErrors" arguments="{object: 'Reservation'}" />
 	<f:if condition="{reservation.lesson.freePlaces} > 0">
 		<f:form action="createParticipant"
 			name="newParticipant"
