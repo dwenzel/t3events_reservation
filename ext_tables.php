@@ -70,7 +70,7 @@ call_user_func(function() {
             $iconRegistry->registerIcon(
                 $identifier,
                 \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-                ['source' => 'EXT:t3events_reservation' . $path]
+                ['source' => 'EXT:t3events_reservation/' . $path]
             );
         }
     }
