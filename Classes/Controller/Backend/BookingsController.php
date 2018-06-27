@@ -26,6 +26,7 @@ use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use DWenzel\T3events\CallStaticTrait;
 use DWenzel\T3events\Controller\AudienceRepositoryTrait;
 use DWenzel\T3events\Controller\CategoryRepositoryTrait;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
@@ -35,7 +36,10 @@ use DWenzel\T3events\Controller\EventTypeRepositoryTrait;
 use DWenzel\T3events\Controller\GenreRepositoryTrait;
 use DWenzel\T3events\Controller\ModuleDataTrait;
 use DWenzel\T3events\Controller\NotificationRepositoryTrait;
+use DWenzel\T3events\Controller\NotificationServiceTrait;
+use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Controller\SearchTrait;
+use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
 use DWenzel\T3events\Controller\VenueRepositoryTrait;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -52,11 +56,13 @@ use DWenzel\T3events\Controller\FilterableControllerTrait;
 class BookingsController extends AbstractBackendController
     implements FilterableControllerInterface
 {
-    use AudienceRepositoryTrait, CategoryRepositoryTrait, CompanyRepositoryTrait,
-        DemandTrait, EventTypeRepositoryTrait, FilterableControllerTrait,
-        GenreRepositoryTrait, ModuleDataTrait,
-        ReservationDemandFactoryTrait, ReservationRepositoryTrait, SearchTrait,
-        TranslateTrait, VenueRepositoryTrait;
+    use AudienceRepositoryTrait, CallStaticTrait, CategoryRepositoryTrait,
+        CompanyRepositoryTrait, DemandTrait, DownloadTrait,
+        EventTypeRepositoryTrait,  FilterableControllerTrait, GenreRepositoryTrait,
+        ModuleDataTrait, NotificationRepositoryTrait, NotificationServiceTrait,
+        PersistenceManagerTrait, SearchTrait, SettingsUtilityTrait,
+        ReservationDemandFactoryTrait, ReservationRepositoryTrait, TranslateTrait,
+        VenueRepositoryTrait;
 
     /**
      * @const Extension key

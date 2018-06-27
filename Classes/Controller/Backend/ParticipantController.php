@@ -17,7 +17,10 @@ namespace CPSIT\T3eventsReservation\Controller\Backend;
 use CPSIT\T3eventsReservation\Controller\ParticipantDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
+use DWenzel\T3events\CallStaticTrait;
+use DWenzel\T3events\Controller\AbstractBackendController;
 use DWenzel\T3events\Controller\AudienceRepositoryTrait;
+use DWenzel\T3events\Controller\Backend\FormTrait;
 use DWenzel\T3events\Controller\CategoryRepositoryTrait;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
@@ -26,11 +29,10 @@ use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
 use DWenzel\T3events\Controller\EventTypeRepositoryTrait;
 use DWenzel\T3events\Controller\GenreRepositoryTrait;
 use DWenzel\T3events\Controller\ModuleDataTrait;
-use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 use DWenzel\T3events\Controller\SearchTrait;
+use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
 use DWenzel\T3events\Controller\VenueRepositoryTrait;
-use DWenzel\T3events\Controller\AbstractBackendController;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Controller\FilterableControllerTrait;
@@ -44,13 +46,12 @@ class ParticipantController extends AbstractBackendController
     implements FilterableControllerInterface
 {
     use
-        AudienceRepositoryTrait, CategoryRepositoryTrait,
+        AudienceRepositoryTrait, CallStaticTrait, CategoryRepositoryTrait,
         CompanyRepositoryTrait, DemandTrait, DownloadTrait,
-        EntityNotFoundHandlerTrait, EventTypeRepositoryTrait,
-        FilterableControllerTrait, GenreRepositoryTrait,
-        ModuleDataTrait, NotificationRepositoryTrait,
+        EntityNotFoundHandlerTrait, EventTypeRepositoryTrait, FormTrait,
+        FilterableControllerTrait, GenreRepositoryTrait, ModuleDataTrait,
         PersonRepositoryTrait, ParticipantDemandFactoryTrait,
-        ReservationRepositoryTrait, SearchTrait,
+        ReservationRepositoryTrait, SearchTrait, SettingsUtilityTrait,
         TranslateTrait, VenueRepositoryTrait;
 
     /**
@@ -102,6 +103,7 @@ class ParticipantController extends AbstractBackendController
      * @ignorevalidation $schedule
      * @param string $ext File extension for download
      * @return string
+     * @throws \DWenzel\T3events\InvalidFileTypeException
      */
     public function downloadAction($schedule = null, $ext = 'csv')
     {
@@ -130,7 +132,6 @@ class ParticipantController extends AbstractBackendController
     protected function getErrorFlashMessage()
     {
         $key = 'error' . '.participant.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
-        // todo use correct extension key t3events_course
         $message = $this->translate($key);
         if ($message == null) {
             return false;
