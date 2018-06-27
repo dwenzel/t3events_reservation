@@ -42,9 +42,8 @@ class ScheduleDemandFactoryTest extends UnitTestCase {
 	 * @return ObjectManager|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function mockObjectManager() {
-		$mockObjectManager = $this->getMock(
-			ObjectManager::class, ['get']
-		);
+		$mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
 		$this->subject->injectObjectManager($mockObjectManager);
 
 		return $mockObjectManager;
@@ -67,7 +66,7 @@ class ScheduleDemandFactoryTest extends UnitTestCase {
 	 * @test
 	 */
 	public function createFromSettingsReturnsScheduleDemand() {
-		$mockDemand = $this->getMock(ScheduleDemand::class);
+		$mockDemand = $this->getMockBuilder(ScheduleDemand::class)->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')
@@ -103,9 +102,8 @@ class ScheduleDemandFactoryTest extends UnitTestCase {
 		$settings = [
 			$propertyName => $settingsValue
 		];
-		$mockDemand = $this->getMock(
-			ScheduleDemand::class, ['dummy']
-		);
+		$mockDemand = $this->getMockBuilder(ScheduleDemand::class)
+            ->setMethods(['dummy'])->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')

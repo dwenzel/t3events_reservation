@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
 
 use CPSIT\T3eventsReservation\Domain\Model\BookableScheduleTrait;
@@ -277,9 +278,8 @@ class BookableScheduleTraitTest extends UnitTestCase
     public function registrationDocumentsCanBeSet()
     {
         $registrationDocuments = new ObjectStorage();
-        $mockFileReference = $this->getMock(
-            FileReference::class, [], [], '', false
-        );
+        $mockFileReference = $this->getMockBuilder(FileReference::class)
+            ->disableOriginalConstructor()->getMock();
         $registrationDocuments->attach($mockFileReference);
         $this->subject->setRegistrationDocuments($registrationDocuments);
         $this->assertSame(
@@ -294,9 +294,8 @@ class BookableScheduleTraitTest extends UnitTestCase
     public function registrationDocumentCanBeAdded()
     {
         /** @var FileReference $mockFileReference */
-        $mockFileReference = $this->getMock(
-            FileReference::class, [], [], '', false
-        );
+        $mockFileReference = $this->getMockBuilder(FileReference::class)
+            ->disableOriginalConstructor()->getMock();
         $this->subject->initializeObject();
         $this->subject->addRegistrationDocument($mockFileReference);
 
@@ -312,9 +311,8 @@ class BookableScheduleTraitTest extends UnitTestCase
     {
         $registrationDocuments = new ObjectStorage();
         /** @var FileReference $mockFileReference */
-        $mockFileReference = $this->getMock(
-            FileReference::class, [], [], '', false
-        );
+        $mockFileReference = $this->getMockBuilder(FileReference::class)
+            ->disableOriginalConstructor()->getMock();
         $registrationDocuments->attach($mockFileReference);
         $this->subject->setRegistrationDocuments($registrationDocuments);
         $this->subject->removeRegistrationDocument($mockFileReference);
@@ -330,10 +328,6 @@ class BookableScheduleTraitTest extends UnitTestCase
     public function participantsCanBeSet()
     {
         $participants = new ObjectStorage();
-        $mockParticipant = $this->getMock(
-            Person::class, [], [], '', false
-        );
-        $participants->attach($mockParticipant);
         $this->subject->setParticipants($participants);
         $this->assertSame(
             $participants,
@@ -347,7 +341,7 @@ class BookableScheduleTraitTest extends UnitTestCase
     public function participantCanBeAdded()
     {
         /** @var Person $mockParticipant */
-        $mockParticipant = $this->getMock(Person::class);
+        $mockParticipant = $this->getMockBuilder(Person::class)->getMock();
         $this->subject->initializeObject();
         $this->subject->addParticipant($mockParticipant);
         $this->assertTrue(
@@ -362,9 +356,7 @@ class BookableScheduleTraitTest extends UnitTestCase
     {
         $participants = new ObjectStorage();
         /** @var Person $mockParticipant */
-        $mockParticipant = $this->getMock(
-            Person::class, [], [], '', false
-        );
+        $mockParticipant = $this->getMockBuilder(Person::class)->getMock();
         $participants->attach($mockParticipant);
         $this->subject->setParticipants($participants);
         $this->subject->removeParticipant($mockParticipant);
@@ -393,9 +385,7 @@ class BookableScheduleTraitTest extends UnitTestCase
         $this->subject->initializeObject();
         $this->subject->setPlaces(5);
         /** @var Person $mockParticipant */
-        $mockParticipant = $this->getMock(
-            Person::class, [], [], '', false
-        );
+        $mockParticipant = $this->getMockBuilder(Person::class)->getMock();
         $this->subject->addParticipant($mockParticipant);
 
         $this->assertSame(

@@ -1,14 +1,16 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller\Backend;
 
 use CPSIT\T3eventsReservation\Controller\Backend\BookingsController;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\ReservationDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Domain\Model\Dto\ModuleData;
+use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -31,7 +33,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class BookingsControllerTest extends UnitTestCase
 {
     /**
-     * @var BookingsController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var BookingsController|MockObject|AccessibleMockObjectInterface
      */
     protected $subject;
 
@@ -68,19 +70,19 @@ class BookingsControllerTest extends UnitTestCase
             BookingsController::class,
             ['dummy', 'setTsConfig', 'overwriteDemandObject', 'getFilterOptions']
         );
-        $this->moduleData = $this->getMock(
-            ModuleData::class,
-            ['getOverwriteDemand', 'setOverwriteDemand', 'setDemand']
-        );
+        $this->moduleData = $this->getMockBuilder(ModuleData::class)
+            ->setMethods(['getOverwriteDemand', 'setOverwriteDemand', 'setDemand'])->getMock();
         $this->inject($this->subject, 'moduleData', $this->moduleData);
-        $this->reservationRepository = $this->getMock(
-            ReservationRepository::class, ['findDemanded'], [], '', false
-        );
+        $this->reservationRepository = $this->getMockBuilder(ReservationRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findDemanded'])
+            ->getMock();
         $this->subject->injectReservationRepository($this->reservationRepository);
         $this->view = $this->getMockForAbstractClass(ViewInterface::class, ['assignMultiple']);
         $this->inject($this->subject, 'view', $this->view);
         $this->inject($this->subject, 'settings', $this->settings);
-        $this->demandFactory = $this->getMock(ReservationDemandFactory::class, ['createFromSettings']);
+        $this->demandFactory = $this->getMockBuilder(ReservationDemandFactory::class)
+            ->setMethods(['createFromSettings'])->getMock();
         $this->subject->injectReservationDemandFactory($this->demandFactory);
 
     }
@@ -101,7 +103,7 @@ class BookingsControllerTest extends UnitTestCase
      */
     public function listActionGetsDemandFromFactory()
     {
-        $demand = $this->getMock(ReservationDemand::class);
+        $demand = $this->getMockBuilder(ReservationDemand::class)->getMock();
         $this->demandFactory->expects($this->once())
             ->method('createFromSettings')
             ->with($this->settings)
@@ -116,7 +118,7 @@ class BookingsControllerTest extends UnitTestCase
     public function listActionOverwritesDemandObject()
     {
         $overwriteDemand = ['foo'];
-        $demand = $this->getMock(ReservationDemand::class);
+        $demand = $this->getMockBuilder(ReservationDemand::class)->getMock();
         $this->demandFactory->expects($this->once())
             ->method('createFromSettings')
             ->with($this->settings)
@@ -133,7 +135,7 @@ class BookingsControllerTest extends UnitTestCase
      */
     public function listActionSetsDemandInModuleData()
     {
-        $demand = $this->getMock(ReservationDemand::class);
+        $demand = $this->getMockBuilder(ReservationDemand::class)->getMock();
         $this->demandFactory->expects($this->once())
             ->method('createFromSettings')
             ->with($this->settings)
@@ -156,7 +158,7 @@ class BookingsControllerTest extends UnitTestCase
         $this->inject($this->subject, 'settings', $settings);
         $filterOptions = ['bar'];
         $reservations = $this->getMockForAbstractClass(QueryResultInterface::class);
-        $demand = $this->getMock(ReservationDemand::class);
+        $demand = $this->getMockBuilder(ReservationDemand::class)->getMock();
         $this->demandFactory->expects($this->once())
             ->method('createFromSettings')
             ->with($settings)

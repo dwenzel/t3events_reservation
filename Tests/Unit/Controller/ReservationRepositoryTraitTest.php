@@ -1,9 +1,10 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Controller;
 
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /***************************************************************
  *  Copyright notice
@@ -44,9 +45,8 @@ class ReservationRepositoryTraitTest extends UnitTestCase
      */
     public function reservationRepositoryCanBeInjected()
     {
-        $reservationRepository = $this->getMock(
-            ReservationRepository::class, [], [], '', false
-        );
+        $reservationRepository = $this->getMockBuilder(ReservationRepository::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectReservationRepository($reservationRepository);
 

@@ -80,9 +80,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     protected function mockRequest()
     {
-        $this->request = $this->getMock(
-            Request::class, ['getOriginalRequest', 'hasArgument', 'getArgument']
-        );
+        $this->request = $this->getMockBuilder(Request::class)
+            ->setMethods(['getOriginalRequest', 'hasArgument', 'getArgument'])->getMock();
         $this->inject(
             $this->subject,
             'request',
@@ -98,9 +97,9 @@ class BillingAddressControllerTest extends UnitTestCase
     protected function mockBillingAddressRepository()
     {
         /** @var PersonRepository $mockRepository */
-        $mockRepository = $this->getMock(
-            BillingAddressRepository::class, ['add', 'remove', 'update'], [], '', false
-        );
+        $mockRepository = $this->getMockBuilder(BillingAddressRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'remove', 'update'])->getMock();
         $this->subject->injectBillingAddressRepository($mockRepository);
 
         return $mockRepository;
@@ -112,9 +111,10 @@ class BillingAddressControllerTest extends UnitTestCase
     protected function mockReservationRepository()
     {
         /** @var ReservationRepository $mockRepository */
-        $mockRepository = $this->getMock(
-            ReservationRepository::class, ['add', 'remove', 'update'], [], '', false
-        );
+        $mockRepository = $this->getMockBuilder(ReservationRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'remove', 'update'])
+            ->getMock();
         $this->subject->injectReservationRepository($mockRepository);
 
         return $mockRepository;
@@ -127,7 +127,7 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     protected function mockView()
     {
-        $view = $this->getMock(ViewInterface::class);
+        $view = $this->getMockBuilder(ViewInterface::class)->getMock();
         $this->inject($this->subject, 'view', $view);
 
         return $view;
@@ -139,9 +139,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     protected function mockReservationWithMatchingBillingAddress($mockBillingAddress)
     {
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getBillingAddress', 'removeBillingAddress']
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getBillingAddress', 'removeBillingAddress'])->getMock();
         $mockReservation->expects($this->once())
             ->method('getBillingAddress')
             ->will($this->returnValue($mockBillingAddress));
@@ -165,8 +164,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function newActionAssignsVariablesToView()
     {
-        $billingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $billingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $expectedVariables = [
             'billingAddress' => $billingAddress,
@@ -185,8 +184,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function createActionCallsDispatch()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->subject->expects($this->once())
             ->method('dispatch')
@@ -200,10 +199,9 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function createActionSetsBillingAddressInReservation()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(
-            Reservation::class, ['setBillingAddress']
-        );
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['setBillingAddress'])->getMock();
         $mockReservation->expects($this->once())
             ->method('setBillingAddress')
             ->with($mockBillingAddress);
@@ -216,8 +214,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function createActionAddsBillingAddressToRepository()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->billingAddressRepository->expects($this->once())
             ->method('add')
@@ -231,8 +229,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function createActionUpdatesReservation()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->reservationRepository->expects($this->once())
             ->method('update')
@@ -246,8 +244,8 @@ class BillingAddressControllerTest extends UnitTestCase
     public function createActionAddsFlashMessageOnSuccess()
     {
         $translatedMessage = 'foo';
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->subject->expects($this->once())
             ->method('translate')
@@ -266,7 +264,7 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function removeActionRemovesMatchingBillingAddressFromReservation()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $mockReservation = $this->mockReservationWithMatchingBillingAddress($mockBillingAddress);
         $mockReservation->expects($this->once())
             ->method('removeBillingAddress');
@@ -279,7 +277,7 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function createActionRemovesMatchingBillingAddressFromRepository()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $mockReservation = $this->mockReservationWithMatchingBillingAddress($mockBillingAddress);
         $this->billingAddressRepository->expects($this->once())
             ->method('remove')
@@ -294,7 +292,7 @@ class BillingAddressControllerTest extends UnitTestCase
     public function removeActionAddsFlashMessage()
     {
         $translatedMessage = 'foo';
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $mockReservation = $this->mockReservationWithMatchingBillingAddress($mockBillingAddress);
 
         $this->subject->expects($this->once())
@@ -314,8 +312,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function removeActionCallsDispatch()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->subject->expects($this->once())
             ->method('dispatch')
@@ -329,8 +327,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function editActionAssignsVariablesToView()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $expectedVariables = [
             'reservation' => $mockReservation,
@@ -349,8 +347,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function updateActionUpdatesParticipant()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->billingAddressRepository->expects($this->once())
             ->method('update')
@@ -364,8 +362,8 @@ class BillingAddressControllerTest extends UnitTestCase
      */
     public function updateActionCallsDispatch()
     {
-        $mockBillingAddress = $this->getMock(BillingAddress::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->subject->expects($this->once())
             ->method('dispatch')

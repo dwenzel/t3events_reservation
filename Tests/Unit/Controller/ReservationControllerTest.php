@@ -73,9 +73,7 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockPersistenceManager() {
-		$mockPersistenceManager = $this->getMock(
-			PersistenceManager::class
-		);
+		$mockPersistenceManager = $this->getMockBuilder(PersistenceManager::class)->getMock();
 		$this->inject($this->subject, 'persistenceManager', $mockPersistenceManager);
 
         return $mockPersistenceManager;
@@ -87,7 +85,7 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockView() {
-		$view = $this->getMock(ViewInterface::class);
+		$view = $this->getMockBuilder(ViewInterface::class)->getMock();
 		$this->inject($this->subject, 'view', $view);
 
 		return $view;
@@ -97,8 +95,9 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockReservationRepository() {
-		$reservationRepository = $this->getMock(
-			ReservationRepository::class, ['add', 'update', 'remove'], [], '', false);
+		$reservationRepository = $this->getMockBuilder(ReservationRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'update', 'remove'])->getMock();
 		$this->inject($this->subject, 'reservationRepository', $reservationRepository);
 
 		return $reservationRepository;
@@ -108,8 +107,9 @@ class ReservationControllerTest extends UnitTestCase {
      * @return mixed
      */
     protected function mockPersonRepository() {
-        $personRepository = $this->getMock(
-            PersonRepository::class, ['add', 'update', 'remove'], [], '', false);
+        $personRepository = $this->getMockBuilder(PersonRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'update', 'remove'])->getMock();
         $this->inject($this->subject, 'personRepository', $personRepository);
 
         return $personRepository;
@@ -119,8 +119,9 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockBillingAddressRepository() {
-		$billingAddressRepository = $this->getMock(
-			BillingAddressRepository::class, ['add', 'update', 'remove'], [], '', false);
+		$billingAddressRepository = $this->getMockBuilder(BillingAddressRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'update', 'remove'])->getMock();
 		$this->inject($this->subject, 'billingAddressRepository', $billingAddressRepository);
 
 		return $billingAddressRepository;
@@ -136,9 +137,8 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockRequest() {
-		$mockRequest = $this->getMock(
-			Request::class, ['getOriginalRequest', 'getArgument']
-		);
+		$mockRequest = $this->getMockBuilder(Request::class)
+        ->setMethods(['getOriginalRequest', 'getArgument'])->getMock();
 		$this->inject($this->subject, 'request', $mockRequest);
 
 		return $mockRequest;
@@ -148,9 +148,7 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockSession() {
-		$mockSession = $this->getMock(
-			SessionInterface::class
-		);
+		$mockSession = $this->getMockBuilder(SessionInterface::class)->getMock();
 		$this->inject($this->subject, 'session', $mockSession);
 
 		return $mockSession;
@@ -160,9 +158,8 @@ class ReservationControllerTest extends UnitTestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
 	protected function mockSettingsUtility() {
-		$mockSettingsUtility = $this->getMock(
-			SettingsUtility::class, ['getValueByKey', 'getFileStorage']
-		);
+		$mockSettingsUtility = $this->getMockBuilder(SettingsUtility::class)
+            ->setMethods(['getValueByKey', 'getFileStorage'])->getMock();
 		$this->subject->injectSettingsUtility($mockSettingsUtility);
 
 		return $mockSettingsUtility;
@@ -172,9 +169,9 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockLessonRepository() {
-		$mockLessonRepository = $this->getMock(
-			PerformanceRepository::class, ['add', 'update', 'remove'], [], '', false
-		);
+		$mockLessonRepository = $this->getMockBuilder(PerformanceRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'update', 'remove'])->getMock();
 		$this->inject($this->subject, 'lessonRepository', $mockLessonRepository);
 
 		return $mockLessonRepository;
@@ -189,9 +186,8 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockObjectManager() {
-		$mockObjectManager = $this->getMock(
-			ObjectManager::class, ['get']
-		);
+		$mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
 		$this->subject->_set('objectManager', $mockObjectManager);
 
 		return $mockObjectManager;
@@ -201,9 +197,8 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @return mixed
 	 */
 	protected function mockNotificationService() {
-		$mockNotificationService = $this->getMock(
-			NotificationService::class, ['render', 'send']
-		);
+		$mockNotificationService = $this->getMockBuilder(NotificationService::class)
+            ->setMethods(['render', 'send'])->getMock();
 		$this->inject($this->subject, 'notificationService', $mockNotificationService);
 
 		return $mockNotificationService;
@@ -221,9 +216,9 @@ class ReservationControllerTest extends UnitTestCase {
                 'denyAccess'
             ],
 			[], '', false);
-		$mockSession = $this->getMock(
-			SessionInterface::class, ['get', 'set', 'has', 'clean', 'setNamespace'], [], '', false
-		);
+		$mockSession = $this->getMockBuilder(SessionInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get', 'set', 'has', 'clean', 'setNamespace'])->getMock();
 		$this->inject($this->subject, 'session', $mockSession);
         $this->request = $this->mockRequest();
     }
@@ -232,9 +227,7 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function newParticipantActionDoesNotDenyAccessIfReservationStatusIsDraft() {
-		$mockRequest = $this->getMock(
-			Request::class
-		);
+		$mockRequest = $this->getMockBuilder(Request::class)->getMock();
 		$this->mockView();
 		$this->inject($this->subject, 'request', $mockRequest);
 		$reservation = new Reservation();
@@ -249,9 +242,8 @@ class ReservationControllerTest extends UnitTestCase {
      * @test
      */
     public function confirmActionSetsStatusSubmitted() {
-        $mockReservation = $this->getMock(
-            Reservation::class, ['setStatus']
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['setStatus'])->getMock();
         $this->mockReservationRepository();
 
         $mockReservation->expects($this->once())
@@ -265,7 +257,7 @@ class ReservationControllerTest extends UnitTestCase {
      * @test
      */
     public function confirmActionAddsFlashMessage() {
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $this->mockReservationRepository();
         $translatedMessage = 'foo';
         $this->subject->expects($this->once())
@@ -303,7 +295,7 @@ class ReservationControllerTest extends UnitTestCase {
         ];
         $this->subject->_set('settings', $settings);
 
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $this->mockReservationRepository();
 
         $this->subject->expects($this->once())
@@ -321,7 +313,7 @@ class ReservationControllerTest extends UnitTestCase {
      * @test
      */
     public function confirmActionUpdatesReservation() {
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $mockRepository = $this->mockReservationRepository();
         $mockRepository->expects($this->once())
             ->method('update')
@@ -334,7 +326,7 @@ class ReservationControllerTest extends UnitTestCase {
      * @test
      */
     public function confirmActionCallsDispatch() {
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $this->mockReservationRepository();
         $this->subject->expects($this->once())
             ->method('dispatch')
@@ -360,9 +352,8 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function createActionDeniesAccessIfReservationIsNotNew() {
-		$reservation = $this->getMock(
-			Reservation::class, ['getUid']
-		);
+		$reservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getUid'])->getMock();
 		$reservation->expects($this->once())
 			->method('getUid')
 			->will($this->returnValue(5));
@@ -374,9 +365,7 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function createActionDeniesAccessReservationIsInSession() {
-		$reservation = $this->getMock(
-			Reservation::class
-		);
+		$reservation = $this->getMockBuilder(Reservation::class)->getMock();
 		$mockSession = $this->mockSession();
 		$mockSession->expects($this->once())
 			->method('has')
@@ -419,14 +408,13 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockRequest->expects($this->once())
 			->method('getOriginalRequest');
 		$reservation = new Reservation();
-		$mockLesson = $this->getMock(
-			Performance::class, ['getFreePlaces']
-		);
+		$mockLesson = $this->getMockBuilder(Performance::class)
+            ->setMethods(['getFreePlaces'])->getMock();
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(99));
 
-		$view = $this->getMock(ViewInterface::class);
+		$view = $this->getMockBuilder(ViewInterface::class)->getMock();
 		$view->expects($this->once())
 			->method('assignMultiple')
 			->with(
@@ -446,12 +434,9 @@ class ReservationControllerTest extends UnitTestCase {
 	public function createActionAddsReservationToReservationRepository() {
 		$this->mockPersistenceManager();
 
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getContact']
-		);
-		$mockContact = $this->getMock(
-			Person::class
-		);
+		$mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getContact'])->getMock();
+		$mockContact = $this->getMockBuilder(Person::class)->getMock();
 		$mockReservation->expects($this->once())
 			->method('getContact')
 			->will($this->returnValue($mockContact));
@@ -471,9 +456,8 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->mockPersistenceManager();
 		$this->mockReservationRepository();
 
-		$mockReservation = $this->getMock(
-			Reservation::class, ['setStatus']
-		);
+		$mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['setStatus'])->getMock();
 		$mockReservation->expects($this->once())
 			->method('setStatus')
 			->with(Reservation::STATUS_DRAFT);
@@ -513,13 +497,11 @@ class ReservationControllerTest extends UnitTestCase {
 		$this->mockPersistenceManager();
 		$this->mockLessonRepository();
 
-		$reservation = $this->getMock(
-			Reservation::class, ['getLesson']
-		);
+		$reservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getLesson'])->getMock();
 		$newParticipant = new Person();
-		$mockLesson = $this->getMock(
-			Performance::class, ['getFreePlaces', 'addParticipant']
-		);
+		$mockLesson = $this->getMockBuilder(Performance::class)
+            ->setMethods(['getFreePlaces', 'addParticipant'])->getMock();
 		$this->inject($reservation, 'lesson', $mockLesson);
 		$reservation->expects($this->any())
 			->method('getLesson')
@@ -568,21 +550,17 @@ class ReservationControllerTest extends UnitTestCase {
 	 */
 	public function deleteActionRemovesContactFromRepository()
 	{
-		$mockReservation = $this->getMock(
-			Reservation::class, ['getContact']
-		);
-		$mockContact = $this->getMock(
-            Contact::class
-        );
+		$mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getContact'])->getMock();
+		$mockContact = $this->getMockBuilder(Contact::class)->getMock();
         $mockReservation->expects($this->once())
             ->method('getContact')
             ->will($this->returnValue($mockContact));
 		$this->mockSession();
 		$this->mockReservationRepository();
-		$mockContactRepository = $this->getMock(
-			ContactRepository::class, ['add', 'remove', 'update'],
-            [], '', false
-		);
+		$mockContactRepository = $this->getMockBuilder(ContactRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'remove', 'update'])->getMock();
         $this->inject(
             $this->subject,
             'contactRepository',
@@ -656,10 +634,8 @@ class ReservationControllerTest extends UnitTestCase {
 
 		$identifier = 'foo';
 		$reservation = new Reservation();
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)
+            ->setMethods(['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText'])->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')
@@ -706,10 +682,8 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockContact->expects($this->once())
 			->method('getEmail')
 			->will($this->returnValue($email));
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)
+            ->setMethods(['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText'])->getMock();
 		$mockNotification->expects($this->once())
 			->method('setRecipient')
 			->with($email);
@@ -745,10 +719,8 @@ class ReservationControllerTest extends UnitTestCase {
 		$identifier = 'foo';
 		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$reservation = new Reservation();
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)
+            ->setMethods(['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText'])->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')
@@ -781,10 +753,8 @@ class ReservationControllerTest extends UnitTestCase {
 		$identifier = 'foo';
 		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$reservation = new Reservation();
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setRecipient', 'setSenderName', 'setSubject', 'setFormat', 'setBodyText']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)
+            ->setMethods(['setRecipient', 'setSenderName', 'setSubject', 'setFormat', 'setBodyText'])->getMock();
         $mockNotification->expects($this->once())
             ->method('setSenderName')
             ->with($config['senderName']);
@@ -816,10 +786,7 @@ class ReservationControllerTest extends UnitTestCase {
 		$identifier = 'foo';
 		$this->subject->injectSettingsUtility(new SettingsUtility());
 		$reservation = new Reservation();
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')
@@ -854,9 +821,7 @@ class ReservationControllerTest extends UnitTestCase {
 			'toEmail' => 'bar@baz.com',
 			'subject' => 'baz',
 		];
-		$mockObjectStorage = $this->getMock(
-			ObjectStorage::class
-		);
+		$mockObjectStorage = $this->getMockBuilder(ObjectStorage::class)->getMock();
 		$mockSettingsUtility = $this->mockSettingsUtility();
 		$mockSettingsUtility->expects($this->once())
 			->method('getFileStorage')
@@ -865,10 +830,8 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockSettingsUtility->expects($this->any())
 			->method('getValueByKey')
 			->will($this->returnValue('barBaz'));
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setAttachments']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)
+            ->setMethods(['setAttachments'])->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')
@@ -901,10 +864,7 @@ class ReservationControllerTest extends UnitTestCase {
 		];
 		$identifier = 'foo';
 		$reservation = new Reservation();
-		$mockNotification = $this->getMock(
-			Notification::class,
-			['setRecipient', 'setSender', 'setSubject', 'setFormat', 'setBodyText']
-		);
+		$mockNotification = $this->getMockBuilder(Notification::class)->getMock();
 		$mockObjectManager = $this->mockObjectManager();
 		$mockObjectManager->expects($this->once())
 			->method('get')
@@ -929,9 +889,7 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'getLesson']
 		);
-		$mockLesson = $this->getMock(
-			BookableInterface::class
-		);
+		$mockLesson = $this->getMockBuilder(BookableInterface::class)->getMock();
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(1));
@@ -962,7 +920,7 @@ class ReservationControllerTest extends UnitTestCase {
 		$mockReservation = $this->getAccessibleMock(
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
-		$mockLesson = $this->getMock(BookableInterface::class);
+		$mockLesson = $this->getMockBuilder(BookableInterface::class)->getMock();
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(1));
@@ -989,7 +947,7 @@ class ReservationControllerTest extends UnitTestCase {
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
 
-		$mockLesson = $this->getMock(BookableInterface::class);
+		$mockLesson = $this->getMockBuilder(BookableInterface::class)->getMock();
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(0));
@@ -1025,7 +983,7 @@ class ReservationControllerTest extends UnitTestCase {
 			Reservation::class, ['getStatus', 'setStatus', 'getLesson']
 		);
 
-        $mockLesson = $this->getMock(BookableInterface::class);
+        $mockLesson = $this->getMockBuilder(BookableInterface::class)->getMock();
 		$mockLesson->expects($this->once())
 			->method('getFreePlaces')
 			->will($this->returnValue(3));
@@ -1122,13 +1080,10 @@ class ReservationControllerTest extends UnitTestCase {
         $this->mockBillingAddressRepository();
 
         /** @var Reservation $reservation */
-        $reservation = $this->getMock(
-            Reservation::class, ['getBillingAddress']
-        );
+        $reservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getBillingAddress'])->getMock();
         /** @var BillingAddress $mockBillingAddress */
-        $mockBillingAddress = $this->getMock(
-            BillingAddress::class
-        );
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $reservation->expects($this->any())
             ->method('getBillingAddress')
             ->will($this->returnValue($mockBillingAddress));
@@ -1150,9 +1105,8 @@ class ReservationControllerTest extends UnitTestCase {
     public function removeBillingAddressCallsDispatch()
     {
         /** @var Reservation $mockReservation */
-        $mockReservation = $this->getMock(
-            Reservation::class, ['getBillingAddress']
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getBillingAddress'])->getMock();
         $this->subject->expects($this->once())
             ->method('dispatch')
             ->with(['reservation' => $mockReservation]);
@@ -1189,13 +1143,10 @@ class ReservationControllerTest extends UnitTestCase {
     {
         $this->mockReservationRepository();
         /** @var Reservation $reservation */
-        $reservation = $this->getMock(
-            Reservation::class, ['setBillingAddress']
-        );
+        $reservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['setBillingAddress'])->getMock();
         /** @var BillingAddress $billingAddress */
-        $billingAddress = $this->getMock(
-            BillingAddress::class
-        );
+        $billingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $this->mockPersonRepository();
         $reservation->expects($this->once())
             ->method('setBillingAddress')
@@ -1210,13 +1161,9 @@ class ReservationControllerTest extends UnitTestCase {
     public function createBillingAddressActionAddsBillingAddressToRepository()
     {
         /** @var Reservation $reservation */
-        $reservation = $this->getMock(
-            Reservation::class
-        );
+        $reservation = $this->getMockBuilder(Reservation::class)->getMock();
         /** @var BillingAddress $billingAddress */
-        $billingAddress = $this->getMock(
-            BillingAddress::class
-        );
+        $billingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $this->mockReservationRepository();
         $mockPersonRepository = $this->mockPersonRepository();
         $mockPersonRepository->expects($this->once())
@@ -1232,13 +1179,9 @@ class ReservationControllerTest extends UnitTestCase {
     public function createBillingAddressUpdatesReservation()
     {
         /** @var Reservation $reservation */
-        $reservation = $this->getMock(
-            Reservation::class
-        );
+        $reservation = $this->getMockBuilder(Reservation::class)->getMock();
         /** @var BillingAddress $billingAddress */
-        $billingAddress = $this->getMock(
-            BillingAddress::class
-        );
+        $billingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $this->mockPersonRepository();
         $mockReservationRepository = $this->mockReservationRepository();
         $mockReservationRepository->expects($this->once())
@@ -1258,13 +1201,9 @@ class ReservationControllerTest extends UnitTestCase {
         $this->mockReservationRepository();
 
         /** @var Reservation $reservation */
-        $reservation = $this->getMock(
-            Reservation::class
-        );
+        $reservation = $this->getMockBuilder(Reservation::class)->getMock();
         /** @var BillingAddress $mockBillingAddress */
-        $mockBillingAddress = $this->getMock(
-            BillingAddress::class
-        );
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $expectedKey = 'message.reservation.createBillingAddress.success';
         $this->subject->expects($this->once())
             ->method('translate')
@@ -1286,13 +1225,9 @@ class ReservationControllerTest extends UnitTestCase {
         $this->mockPersonRepository();
 
         /** @var Reservation $mockReservation */
-        $mockReservation = $this->getMock(
-            Reservation::class
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         /** @var BillingAddress $mockBillingAddress */
-        $mockBillingAddress = $this->getMock(
-            BillingAddress::class
-        );
+        $mockBillingAddress = $this->getMockBuilder(BillingAddress::class)->getMock();
         $this->subject->expects($this->once())
             ->method('dispatch')
             ->with(['reservation' => $mockReservation]);
@@ -1307,13 +1242,10 @@ class ReservationControllerTest extends UnitTestCase {
 	{
 		$this->mockPersonRepository();
 		$this->mockReservationRepository();
-		$mockParticipant = $this->getMock(
-			Person::class
-		);
-		$mockReservation = $this->getMock(
-			Reservation::class, ['removeParticipant', 'getLesson']
-		);
-		$mockLesson = $this->getMock(Schedule::class);
+		$mockParticipant = $this->getMockBuilder(Person::class)->getMock();
+		$mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['removeParticipant', 'getLesson'])->getMock();
+		$mockLesson = $this->getMockBuilder(Schedule::class)->getMock();
 		$mockReservation->setLesson($mockLesson);
 		$mockReservation->expects($this->once())
 			->method('removeParticipant')
@@ -1329,8 +1261,8 @@ class ReservationControllerTest extends UnitTestCase {
 	{
 		$mockPersonRepository = $this->mockPersonRepository();
 		$this->mockReservationRepository();
-		$mockParticipant = $this->getMock(Person::class);
-		$mockReservation = $this->getMock(Reservation::class);
+		$mockParticipant = $this->getMockBuilder(Person::class)->getMock();
+		$mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 		$mockPersonRepository->expects($this->once())
 			->method('remove')
 			->with($mockParticipant);
@@ -1345,8 +1277,8 @@ class ReservationControllerTest extends UnitTestCase {
 	{
 		$this->mockPersonRepository();
 		$mockReservationRepository = $this->mockReservationRepository();
-		$mockParticipant = $this->getMock(Person::class);
-		$mockReservation = $this->getMock(Reservation::class);
+		$mockParticipant = $this->getMockBuilder(Person::class)->getMock();
+		$mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 		$mockReservationRepository->expects($this->once())
 			->method('update')
 			->with($mockReservation);
@@ -1358,8 +1290,8 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function removeParticipantActionAddsFlashMessage() {
-		$mockReservation = $this->getMock(Reservation::class);
-		$mockParticipant = $this->getMock(Person::class);
+		$mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
+		$mockParticipant = $this->getMockBuilder(Person::class)->getMock();
 		$this->mockReservationRepository();
 		$this->mockPersonRepository();
 
@@ -1381,8 +1313,8 @@ class ReservationControllerTest extends UnitTestCase {
 	 * @test
 	 */
 	public function removeParticipantActionCallsDispatch() {
-		$mockReservation = $this->getMock(Reservation::class);
-		$mockParticipant = $this->getMock(Person::class);
+		$mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
+		$mockParticipant = $this->getMockBuilder(Person::class)->getMock();
 		$this->mockReservationRepository();
 		$this->mockPersonRepository();
 

@@ -34,9 +34,7 @@ class ContactRepositoryTraitTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->subject = $this->getMockForTrait(
-            ContactRepositoryTrait::class
-        );
+        $this->subject = $this->getMockForTrait(ContactRepositoryTrait::class);
     }
 
     /**
@@ -44,9 +42,8 @@ class ContactRepositoryTraitTest extends UnitTestCase
      */
     public function contactRepositoryCanBeInjected()
     {
-        $contactRepository = $this->getMock(
-            ContactRepository::class, [], [], '', false
-        );
+        $contactRepository = $this->getMockBuilder(ContactRepository::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectContactRepository($contactRepository);
 

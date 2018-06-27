@@ -39,9 +39,7 @@ class PersonDemandTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->subject = $this->getAccessibleMock(
-            PersonDemand::class, ['dummy']
-        );
+        $this->subject = new PersonDemand();
     }
 
     /**
@@ -83,7 +81,7 @@ class PersonDemandTest extends UnitTestCase
      */
     public function lessonDeadlineCanBeSet()
     {
-        $deadline = $this->getMock(\DateTime::class);
+        $deadline = new \DateTime();
         $this->subject->setLessonDeadline($deadline);
 
         $this->assertSame(
@@ -107,7 +105,7 @@ class PersonDemandTest extends UnitTestCase
      */
     public function lessonDateCanBeSet()
     {
-        $date = $this->getMock(\DateTime::class);
+        $date = new \DateTime();
         $this->subject->setLessonDate($date);
 
         $this->assertSame(

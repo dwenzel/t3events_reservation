@@ -12,6 +12,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Repository;
  */
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -32,23 +33,30 @@ class PersonRepositoryTest extends UnitTestCase {
 	 */
 	protected $subject;
 
+	/** @var QueryInterface|MockObject */
+	protected $query;
+
 	public function setUp() {
 		$this->subject = $this->getAccessibleMock(
 			PersonRepository::class,
 			['dummy'], [], '', FALSE);
-	}
+        $this->query = $this->getMockBuilder(Query::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['equals', 'logicalAnd', 'lessThan', 'logicalOr'])
+            ->getMock();
+
+    }
 
 	/**
 	 * @test
 	 * @covers ::createConstraintsFromDemand
 	 */
 	public function createConstraintsFromDemandInitiallyReturnsEmptyArray() {
-		$demand = $this->getMock(PersonDemand::class);
-		$query = $this->getMock(QueryInterface::class, [], [], '', FALSE);
+		$demand = $this->getMockBuilder(PersonDemand::class)->getMock();
 
 		$this->assertEquals(
 			[],
-			$this->subject->createConstraintsFromDemand($query, $demand)
+			$this->subject->createConstraintsFromDemand($this->query, $demand)
 		);
 	}
 
@@ -58,27 +66,20 @@ class PersonRepositoryTest extends UnitTestCase {
 	public function createConstraintsFromDemandAddsTypeConstraints()
     {
         $types = '1,3';
-        $demand = $this->getMock(
-            PersonDemand::class,
-            ['getTypes']
-        );
-        $query = $this->getMock(
-            Query::class,
-            ['equals', 'logicalAnd'],
-            [], '', false
-        );
+        $demand = $this->getMockBuilder(PersonDemand::class)
+            ->setMethods(['getTypes'])->getMock();
 
         $demand->expects($this->atLeastOnce())
             ->method('getTypes')
             ->will($this->returnValue($types));
-        $query->expects($this->exactly(2))
+        $this->query->expects($this->exactly(2))
             ->method('equals')
             ->withConsecutive(
                 ['type', 1],
                 ['type', 3]
             );
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -87,30 +88,24 @@ class PersonRepositoryTest extends UnitTestCase {
     public function createConstraintsFromDemandAddsDeadlineConstraints()
     {
         $deadline = 'yesterday';
-        $demand = $this->getMock(
-            PersonDemand::class,
-            ['getLessonDeadline']
-        );
-        $query = $this->getMock(
-            Query::class,
-            ['lessThan', 'logicalAnd'],
-            [], '', false
-        );
+        $demand = $this->getMockBuilder(PersonDemand::class)
+            ->setMethods(['getLessonDeadline'])->getMock();
+
         $constraint = $this->getMockForAbstractClass(ConstraintInterface::class);
         $timeZone = new \DateTimeZone(date_default_timezone_get());
         $dateTime = new \DateTime($deadline, $timeZone);
         $demand->expects($this->atLeastOnce())
             ->method('getLessonDeadline')
             ->will($this->returnValue($dateTime));
-        $query->expects($this->once())
+        $this->query->expects($this->once())
             ->method('lessThan')
             ->with('reservation.lesson.deadline', $dateTime->getTimestamp())
             ->will($this->returnValue($constraint));
-        $query->expects($this->once())
+        $this->query->expects($this->once())
             ->method('logicalAnd')
             ->with($constraint);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
 
@@ -128,16 +123,12 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
 
         $this->subject->expects($this->once())
             ->method('createPeriodConstraints')
-            ->with($query, $demand);
+            ->with($this->query, $demand);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -155,10 +146,6 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
 
         $constraints = [];
         $mockPeriodConstraints = ['foo'];
@@ -169,9 +156,9 @@ class PersonRepositoryTest extends UnitTestCase {
             );
         $this->subject->expects($this->once())
             ->method('combineConstraints')
-            ->with($query, $constraints, $mockPeriodConstraints);
+            ->with($this->query, $constraints, $mockPeriodConstraints);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -188,16 +175,12 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
 
         $this->subject->expects($this->once())
             ->method('createGenreConstraints')
-            ->with($query, $demand);
+            ->with($this->query, $demand);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -215,10 +198,7 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $constraints = [];
         $mockGenreConstraints = ['foo'];
@@ -229,9 +209,9 @@ class PersonRepositoryTest extends UnitTestCase {
             );
         $this->subject->expects($this->once())
             ->method('combineConstraints')
-            ->with($query, $constraints, $mockGenreConstraints);
+            ->with($this->query, $constraints, $mockGenreConstraints);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -248,16 +228,13 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $this->subject->expects($this->once())
             ->method('createSearchConstraints')
-            ->with($query, $demand);
+            ->with($this->query, $demand);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -275,10 +252,7 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $constraints = [];
         $mockSearchConstraints = ['foo'];
@@ -289,9 +263,9 @@ class PersonRepositoryTest extends UnitTestCase {
             );
         $this->subject->expects($this->once())
             ->method('combineConstraints')
-            ->with($query, $constraints, $mockSearchConstraints, 'OR');
+            ->with($this->query, $constraints, $mockSearchConstraints, 'OR');
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -308,16 +282,13 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $this->subject->expects($this->once())
             ->method('createEventTypeConstraints')
-            ->with($query, $demand);
+            ->with($this->query, $demand);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -335,10 +306,7 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $constraints = [];
         $mockEventTypeConstraints = ['foo'];
@@ -349,9 +317,9 @@ class PersonRepositoryTest extends UnitTestCase {
             );
         $this->subject->expects($this->once())
             ->method('combineConstraints')
-            ->with($query, $constraints, $mockEventTypeConstraints);
+            ->with($this->query, $constraints, $mockEventTypeConstraints);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -368,16 +336,13 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $this->subject->expects($this->once())
             ->method('createCategoryConstraints')
-            ->with($query, $demand);
+            ->with($this->query, $demand);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -395,10 +360,7 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $constraints = [];
         $mockCategoryConstraints = ['foo'];
@@ -409,9 +371,9 @@ class PersonRepositoryTest extends UnitTestCase {
             );
         $this->subject->expects($this->once())
             ->method('combineConstraints')
-            ->with($query, $constraints, $mockCategoryConstraints);
+            ->with($this->query, $constraints, $mockCategoryConstraints);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -428,16 +390,13 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $this->subject->expects($this->once())
             ->method('createAudienceConstraints')
-            ->with($query, $demand);
+            ->with($this->query, $demand);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 
     /**
@@ -455,10 +414,7 @@ class PersonRepositoryTest extends UnitTestCase {
             PersonDemand::class, [], '', true, true, true,
             []
         );
-        $query = $this->getMock(
-            QueryInterface::class,
-            [], [], '', false
-        );
+
 
         $constraints = [];
         $mockAudienceConstraints = ['foo'];
@@ -469,9 +425,9 @@ class PersonRepositoryTest extends UnitTestCase {
             );
         $this->subject->expects($this->once())
             ->method('combineConstraints')
-            ->with($query, $constraints, $mockAudienceConstraints);
+            ->with($this->query, $constraints, $mockAudienceConstraints);
 
-        $this->subject->createConstraintsFromDemand($query, $demand);
+        $this->subject->createConstraintsFromDemand($this->query, $demand);
     }
 }
 

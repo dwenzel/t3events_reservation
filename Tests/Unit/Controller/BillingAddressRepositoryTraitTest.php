@@ -44,9 +44,8 @@ class BillingAddressRepositoryTraitTest extends UnitTestCase
      */
     public function billingAddressRepositoryCanBeInjected()
     {
-        $billingAddressRepository = $this->getMock(
-            BillingAddressRepository::class, [], [], '', false
-        );
+        $billingAddressRepository = $this->getMockBuilder(BillingAddressRepository::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectBillingAddressRepository($billingAddressRepository);
 

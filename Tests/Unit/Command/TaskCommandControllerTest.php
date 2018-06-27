@@ -66,9 +66,8 @@ class TaskCommandControllerTest extends UnitTestCase
      */
     protected function mockScheduleDemandFactory()
     {
-        $mockDemandFactory = $this->getMock(
-            ScheduleDemandFactory::class, ['createFromSettings'], [], '', false
-        );
+        $mockDemandFactory = $this->getMockBuilder(ScheduleDemandFactory::class)
+            ->disableOriginalConstructor()->setMethods(['createFromSettings'])->getMock();
         $this->subject->injectScheduleDemandFactory($mockDemandFactory);
         $this->scheduleDemandFactory = $mockDemandFactory;
 
@@ -80,9 +79,8 @@ class TaskCommandControllerTest extends UnitTestCase
      */
     protected function mockScheduleRepository()
     {
-        $mockScheduleRepository = $this->getMock(
-            ScheduleRepository::class, ['findDemanded'], [], '', false
-        );
+        $mockScheduleRepository = $this->getMockBuilder(ScheduleRepository::class)
+            ->disableOriginalConstructor()->setMethods(['findDemanded'])->getMock();
         $this->subject->injectScheduleRepository($mockScheduleRepository);
         $this->scheduleRepository = $mockScheduleRepository;
 
@@ -95,10 +93,8 @@ class TaskCommandControllerTest extends UnitTestCase
     public function getPerformancesForTaskGetsScheduleDemandFromFactory()
     {
         $settings = [];
-        $mockTask = $this->getMock(Task::class);
-        $mockDemand = $this->getMock(
-            ScheduleDemand::class
-        );
+        $mockTask = $this->getMockBuilder(Task::class)->getMock();
+        $mockDemand = $this->getMockBuilder(ScheduleDemand::class)->getMock();
         $this->subject->expects($this->once())
             ->method('getSettingsForDemand')
             ->with($mockTask)
@@ -120,10 +116,9 @@ class TaskCommandControllerTest extends UnitTestCase
         $settings = [
             'deadlinePeriod' => $deadlinePeriod
         ];
-        $mockTask = $this->getMock(Task::class, ['getDeadlinePeriod']);
-        $mockDemand = $this->getMock(
-            ScheduleDemand::class
-        );
+        $mockTask = $this->getMockBuilder(Task::class)
+            ->setMethods(['getDeadlinePeriod'])->getMock();
+        $mockDemand = $this->getMockBuilder(ScheduleDemand::class)->getMock();
 
         $mockTask->expects($this->atLeastOnce())
             ->method('getDeadlinePeriod')

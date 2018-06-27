@@ -54,9 +54,7 @@ class ReservationPersonTraitTest extends UnitTestCase
      */
     public function reservationCanBeSet()
     {
-        $mockReservation = $this->getMock(
-            Reservation::class
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $this->subject->setReservation($mockReservation);
 
         $this->assertSame(

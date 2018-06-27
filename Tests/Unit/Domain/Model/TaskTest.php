@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Model;
 
 /**
@@ -31,9 +32,7 @@ class TaskTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->subject = $this->getMock(
-            Task::class, ['dummy']
-        );
+        $this->subject = new Task();
     }
 
     /**

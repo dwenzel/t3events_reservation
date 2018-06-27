@@ -49,9 +49,8 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     protected function mockObjectManager()
     {
-        $mockObjectManager = $this->getMock(
-            ObjectManager::class, ['get']
-        );
+        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
         $this->inject($this->subject, 'objectManager', $mockObjectManager);
 
         return $mockObjectManager;
@@ -62,9 +61,8 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     protected function mockSession()
     {
-        $mockSession = $this->getMock(
-            SessionInterface::class, ['has', 'get', 'set', 'clean', 'setNamespace']
-        );
+        $mockSession = $this->getMockBuilder(SessionInterface::class)
+            ->setMethods(['has', 'get', 'set', 'clean', 'setNamespace'])->getMock();
         $this->inject($this->subject, 'session', $mockSession);
 
         return $mockSession;
@@ -85,10 +83,9 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     protected function mockRequest()
     {
-        $mockRequest = $this->getMock(
-            Request::class,
-            ['hasArgument', 'getArgument', 'getControllerName', 'getControllerActionName']
-        );
+        $mockRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(['hasArgument', 'getArgument', 'getControllerName', 'getControllerActionName'])
+            ->getMock();
         $this->inject($this->subject, 'request', $mockRequest);
 
         return $mockRequest;
@@ -101,9 +98,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     {
         $validReservationId = 1234;
         $mockSession = $this->mockSession();
-        $validReservation = $this->getMock(
-            Reservation::class, ['getUid']
-        );
+        $validReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getUid'])->getMock();
         $mockRequest = $this->mockRequest();
         $mockRequest->expects($this->once())
             ->method('hasArgument')
@@ -148,9 +144,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     public function isAccessAllowedReturnsFalseIfReservationUidIsNotInSession()
     {
         $mockSession = $this->mockSession();
-        $object = $this->getMock(
-            Reservation::class, ['getUid']
-        );
+        $object = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getUid'])->getMock();
         $object->expects($this->once())
             ->method('getUid')
             ->will($this->returnValue(5));
@@ -186,9 +181,8 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->method('has')
             ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(true));
-        $mockRequest = $this->getMock(
-            Request::class, ['hasArgument']
-        );
+        $mockRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(['hasArgument'])->getMock();
         $this->inject($this->subject, 'request', $mockRequest);
 
         $mockRequest->expects($this->once())
@@ -211,9 +205,8 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->method('has')
             ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(true));
-        $mockRequest = $this->getMock(
-            Request::class, ['hasArgument']
-        );
+        $mockRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(['hasArgument'])->getMock();
         $this->inject($this->subject, 'request', $mockRequest);
 
         $mockRequest->expects($this->once())

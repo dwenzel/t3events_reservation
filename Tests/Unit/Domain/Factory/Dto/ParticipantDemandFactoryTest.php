@@ -47,9 +47,8 @@ class ParticipantDemandFactoryTest extends UnitTestCase
      */
     protected function mockObjectManager()
     {
-        $mockObjectManager = $this->getMock(
-            ObjectManager::class, ['get']
-        );
+        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
         $this->subject->injectObjectManager($mockObjectManager);
 
         return $mockObjectManager;
@@ -62,9 +61,8 @@ class ParticipantDemandFactoryTest extends UnitTestCase
     protected function mockObjectManagerCreatesDemand($settings)
     {
         /** @var PersonDemand $mockDemand */
-        $mockDemand = $this->getMock(
-            ParticipantDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ParticipantDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -77,9 +75,7 @@ class ParticipantDemandFactoryTest extends UnitTestCase
      */
     public function createFromSettingsReturnsParticipantDemand()
     {
-        $mockDemand = $this->getMock(
-            ParticipantDemand::class
-        );
+        $mockDemand = $this->getMockBuilder(ParticipantDemand::class)->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')

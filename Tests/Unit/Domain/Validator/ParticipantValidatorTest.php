@@ -1,12 +1,13 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Validator;
 
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
-use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Validation\Error;
 
 /***************************************************************
  *  Copyright notice
@@ -102,9 +103,7 @@ class ParticipantValidatorTest extends UnitTestCase
     {
         $participant = new Person();
         /** @var Reservation $mockReservation */
-        $mockReservation = $this->getMock(
-            Reservation::class
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $participant->setReservation($mockReservation);
 
         $expectedResult = new Result();
