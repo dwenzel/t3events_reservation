@@ -3,7 +3,7 @@
 	<h1>{f:translate(key: 'header.editBillingAddress', default: 'header.editBillingAddress')}</h1>
 
 	<f:flashMessages />
-	<f:render partial="FormErrors" arguments="{object:Reservation}" />
+	<f:render partial="FormErrors" arguments="{object: 'Reservation'}" />
 
 	<f:form action="update" name="reservation" object="{reservation}" noCacheHash="TRUE">
 		<f:render partial="BillingAddress/FormFields"
