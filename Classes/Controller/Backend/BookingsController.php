@@ -28,6 +28,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use DWenzel\T3events\CallStaticTrait;
 use DWenzel\T3events\Controller\AudienceRepositoryTrait;
+use DWenzel\T3events\Controller\Backend\FormTrait;
 use DWenzel\T3events\Controller\CategoryRepositoryTrait;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
@@ -58,11 +59,11 @@ class BookingsController extends AbstractBackendController
 {
     use AudienceRepositoryTrait, CallStaticTrait, CategoryRepositoryTrait,
         CompanyRepositoryTrait, DemandTrait, DownloadTrait,
-        EventTypeRepositoryTrait,  FilterableControllerTrait, GenreRepositoryTrait,
-        ModuleDataTrait, NotificationRepositoryTrait, NotificationServiceTrait,
-        PersistenceManagerTrait, SearchTrait, SettingsUtilityTrait,
-        ReservationDemandFactoryTrait, ReservationRepositoryTrait, TranslateTrait,
-        VenueRepositoryTrait;
+        EventTypeRepositoryTrait,  FilterableControllerTrait, FormTrait,
+        GenreRepositoryTrait, ModuleDataTrait, NotificationRepositoryTrait,
+        NotificationServiceTrait, PersistenceManagerTrait, SearchTrait,
+        SettingsUtilityTrait, ReservationDemandFactoryTrait, ReservationRepositoryTrait,
+        TranslateTrait, VenueRepositoryTrait;
 
     /**
      * @const Extension key
