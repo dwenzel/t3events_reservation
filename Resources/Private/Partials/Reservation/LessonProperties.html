@@ -27,21 +27,21 @@
 
 	<div class="section">
 		<div class="audiences">
-			<b>{f:translate(key: 'label.audience')}:</b>
+			<strong>{f:translate(key: 'label.audience')}:</strong>
 			<f:for each="{lesson.course.audience}" as="audience" iteration="iteration">
 				{audience.title}{f:if(condition: '{iteration.isLast}', else: ', ')}
 			</f:for>
 		</div>
 		<div class="courseDuration">
-			<b>{f:translate(key: 'label.duration')}:</b>&nbsp;{lesson.duration}
+			<strong>{f:translate(key: 'label.duration')}:</strong>&nbsp;{lesson.duration}
 		</div>
 		<div class="coursePrice">
-			<b>{f:translate(key: 'label.price')}:</b>&nbsp;
+			<strong>{f:translate(key: 'label.price')}:</strong>&nbsp;
 			<f:format.number decimals="2" decimalSeparator="," thousandsSeparator="">{lesson.price}</f:format.number>
 			&nbsp;&euro;
 		</div>
 		<div class="coursePlaces">
-			<b>{f:translate(key: 'label.places')}:</b>&nbsp;{lesson.freePlaces} / {lesson.places}
+			<strong>{f:translate(key: 'label.places')}:</strong>&nbsp;{lesson.freePlaces} / {lesson.places}
 		</div>
 	</div>
 
@@ -58,7 +58,7 @@
 			<div class="eventLocation-info">
 				<f:if condition="{lesson.eventLocation.name}">
 					<span class="name">
-						<b>{lesson.eventLocation.name}</b>
+						<strong>{lesson.eventLocation.name}</strong>
 					</span>
 					<br>
 				</f:if>
