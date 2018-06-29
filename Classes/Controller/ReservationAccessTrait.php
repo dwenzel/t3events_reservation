@@ -92,8 +92,6 @@ trait ReservationAccessTrait
         }
         if (is_array($argument) && isset($argument[SettingsInterface::__IDENTITY])) {
             $reservationId = (int)$argument[SettingsInterface::__IDENTITY];
-
-            return $reservationId;
         }
 
         return $reservationId;
