@@ -44,12 +44,7 @@ script:
     --coverage-clover .Build/log/coverage/clover.xml \
     --log-junit .Build/log/junit.xml
     rm -rf .Build/vendor/ .Build/Web/ .Build/bin/
-    sonar-scanner \
-      -Dsonar.projectKey=t3events-reservation \
-      -Dsonar.organization=dwenzel-github \
-      -Dsonar.sources=. \
-      -Dsonar.host.url=https://sonarcloud.io \
-      -Dsonar.login=dwenzel
+    sonar-scanner -Dproject.settings=.sonar-project.properties
   fi
 
 after_success:
