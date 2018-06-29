@@ -17,10 +17,10 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
 use DWenzel\T3events\Controller\PerformanceRepositoryTrait;
-use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Controller\RoutingTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
@@ -49,7 +49,7 @@ class BillingAddressController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * New billing address action
@@ -63,7 +63,7 @@ class BillingAddressController
         $this->view->assignMultiple(
             [
                 'billingAddress' => $billingAddress,
-                'reservation' => $reservation
+                SettingsInterface::RESERVATION => $reservation
             ]
         );
     }
@@ -73,8 +73,8 @@ class BillingAddressController
      * Creates a billing addres for a reservation
      * @param Reservation $reservation
      * @param BillingAddress $billingAddress
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function createAction(Reservation $reservation, BillingAddress $billingAddress)
     {
@@ -86,7 +86,7 @@ class BillingAddressController
             $this->translate('message.billingAddress.create.success')
         );
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -99,7 +99,7 @@ class BillingAddressController
     {
         $this->view->assignMultiple(
             [
-                'reservation' => $reservation,
+                SettingsInterface::RESERVATION => $reservation,
                 'billingAddress' => $billingAddress
             ]
         );
@@ -110,6 +110,7 @@ class BillingAddressController
      *
      * @param Reservation $reservation
      * @param BillingAddress $billingAddress
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function removeAction(Reservation $reservation, BillingAddress $billingAddress)
     {
@@ -121,7 +122,7 @@ class BillingAddressController
             );
         }
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -129,10 +130,12 @@ class BillingAddressController
      *
      * @param Reservation $reservation
      * @param BillingAddress $billingAddress
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function updateAction(Reservation $reservation, BillingAddress $billingAddress)
     {
         $this->billingAddressRepository->update($billingAddress);
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 }

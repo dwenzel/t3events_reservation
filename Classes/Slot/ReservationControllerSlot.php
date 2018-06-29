@@ -2,9 +2,10 @@
 namespace CPSIT\T3eventsReservation\Slot;
 
 use CPSIT\T3eventsReservation\Controller\ReservationController;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
+use DWenzel\T3events\Session\Typo3Session;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice
@@ -52,7 +53,7 @@ class ReservationControllerSlot implements SingletonInterface
      */
     public function injectObjectManager(ObjectManager $objectManager)
     {
-            $this->objectManager = $objectManager;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -64,24 +65,24 @@ class ReservationControllerSlot implements SingletonInterface
     public function handleEntityNotFoundSlot(array $params)
     {
         if (
-            isset($params['config'])
-            && is_array($params['config'])
+            isset($params[SettingsInterface::CONFIG])
+            && is_array($params[SettingsInterface::CONFIG])
         ) {
-            $handler = $params['config'][0];
-            $actionName = $params['config'][1];
+            $handler = $params[SettingsInterface::CONFIG][0];
+            $actionName = $params[SettingsInterface::CONFIG][1];
             $params[$handler]['actionName'] = $actionName;
-            if ($handler === 'redirect') {
+            if ($handler === SettingsInterface::REDIRECT) {
                 $params[$handler]['statusCode'] = 302;
             }
-            if ($this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION)){
+            if ($this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION)) {
                 $reservationId = (string)$this->session->get(ReservationController::SESSION_IDENTIFIER_RESERVATION);
                 $params[$handler]['arguments'] = [
-                    'reservation' => $reservationId
+                    SettingsInterface::RESERVATION => $reservationId
                 ];
             }
-            if(isset($params['requestArguments']['reservation'])) {
+            if (isset($params['requestArguments'][SettingsInterface::RESERVATION])) {
                 $params[$handler]['controllerName'] = 'Reservation';
-                $params[$handler]['arguments']['reservation'] = $params['requestArguments']['reservation'];
+                $params[$handler]['arguments'][SettingsInterface::RESERVATION] = $params['requestArguments'][SettingsInterface::RESERVATION];
             }
         }
 

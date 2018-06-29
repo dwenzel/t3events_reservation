@@ -17,6 +17,7 @@ namespace CPSIT\T3eventsReservation\Controller;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
 use DWenzel\T3events\Controller\PerformanceRepositoryTrait;
@@ -59,20 +60,21 @@ class ParticipantController
      * @param Reservation $reservation
      * @param Person|null $participant
      * @ignorevalidation $participant
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function newAction(Reservation $reservation, Person $participant = null)
     {
         $originalRequest = $this->request->getOriginalRequest();
         if (
             $originalRequest instanceof Request
-            && $originalRequest->hasArgument('participant')
+            && $originalRequest->hasArgument(SettingsInterface::PARTICIPANT)
         ) {
-            $participant = $originalRequest->getArgument('participant');
+            $participant = $originalRequest->getArgument(SettingsInterface::PARTICIPANT);
         }
 
         $templateVariables = [
-            'participant' => $participant,
-            'reservation' => $reservation
+            SettingsInterface::PARTICIPANT => $participant,
+            SettingsInterface::RESERVATION => $reservation
         ];
         $this->view->assignMultiple($templateVariables);
     }
@@ -82,6 +84,8 @@ class ParticipantController
      *
      * @param Reservation $reservation
      * @param Person $participant
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function createAction(Reservation $reservation, Person $participant)
     {
@@ -101,7 +105,7 @@ class ParticipantController
         }
         $this->addFlashMessage($this->translate($messageKey));
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -121,19 +125,21 @@ class ParticipantController
             );
         }
 
-        $this->view->assign('participant', $participant);
+        $this->view->assign(SettingsInterface::PARTICIPANT, $participant);
     }
 
     /**
      * Updates a participant
      *
      * @param Person $participant
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      * @validate $participant \CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator
      */
     public function updateAction(Person $participant)
     {
         $this->personRepository->update($participant);
-        $this->dispatch(['reservation' => $participant->getReservation()]);
+        $this->dispatch([SettingsInterface::RESERVATION => $participant->getReservation()]);
     }
 
 
@@ -143,6 +149,8 @@ class ParticipantController
      *
      * @param Reservation $reservation
      * @param Person $participant
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function removeAction(Reservation $reservation, Person $participant)
     {
@@ -150,6 +158,6 @@ class ParticipantController
         $this->personRepository->remove($participant);
         $this->reservationRepository->update($reservation);
         $this->addFlashMessage($this->translate('message.participant.remove.success'));
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 }

@@ -2,6 +2,7 @@
 namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
@@ -82,15 +83,15 @@ trait ReservationAccessTrait
     protected function getReservationIdFromRequest()
     {
         $reservationId = false;
-        $argument = $this->request->getArgument('reservation');
+        $argument = $this->request->getArgument(SettingsInterface::RESERVATION);
         if (is_string($argument)) {
             $reservationId = (int)$argument;
         }
         if ($argument instanceof Reservation) {
             $reservationId = $argument->getUid();
         }
-        if (is_array($argument) && isset($argument['__identity'])) {
-            $reservationId = (int)$argument['__identity'];
+        if (is_array($argument) && isset($argument[SettingsInterface::__IDENTITY])) {
+            $reservationId = (int)$argument[SettingsInterface::__IDENTITY];
 
             return $reservationId;
         }
@@ -152,6 +153,7 @@ trait ReservationAccessTrait
      * Checks if access is allowed
      *
      * @return boolean
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function isAccessAllowed()
     {
@@ -160,7 +162,7 @@ trait ReservationAccessTrait
         }
 
         $sessionHasReservation = $this->session->has(ReservationController::SESSION_IDENTIFIER_RESERVATION);
-        $requestHasReservation = $this->request->hasArgument('reservation');
+        $requestHasReservation = $this->request->hasArgument(SettingsInterface::RESERVATION);
 
         if (!$requestHasReservation) {
             if ($sessionHasReservation) {
@@ -219,6 +221,7 @@ trait ReservationAccessTrait
      * initialize action methods
      *
      * @throws InvalidSourceException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeAction()
     {
@@ -250,7 +253,7 @@ trait ReservationAccessTrait
             }
         }
 
-        // clear any previous flashmessage in order to avoid double entries
+        // clear any previous flash message in order to avoid double entries
         $flashMessageQueue = $this->getFlashMessageQueue();
         if ($flashMessageQueue instanceof FlashMessageQueue) {
             $flashMessageQueue->__call('getAllMessagesAndFlush', []);
