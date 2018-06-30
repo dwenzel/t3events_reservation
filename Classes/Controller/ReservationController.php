@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Controller;
 
 /**
@@ -23,6 +24,7 @@ use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
+use DWenzel\T3events\Controller\NotificationServiceTrait;
 use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Controller\RoutableControllerInterface;
 use DWenzel\T3events\Controller\RoutingTrait;
@@ -49,8 +51,8 @@ class ReservationController
 {
     use BillingAddressRepositoryTrait, ContactRepositoryTrait,
         CompanyRepositoryTrait, DemandTrait,
-        EntityNotFoundHandlerTrait, PersistenceManagerTrait,
-        PersonRepositoryTrait, ReservationAccessTrait,
+        EntityNotFoundHandlerTrait, NotificationServiceTrait,
+        PersistenceManagerTrait, PersonRepositoryTrait, ReservationAccessTrait,
         ReservationRepositoryTrait, RoutingTrait,
         SearchTrait, SettingsUtilityTrait, TranslateTrait;
 
@@ -63,19 +65,6 @@ class ReservationController
      * @const Identifier for reservation in session
      */
     const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
-
-    /**
-     * @const Extension key
-     */
-    const EXTENSION_KEY = 't3events_reservation';
-
-    /**
-     * Notification Service
-     *
-     * @var \DWenzel\T3events\Service\NotificationService
-     * @inject
-     */
-    protected $notificationService;
 
     /**
      * Lesson Repository
@@ -331,18 +320,18 @@ class ReservationController
      */
     protected function sendNotification(Reservation $reservation, $identifier, $config)
     {
-        if (isset($config['fromEmail'])) {
-            $fromEmail = $config['fromEmail'];
+        if (isset($config[SettingsInterface::FROM_EMAIL])) {
+            $fromEmail = $config[SettingsInterface::FROM_EMAIL];
         } else {
             throw new Exception('Missing sender for email notification', 1454518855);
         }
 
-        $recipientEmail = $this->settingsUtility->getValue($reservation, $config['toEmail']);
+        $recipientEmail = $this->settingsUtility->getValue($reservation, $config[SettingsInterface::TO_EMAIL]);
         if (!isset($recipientEmail)) {
             throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
         }
 
-        $subject = $this->settingsUtility->getValue($reservation, $config['subject']);
+        $subject = $this->settingsUtility->getValue($reservation, $config[SettingsInterface::SUBJECT]);
         if (!isset($subject)) {
             throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
         }
@@ -352,25 +341,25 @@ class ReservationController
             $format = $config['format'];
         }
         $fileName = ucfirst($identifier);
-        if (isset($config['template']['fileName'])) {
-            $fileName = $config['template']['fileName'];
+        if (isset($config[SettingsInterface::TEMPLATE]['fileName'])) {
+            $fileName = $config[SettingsInterface::TEMPLATE]['fileName'];
         }
         $folderName = 'Reservation/Email';
-        if (isset($config['template']['folderName'])) {
-            $folderName = $config['template']['folderName'];
+        if (isset($config[SettingsInterface::TEMPLATE][SettingsInterface::FOLDER_NAME])) {
+            $folderName = $config[SettingsInterface::TEMPLATE][SettingsInterface::FOLDER_NAME];
         }
         /** @var Notification $notification */
         $notification = $this->objectManager->get(Notification::class);
-        if (isset($config['attachments']['files']) && is_array($config['attachments']['files'])) {
+        if (isset($config[SettingsInterface::ATTACHMENTS][SettingsInterface::FILES]) && is_array($config[SettingsInterface::ATTACHMENTS][SettingsInterface::FILES])) {
             $filesToAttach = $this->settingsUtility->getFileStorage(
-                $reservation, $config['attachments']['files']
+                $reservation, $config[SettingsInterface::ATTACHMENTS][SettingsInterface::FILES]
             );
             $notification->setAttachments($filesToAttach);
         }
         $notification->setRecipient($recipientEmail);
         $notification->setSenderEmail($fromEmail);
-        if (isset($config['senderName'])) {
-            $notification->setSenderName($config['senderName']);
+        if (isset($config[SettingsInterface::SENDER_NAME])) {
+            $notification->setSenderName($config[SettingsInterface::SENDER_NAME]);
         }
         $notification->setSubject($subject);
         $notification->setFormat($format);
@@ -378,7 +367,7 @@ class ReservationController
             $fileName,
             $format,
             $folderName,
-            [SettingsInterface::RESERVATION => $reservation, 'settings' => $this->settings]
+            [SettingsInterface::RESERVATION => $reservation, SettingsInterface::SETTINGS => $this->settings]
         );
         $notification->setBodytext($bodyText);
         $reservation->addNotification($notification);

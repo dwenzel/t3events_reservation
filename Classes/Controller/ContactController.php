@@ -66,9 +66,9 @@ class ContactController
         $originalRequest = $this->request->getOriginalRequest();
         if (
             $originalRequest instanceof Request
-            && $originalRequest->hasArgument('contact')
+            && $originalRequest->hasArgument(SettingsInterface::CONTACT)
         ) {
-            $contact = $originalRequest->getArgument('contact');
+            $contact = $originalRequest->getArgument(SettingsInterface::CONTACT);
         }
 
         $templateVariables = [
@@ -113,7 +113,7 @@ class ContactController
             );
         }
 
-        $this->view->assign('contact', $contact);
+        $this->view->assign(SettingsInterface::CONTACT, $contact);
     }
 
     /**

@@ -29,4 +29,8 @@ interface SettingsInterface extends \DWenzel\T3events\Utility\SettingsInterface
     const PARTICIPANTS = 'participants';
     const RESERVATION = 'reservation';
     const RESERVATIONS = 'reservations';
+    /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY = 't3events_reservation';
 }
