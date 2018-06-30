@@ -20,6 +20,7 @@ interface SettingsInterface extends \DWenzel\T3events\Utility\SettingsInterface
     const CONTACT = 'contact';
     const CONFIRM = 'confirm';
     const LESSON = 'lesson';
+    const LESSONS = 'lessons';
     const NEW_BILLING_ADDRESS = 'newBillingAddress';
     const NEW_RESERVATION = 'newReservation';
     const NEW_PARTICIPANT = 'newParticipant';

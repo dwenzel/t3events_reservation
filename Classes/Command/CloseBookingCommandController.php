@@ -1,18 +1,6 @@
 <?php
 namespace CPSIT\T3eventsReservation\Command;
 
-/**
- * @package t3events
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- */
-
-use CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand;
-use CPSIT\T3eventsCourse\Domain\Model\Schedule;
-use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use CPSIT\T3eventsReservation\Domain\Model\Person;
-use CPSIT\T3eventsReservation\Domain\Model\Reservation;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
-
 /***************************************************************
  * <?php
  *  Copyright notice
@@ -32,376 +20,383 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand;
+use CPSIT\T3eventsCourse\Domain\Model\Schedule;
+use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
+use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
+use CPSIT\T3eventsReservation\Controller\ScheduleRepositoryTrait;
+use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
+use DWenzel\T3events\Configuration\ConfigurationManagerTrait;
+use DWenzel\T3events\Controller\NotificationServiceTrait;
+use DWenzel\T3events\Controller\PersistenceManagerTrait;
+use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Class CloseBookingCommandController
  *
- * @package CPSIT\T3eventsReservation\Command
+ * FIXME This class requires the base extension t3events and t3events_course
+ * (which is not and should not be a requirement of this package)
  */
-class CloseBookingCommandController extends CommandController {
+class CloseBookingCommandController extends CommandController
+{
+    use ConfigurationManagerTrait, NotificationServiceTrait, PersistenceManagerTrait,
+        PersonRepositoryTrait, ReservationRepositoryTrait, ScheduleRepositoryTrait;
 
-	/**
-	 * Configuration Manager
-	 *
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
-	 * @inject
-	 */
-	protected $configurationManager;
+    const TEMPLATE_EMAIL = 'Email';
+    const TEMPLATE_DOWNLOAD = 'Download';
+    const FOLDER_CLOSE_BOOKING = 'CloseBooking';
+    const FOLDER_CLEANUP_INCOMPLETE = 'CleanupIncomplete';
+    const FOLDER_REPORT_EXPIRED = 'ReportExpired';
 
-	/**
-	 * Schedule Repository
-	 *
-	 * @var \CPSIT\T3eventsCourse\Domain\Repository\ScheduleRepository
-	 * @inject
-	 */
-	protected $lessonRepository;
+    /**
+     * View
+     *
+     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     * @inject
+     */
+    protected $view;
 
-	/**
-	 * Notification Service
-	 *
-	 * @var \DWenzel\T3events\Service\NotificationService
-	 * @inject
-	 */
-	protected $notificationService;
+    /**
+     * Cleanup incomplete reservations.
+     * Removes all reservations which are older then 'age' seconds and
+     * of status 'new' or 'draft'
+     *
+     * @param int $age Minimum age of reservations
+     * @param string $email Email address for notification
+     * @param boolean $dryRun Dry run
+     * @return boolean Return TRUE
+     * @throws Exception Throws an exception if send email fails
+     */
+    public function cleanupIncompleteReservationsCommand($age, $email, $dryRun = NULL)
+    {
+        $deletedCount = $this->deleteInvalidReservations($dryRun, $age);
 
-	/**
-	 * Persistence Manager
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-	 * @inject
-	 */
-	protected $persistenceManager;
+        if (!empty($email)) {
+            try {
+                return $this->notificationService->notify(
+                    $email,
+                    'no-reply@example.com',
+                    'cleanup incomplete reservations',
+                    static::TEMPLATE_EMAIL,
+                    NULL,
+                    static::FOLDER_CLEANUP_INCOMPLETE,
+                    [
+                        'dryRun' => $dryRun,
+                        'age' => $age,
+                        'deletedCount' => $deletedCount
+                    ]
+                );
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
+            }
+        }
 
-	/**
-	 * Person Repository
+        return TRUE;
+    }
 
+    /**
+     * Delete expired reservations
+     * I.e. reservations of status new which are older then a given minAge
+     *
+     * @param boolean $dryRun
+     * @param int $age Age in seconds
+     * @return int
+     * @throws IllegalObjectTypeException
+     */
+    protected function deleteInvalidReservations($dryRun, $age)
+    {
+        $reservations = $this->getInvalidReservations($age);
+        $deletedCount = 0;
 
-*
-*@var \CPSIT\T3eventsReservation\Domain\Repository\PersonRepository
-	 * @inject
-	 */
-	protected $personRepository;
+        if (!$dryRun) {
+            /** @var Reservation $reservation */
+            foreach ($reservations as $reservation) {
+                /** @var Schedule $lesson */
+                if ($lesson = $reservation->getLesson()) {
+                    /** @var Person $participants */
+                    if ($participants = $reservation->getParticipants()) {
+                        foreach ($participants as $participant) {
+                            $lesson->removeParticipant($participant);
+                            $this->personRepository->remove($participant);
+                        }
+                    }
+                }
+                $this->reservationRepository->remove($reservation);
+                $deletedCount++;
+            }
+        }
 
-	/**
-	 * Reservation Repository
-	 *
-	 * @var \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository
-	 * @inject
-	 */
-	protected $reservationRepository;
+        return $dryRun ? count($reservations) : $deletedCount;
+    }
 
-	/**
-	 * View
-	 *
-	 * @var \TYPO3\CMS\Fluid\View\StandaloneView
-	 * @inject
-	 */
-	protected $view;
+    /**
+     * @param int $age Age in seconds
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    protected function getInvalidReservations($age)
+    {
+        $reservationDemand = $this->createInvalidReservationsDemand($age);
 
-	/**
-	 * Cleanup incomplete reservations.
-	 * Removes all reservations which are older then 'age' seconds and
-	 * of status 'new' or 'draft'
-	 *
-	 * @param int $age Minimum age of reservations
-	 * @param string $email Email address for notification
-	 * @param boolean $dryRun Dry run
-	 * @return boolean Return TRUE
-	 * @throws Exception Throws an exception if send email fails
-	 */
-	public function cleanupIncompleteReservationsCommand($age, $email, $dryRun = NULL) {
-		$deletedCount = $this->deleteInvalidReservations($dryRun, $age);
+        return $this->reservationRepository->findDemanded($reservationDemand);
+    }
 
-		if (!empty($email)) {
-			try {
-				return $this->notificationService->notify(
-					$email,
-					'no-reply@example.com',
-					'cleanup incomplete reservations',
-					'Email',
-					NULL,
-					'CleanupIncomplete',
-					[
-						'dryRun' => $dryRun,
-						'age' => $age,
-						'deletedCount' => $deletedCount
-					]
-				);
-			} catch (Exception $e) {
-				throw new Exception($e->getMessage());
-			}
-		}
+    /**
+     * Create a demand for invalid reservations.
+     * I.e. unfinished reservations of a certain age
+     *
+     * @param int $age Age in seconds
+     * @return ReservationDemand $reservationDemand
+     */
+    protected function createInvalidReservationsDemand($age)
+    {
+        /** @var ReservationDemand $reservationDemand */
+        $reservationDemand = $this->objectManager->get(ReservationDemand::class);
+        $expiredStatus = [Reservation::STATUS_NEW, Reservation::STATUS_DRAFT];
+        $reservationDemand->setStatus(implode(',', $expiredStatus));
+        $reservationDemand->setMinAge($age);
 
-		return TRUE;
-	}
+        return $reservationDemand;
+    }
 
-	/**
-	 * Delete expired reservations
-	 * I.e. reservations of status new which are older then a given minAge
-	 *
-	 * @param boolean $dryRun
-	 * @param int $age Age in seconds
-	 * @return int
-	 */
-	protected function deleteInvalidReservations($dryRun, $age) {
-		$reservations = $this->getInvalidReservations($age);
-		$deletedCount = 0;
+    /**
+     * Close Bookings
+     * Searches for lessons with expired date and hides them.
+     * Matching reservations are set to 'closed' state and hidden too.
+     * A list of all participants is being generated and send via email attachment .
+     *
+     * @param string $email E-Mail
+     * @param boolean $dryRun Does not persist changes but sends the generated email with attachment.
+     * @throws \TYPO3\CMS\Core\Exception
+     * @return void
+     */
+    public function closeBookingCommand($email, $dryRun = NULL)
+    {
+        $lessons = $this->hideExpiredLessons($dryRun);
+        $reservations = $this->closeReservations($dryRun);
 
-		if (!$dryRun) {
-			/** @var Reservation $reservation */
-			foreach ($reservations as $reservation) {
-				/** @var Schedule $lesson */
-				if ($lesson = $reservation->getLesson()) {
-					/** @var Person $participants */
-					if ($participants = $reservation->getParticipants()) {
-						foreach ($participants as $participant) {
-							$lesson->removeParticipant($participant);
-							$this->personRepository->remove($participant);
-						}
-					}
-				}
-				$this->reservationRepository->remove($reservation);
-				$deletedCount++;
-			}
-		}
+        // only send an email if at least one lesson or one reservation has been closed (and email address is given)
+        if (!empty($email) && (count($lessons) || count($reservations))) {
+            try {
+                // FIXME remove hard coded argument and use template for rendering (render method)
+                $this->notificationService->notify(
+                    $email,
+                    't3events@cps-it.de',
+                    'close booking',
+                    static::TEMPLATE_EMAIL,
+                    NULL,
+                    static::FOLDER_CLOSE_BOOKING,
+                    [
+                        'dryRun' => $dryRun,
+                        SettingsInterface::LESSONS => $lessons,
+                        SettingsInterface::RESERVATIONS => $reservations
+                    ],
+                    [
+                        [
+                            'variables' => [
+                                SettingsInterface::LESSONS => $lessons,
+                                SettingsInterface::RESERVATIONS => $reservations
+                            ],
+                            'templateName' => static::TEMPLATE_DOWNLOAD,
+                            'folderName' => static::FOLDER_CLOSE_BOOKING,
+                            'fileName' => 'anhang.xls',
+                            'mimeType' => 'application/vnd.ms-excel'
+                        ]
+                    ]
+                );
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
+            }
+        }
+    }
 
-		return $dryRun ? count($reservations) : $deletedCount;
-	}
+    /**
+     * Hide expired lessons
+     * Hides all lesson which meet the given constraints. Returns a query result with matching lessons.
+     *
+     * @param boolean $dryRun
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
+     */
+    protected function hideExpiredLessons($dryRun)
+    {
+        $demand = $this->createDemandForExpiredLessons();
+        $lessons = $this->scheduleRepository->findDemanded($demand);
 
-	/**
-	 * @param int $age Age in seconds
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-	 */
-	protected function getInvalidReservations($age) {
-		$reservationDemand = $this->createInvalidReservationsDemand($age);
+        if (!$dryRun) {
+            foreach ($lessons as $lesson) {
+                $lesson->setHidden(1);
+                $this->scheduleRepository->update($lesson);
+            }
+        }
 
-		return $this->reservationRepository->findDemanded($reservationDemand);
-	}
+        return $lessons;
+    }
 
-	/**
-	 * Create a demand for invalid reservations. I.e. unfinished reservations of a certain minAge
-	 *
-	 * @param int $age Age in seconds
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $reservationDemand
-	 */
-	protected function createInvalidReservationsDemand($age) {
-		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $reservationDemand */
-		$reservationDemand = $this->objectManager->get('CPSIT\\T3eventsReservation\\Domain\\Model\\Dto\\ReservationDemand');
-		$expiredStatus = [Reservation::STATUS_NEW, Reservation::STATUS_DRAFT];
-		$reservationDemand->setStatus(implode(',', $expiredStatus));
-		$reservationDemand->setMinAge($age);
+    /**
+     * Returns a lesson demand object for expired lessons.
+     * A lesson will considered expired when its date is older than the given date.
+     * Default is 'now'
+     *
+     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @return ScheduleDemand $lessonDemand
+     */
+    protected function createDemandForExpiredLessons($date = 'now')
+    {
+        /** @var ScheduleDemand $lessonDemand */
+        $lessonDemand = $this->objectManager->get(ScheduleDemand::class);
+        $lessonDemand->setPeriod(PeriodConstraintRepositoryInterface::PERIOD_PAST);
+        $lessonDemand->setDate(new \DateTime($date));
 
-		return $reservationDemand;
-	}
+        return $lessonDemand;
+    }
 
-	/**
-	 * Close Bookings
-	 * Searches for lessons with expired date and hides them.
-	 * Matching reservations are set to 'closed' state and hidden too.
-	 * A list of all participants is being generated and send via email attachment .
-	 *
-	 * @param string $email E-Mail
-	 * @param boolean $dryRun Does not persist changes but sends the generated email with attachement.
-	 * @throws \TYPO3\CMS\Core\Exception
-	 * @return void
-	 */
-	public function closeBookingCommand($email, $dryRun = NULL) {
-		$lessons = $this->hideExpiredLessons($dryRun);
-		$reservations = $this->closeReservations($dryRun);
+    /**
+     * Closes expired reservations
+     *
+     * @param boolean $dryRun
+     * @return QueryResult|array
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
+     */
+    protected function closeReservations($dryRun)
+    {
+        $reservationDemand = $this->createReservationDemandByExpiredLessonDate();
+        $reservations = $this->reservationRepository->findDemanded($reservationDemand);
 
-		// only send an email if at least one lesson or one reservation has been closed (and email address is given)
-		if ((count($lessons) OR count($reservations)) AND !empty($email)) {
-			try {
-				$this->notificationService->notify(
-					$email, 't3events@cps-it.de', 'close booking', 'Email', NULL, 'CloseBooking', [
-					'dryRun' => $dryRun,
-					'lessons' => $lessons,
-					'reservations' => $reservations
-				], [
-						[
-							'variables' => [
-								'lessons' => $lessons,
-								'reservations' => $reservations
-							],
-							'templateName' => 'Download',
-							'folderName' => 'CloseBooking',
-							'fileName' => 'anhang.xls',
-							'mimeType' => 'application/vnd.ms-excel'
-						]
-					]
-				);
-			} catch (Exception $e) {
-				throw new Exception($e->getMessage());
-			}
-		}
-	}
+        if (!$dryRun) {
+            foreach ($reservations as $reservation) {
+                $reservation->setHidden(1);
+                $reservation->setStatus(Reservation::STATUS_CLOSED);
+                $this->reservationRepository->update($reservation);
+            }
+        }
 
-	/**
-	 * Hide expired lessons
-	 * Hides all lesson which meet the given constraints. Returns a query result with matching lessons.
-	 *
-	 * @param boolean $dryRun
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult | NULL
-	 */
-	protected function hideExpiredLessons($dryRun) {
-		$demand = $this->createDemandForExpiredLessons();
-		$lessons = $this->lessonRepository->findDemanded($demand);
+        return $reservations;
+    }
 
-		if (!$dryRun) {
-			foreach ($lessons as $lesson) {
-				$lesson->setHidden(1);
-				$this->lessonRepository->update($lesson);
-			}
-		}
+    /**
+     * Returns a reservation demand object for reservations
+     * The demand includes all reservations with status 'submitted'
+     * where the date of its lessons is beyond
+     * a given date and time (default 'now')
+     *
+     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @return ReservationDemand $reservationDemand
+     */
+    protected function createReservationDemandByExpiredLessonDate($date = 'now')
+    {
+        /** @var ReservationDemand $reservationDemand */
+        $reservationDemand = $this->objectManager->get(ReservationDemand::class);
+        $reservationDemand->setStatus(Reservation::STATUS_SUBMITTED);
+        $reservationDemand->setLessonDate(new \DateTime($date));
+        $reservationDemand->setPeriod(PeriodConstraintRepositoryInterface::PERIOD_PAST);
 
-		return $lessons;
-	}
+        return $reservationDemand;
+    }
 
-	/**
-	 * Returns a lesson demand object for expired lessons.
-	 * A lesson will considered expired when its date is older than the given date.
-	 * Default is 'now'
-	 *
-	 * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
-	 * @return \CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand $lessonDemand
-	 */
-	protected function createDemandForExpiredLessons($date = 'now') {
-		/** @var \CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand $lessonDemand */
-		$lessonDemand = $this->objectManager->get('CPSIT\\T3eventsCourse\\Domain\\Model\\Dto\\ScheduleDemand');
-		$lessonDemand->setPeriod('pastOnly');
-		$lessonDemand->setDate(new \DateTime($date));
+    /**
+     * Sends an email about expired reservations and lessons.
+     * Expired are lessons where the reservation deadline is
+     * before yesterday 0:00:00 h.
+     * A MS Excel file with the results will be attached to the email
+     *
+     * @param string $email Recipients email address
+     * @throws Exception
+     */
+    public function reportExpiredCommand($email)
+    {
+        $lessons = $this->getLessonsWithExpiredDeadline();
+        $reservationDemand = $this->createReservationDemandByLessonDeadline('yesterday');
+        $reservations = $this->reservationRepository->findDemanded($reservationDemand);
 
-		return $lessonDemand;
-	}
+        if (!empty($email) && ($lessons->count() || $reservations->count())) {
+            try {
+                $this->notificationService->notify(
+                    $email,
+                    'no-reply@example.com',
+                    'Abgelaufene Termine und Reservierungen in ihrem Veranstaltungssystem',
+                    static::TEMPLATE_EMAIL,
+                    NULL,
+                    'ReportExpired', [
+                    SettingsInterface::LESSONS => $lessons,
+                    SettingsInterface::RESERVATIONS => $reservations
+                ], [
+                        [
+                            'variables' => [
+                                SettingsInterface::LESSONS => $lessons,
+                                SettingsInterface::RESERVATIONS => $reservations
+                            ],
+                            'templateName' => static::TEMPLATE_DOWNLOAD,
+                            'folderName' => static::FOLDER_CLOSE_BOOKING,
+                            'fileName' => 'anhang.xls',
+                            'mimeType' => 'application/vnd.ms-excel'
+                        ]
+                    ]
+                );
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
+            }
+        }
+    }
 
-	/**
-	 * Closes expired reservations
-	 *
-	 * @param boolean $dryRun
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult | NULL
-	 */
-	protected function closeReservations($dryRun) {
-		$reservationDemand = $this->createReservationDemandByExpiredLessonDate();
-		$reservations = $this->reservationRepository->findDemanded($reservationDemand);
+    /**
+     * Gets all expired lessons
+     *
+     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @return QueryResultInterface|array
+     */
+    protected function getLessonsWithExpiredDeadline($date = NULL)
+    {
+        /** @var ScheduleDemand $lessonDemand */
+        $lessonDemand = $this->createDemandForLessonsWithExpiredDeadline($date);
 
-		if (!$dryRun) {
-			foreach ($reservations as $reservation) {
-				$reservation->setHidden(1);
-				$reservation->setStatus(Reservation::STATUS_CLOSED);
-				$this->reservationRepository->update($reservation);
-			}
-		}
+        return $this->scheduleRepository->findDemanded($lessonDemand);
+    }
 
-		return $reservations;
-	}
+    /**
+     * Returns a lesson demand object for lessons with expired registration deadline.
+     * A lesson will considered expired when its registration deadline is older than the given date.
+     * Default is 'now'
+     *
+     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @return ScheduleDemand $lessonDemand
+     */
+    protected function createDemandForLessonsWithExpiredDeadline($date = 'now')
+    {
+        /** @var ScheduleDemand $lessonDemand */
+        $lessonDemand = $this->objectManager->get(ScheduleDemand::class);
+        $lessonDemand->setDeadlineBefore(new \DateTime($date));
 
-	/**
-	 * Returns a reservation demand object for reservations
-	 * The demand includes all reservations with status 'submitted'
-	 * where the date of its lessons is beyond
-	 * a given date and time (default 'now')
-	 *
-	 * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $reservationDemand
-	 */
-	protected function createReservationDemandByExpiredLessonDate($date = 'now') {
-		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $reservationDemand */
-		$reservationDemand = $this->objectManager->get('CPSIT\\T3eventsReservation\\Domain\\Model\\Dto\\ReservationDemand');
-		$reservationDemand->setStatus(Reservation::STATUS_SUBMITTED);
-		$reservationDemand->setLessonDate(new \DateTime($date));
-		$reservationDemand->setPeriod('pastOnly');
+        return $lessonDemand;
+    }
 
-		return $reservationDemand;
-	}
+    /**
+     * Returns a reservation demand object for reservations
+     * The demand includes all reservations with status 'submitted'
+     * where the registration deadline of its lessons is beyond
+     * a given date and time (default 'now')
+     *
+     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @return ReservationDemand $reservationDemand
+     */
+    protected function createReservationDemandByLessonDeadline($date = 'now')
+    {
+        /** @var ReservationDemand $reservationDemand */
+        $reservationDemand = $this->objectManager->get(ReservationDemand::class);
+        $reservationDemand->setStatus(Reservation::STATUS_SUBMITTED);
+        $reservationDemand->setLessonDeadline(new \DateTime($date));
 
-	/**
-	 * Sends an email about expired reservations and lessons.
-	 * Expired are lessons where the reservation deadline is
-	 * before yesterday 0:00:00 h.
-	 * A MS Excel file with the results will be attached to the email
-	 *
-	 * @param string $email Recipients email address
-	 * @throws Exception
-	 */
-	public function reportExpiredCommand($email) {
-		$lessons = $this->getLessonsWithExpiredDeadline();
-		$reservationDemand = $this->createReservationDemandByLessonDeadline('yesterday');
-		$reservations = $this->reservationRepository->findDemanded($reservationDemand);
-
-		if (
-			!empty($email)
-			AND (count($lessons) OR count($reservations))
-		) {
-			try {
-				$this->notificationService->notify(
-					$email, 'no-reply@example.com', 'Abgelaufene Termine und Reservierungen in ihrem Veranstaltungssystem', 'Email', NULL, 'ReportExpired', [
-					'lessons' => $lessons,
-					'reservations' => $reservations
-				], [
-						[
-							'variables' => [
-								'lessons' => $lessons,
-								'reservations' => $reservations
-							],
-							'templateName' => 'Download',
-							'folderName' => 'CloseBooking',
-							'fileName' => 'anhang.xls',
-							'mimeType' => 'application/vnd.ms-excel'
-						]
-					]
-				);
-			} catch (Exception $e) {
-				throw new Exception($e->getMessage());
-			}
-		}
-	}
-
-	/**
-	 * Gets all expired lessons
-	 *
-	 * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
-	 */
-	protected function getLessonsWithExpiredDeadline($date = NULL) {
-		/** @var ScheduleDemand $lessonDemand */
-		$lessonDemand = $this->createDemandForLessonsWithExpiredDeadline($date);
-
-		return $this->lessonRepository->findDemanded($lessonDemand);
-	}
-
-	/**
-	 * Returns a lesson demand object for lessons with expired registration deadline.
-	 * A lesson will considered expired when its registration deadline is older than the given date.
-	 * Default is 'now'
-	 *
-	 * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
-	 * @return \CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand $lessonDemand
-	 */
-	protected function createDemandForLessonsWithExpiredDeadline($date = 'now') {
-		/** @var \CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand $lessonDemand */
-		$lessonDemand = $this->objectManager->get(ScheduleDemand::class);
-		$lessonDemand->setDeadlineBefore(new \DateTime($date));
-
-		return $lessonDemand;
-	}
-
-	/**
-	 * Returns a reservation demand object for reservations
-	 * The demand includes all reservations with status 'submitted'
-	 * where the registration deadline of its lessons is beyond
-	 * a given date and time (default 'now')
-	 *
-	 * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
-	 * @return \CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand $reservationDemand
-	 */
-	protected function createReservationDemandByLessonDeadline($date = 'now') {
-		/** @var ReservationDemand $reservationDemand */
-		$reservationDemand = $this->objectManager->get(ReservationDemand::class);
-		$reservationDemand->setStatus(Reservation::STATUS_SUBMITTED);
-		$reservationDemand->setLessonDeadline(new \DateTime($date));
-
-		return $reservationDemand;
-	}
+        return $reservationDemand;
+    }
 }
 
