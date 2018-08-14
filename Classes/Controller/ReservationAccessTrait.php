@@ -251,18 +251,15 @@ trait ReservationAccessTrait
             }
         }
 
+        $this->session->clean();
         // clear any previous flash message in order to avoid double entries
-        $flashMessageQueue = $this->getFlashMessageQueue();
-        if ($flashMessageQueue instanceof FlashMessageQueue) {
-            $flashMessageQueue->__call('getAllMessagesAndFlush', []);
-        }
+        $this->getFlashMessageQueue()->clear();
 
         $this->addFlashMessage(
             $this->getErrorFlashMessage(),
             '',
             FlashMessage::ERROR
         );
-        $this->session->clean();
     }
 
     /**

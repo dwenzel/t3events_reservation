@@ -5,6 +5,8 @@ use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use DWenzel\T3events\Session\SessionInterface;
@@ -35,13 +37,29 @@ class ReservationAccessTraitTest extends UnitTestCase
     protected $subject;
 
     /**
+     * @var FlashMessageQueue|MockObject
+     */
+    protected $flashMessageQueue;
+
+    /**
      * set up subject
      */
     public function setUp()
     {
-        $this->subject = $this->getMockForTrait(
-            ReservationAccessTrait::class
-        );
+        $this->subject = $this->getMockBuilder(ReservationAccessTrait::class)
+            ->setMethods(
+                [
+                    'clearCacheOnError',
+                    'addFlashMessage',
+                    'getFlashMessageQueue',
+                    'getErrorFlashMessage',
+                ])
+            ->getMockForTrait();
+        $this->flashMessageQueue = $this->getMockBuilder(FlashMessageQueue::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['clear'])
+            ->getMock();
+        $this->subject->method('getFlashMessageQueue')->willReturn($this->flashMessageQueue);
     }
 
     /**
@@ -377,6 +395,10 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function getErrorFlashMessageTranslatesMessage()
     {
+        $this->subject = $this->getMockBuilder(ReservationAccessTrait::class)
+            ->setMethods(['translate'])
+            ->getMockForTrait();
+
         $controllerName = 'foo';
         $actionName = 'bar';
         $mockRequest = $this->mockRequest();
@@ -403,11 +425,6 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function errorActionClearsCache()
     {
-        $this->subject = $this->getMockForTrait(
-        ReservationAccessTrait::class,
-        [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
-        );
-
         $this->mockSession();
         $this->subject->expects($this->once())
             ->method('clearCacheOnError');
@@ -419,11 +436,6 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function errorActionClearsSession()
     {
-        $this->subject = $this->getMockForTrait(
-            ReservationAccessTrait::class,
-            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
-        );
-
         $mockSession = $this->mockSession();
         $mockSession->expects($this->once())
             ->method('clean');
@@ -435,16 +447,23 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function errorActionAddsFlashMessage()
     {
-        $this->subject = $this->getMockForTrait(
-            ReservationAccessTrait::class,
-            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
-        );
-
         $this->mockSession();
         $this->subject->expects($this->once())
             ->method('getErrorFlashMessage');
         $this->subject->expects($this->once())
             ->method('addFlashMessage');
+        $this->subject->errorAction();
+    }
+
+    /**
+     * @test
+     */
+    public function errorActionFlushesMessageQueue() {
+
+        $this->mockSession();
+        $this->flashMessageQueue->expects($this->once())
+            ->method('clear');
+
         $this->subject->errorAction();
     }
 
