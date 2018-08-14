@@ -85,7 +85,7 @@ class PersonDemandFactory
         }
 
         if ($demand->getLessonPeriod() === PeriodConstraintRepositoryInterface::PERIOD_FUTURE
-            OR $demand->getLessonPeriod() === PeriodConstraintRepositoryInterface::PERIOD_PAST
+            || $demand->getLessonPeriod() === PeriodConstraintRepositoryInterface::PERIOD_PAST
         ) {
             $timeZone = new \DateTimeZone(date_default_timezone_get());
             $demand->setLessonDate(new \DateTime('midnight', $timeZone));
