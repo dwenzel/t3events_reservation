@@ -60,7 +60,7 @@ class NotificationTest extends UnitTestCase
      */
     public function reservationCanBeSet()
     {
-        $reservation = $this->getMock(Reservation::class);
+        $reservation = $this->getMockBuilder(Reservation::class)->getMock();
         $this->subject->setReservation($reservation);
 
         $this->assertSame(

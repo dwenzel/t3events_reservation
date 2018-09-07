@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Domain\Repository;
 
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ScheduleDemand;
@@ -31,9 +32,9 @@ class ScheduleRepositoryTest extends UnitTestCase
 
     public function setUp()
     {
-        $this->subject = $this->getMock(
-            ScheduleRepository::class, ['dummy'], [], '', false
-        );
+        $this->subject = $this->getMockBuilder(ScheduleRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['dummy'])->getMock();
     }
 
     /**
@@ -59,7 +60,8 @@ class ScheduleRepositoryTest extends UnitTestCase
     public function createConstraintsFromDemandAddsDeadlineConstraints($deadlinePeriod, $expectedMethod, $expectedValue)
     {
         $query = $this->getMockForAbstractClass(QueryInterface::class);
-        $demand = $this->getMock(ScheduleDemand::class, ['getDeadlinePeriod']);
+        $demand = $this->getMockBuilder(ScheduleDemand::class)
+            ->setMethods(['getDeadlinePeriod'])->getMock();
         $demand->expects($this->once())
             ->method('getDeadlinePeriod')
             ->will($this->returnValue($deadlinePeriod));

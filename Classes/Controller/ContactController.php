@@ -16,6 +16,7 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
 use DWenzel\T3events\Controller\RoutingTrait;
@@ -58,20 +59,21 @@ class ContactController
      * @param Contact|null $contact
      * @param Reservation $reservation
      * @ignorevalidation $contact
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function newAction(Contact $contact = null, Reservation $reservation)
     {
         $originalRequest = $this->request->getOriginalRequest();
         if (
             $originalRequest instanceof Request
-            && $originalRequest->hasArgument('contact')
+            && $originalRequest->hasArgument(SettingsInterface::CONTACT)
         ) {
-            $contact = $originalRequest->getArgument('contact');
+            $contact = $originalRequest->getArgument(SettingsInterface::CONTACT);
         }
 
         $templateVariables = [
-            'contact' => $contact,
-            'reservation' => $reservation
+            SettingsInterface::CONTACT => $contact,
+            SettingsInterface::RESERVATION => $reservation
         ];
         $this->view->assignMultiple($templateVariables);
     }
@@ -80,6 +82,7 @@ class ContactController
      * Create a contact
      *
      * @param Contact $contact
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function createAction(Contact $contact)
     {
@@ -88,7 +91,7 @@ class ContactController
         if ($reservation = $contact->getReservation()) {
             $reservation->setContact($contact);
         }
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -110,7 +113,7 @@ class ContactController
             );
         }
 
-        $this->view->assign('contact', $contact);
+        $this->view->assign(SettingsInterface::CONTACT, $contact);
     }
 
     /**
@@ -118,12 +121,12 @@ class ContactController
      *
      * @param Contact $contact
      * @validate $contact \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function updateAction(Contact $contact)
     {
         $this->contactRepository->update($contact);
-        $this->dispatch(['reservation' => $contact->getReservation()]);
+        $this->dispatch([SettingsInterface::RESERVATION => $contact->getReservation()]);
     }
 }

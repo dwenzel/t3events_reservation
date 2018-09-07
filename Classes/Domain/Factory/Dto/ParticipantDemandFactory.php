@@ -51,14 +51,4 @@ class ParticipantDemandFactory extends PersonDemandFactory
         'endDate'
     ];
 
-    /**
-     * Creates a demand object from settings
-     *
-     * @param array $settings
-     * @return DemandInterface
-     */
-    public function createFromSettings(array $settings)
-    {
-        return parent::createFromSettings($settings);
-    }
 }

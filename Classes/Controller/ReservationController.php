@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Controller;
 
 /**
@@ -19,9 +20,11 @@ use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
 use DWenzel\T3events\Controller\EntityNotFoundHandlerTrait;
+use DWenzel\T3events\Controller\NotificationServiceTrait;
 use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Controller\RoutableControllerInterface;
 use DWenzel\T3events\Controller\RoutingTrait;
@@ -33,7 +36,10 @@ use DWenzel\T3events\Session\SessionInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 
 /**
@@ -45,8 +51,8 @@ class ReservationController
 {
     use BillingAddressRepositoryTrait, ContactRepositoryTrait,
         CompanyRepositoryTrait, DemandTrait,
-        EntityNotFoundHandlerTrait, PersistenceManagerTrait,
-        PersonRepositoryTrait, ReservationAccessTrait,
+        EntityNotFoundHandlerTrait, NotificationServiceTrait,
+        PersistenceManagerTrait, PersonRepositoryTrait, ReservationAccessTrait,
         ReservationRepositoryTrait, RoutingTrait,
         SearchTrait, SettingsUtilityTrait, TranslateTrait;
 
@@ -59,19 +65,6 @@ class ReservationController
      * @const Identifier for reservation in session
      */
     const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
-
-    /**
-     * @const Extension key
-     */
-    const EXTENSION_KEY = 't3events_reservation';
-
-    /**
-     * Notification Service
-     *
-     * @var \DWenzel\T3events\Service\NotificationService
-     * @inject
-     */
-    protected $notificationService;
 
     /**
      * Lesson Repository
@@ -90,7 +83,7 @@ class ReservationController
     public function showAction(Reservation $reservation)
     {
         $this->session->clean();
-        $this->view->assign('reservation', $reservation);
+        $this->view->assign(SettingsInterface::RESERVATION, $reservation);
     }
 
     /**
@@ -99,8 +92,7 @@ class ReservationController
      * @param BookableInterface|Performance $lesson
      * @param Reservation $newReservation
      * @ignorevalidation $newReservation
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws NoSuchArgumentException
      */
     public function newAction(Performance $lesson = null, Reservation $newReservation = null)
     {
@@ -115,12 +107,12 @@ class ReservationController
             );
         }
         if ($this->request->getOriginalRequest() instanceof Request) {
-            $newReservation = $this->request->getOriginalRequest()->getArgument('newReservation');
+            $newReservation = $this->request->getOriginalRequest()->getArgument(SettingsInterface::NEW_RESERVATION);
         }
         $this->view->assignMultiple(
             [
-                'newReservation' => $newReservation,
-                'lesson' => $lesson
+                SettingsInterface::NEW_RESERVATION => $newReservation,
+                SettingsInterface::LESSON => $lesson
             ]
         );
     }
@@ -130,6 +122,8 @@ class ReservationController
      *
      * @param Reservation $newReservation
      * @return void
+     * @throws IllegalObjectTypeException
+     * @throws InvalidSourceException
      */
     public function createAction(Reservation $newReservation)
     {
@@ -154,7 +148,7 @@ class ReservationController
         $this->persistenceManager->persistAll();
         $this->session->set(self::SESSION_IDENTIFIER_RESERVATION, $newReservation->getUid());
 
-        $this->dispatch(['reservation' => $newReservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $newReservation]);
     }
 
     /**
@@ -162,6 +156,8 @@ class ReservationController
      *
      * @param Reservation $reservation
      * @return void
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function editAction(Reservation $reservation)
     {
@@ -170,7 +166,7 @@ class ReservationController
 
         $this->view->assignMultiple(
             [
-                'reservation' => $reservation
+                SettingsInterface::RESERVATION => $reservation
             ]
         );
     }
@@ -180,6 +176,7 @@ class ReservationController
      *
      * @param Reservation $reservation
      * @return void
+     * @throws IllegalObjectTypeException
      */
     public function deleteAction(Reservation $reservation)
     {
@@ -206,8 +203,10 @@ class ReservationController
      *
      * @param Reservation $reservation
      * @param Person $newParticipant
-     * @ignorevalidation $newParticipant
      * @return void
+     * @throws InvalidSourceException
+     * @throws NoSuchArgumentException
+     * @ignorevalidation $newParticipant
      */
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null)
     {
@@ -238,12 +237,12 @@ class ReservationController
             );
         }
         if ($this->request->getOriginalRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Request) {
-            $newParticipant = $this->request->getOriginalRequest()->getArgument('newParticipant');
+            $newParticipant = $this->request->getOriginalRequest()->getArgument(SettingsInterface::NEW_PARTICIPANT);
         }
         $this->view->assignMultiple(
             [
-                'newParticipant' => $newParticipant,
-                'reservation' => $reservation
+                SettingsInterface::NEW_PARTICIPANT => $newParticipant,
+                SettingsInterface::RESERVATION => $reservation
             ]
         );
     }
@@ -254,6 +253,8 @@ class ReservationController
      * @param Reservation $reservation
      * @param Person $newParticipant
      * @return void
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function createParticipantAction(Reservation $reservation, Person $newParticipant)
     {
@@ -272,7 +273,7 @@ class ReservationController
             );
         }
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -283,7 +284,7 @@ class ReservationController
      */
     public function checkoutAction(Reservation $reservation)
     {
-        $this->view->assign('reservation', $reservation);
+        $this->view->assign(SettingsInterface::RESERVATION, $reservation);
     }
 
     /**
@@ -291,21 +292,87 @@ class ReservationController
      *
      * @param Reservation $reservation
      * @return void
+     * @throws Exception
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function confirmAction(Reservation $reservation)
     {
-        // @todo optionally read reservation status from settings
         $reservation->setStatus(Reservation::STATUS_SUBMITTED);
         $this->addFlashMessage(
             $this->translate('message.reservation.confirm.success')
         );
-        if (is_array($this->settings['reservation']['confirm']['notification'])) {
-            foreach ($this->settings['reservation']['confirm']['notification'] as $identifier => $config) {
+        if (is_array($this->settings[SettingsInterface::RESERVATION][SettingsInterface::CONFIRM][SettingsInterface::NOTIFICATION])) {
+            foreach ($this->settings[SettingsInterface::RESERVATION][SettingsInterface::CONFIRM][SettingsInterface::NOTIFICATION] as $identifier => $config) {
                 $this->sendNotification($reservation, $identifier, $config);
             }
         }
         $this->reservationRepository->update($reservation);
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
+    }
+
+    /**
+     * @param Reservation $reservation
+     * @param string $identifier
+     * @param array $config
+     * @return bool
+     * @throws Exception
+     */
+    protected function sendNotification(Reservation $reservation, $identifier, $config)
+    {
+        if (isset($config[SettingsInterface::FROM_EMAIL])) {
+            $fromEmail = $config[SettingsInterface::FROM_EMAIL];
+        } else {
+            throw new Exception('Missing sender for email notification', 1454518855);
+        }
+
+        $recipientEmail = $this->settingsUtility->getValue($reservation, $config[SettingsInterface::TO_EMAIL]);
+        if (!isset($recipientEmail)) {
+            throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
+        }
+
+        $subject = $this->settingsUtility->getValue($reservation, $config[SettingsInterface::SUBJECT]);
+        if (!isset($subject)) {
+            throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
+        }
+
+        $format = 'plain';
+        if (isset($config['format']) && is_string($config['format'])) {
+            $format = $config['format'];
+        }
+        $fileName = ucfirst($identifier);
+        if (isset($config[SettingsInterface::TEMPLATE]['fileName'])) {
+            $fileName = $config[SettingsInterface::TEMPLATE]['fileName'];
+        }
+        $folderName = 'Reservation/Email';
+        if (isset($config[SettingsInterface::TEMPLATE][SettingsInterface::FOLDER_NAME])) {
+            $folderName = $config[SettingsInterface::TEMPLATE][SettingsInterface::FOLDER_NAME];
+        }
+        /** @var Notification $notification */
+        $notification = $this->objectManager->get(Notification::class);
+        if (isset($config[SettingsInterface::ATTACHMENTS][SettingsInterface::FILES]) && is_array($config[SettingsInterface::ATTACHMENTS][SettingsInterface::FILES])) {
+            $filesToAttach = $this->settingsUtility->getFileStorage(
+                $reservation, $config[SettingsInterface::ATTACHMENTS][SettingsInterface::FILES]
+            );
+            $notification->setAttachments($filesToAttach);
+        }
+        $notification->setRecipient($recipientEmail);
+        $notification->setSenderEmail($fromEmail);
+        if (isset($config[SettingsInterface::SENDER_NAME])) {
+            $notification->setSenderName($config[SettingsInterface::SENDER_NAME]);
+        }
+        $notification->setSubject($subject);
+        $notification->setFormat($format);
+        $bodyText = $this->notificationService->render(
+            $fileName,
+            $format,
+            $folderName,
+            [SettingsInterface::RESERVATION => $reservation, SettingsInterface::SETTINGS => $this->settings]
+        );
+        $notification->setBodytext($bodyText);
+        $reservation->addNotification($notification);
+
+        return $this->notificationService->send($notification);
     }
 
     /**
@@ -314,6 +381,8 @@ class ReservationController
      * @param Reservation $reservation
      * @param Person $participant
      * @return void
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function removeParticipantAction(Reservation $reservation, Person $participant)
     {
@@ -324,7 +393,7 @@ class ReservationController
             $this->translate('message.reservation.removeParticipant.success')
         );
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -336,7 +405,7 @@ class ReservationController
     {
         $this->view->assignMultiple(
             [
-                'reservation' => $reservation,
+                SettingsInterface::RESERVATION => $reservation,
             ]
         );
     }
@@ -345,9 +414,7 @@ class ReservationController
      * Removes a billing address from reservation
      *
      * @param Reservation $reservation
-     * @throws InvalidSourceException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws IllegalObjectTypeException
      */
     public function removeBillingAddressAction(Reservation $reservation)
     {
@@ -359,7 +426,7 @@ class ReservationController
             );
         }
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
@@ -373,8 +440,8 @@ class ReservationController
     {
         $this->view->assignMultiple(
             [
-                'newBillingAddress' => $newBillingAddress,
-                'reservation' => $reservation
+                SettingsInterface::NEW_BILLING_ADDRESS => $newBillingAddress,
+                SettingsInterface::RESERVATION => $reservation
             ]
         );
     }
@@ -382,8 +449,8 @@ class ReservationController
     /**
      * @param Reservation $reservation
      * @param BillingAddress $newBillingAddress
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress)
     {
@@ -394,15 +461,15 @@ class ReservationController
             $this->translate('message.reservation.createBillingAddress.success')
         );
 
-        $this->dispatch(['reservation' => $reservation]);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
     /**
      * updates the reservation
      *
      * @param Reservation $reservation
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function updateAction(Reservation $reservation)
     {
@@ -411,70 +478,6 @@ class ReservationController
         );
 
         $this->reservationRepository->update($reservation);
-        $this->dispatch(['reservation' => $reservation]);
-    }
-
-    /**
-     * @param Reservation $reservation
-     * @param string $identifier
-     * @param array $config
-     * @return bool
-     * @throws Exception
-     */
-    protected function sendNotification(Reservation $reservation, $identifier, $config)
-    {
-        if (isset($config['fromEmail'])) {
-            $fromEmail = $config['fromEmail'];
-        } else {
-            throw new Exception('Missing sender for email notification', 1454518855);
-        }
-
-        $recipientEmail = $this->settingsUtility->getValue($reservation, $config['toEmail']);
-        if (!isset($recipientEmail)) {
-            throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
-        }
-
-        $subject = $this->settingsUtility->getValue($reservation, $config['subject']);
-        if (!isset($subject)) {
-            throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
-        }
-
-        $format = 'plain';
-        if (isset($config['format']) && is_string($config['format'])) {
-            $format = $config['format'];
-        }
-        $fileName = ucfirst($identifier);
-        if (isset($config['template']['fileName'])) {
-            $fileName = $config['template']['fileName'];
-        }
-        $folderName = 'Reservation/Email';
-        if (isset($config['template']['folderName'])) {
-            $folderName = $config['template']['folderName'];
-        }
-        /** @var Notification $notification */
-        $notification = $this->objectManager->get(Notification::class);
-        if (isset($config['attachments']['files']) && is_array($config['attachments']['files'])) {
-            $filesToAttach = $this->settingsUtility->getFileStorage(
-                $reservation, $config['attachments']['files']
-            );
-            $notification->setAttachments($filesToAttach);
-        }
-        $notification->setRecipient($recipientEmail);
-        $notification->setSenderEmail($fromEmail);
-        if (isset($config['senderName'])) {
-            $notification->setSenderName($config['senderName']);
-        }
-        $notification->setSubject($subject);
-        $notification->setFormat($format);
-        $bodyText = $this->notificationService->render(
-            $fileName,
-            $format,
-            $folderName,
-            ['reservation' => $reservation, 'settings' => $this->settings]
-        );
-        $notification->setBodytext($bodyText);
-        $reservation->addNotification($notification);
-
-        return $this->notificationService->send($notification);
+        $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 }

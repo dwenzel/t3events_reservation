@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Controller;
 
 /**
@@ -42,9 +43,8 @@ class ScheduleRepositoryTraitTest extends UnitTestCase
      */
     public function ScheduleRepositoryCanBeInjected()
     {
-        $scheduleRepository = $this->getMock(
-            ScheduleRepository::class, [], [], '', false
-        );
+        $scheduleRepository = $this->getMockBuilder(ScheduleRepository::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectScheduleRepository($scheduleRepository);
 

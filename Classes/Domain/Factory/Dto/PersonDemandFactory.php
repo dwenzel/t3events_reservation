@@ -20,12 +20,12 @@ use DWenzel\T3events\Domain\Factory\Dto\DemandFactoryInterface;
 use DWenzel\T3events\Domain\Factory\Dto\PeriodAwareDemandFactoryTrait;
 use DWenzel\T3events\Domain\Model\Dto\DemandInterface;
 use DWenzel\T3events\Domain\Model\Dto\PeriodAwareDemandInterface;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface as SI;
+use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
 
 /**
  * Class PersonDemandFactory
  * Creates PersonDemand objects
- *
- * @package CPSIT\T3eventsReservation\Domain\Factory\Dto
  */
 class PersonDemandFactory
     extends AbstractDemandFactory
@@ -77,15 +77,15 @@ class PersonDemandFactory
 
         $this->applySettings($demand, $settings);
 
-        if (!empty($settings['lessonDeadline'])){
+        if (!empty($settings[SI::LESSON_DEADLINE])){
             $timeZone = new \DateTimeZone(date_default_timezone_get());
             $demand->setLessonDeadline(
-                new \DateTime($settings['lessonDeadline'], $timeZone)
+                new \DateTime($settings[SI::LESSON_DEADLINE], $timeZone)
             );
         }
 
-        if ($demand->getLessonPeriod() === 'futureOnly'
-            OR $demand->getLessonPeriod() === 'pastOnly'
+        if ($demand->getLessonPeriod() === PeriodConstraintRepositoryInterface::PERIOD_FUTURE
+            || $demand->getLessonPeriod() === PeriodConstraintRepositoryInterface::PERIOD_PAST
         ) {
             $timeZone = new \DateTimeZone(date_default_timezone_get());
             $demand->setLessonDate(new \DateTime('midnight', $timeZone));

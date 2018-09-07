@@ -30,9 +30,7 @@ class BillingAddressTest extends UnitTestCase
 
     public function setUp()
     {
-        $this->subject = $this->getMock(
-            BillingAddress::class, ['dummy']
-        );
+        $this->subject = new BillingAddress();
     }
 
     /**

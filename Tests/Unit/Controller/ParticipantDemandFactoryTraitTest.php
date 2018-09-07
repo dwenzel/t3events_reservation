@@ -40,9 +40,8 @@ class ParticipantDemandFactoryTraitTest extends UnitTestCase
      */
     public function participantDemandFactoryCanBeInjected()
     {
-        $participantDemandFactory = $this->getMock(
-            ParticipantDemandFactory::class, [], [], '', false
-        );
+        $participantDemandFactory = $this->getMockBuilder(ParticipantDemandFactory::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectParticipantDemandFactory($participantDemandFactory);
 

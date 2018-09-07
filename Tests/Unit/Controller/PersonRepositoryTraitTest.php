@@ -44,9 +44,8 @@ class PersonRepositoryTraitTest extends UnitTestCase
      */
     public function personRepositoryCanBeInjected()
     {
-        $personRepository = $this->getMock(
-            PersonRepository::class, [], [], '', false
-        );
+        $personRepository = $this->getMockBuilder(PersonRepository::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectPersonRepository($personRepository);
 

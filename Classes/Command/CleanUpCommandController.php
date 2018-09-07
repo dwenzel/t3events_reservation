@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Command;
 
 use CPSIT\T3eventsReservation\Controller\BillingAddressRepositoryTrait;
@@ -7,9 +8,11 @@ use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationDemandFactoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface as SI;
+use DWenzel\T3events\Controller\NotificationRepositoryTrait;
+use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface as PCI;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 
 /***************************************************************
  *  Copyright notice
@@ -52,21 +55,22 @@ class CleanUpCommandController extends CommandController
      */
     public function deleteReservationsCommand(
         $dryRun = true,
-        $period = 'pastOnly',
+        $period = PCI::PERIOD_PAST,
         $date = '',
         $storagePageIds = '',
         $limit = 1000
-    ) {
+    )
+    {
         $settings = [
             'period' => $period,
             'storagePages' => $storagePageIds,
             'limit' => $limit
         ];
 
-        if (!empty($date) && $period === 'specific') {
-            $settings['periodType'] = 'byDate';
-            $settings['periodEndDate'] = $date;
-            $settings['periodStartDate'] = '01-01-1970';
+        if (!empty($date) && $period === PCI::PERIOD_SPECIFIC) {
+            $settings[PCI::PERIOD_TYPE] = PCI::PERIOD_TYPE_DATE;
+            $settings[PCI::PERIOD_END_DATE] = $date;
+            $settings[PCI::PERIOD_START_DATE] = '01-01-1970';
         }
 
         $reservationDemand = $this->reservationDemandFactory->createFromSettings($settings);
@@ -75,43 +79,48 @@ class CleanUpCommandController extends CommandController
 
         $this->outputLine('Found ' . $deletedReservations . ' matching reservations.');
 
-        if (count($reservations)) {
-            $participantsToRemove = $this->getParticipantsToRemove($reservations);
-            $contactsToRemove = $this->getContactsToRemove($reservations);
-            $billingAddressesToRemove = $this->getBillingAddressesToRemove($reservations);
-            $notificationsToRemove = $this->getNotificationsToRemove($reservations);
-            $this->outputLine('Reservations contain:');
-            $this->outputLine(' ' . count($participantsToRemove) . ' participants');
-            $this->outputLine(' ' . count($contactsToRemove) . ' contacts');
-            $this->outputLine(' ' . count($billingAddressesToRemove) . ' billing addresses');
-            $this->outputLine(' ' . count($notificationsToRemove) . ' notifications');
+        if (!count($reservations)) {
+            return;
+        }
 
-            if (!$dryRun) {
-                $this->outputLine('Removing:');
-                $this->outputLine(' ' . count($participantsToRemove) . ' participants');
-                foreach ($participantsToRemove as $participantToRemove) {
-                    $this->personRepository->remove($participantToRemove);
-                }
+        $objectsToRemove = [
+            SI::PARTICIPANTS => [
+                SI::OBJECTS => $this->getParticipantsToRemove($reservations),
+                SI::REPOSITORY => $this->personRepository
+            ],
+            SI::CONTACTS => [
+                SI::OBJECTS => $this->getContactsToRemove($reservations),
+                SI::REPOSITORY => $this->contactRepository
+            ],
+            'billing addresses' => [
+                SI::OBJECTS => $this->getBillingAddressesToRemove($reservations),
+                SI::REPOSITORY => $this->billingAddressRepository
+            ],
+            SI::NOTIFICATIONS => [
+                SI::OBJECTS => $this->getNotificationsToRemove($reservations),
+                SI::REPOSITORY => $this->notificationRepository
+            ],
+            SI::RESERVATIONS => [
+                SI::OBJECTS => $reservations,
+                SI::REPOSITORY => $this->reservationRepository
+            ]
+        ];
 
-                $this->outputLine(' ' . count($contactsToRemove) . ' contacts');
-                foreach ($contactsToRemove as $contactToRemove) {
-                    $this->contactRepository->remove($contactToRemove);
-                }
+        $this->outputLine('Reservations contain:');
+        foreach ($objectsToRemove as $key => $entry) {
+            $this->outputLine(' ' . count($entry[SI::OBJECTS]) . ' ' . $key);
+        }
 
-                $this->outputLine(' ' . count($billingAddressesToRemove) . ' billing addresses');
-                foreach ($billingAddressesToRemove as $billingAddress) {
-                    $this->billingAddressRepository->remove($billingAddress);
-                }
+        if ($dryRun) {
+            return;
+        }
 
-                $this->outputLine(' ' . count($notificationsToRemove) . ' notifications');
-                foreach ($notificationsToRemove as $notificationToRemove) {
-                    $this->notificationRepository->remove($notificationToRemove);
-                }
-
-                $this->outputLine(' ' . count($reservations) . ' reservations');
-                foreach ($reservations as $reservation) {
-                    $this->reservationRepository->remove($reservation);
-                }
+        $this->outputLine('Removing:');
+        foreach ($objectsToRemove as $key => $entry) {
+            $objects = $entry[SI::OBJECTS];
+            $this->outputLine(' ' . count($objects) . ' ' . $key);
+            foreach ($objects as $object) {
+                $entry[SI::REPOSITORY]->remove($object);
             }
         }
     }
@@ -128,8 +137,7 @@ class CleanUpCommandController extends CommandController
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
             $participants = $reservation->getParticipants();
-            if (!count($participants))
-            {
+            if (!count($participants)) {
                 continue;
             }
             foreach ($participants as $participant) {
@@ -192,8 +200,7 @@ class CleanUpCommandController extends CommandController
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
             $notifications = $reservation->getNotifications();
-            if (!count($notifications))
-            {
+            if (!count($notifications)) {
                 continue;
             }
             foreach ($notifications as $notification) {

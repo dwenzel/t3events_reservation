@@ -5,6 +5,8 @@ use CPSIT\T3eventsReservation\Controller\ReservationAccessTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use DWenzel\T3events\Session\SessionInterface;
@@ -35,13 +37,29 @@ class ReservationAccessTraitTest extends UnitTestCase
     protected $subject;
 
     /**
+     * @var FlashMessageQueue|MockObject
+     */
+    protected $flashMessageQueue;
+
+    /**
      * set up subject
      */
     public function setUp()
     {
-        $this->subject = $this->getMockForTrait(
-            ReservationAccessTrait::class
-        );
+        $this->subject = $this->getMockBuilder(ReservationAccessTrait::class)
+            ->setMethods(
+                [
+                    'clearCacheOnError',
+                    'addFlashMessage',
+                    'getFlashMessageQueue',
+                    'getErrorFlashMessage',
+                ])
+            ->getMockForTrait();
+        $this->flashMessageQueue = $this->getMockBuilder(FlashMessageQueue::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['clear'])
+            ->getMock();
+        $this->subject->method('getFlashMessageQueue')->willReturn($this->flashMessageQueue);
     }
 
     /**
@@ -49,9 +67,8 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     protected function mockObjectManager()
     {
-        $mockObjectManager = $this->getMock(
-            ObjectManager::class, ['get']
-        );
+        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
         $this->inject($this->subject, 'objectManager', $mockObjectManager);
 
         return $mockObjectManager;
@@ -62,9 +79,8 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     protected function mockSession()
     {
-        $mockSession = $this->getMock(
-            SessionInterface::class, ['has', 'get', 'set', 'clean', 'setNamespace']
-        );
+        $mockSession = $this->getMockBuilder(SessionInterface::class)
+            ->setMethods(['has', 'get', 'set', 'clean', 'setNamespace'])->getMock();
         $this->inject($this->subject, 'session', $mockSession);
 
         return $mockSession;
@@ -85,10 +101,9 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     protected function mockRequest()
     {
-        $mockRequest = $this->getMock(
-            Request::class,
-            ['hasArgument', 'getArgument', 'getControllerName', 'getControllerActionName']
-        );
+        $mockRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(['hasArgument', 'getArgument', 'getControllerName', 'getControllerActionName'])
+            ->getMock();
         $this->inject($this->subject, 'request', $mockRequest);
 
         return $mockRequest;
@@ -101,9 +116,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     {
         $validReservationId = 1234;
         $mockSession = $this->mockSession();
-        $validReservation = $this->getMock(
-            Reservation::class, ['getUid']
-        );
+        $validReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getUid'])->getMock();
         $mockRequest = $this->mockRequest();
         $mockRequest->expects($this->once())
             ->method('hasArgument')
@@ -148,9 +162,8 @@ class ReservationAccessTraitTest extends UnitTestCase
     public function isAccessAllowedReturnsFalseIfReservationUidIsNotInSession()
     {
         $mockSession = $this->mockSession();
-        $object = $this->getMock(
-            Reservation::class, ['getUid']
-        );
+        $object = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getUid'])->getMock();
         $object->expects($this->once())
             ->method('getUid')
             ->will($this->returnValue(5));
@@ -186,9 +199,8 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->method('has')
             ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(true));
-        $mockRequest = $this->getMock(
-            Request::class, ['hasArgument']
-        );
+        $mockRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(['hasArgument'])->getMock();
         $this->inject($this->subject, 'request', $mockRequest);
 
         $mockRequest->expects($this->once())
@@ -211,9 +223,8 @@ class ReservationAccessTraitTest extends UnitTestCase
             ->method('has')
             ->with(ReservationController::SESSION_IDENTIFIER_RESERVATION)
             ->will($this->returnValue(true));
-        $mockRequest = $this->getMock(
-            Request::class, ['hasArgument']
-        );
+        $mockRequest = $this->getMockBuilder(Request::class)
+            ->setMethods(['hasArgument'])->getMock();
         $this->inject($this->subject, 'request', $mockRequest);
 
         $mockRequest->expects($this->once())
@@ -384,6 +395,10 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function getErrorFlashMessageTranslatesMessage()
     {
+        $this->subject = $this->getMockBuilder(ReservationAccessTrait::class)
+            ->setMethods(['translate'])
+            ->getMockForTrait();
+
         $controllerName = 'foo';
         $actionName = 'bar';
         $mockRequest = $this->mockRequest();
@@ -410,11 +425,6 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function errorActionClearsCache()
     {
-        $this->subject = $this->getMockForTrait(
-        ReservationAccessTrait::class,
-        [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
-        );
-
         $this->mockSession();
         $this->subject->expects($this->once())
             ->method('clearCacheOnError');
@@ -426,11 +436,6 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function errorActionClearsSession()
     {
-        $this->subject = $this->getMockForTrait(
-            ReservationAccessTrait::class,
-            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
-        );
-
         $mockSession = $this->mockSession();
         $mockSession->expects($this->once())
             ->method('clean');
@@ -442,16 +447,23 @@ class ReservationAccessTraitTest extends UnitTestCase
      */
     public function errorActionAddsFlashMessage()
     {
-        $this->subject = $this->getMockForTrait(
-            ReservationAccessTrait::class,
-            [], '', true, true, true, ['clearCacheOnError', 'addFlashMessage', 'getErrorFlashMessage', 'getFlashMessageQueue']
-        );
-
         $this->mockSession();
         $this->subject->expects($this->once())
             ->method('getErrorFlashMessage');
         $this->subject->expects($this->once())
             ->method('addFlashMessage');
+        $this->subject->errorAction();
+    }
+
+    /**
+     * @test
+     */
+    public function errorActionFlushesMessageQueue() {
+
+        $this->mockSession();
+        $this->flashMessageQueue->expects($this->once())
+            ->method('clear');
+
         $this->subject->errorAction();
     }
 

@@ -68,7 +68,7 @@ class ContactControllerTest extends UnitTestCase
      */
     protected function mockView()
     {
-        $this->view = $this->getMock(ViewInterface::class);
+        $this->view = $this->getMockBuilder(ViewInterface::class)->getMock();
         $this->inject($this->subject, 'view', $this->view);
 
         return $this->view;
@@ -79,9 +79,8 @@ class ContactControllerTest extends UnitTestCase
      */
     protected function mockRequest()
     {
-        $this->request = $this->getMock(
-            Request::class, ['getOriginalRequest', 'hasArgument', 'getArgument']
-        );
+        $this->request = $this->getMockBuilder(Request::class)
+            ->setMethods(['getOriginalRequest', 'hasArgument', 'getArgument'])->getMock();
         $this->inject(
             $this->subject,
             'request',
@@ -96,9 +95,9 @@ class ContactControllerTest extends UnitTestCase
      */
     protected function mockContactRepository()
     {
-        $this->repository = $this->getMock(
-            ContactRepository::class, ['add', 'remove', 'update'], [], '', false
-        );
+        $this->repository = $this->getMockBuilder(ContactRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['add', 'remove', 'update'])->getMock();
 
         $this->subject->injectContactRepository($this->repository);
         return $this->repository;
@@ -109,9 +108,8 @@ class ContactControllerTest extends UnitTestCase
      */
     public function contactRepositoryCanBeInjected()
     {
-        $mockRepository = $this->getMock(
-            ContactRepository::class, [], [], '', false
-        );
+        $mockRepository = $this->getMockBuilder(ContactRepository::class)
+            ->disableOriginalConstructor()->getMock();
         $this->subject->injectContactRepository($mockRepository);
         $this->assertAttributeSame(
             $mockRepository,
@@ -168,9 +166,7 @@ class ContactControllerTest extends UnitTestCase
         $this->mockContactRepository();
         $contact = new Contact();
         /** @var Reservation $mockReservation */
-        $mockReservation = $this->getMock(
-            Reservation::class
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $contact->setReservation($mockReservation);
 
         $this->subject->expects($this->once())
@@ -185,8 +181,8 @@ class ContactControllerTest extends UnitTestCase
      */
     public function newActionAssignsVariablesToView()
     {
-        $mockContact = $this->getMock(Contact::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $mockContact = $this->getMockBuilder(Contact::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $expectedVariables = [
             'contact' => $mockContact,
@@ -205,8 +201,8 @@ class ContactControllerTest extends UnitTestCase
      */
     public function newActionRestoresContactFromRequest()
     {
-        $contactFromRequest = $this->getMock(Contact::class);
-        $mockReservation = $this->getMock(Reservation::class);
+        $contactFromRequest = $this->getMockBuilder(Contact::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
 
         $this->request->expects($this->once())
             ->method('getOriginalRequest')
@@ -228,7 +224,7 @@ class ContactControllerTest extends UnitTestCase
      */
     public function createActionAddsContactToRepository()
     {
-        $mockContact = $this->getMock(Contact::class);
+        $mockContact = $this->getMockBuilder(Contact::class)->getMock();
         $mockRepository = $this->mockContactRepository();
         $mockRepository->expects($this->once())
             ->method('add')
@@ -241,12 +237,10 @@ class ContactControllerTest extends UnitTestCase
      */
     public function createActionSetsReservationContact()
     {
-        $mockContact = $this->getMock(
-            Contact::class, ['getReservation']
-        );
-        $mockReservation = $this->getMock(
-            Reservation::class, ['setContact']
-        );
+        $mockContact = $this->getMockBuilder(Contact::class)
+            ->setMethods(['getReservation'])->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['setContact'])->getMock();
         $this->mockContactRepository();
 
         $mockContact->expects($this->once())
@@ -266,9 +260,7 @@ class ContactControllerTest extends UnitTestCase
         $this->mockContactRepository();
         $contact = new Contact();
         /** @var Reservation $mockReservation */
-        $mockReservation = $this->getMock(
-            Reservation::class
-        );
+        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
         $contact->setReservation($mockReservation);
 
         $this->subject->expects($this->once())

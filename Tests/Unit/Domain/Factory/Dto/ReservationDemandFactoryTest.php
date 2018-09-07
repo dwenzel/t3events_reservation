@@ -50,9 +50,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     protected function mockObjectManager() {
-        $mockObjectManager = $this->getMock(
-            ObjectManager::class, ['get']
-        );
+        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
         $this->subject->injectObjectManager($mockObjectManager);
 
         return $mockObjectManager;
@@ -63,9 +62,7 @@ class ReservationDemandFactoryTest extends UnitTestCase
      * @test
      */
     public function createFromSettingsReturnsReservationDemand() {
-        $mockDemand = $this->getMock(
-            ReservationDemand::class
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -88,9 +85,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
             'period' => 'specific',
             'periodType' => $periodType
         ];
-        $mockDemand = $this->getMock(
-            ReservationDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -118,9 +114,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
             'periodStart' => $periodStart,
             'periodDuration' => $periodDuration
         ];
-        $mockDemand = $this->getMock(
-            ReservationDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -151,9 +146,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
             'periodStartDate' => $startDate
         ];
 
-        $mockDemand = $this->getMock(
-            ReservationDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -182,9 +176,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
             'periodEndDate' => $endDate
         ];
 
-        $mockDemand = $this->getMock(
-            ReservationDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -225,9 +218,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
         $settings = [
             $propertyName => $propertyValue
         ];
-        $mockDemand = $this->getMock(
-            ReservationDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')
@@ -272,9 +264,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
         $settings = [
             $propertyName => $settingsValue
         ];
-        $mockDemand = $this->getMock(
-            ReservationDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ReservationDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $mockObjectManager = $this->mockObjectManager();
         $mockObjectManager->expects($this->once())
             ->method('get')

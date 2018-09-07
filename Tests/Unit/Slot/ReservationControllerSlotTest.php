@@ -1,11 +1,12 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Slot;
 
 use CPSIT\T3eventsReservation\Controller\ReservationController;
 use CPSIT\T3eventsReservation\Slot\ReservationControllerSlot;
+use DWenzel\T3events\Session\Typo3Session;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use DWenzel\T3events\Session\Typo3Session;
 
 /***************************************************************
  *  Copyright notice
@@ -42,39 +43,10 @@ class ReservationControllerSlotTest extends UnitTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ObjectManager
-     */
-    protected function mockObjectManager()
-    {
-        /** @var ObjectManager $mockObjectManager */
-        $mockObjectManager = $this->getMock(
-            ObjectManager::class, ['get']
-        );
-        $this->subject->injectObjectManager($mockObjectManager);
-
-        return $mockObjectManager;
-    }
-
-    /**
-     * Mocks the session
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Typo3Session
-     */
-    protected function mockSession()
-    {
-        /** @var Typo3Session $mockSession */
-        $mockSession = $this->getMock(
-            Typo3Session::class, ['has', 'get', 'setNamspace'], [], '', false
-        );
-        $this->subject->injectSession($mockSession);
-
-        return $mockSession;
-    }
-
-    /**
      * @test
      */
-    public function objectManagerCanBeInjected() {
+    public function objectManagerCanBeInjected()
+    {
         $mockObjectManager = $this->mockObjectManager();
 
         $this->assertAttributeSame(
@@ -85,14 +57,27 @@ class ReservationControllerSlotTest extends UnitTestCase
     }
 
     /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|ObjectManager
+     */
+    protected function mockObjectManager()
+    {
+        /** @var ObjectManager $mockObjectManager */
+        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
+        $this->subject->injectObjectManager($mockObjectManager);
+
+        return $mockObjectManager;
+    }
+
+    /**
      * @test
      */
     public function sessionCanBeInjected()
     {
         /** @var Typo3Session $mockSession */
-        $mockSession = $this->getMock(
-            Typo3Session::class, ['dummy'], [], '', false
-        );
+        $mockSession = $this->getMockBuilder(Typo3Session::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['dummy'])->getMock();
         $this->subject->injectSession($mockSession);
 
         $this->assertAttributeSame(
@@ -108,9 +93,9 @@ class ReservationControllerSlotTest extends UnitTestCase
     public function injectSessionSetsSessionNamespace()
     {
         /** @var Typo3Session $mockSession */
-        $mockSession = $this->getMock(
-            Typo3Session::class, ['dummy'], [], '', false
-        );
+        $mockSession = $this->getMockBuilder(Typo3Session::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['dummy'])->getMock();
         $this->subject->injectSession($mockSession);
 
         $this->assertAttributeSame(
@@ -154,6 +139,22 @@ class ReservationControllerSlotTest extends UnitTestCase
             [$expectedResult],
             $this->subject->handleEntityNotFoundSlot($params)
         );
+    }
+
+    /**
+     * Mocks the session
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|Typo3Session
+     */
+    protected function mockSession()
+    {
+        /** @var Typo3Session $mockSession */
+        $mockSession = $this->getMockBuilder(Typo3Session::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['has', 'get', 'setNamespace'])->getMock();
+        $this->subject->injectSession($mockSession);
+
+        return $mockSession;
     }
 
     /**

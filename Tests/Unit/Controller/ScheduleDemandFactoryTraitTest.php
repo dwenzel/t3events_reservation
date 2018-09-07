@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Tests\Unit\Controller;
 
 use CPSIT\T3eventsReservation\Controller\ScheduleDemandFactoryTrait;
@@ -44,9 +45,8 @@ class ScheduleDemandFactoryTraitTest extends UnitTestCase
      */
     public function scheduleDemandFactoryCanBeInjected()
     {
-        $scheduleDemandFactory = $this->getMock(
-            ScheduleDemandFactory::class, [], [], '', false
-        );
+        $scheduleDemandFactory = $this->getMockBuilder(ScheduleDemandFactory::class)
+            ->disableOriginalConstructor()->getMock();
 
         $this->subject->injectScheduleDemandFactory($scheduleDemandFactory);
 

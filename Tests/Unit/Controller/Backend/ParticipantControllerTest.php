@@ -20,7 +20,8 @@ use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Domain\Model\Dto\ModuleData;
-use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use CPSIT\T3eventsReservation\Controller\Backend\ParticipantController;
 use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
@@ -39,7 +40,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class ParticipantControllerTest extends UnitTestCase
 {
     /**
-     * @var ParticipantController | \PHPUnit_Framework_MockObject_MockObject | AccessibleObjectInterface
+     * @var ParticipantController | MockObject | AccessibleMockObjectInterface
      */
     protected $subject;
 
@@ -89,20 +90,19 @@ class ParticipantControllerTest extends UnitTestCase
                 'translate'
             ], [], '', false
         );
-        $this->moduleData = $this->getMock(
-            ModuleData::class, ['getOverwriteDemand', 'setOverwriteDemand', 'setDemand']
-        );
-        $this->view = $this->getMock(ViewInterface::class);
-        $this->personRepository = $this->getMock(
-            PersonRepository::class, ['findDemanded'], [], '', false
-        );
+        $this->moduleData = $this->getMockBuilder(ModuleData::class)
+            ->setMethods(['getOverwriteDemand', 'setOverwriteDemand', 'setDemand'])->getMock();
+        $this->view = $this->getMockBuilder(ViewInterface::class)->getMockForAbstractClass();
+        $this->personRepository = $this->getMockBuilder(PersonRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findDemanded'])->getMock();
 
-        $this->objectManager = $this->getMock(ObjectManager::class, ['get']);
-        $this->demandFactory = $this->getMock(
-            ParticipantDemandFactory::class, ['dummy']
-        );
+        $this->objectManager = $this->getMockBuilder(ObjectManager::class)
+            ->setMethods(['get'])->getMock();
+        $this->demandFactory = $this->getMockBuilder(ParticipantDemandFactory::class)
+            ->setMethods(['dummy'])->getMock();
         $this->demandFactory->injectObjectManager($this->objectManager);
-        $this->subject->injectObjectManager($this->objectManager);
+        $this->subject->injectObjectManager($this->objectManager);-
         $this->subject->injectParticipantDemandFactory($this->demandFactory);
         $this->subject->injectPersonRepository($this->personRepository);
         $this->inject($this->subject, 'view', $this->view);
@@ -117,9 +117,8 @@ class ParticipantControllerTest extends UnitTestCase
     protected function mockObjectManagerCreatesDemand()
     {
         /** @var ParticipantDemand $mockDemand */
-        $mockDemand = $this->getMock(
-            ParticipantDemand::class, ['dummy']
-        );
+        $mockDemand = $this->getMockBuilder(ParticipantDemand::class)
+            ->setMethods(['dummy'])->getMock();
         $this->objectManager->expects($this->once())
             ->method('get')
             ->will($this->returnValue($mockDemand));
@@ -142,9 +141,7 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function listActionGetsParticipantDemandFromObjectManager()
     {
-        $mockParticipantDemand = $this->getMock(
-            ParticipantDemand::class
-        );
+$mockParticipantDemand = $this->getMockBuilder(ParticipantDemand::class)->getMock();
         $this->objectManager->expects($this->once())
             ->method('get')
             ->with(ParticipantDemand::class)
@@ -330,30 +327,6 @@ class ParticipantControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function listActionDoesNotSetEmptyPropertiesInDemand()
-    {
-        // we use an existing property from parent
-        $propertyName = 'uidList';
-        $settings = [
-            $propertyName => ''
-        ];
-        $this->inject($this->subject, 'settings', $settings);
-        $createdDemand = $this->mockObjectManagerCreatesDemand();
-        $createdDemand->expects($this->never())
-            ->method('setUidList');
-
-        $this->subject->listAction();
-
-        $this->assertAttributeSame(
-            null,
-            $propertyName,
-            $createdDemand
-        );
-    }
-
-    /**
-     * @test
-     */
     public function listActionGetsOverwriteDemandFromModuleData()
     {
         $this->mockObjectManagerCreatesDemand();
@@ -425,9 +398,7 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function downloadActionGetsParticipantDemandFromObjectManagerIfScheduleIsNull()
     {
-        $mockParticipantDemand = $this->getMock(
-            ParticipantDemand::class
-        );
+$mockParticipantDemand = $this->getMockBuilder(ParticipantDemand::class)->getMock();
         $this->objectManager->expects($this->once())
             ->method('get')
             ->with(ParticipantDemand::class)
@@ -476,9 +447,7 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function downloadActionAssignsVariablesToView()
     {
-        $mockResult = $this->getMock(
-            QueryResultInterface::class
-        );
+        $mockResult = $this->getMockBuilder(QueryResultInterface::class)->getMock();
         $this->mockObjectManagerCreatesDemand();
         $this->personRepository->expects($this->once())
             ->method('findDemanded')
@@ -506,9 +475,11 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function downloadActionGetsParticipantsFromSchedule()
     {
-        $mockSchedule = $this->getMock(Schedule::class, ['getParticipants']);
-        $mockObjectStorageWithParticipant = $this->getMock(ObjectStorage::class, ['rewind', 'current']);
-        $mockParticipant = $this->getMock(Person::class);
+        $mockSchedule = $this->getMockBuilder(Schedule::class)
+            ->setMethods(['getParticipants'])->getMock();
+        $mockObjectStorageWithParticipant = $this->getMockBuilder(ObjectStorage::class)
+            ->setMethods(['rewind', 'current'])->getMock();
+        $mockParticipant = $this->getMockBuilder(Person::class)->getMock();
 
         $mockSchedule->expects($this->once())
             ->method('getParticipants')

@@ -48,8 +48,9 @@ class BillingAddressRepositoryTest extends UnitTestCase {
 	 * @covers ::createConstraintsFromDemand
 	 */
 	public function createConstraintsFromDemandInitiallyReturnsEmptyArray() {
-		$demand = $this->getMock(DemandInterface::class);
-		$query = $this->getMock(QueryInterface::class, [], [], '', FALSE);
+		$demand = $this->getMockBuilder(DemandInterface::class)->getMock();
+		$query = $this->getMockBuilder(QueryInterface::class)
+            ->disableOriginalConstructor()->getMock();
 
 		$this->assertEquals(
 			[],
