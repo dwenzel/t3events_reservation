@@ -7,10 +7,10 @@ call_user_func(function() {
     $versionNumber = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
 
     if (TYPO3_MODE === 'BE') {
-        $pathParticipantIcon = 'EXT:t3events_reservation/Resources/Public/Icons/module_icon_participant.png';
+        $pathParticipantIcon = 'EXT:t3events_reservation/Resources/Public/Icons/module_icon_participant.svg';
         $pathReservationIcon = 'EXT:t3events_reservation/Resources/Public/Icons/list.svg';
         if ($versionNumber < 7000000) {
-            $pathReservationIcon = 'EXT:t3events_reservation/Resources/Public/Icons/module_icon_reservation.png';
+            $pathReservationIcon = 'EXT:t3events_reservation/Resources/Public/Icons/module_icon_reservation.svg';
         }
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
