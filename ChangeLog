@@ -1,3 +1,6 @@
+2018-11-09         [RELEASE] Release of t3events_reservation 0.14.0 (Dirk Wenzel)
+2018-10-11 a4a5bd7 [TASK] - new icons (Timo Gockel)
+
 2018-09-07         [RELEASE] Release of t3events_reservation 0.13.0 (Dirk Wenzel)
 2018-08-14 237f7b9 [TASK] clarify condition in PersonDemandFactory (Dirk Wenzel)
 2018-08-14 f39896b [TASK] use constants instead of strings in PersonDemandFactory (Dirk Wenzel)
