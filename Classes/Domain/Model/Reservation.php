@@ -21,6 +21,7 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  ***************************************************************/
 use CPSIT\T3eventsReservation\PriceableInterface;
 use DWenzel\T3events\Domain\Model\Company;
+use DWenzel\T3events\Domain\Model\EqualsTrait;
 use DWenzel\T3events\Domain\Model\Performance;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Reservation extends AbstractEntity
 {
+    use EqualsTrait;
 
     const ERROR_ACCESS_UNKNOWN = 'unknownAccessError';
 

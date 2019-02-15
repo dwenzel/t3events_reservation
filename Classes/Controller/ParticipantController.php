@@ -117,10 +117,10 @@ class ParticipantController
      */
     public function editAction(Person $participant, Reservation $reservation)
     {
-        if (!$reservation->getParticipants()->contains($participant)) {
+        if (!$reservation->equals($participant->getReservation())) {
             throw new InvalidSourceException(
                 'Can not edit participant uid ' . $participant->getUid()
-                . '. Participant not found in Reservation uid: ' . $participant->getReservation()->getUid() . '.',
+                . '. Participant not found in Reservation uid: ' . $reservation->getUid() . '.',
                 1459343264
             );
         }

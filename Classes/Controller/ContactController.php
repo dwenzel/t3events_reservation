@@ -105,7 +105,7 @@ class ContactController
      */
     public function editAction(Contact $contact, Reservation $reservation)
     {
-        if ($reservation->getContact() !== $contact) {
+        if (!$contact->equals($reservation->getContact())) {
             throw new InvalidSourceException(
                 'Can not edit contact uid ' . $contact->getUid()
                 . '. Contact not found in Reservation uid: ' . $reservation->getUid() . '.',
