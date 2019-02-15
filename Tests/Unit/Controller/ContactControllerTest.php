@@ -20,6 +20,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Contact;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Domain\Repository\ContactRepository;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 
@@ -136,8 +137,20 @@ class ContactControllerTest extends UnitTestCase
      */
     public function editActionThrowsExceptionIfReservationDoesNotContainContact()
     {
-        $contact = new Contact();
-        $reservation = new Reservation();
+        $contact = $this->getMockBuilder(Contact::class)
+            ->setMethods(['equals'])
+            ->getMock();
+        $contact->expects($this->once())
+            ->method('equals')
+            ->willReturn(false);
+        /** @var Reservation|MockObject $reservation */
+        $reservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getContact'])
+            ->getMock();
+        $reservation->expects($this->once())
+            ->method('getContact')
+            ->willReturn($contact);
+        $contact->setReservation($reservation);
 
         $this->subject->editAction($contact, $reservation);
     }

@@ -19,6 +19,7 @@ use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Schedule;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Domain\Repository\PerformanceRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -276,7 +277,11 @@ class ParticipantControllerTest extends UnitTestCase
      */
     public function editActionThrowsExceptionIfReservationDoesNotContainParticipant()
     {
-        $reservation = new Reservation();
+        /** @var Reservation|MockObject $reservation */
+        $reservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['equals'])
+            ->getMock();
+        $reservation->method('equals')->willReturn(false);
         $participant = $this->mockParticipant();
 
         $this->subject->editAction($participant, $reservation);
@@ -291,11 +296,12 @@ class ParticipantControllerTest extends UnitTestCase
         $participantStorage = new ObjectStorage();
         $participantStorage->attach($participant);
 
+        /** @var Reservation|MockObject $reservation */
         $reservation = $this->getMockBuilder(Reservation::class)
-            ->setMethods(['getParticipants'])->getMock();
+            ->setMethods(['equals'])->getMock();
         $reservation->expects($this->atLeastOnce())
-            ->method('getParticipants')
-            ->will($this->returnValue($participantStorage));
+            ->method('equals')
+            ->willReturn(true);
         $participant->setReservation($reservation);
 
         $view = $this->mockView();
