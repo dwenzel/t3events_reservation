@@ -34,6 +34,9 @@ use CPSIT\T3eventsReservation\Domain\Repository\PersonRepository;
 use CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository;
 use DWenzel\T3events\Domain\Repository\NotificationRepository;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Class CleanUpCommandControllerTest
@@ -48,6 +51,16 @@ class CleanUpCommandControllerTest extends UnitTestCase
     protected $subject;
 
     /**
+     * @var PersistenceManager|MockObject
+     */
+    protected $persistenceManager;
+
+    /**
+     * @var ReservationRepository|MockObject
+     */
+    protected $reservationRepository;
+
+    /**
      * set up the subject
      */
     public function setUp()
@@ -55,7 +68,12 @@ class CleanUpCommandControllerTest extends UnitTestCase
         $this->subject = $this->getAccessibleMock(
             CleanUpCommandController::class, ['dummy', 'outputLine']
         );
-    }
+        $this->persistenceManager = $this->getMockBuilder(PersistenceManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['persistAll'])
+            ->getMock();
+        $this->subject->injectPersistenceManager($this->persistenceManager);
+        }
 
     /**
      * @test
@@ -63,8 +81,13 @@ class CleanUpCommandControllerTest extends UnitTestCase
     public function deleteReservationGetsReservationDemandFromFactory()
     {
         $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
-
         $this->mockReservationRepository();
+        $mockResult = $this->getMockBuilder(QueryResultInterface::class)
+            ->getMockForAbstractClass();
+        $this->reservationRepository->expects($this->any())
+            ->method('findDemanded')
+            ->willReturn($mockResult);
+
         $settings = [
             'period' => 'pastOnly',
             'storagePages' => '',
@@ -84,13 +107,13 @@ class CleanUpCommandControllerTest extends UnitTestCase
      */
     protected function mockReservationRepository()
     {
-        $mockReservationRepository = $this->getMockBuilder(ReservationRepository::class)
+        $this->reservationRepository = $this->getMockBuilder(ReservationRepository::class)
             ->setMethods(['findDemanded', 'remove'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->subject->injectReservationRepository($mockReservationRepository);
+        $this->subject->injectReservationRepository($this->reservationRepository);
 
-        return $mockReservationRepository;
+        return $this->reservationRepository;
     }
 
     /**
@@ -113,6 +136,12 @@ class CleanUpCommandControllerTest extends UnitTestCase
         $mockReservationDemand = $this->getMockBuilder(ReservationDemand::class)->getMock();
 
         $this->mockReservationRepository();
+        $mockResult = $this->getMockBuilder(QueryResultInterface::class)
+            ->getMockForAbstractClass();
+        $this->reservationRepository->expects($this->any())
+            ->method('findDemanded')
+            ->willReturn($mockResult);
+
         $period = 'specific';
         $date = 'now';
         $storagePageIds = 'foo';
@@ -148,10 +177,11 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->will($this->returnValue($mockReservationDemand));
 
         $mockReservationRepository = $this->mockReservationRepository();
-
-        $mockReservationRepository->expects($this->once())
+        $mockResult = $this->getMockBuilder(QueryResultInterface::class)
+            ->getMockForAbstractClass();
+        $this->reservationRepository->expects($this->any())
             ->method('findDemanded')
-            ->with($mockReservationDemand);
+            ->willReturn($mockResult);
 
         $this->subject->deleteReservationsCommand();
     }
@@ -312,7 +342,10 @@ class CleanUpCommandControllerTest extends UnitTestCase
             ->method('createFromSettings')
             ->will($this->returnValue($mockReservationDemand));
 
-        $mockReservation = $this->getMockBuilder(Reservation::class)->getMock();
+        $mockReservation = $this->getMockBuilder(Reservation::class)
+            ->setMethods(['getParticipants'])
+            ->getMock();
+        $mockReservation->method('getParticipants')->willReturn([]);
         $reservationsResult = [$mockReservation];
 
         $mockReservationRepository = $this->mockReservationRepository();
