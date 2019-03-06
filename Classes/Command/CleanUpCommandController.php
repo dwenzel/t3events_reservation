@@ -10,6 +10,7 @@ use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface as SI;
 use DWenzel\T3events\Controller\NotificationRepositoryTrait;
+use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface as PCI;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -42,7 +43,7 @@ class CleanUpCommandController extends CommandController
 {
     use ReservationDemandFactoryTrait, ReservationRepositoryTrait,
         PersonRepositoryTrait, ContactRepositoryTrait,
-        BillingAddressRepositoryTrait, NotificationRepositoryTrait;
+        BillingAddressRepositoryTrait, NotificationRepositoryTrait, PersistenceManagerTrait;
 
     /**
      * Deletes reservations by date and all their related records.
@@ -123,6 +124,7 @@ class CleanUpCommandController extends CommandController
                 $entry[SI::REPOSITORY]->remove($object);
             }
         }
+        $this->persistenceManager->persistAll();
     }
 
     /**
