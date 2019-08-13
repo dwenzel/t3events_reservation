@@ -1,3 +1,8 @@
+2019-08-13         [RELEASE] Release of t3events_reservation 0.16.0 (Dirk Wenzel)
+2019-08-13 f6eddae [BUGFIX] namespace of ExtensionConfiguration call corrected (Dirk Wenzel)
+2019-08-13 a2ec728 [TASK] extension configuration refactored - require dwenzel/t3extension_configuration:~1.2 (Dirk Wenzel)
+2019-08-13 bf22a83 [TASK] backend module registration refactored - require dwenzel/t3extensiontools:~1.1 - require dwenzel/t3events:~1.1 - require php:^7.2 (Dirk Wenzel)
+
 2019-03-06         [RELEASE] Release of t3events_reservation 0.15.1 (Dirk Wenzel)
 2019-03-06 175548c [BUGFIX] fixed error in unit tests for CleanUpCommandController caused by insufficient mocking (Dirk Wenzel)
 2019-03-06 4c564ec [BUGFIX] fixed error in command controller where deletion of records was not persisted (Dirk Wenzel)
