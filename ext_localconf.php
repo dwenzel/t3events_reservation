@@ -2,28 +2,9 @@
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
+\CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::configurePlugins();
 
 call_user_func(function() {
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-        'CPSIT.t3events_reservation',
-        'Pi1',
-        [
-            'Reservation' => 'new,show,create,edit,checkout,confirm,delete,newParticipant,createParticipant,removeParticipant,'
-                . 'newBillingAddress, createBillingAddress, editBillingAddress, removeBillingAddress, update,error',
-            'Participant' => 'edit,update,error',
-            'Contact' => 'new,edit,create,update,remove,error',
-            'BillingAddress' => 'new,edit,create,update,remove,error',
-        ]
-        ,
-        // non-cacheable actions
-        [
-            'Reservation' => 'new,show,create,edit,checkout,confirm,delete,newParticipant,createParticipant,removeParticipant,'
-                . 'newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update,error',
-            'Participant' => 'edit,update,error',
-            'Contact' => 'new,edit,create,update,remove,error',
-            'BillingAddress' => 'new,edit,create,update,remove,error',
-        ]
-    );
 
     // Register command controllers for Scheduler and CLI
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CloseBooking'] =

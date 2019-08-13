@@ -21,6 +21,8 @@ namespace CPSIT\T3eventsReservation\Configuration;
 
 use CPSIT\T3eventsReservation\Configuration\Module\Bookings;
 use CPSIT\T3eventsReservation\Configuration\Module\Participant;
+use CPSIT\T3eventsReservation\Configuration\Plugin\Combined;
+use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 
 class ExtensionConfiguration extends \DWenzel\T3extensionTools\Configuration\ExtensionConfiguration
 {
@@ -30,5 +32,22 @@ class ExtensionConfiguration extends \DWenzel\T3extensionTools\Configuration\Ext
     protected const MODULES_TO_REGISTER = [
         Bookings::class,
         Participant::class
+    ];
+
+    protected const PLUGINS_TO_REGISTER = [
+        Combined::class
+    ];
+
+    public const TABLES_ALLOWED_ON_STANDARD_PAGES = [
+        'tx_t3eventsreservation_domain_model_reservation'
+    ];
+
+    public const LOCALIZED_TABLE_DESCRIPTION = [
+        'tx_t3eventsreservation_domain_model_reservation' => 'EXT:t3events_reservation/Resources/Private/Language/locallang_csh_tx_t3eventsreservation_domain_model_reservation.xlf'
+    ];
+
+    public const BITMAP_ICONS_TO_REGISTER = [
+        'download-excel-white' => 'EXT:t3events_reservation/Resources/Public/Icons/icon_excel_white.png',
+        'download-excel-blue' => 'EXT:t3events_reservation/Resources/Public/Icons/icon_excel_blue.png',
     ];
 }
