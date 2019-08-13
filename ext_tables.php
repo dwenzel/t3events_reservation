@@ -6,5 +6,4 @@ if (!defined('TYPO3_MODE')) {
 if (TYPO3_MODE === 'BE') {
     \CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::registerAndConfigureModules();
 }
-
-\CPSIT\IhkofEvents\Configuration\ExtensionConfiguration::configureTables();
+\CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::configureTables();
