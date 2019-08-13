@@ -18,12 +18,13 @@
     }
   ],
   "require": {
-    "typo3/cms-core": ">=8.7.0,<=8.99.99",
-    "dwenzel/t3events": ">=0.31.0"
+    "php": "^7.2",
+    "typo3/cms-core": ">=8.7.0 || >=9.5.0",
+    "dwenzel/t3extension-tools": "~1.1",
+    "dwenzel/t3events": "~1.1"
   },
   "require-dev": {
-    "dwenzel/t3events": "dev-develop as 0.40.0",
-    "nimut/testing-framework": "^3.0"
+    "nimut/testing-framework": "^4.0"
   },
   "autoload": {
     "psr-4": {
@@ -34,10 +35,6 @@
     "psr-4": {
       "CPSIT\\T3eventsReservation\\Tests\\": "Tests"
     }
-  },
-  "replace": {
-    "t3events_reservation": "self.version",
-    "typo3-ter/t3events_reservation": "self.version"
   },
   "config": {
     "vendor-dir": ".Build/vendor",
