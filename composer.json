@@ -19,12 +19,13 @@
   ],
   "require": {
     "php": "^7.2",
-    "typo3/cms-core": ">=8.7.0 || >=9.5.0",
-    "dwenzel/t3extension-tools": "~1.2",
+    "typo3/cms-core": ">=8.7.0 || >=9.5.0 || >=10.4.0",
+    "dwenzel/t3extension-tools": "~1.2 || ~1.4",
     "dwenzel/t3events": "~1.1"
   },
   "require-dev": {
-    "nimut/testing-framework": "^4.0"
+    "nimut/testing-framework": "^4.0",
+    "dwenzel/t3events": "dev-feature/version10compatible as 1.1.0"
   },
   "autoload": {
     "psr-4": {
@@ -49,6 +50,7 @@
   },
   "extra": {
     "typo3/cms": {
+      "extension-key": "t3events_reservation",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/Web"
     }
