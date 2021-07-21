@@ -238,13 +238,14 @@ trait ReservationAccessTrait
         $this->clearCacheOnError();
 
         if ($this->arguments instanceof Arguments) {
-            $validationResult = $this->arguments->getValidationResults();
+
+            $validationResult = $this->arguments->validate();
             if ($validationResult->hasErrors()) {
                 $referringRequest = $this->request->getReferringRequest();
                 if ($referringRequest !== null) {
                     $originalRequest = clone $this->request;
                     $this->request->setOriginalRequest($originalRequest);
-                    $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+                    $this->request->setOriginalRequestMappingResults($this->arguments->validate());
                     $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(),
                         $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
                 }
