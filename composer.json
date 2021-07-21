@@ -20,7 +20,7 @@
   "require": {
     "php": "^7.2",
     "typo3/cms-core": ">=8.7.0 || >=9.5.0 || >=10.4.0",
-    "dwenzel/t3extension-tools": "~1.2 || ~1.4",
+    "dwenzel/t3extension-tools": "dev-feature/version10compatible",
     "dwenzel/t3events": "dev-feature/version10compatible"
   },
   "require-dev": {
