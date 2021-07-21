@@ -58,7 +58,7 @@ class ContactController
      *
      * @param Contact|null $contact
      * @param Reservation $reservation
-     * @ignorevalidation $contact
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function newAction(Contact $contact = null, Reservation $reservation)
@@ -100,8 +100,8 @@ class ContactController
      * @param Contact $contact
      * @param Reservation $reservation
      * @throws InvalidSourceException
-     * @ignorevalidation $contact
-     * @ignorevalidation $reservation
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("reservation")
      */
     public function editAction(Contact $contact, Reservation $reservation)
     {
@@ -120,7 +120,7 @@ class ContactController
      * Updates a contact
      *
      * @param Contact $contact
-     * @validate $contact \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="contact", validator="CPSIT\T3eventsReservation\Domain\Validator\ContactValidator")
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */

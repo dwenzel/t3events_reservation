@@ -59,7 +59,7 @@ class ParticipantController
      *
      * @param Reservation $reservation
      * @param Person|null $participant
-     * @ignorevalidation $participant
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("participant")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function newAction(Reservation $reservation, Person $participant = null)
@@ -134,7 +134,7 @@ class ParticipantController
      * @param Person $participant
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
-     * @validate $participant \CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="participant", validator="CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator")
      */
     public function updateAction(Person $participant)
     {

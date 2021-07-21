@@ -70,9 +70,13 @@ class ReservationController
      * Lesson Repository
      *
      * @var \DWenzel\T3events\Domain\Repository\PerformanceRepository
-     * @inject
      */
     protected $lessonRepository = null;
+
+    public function injectLessonRepository(\DWenzel\T3events\Domain\Repository\PerformanceRepository $lessonRepository)
+    {
+        $this->lessonRepository = $lessonRepository;
+    }
 
     /**
      * action show
@@ -91,7 +95,7 @@ class ReservationController
      *
      * @param BookableInterface|Performance $lesson
      * @param Reservation $newReservation
-     * @ignorevalidation $newReservation
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newReservation")
      * @throws NoSuchArgumentException
      */
     public function newAction(Performance $lesson = null, Reservation $newReservation = null)
@@ -206,7 +210,7 @@ class ReservationController
      * @return void
      * @throws InvalidSourceException
      * @throws NoSuchArgumentException
-     * @ignorevalidation $newParticipant
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newParticipant")
      */
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null)
     {
@@ -434,7 +438,7 @@ class ReservationController
      *
      * @param Reservation $reservation
      * @param BillingAddress|null $newBillingAddress
-     * @ignorevalidation $newBillingAddress
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newBillingAddress")
      */
     public function newBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress = null)
     {

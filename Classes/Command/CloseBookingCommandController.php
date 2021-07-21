@@ -61,9 +61,16 @@ class CloseBookingCommandController extends CommandController
      * View
      *
      * @var \TYPO3\CMS\Fluid\View\StandaloneView
-     * @inject
      */
     protected $view;
+
+    /**
+     * @param \TYPO3\CMS\Fluid\View\StandaloneView $view
+     */
+    public function injectView(\TYPO3\CMS\Fluid\View\StandaloneView $view)
+    {
+        $this->view = $view;
+    }
 
     /**
      * Cleanup incomplete reservations.

@@ -75,7 +75,7 @@ class Reservation extends AbstractEntity
      * Responsible contact person for reservation.
      *
      * @var \CPSIT\T3eventsReservation\Domain\Model\Contact
-     * @validate \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
+     * @TYPO3\CMS\Extbase\Annotation\Validate("\CPSIT\T3eventsReservation\Domain\Validator\ContactValidator")
      */
     protected $contact = null;
 
@@ -118,7 +118,7 @@ class Reservation extends AbstractEntity
      * Notifications
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $notifications;
 
@@ -126,7 +126,7 @@ class Reservation extends AbstractEntity
      * participants
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $participants = null;
 
@@ -134,7 +134,7 @@ class Reservation extends AbstractEntity
      * Privacy statement
      *
      * @var boolean
-     * @validate Boolean(is=true)
+     * @TYPO3\CMS\Extbase\Annotation\Validate("Boolean", options={"is": true})
      */
     protected $privacyStatementAccepted = false;
 

@@ -56,7 +56,7 @@ class BillingAddressController
      *
      * @param Reservation $reservation
      * @param BillingAddress|null $billingAddress
-     * @ignorevalidation $billingAddress
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("billingAddress")
      */
     public function newAction(Reservation $reservation, BillingAddress $billingAddress = null)
     {

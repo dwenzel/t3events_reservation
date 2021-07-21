@@ -100,7 +100,7 @@ class ParticipantController extends AbstractBackendController
      * Download action
      *
      * @param \CPSIT\T3eventsReservation\Domain\Model\Schedule $schedule
-     * @ignorevalidation $schedule
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("schedule")
      * @param string $ext File extension for download
      * @return string
      * @throws \DWenzel\T3events\InvalidFileTypeException
