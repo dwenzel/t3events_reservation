@@ -25,7 +25,7 @@ use CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration as EC;
 
 abstract class DefaultRegistration implements SI
 {
-    protected static $vendorExtensionName = EC::VENDOR . '.' . EC::EXTENSION_KEY;
+    protected static $extensionName = EC::EXTENSION_KEY;
     protected static $mainModuleName = SI::MAIN_MODULE_EVENTS;
     protected static $position = 'bottom';
 }
