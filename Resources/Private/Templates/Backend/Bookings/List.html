@@ -62,7 +62,12 @@
                             <f:if condition="{reservation.status} <= 2">
                                 <a class="action-open"
                                    title="Edit"
-                                   href="{ts:be.editRecord(parameters:'edit[tx_t3eventsreservation_domain_model_reservation][{reservation.uid}]=edit&moduleName=Events_T3eventsReservationM1')}">{course.headline}</a>
+                                   href="{ts:be.editUri(
+                                            table: 'tx_t3events_domain_model_reservation',
+                                            record: reservation.uid,
+                                            module: 'T3eventsEvents_T3eventsReservationM1')}">
+                                    {course.headline}
+                                </a>
                             </f:if>
                         </td>
                     </tr>
