@@ -6,3 +6,7 @@ services:
 
   CPSIT\T3eventsReservation\:
     resource: '../Classes/*'
+
+  DWenzel\T3events\Domain\Repository\TaskRepositoryInterface: '@CPSIT\T3eventsReservation\Domain\Repository\TaskRepository'
+
+  DWenzel\T3events\Domain\Model\Task: '@CPSIT\T3eventsReservation\Domain\Model\Task'
