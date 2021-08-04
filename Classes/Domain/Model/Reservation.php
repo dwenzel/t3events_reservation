@@ -103,7 +103,7 @@ class Reservation extends AbstractEntity
     /**
      * lesson
      *
-     * @var \DWenzel\T3events\Domain\Model\Performance|Schedule
+     * @var \DWenzel\T3events\Domain\Model\Performance
      */
     protected $lesson = null;
 
