@@ -67,6 +67,11 @@ class ReservationController
     const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
 
     /**
+     * @const Extension key
+     */
+    const EXTENSION_KEY = 't3events_reservation';
+
+    /**
      * Lesson Repository
      *
      * @var \DWenzel\T3events\Domain\Repository\PerformanceRepository
