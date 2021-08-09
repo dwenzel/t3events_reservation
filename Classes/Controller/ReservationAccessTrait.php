@@ -77,6 +77,14 @@ trait ReservationAccessTrait
     abstract protected function clearCacheOnError();
 
     /**
+     * @param Typo3Session $session
+     */
+    public function injectSession(Typo3Session $session)
+    {
+        $this->session = $session;
+    }
+
+    /**
      * @return int|false
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
@@ -223,7 +231,7 @@ trait ReservationAccessTrait
      */
     public function initializeAction()
     {
-        $this->session = $this->objectManager->get(Typo3Session::class, ReservationController::SESSION_NAME_SPACE);
+        $this->session->setNamespace(ReservationController::SESSION_NAME_SPACE);
 
         if (!$this->isAccessAllowed()) {
             $this->denyAccess();
