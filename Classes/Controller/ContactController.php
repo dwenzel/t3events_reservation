@@ -39,9 +39,13 @@ class ContactController
     implements AccessControlInterface, SignalInterface
 {
     use ContactRepositoryTrait, DemandTrait,
-        EntityNotFoundHandlerTrait, ReservationAccessTrait,
+        EntityNotFoundHandlerTrait,
         RoutingTrait, SearchTrait, SettingsUtilityTrait,
         TranslateTrait;
+
+    use ReservationAccessTrait {
+        isAccessAllowed as traitIsAccessAllowed;
+    }
 
     /**
      * @const parent controller
@@ -52,6 +56,19 @@ class ContactController
      * @const Extension key
      */
     const EXTENSION_KEY = 't3events_reservation';
+
+    public function isAccessAllowed()
+    {
+        if ($this->request->hasArgument('contact')) {
+            $contact = $this->request->getArgument('contact');
+
+            if (!empty($contact['reservation'])) {
+                $this->request->setArgument('reservation', $contact['reservation']);
+            }
+        }
+
+        return $this->traitIsAccessAllowed();
+    }
 
     /**
      * New contact
