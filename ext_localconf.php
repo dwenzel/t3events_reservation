@@ -4,8 +4,10 @@ if (!defined('TYPO3_MODE')) {
 }
 \CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::configurePlugins();
 
-call_user_func(function() {
+/** @noinspection PhpUnhandledExceptionInspection */
+\CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::registerIcons();
 
+call_user_func(function() {
 
     // Add default routing
     $routeLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DWenzel\T3events\Service\RouteLoader::class);
