@@ -6,13 +6,6 @@ if (!defined('TYPO3_MODE')) {
 
 call_user_func(function() {
 
-    // Register command controllers for Scheduler and CLI
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CloseBooking'] =
-        \CPSIT\T3eventsReservation\Command\CloseBookingCommandController::class;
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CleanUp'] =
-        \CPSIT\T3eventsReservation\Command\CleanUpCommandController::class;
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_Task'] =
-        \CPSIT\T3eventsReservation\Command\TaskCommandController::class;
 
     // Add default routing
     $routeLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DWenzel\T3events\Service\RouteLoader::class);

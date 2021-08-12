@@ -12,8 +12,14 @@ use CPSIT\T3eventsReservation\Utility\SettingsInterface as SI;
 use DWenzel\T3events\Controller\NotificationRepositoryTrait;
 use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface as PCI;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use Symfony\Component\Console\Input\InputOption;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /***************************************************************
  *  Copyright notice
@@ -34,16 +40,93 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  ***************************************************************/
 
 /**
- * Class CleanUpCommandController
+ * Class CleanUpCommand
  * Provides cleanup commands for scheduler and command line interface
  *
  * @package CPSIT\T3eventsReservation\Command
  */
-class CleanUpCommandController extends CommandController
+class CleanUpCommand extends Command
 {
     use ReservationDemandFactoryTrait, ReservationRepositoryTrait,
         PersonRepositoryTrait, ContactRepositoryTrait,
         BillingAddressRepositoryTrait, NotificationRepositoryTrait, PersistenceManagerTrait;
+
+    /**
+     * @var SymfonyStyle
+     */
+    protected $io;
+
+    /**
+     * Configure the command by defining the name, options and arguments
+     */
+    protected function configure()
+    {
+        $this
+            ->addArgument(
+                'storagePageIds',
+                InputArgument::REQUIRED,
+                'Comma separated list of storage page ids. (Required)'
+            )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'The reservations will be deleted. If not present it will be executed in dryRun mode.',
+            )
+            ->addOption(
+                'period',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'A period name. Allowed: pastOnly, futureOnly, specific, all',
+                PCI::PERIOD_PAST
+            )
+            ->addOption(
+                'date',
+                'd',
+                InputOption::VALUE_REQUIRED,
+                'A string understood by \DateTime constructor.',
+                ''
+            )
+            ->addOption(
+                'limit',
+                'l',
+                InputOption::VALUE_REQUIRED,
+                'Maximum number of reservations to remove.',
+                1000
+            )
+        ;
+    }
+
+    /**
+     * Executes the command for showing sys_log entries
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int error code
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+
+        $storagePageIds = $input->getArgument('storagePageIds');
+
+        $dryRun = !(bool) $input->getOption('force');
+        $period = $input->getOption('period');
+        $date = $input->getOption('date');
+        $limit = $input->getOption('limit');
+
+        $this->outputLine('Start command with arguments:', true);
+        $this->outputLine('Storage page ids: ' . $storagePageIds);
+        $this->outputLine('DryRun: ' . ($dryRun ? 'yes' : 'no'));
+        $this->outputLine('Period: ' . $period);
+        $this->outputLine('Date: ' . $date);
+        $this->outputLine('Limit: ' . $limit);
+
+        $this->outputLine('Command output:', true);
+        $this->deleteReservationsCommand($dryRun, $period, $date, $storagePageIds, $limit);
+
+        return Command::SUCCESS;
+    }
 
     /**
      * Deletes reservations by date and all their related records.
@@ -55,11 +138,11 @@ class CleanUpCommandController extends CommandController
      * @param int $limit Maximum number of reservations to remove.
      */
     public function deleteReservationsCommand(
-        $dryRun = true,
-        $period = PCI::PERIOD_PAST,
-        $date = '',
-        $storagePageIds = '',
-        $limit = 1000
+        bool $dryRun = true,
+        string $period = PCI::PERIOD_PAST,
+        string $date = '',
+        string $storagePageIds = '',
+        int $limit = 1000
     )
     {
         $settings = [
@@ -107,7 +190,7 @@ class CleanUpCommandController extends CommandController
             ]
         ];
 
-        $this->outputLine('Reservations contain:');
+        $this->outputLine('Reservations contain:', true);
         foreach ($objectsToRemove as $key => $entry) {
             $this->outputLine(' ' . count($entry[SI::OBJECTS]) . ' ' . $key);
         }
@@ -116,7 +199,7 @@ class CleanUpCommandController extends CommandController
             return;
         }
 
-        $this->outputLine('Removing:');
+        $this->outputLine('Removing:', true);
         foreach ($objectsToRemove as $key => $entry) {
             $objects = $entry[SI::OBJECTS];
             $this->outputLine(' ' . count($objects) . ' ' . $key);
@@ -211,5 +294,14 @@ class CleanUpCommandController extends CommandController
         }
 
         return $notificationsToRemove;
+    }
+
+    protected function outputLine(string $msg, bool $isSection = false)
+    {
+        if ($isSection) {
+            $this->io->section($msg);
+        } else {
+            $this->io->writeln($msg);
+        }
     }
 }

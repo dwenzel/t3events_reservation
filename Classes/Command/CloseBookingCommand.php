@@ -33,29 +33,40 @@ use DWenzel\T3events\Configuration\ConfigurationManagerTrait;
 use DWenzel\T3events\Controller\NotificationServiceTrait;
 use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
+use Symfony\Component\Console\Input\InputOption;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
 /**
- * Class CloseBookingCommandController
+ * Class CloseBookingCommand
  *
  * FIXME This class requires the base extension t3events and t3events_course
  * (which is not and should not be a requirement of this package)
  */
-class CloseBookingCommandController extends CommandController
+class CloseBookingCommand extends Command
 {
     use ConfigurationManagerTrait, NotificationServiceTrait, PersistenceManagerTrait,
         PersonRepositoryTrait, ReservationRepositoryTrait, ScheduleRepositoryTrait;
 
     const TEMPLATE_EMAIL = 'Email';
     const TEMPLATE_DOWNLOAD = 'Download';
-    const FOLDER_CLOSE_BOOKING = 'CloseBooking';
-    const FOLDER_CLEANUP_INCOMPLETE = 'CleanupIncomplete';
-    const FOLDER_REPORT_EXPIRED = 'ReportExpired';
+    const FOLDER_CLOSE_BOOKING = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/CloseBooking';
+    const FOLDER_CLEANUP_INCOMPLETE = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/CleanupIncomplete';
+    const FOLDER_REPORT_EXPIRED = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/ReportExpired';
+
+    const COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION = 'cleanupIncompleteReservations';
+    const COMMAND_CLOSE_BOOKING = 'closeBooking';
+    const COMMAND_REPORT_EXPIRED = 'reportExpired';
 
     /**
      * View
@@ -65,11 +76,127 @@ class CloseBookingCommandController extends CommandController
     protected $view;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * @var string
+     */
+    protected $storagePageIds;
+
+    /**
      * @param \TYPO3\CMS\Fluid\View\StandaloneView $view
      */
     public function injectView(\TYPO3\CMS\Fluid\View\StandaloneView $view)
     {
         $this->view = $view;
+    }
+
+    public function injectObjectManager(ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Configure the command by defining the name, options and arguments
+     */
+    protected function configure()
+    {
+        $this
+            ->addArgument(
+                'commandName',
+                InputArgument::REQUIRED,
+                'Command name to be executed. Values are: ' . implode(', ', [
+                    self::COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION,
+                    self::COMMAND_CLOSE_BOOKING,
+                    self::COMMAND_REPORT_EXPIRED,
+                ])
+            )
+            ->addArgument(
+                'storagePageIds',
+                InputArgument::REQUIRED,
+                'Comma separated list of storage page ids. (Required)'
+            )
+            ->addOption(
+                'age',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Minimum age of reservations'
+            )
+            ->addOption(
+                'email',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Email address for notification'
+            )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'If force is not set, nothing will be changed.'
+            )
+        ;
+    }
+
+    /**
+     * Executes the command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int error code
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $command = $input->getArgument('commandName');
+        $this->storagePageIds = $input->getArgument('storagePageIds');
+        $age = $input->getOption('age');
+        $email = $input->getOption('email');
+        $dryRun = !(bool) $input->getOption('force');
+
+        $io->section(sprintf('Executing command "%s" with arguments:', $command));
+        $io->writeln('Storage page ids: ' . $this->storagePageIds);
+        $io->writeln('Email: ' . $email);
+        $io->writeln('Dry run: ' . ($dryRun ? 'yes' : 'no'));
+
+        switch ($command) {
+            case self::COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION:
+                if (empty($age)) {
+                    $io->error('Options --age is required for this command.');
+                    return Command::FAILURE;
+                }
+
+                $io->writeln(sprintf('Age: %d seconds', $age));
+
+                $this->cleanupIncompleteReservationsCommand($age, $email, $dryRun);
+            break;
+            case self::COMMAND_CLOSE_BOOKING:
+
+                $this->closeBookingCommand($email, $dryRun);
+            break;
+            case self::COMMAND_REPORT_EXPIRED:
+                if (empty($email)) {
+                    $io->error('Option --email is required for this command.');
+                    return Command::FAILURE;
+                }
+
+                $io->writeln('Email: ' . $email);
+
+                $this->reportExpiredCommand($email);
+            break;
+            default:
+                $io->error('Valid command names are: ' . implode(', ', [
+                    self::COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION,
+                    self::COMMAND_CLOSE_BOOKING
+                ]));
+                return Command::FAILURE;
+        }
+
+        $io->info('Done.');
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -170,6 +297,7 @@ class CloseBookingCommandController extends CommandController
         $expiredStatus = [Reservation::STATUS_NEW, Reservation::STATUS_DRAFT];
         $reservationDemand->setStatus(implode(',', $expiredStatus));
         $reservationDemand->setMinAge($age);
+        $reservationDemand->setStoragePages($this->storagePageIds);
 
         return $reservationDemand;
     }
@@ -263,6 +391,7 @@ class CloseBookingCommandController extends CommandController
         $lessonDemand = $this->objectManager->get(ScheduleDemand::class);
         $lessonDemand->setPeriod(PeriodConstraintRepositoryInterface::PERIOD_PAST);
         $lessonDemand->setDate(new \DateTime($date));
+        $lessonDemand->setStoragePages($this->storagePageIds);
 
         return $lessonDemand;
     }
@@ -307,6 +436,7 @@ class CloseBookingCommandController extends CommandController
         $reservationDemand->setStatus(Reservation::STATUS_SUBMITTED);
         $reservationDemand->setLessonDate(new \DateTime($date));
         $reservationDemand->setPeriod(PeriodConstraintRepositoryInterface::PERIOD_PAST);
+        $reservationDemand->setStoragePages($this->storagePageIds);
 
         return $reservationDemand;
     }
@@ -334,7 +464,7 @@ class CloseBookingCommandController extends CommandController
                     'Abgelaufene Termine und Reservierungen in ihrem Veranstaltungssystem',
                     static::TEMPLATE_EMAIL,
                     NULL,
-                    'ReportExpired', [
+                    static::FOLDER_REPORT_EXPIRED, [
                     SettingsInterface::LESSONS => $lessons,
                     SettingsInterface::RESERVATIONS => $reservations
                 ], [
@@ -344,7 +474,7 @@ class CloseBookingCommandController extends CommandController
                                 SettingsInterface::RESERVATIONS => $reservations
                             ],
                             'templateName' => static::TEMPLATE_DOWNLOAD,
-                            'folderName' => static::FOLDER_CLOSE_BOOKING,
+                            'folderName' => static::FOLDER_REPORT_EXPIRED,
                             'fileName' => 'anhang.xls',
                             'mimeType' => 'application/vnd.ms-excel'
                         ]
@@ -383,6 +513,7 @@ class CloseBookingCommandController extends CommandController
         /** @var ScheduleDemand $lessonDemand */
         $lessonDemand = $this->objectManager->get(ScheduleDemand::class);
         $lessonDemand->setDeadlineBefore(new \DateTime($date));
+        $lessonDemand->setStoragePages($this->storagePageIds);
 
         return $lessonDemand;
     }
@@ -402,6 +533,7 @@ class CloseBookingCommandController extends CommandController
         $reservationDemand = $this->objectManager->get(ReservationDemand::class);
         $reservationDemand->setStatus(Reservation::STATUS_SUBMITTED);
         $reservationDemand->setLessonDeadline(new \DateTime($date));
+        $reservationDemand->setStoragePages($this->storagePageIds);
 
         return $reservationDemand;
     }
