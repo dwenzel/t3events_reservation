@@ -1,6 +1,8 @@
 <?php
 namespace CPSIT\T3eventsReservation\Domain\Model;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+
 /***************************************************************
  *  Copyright notice
  *  (c) 2014 Dirk Wenzel <wenzel@cps-it.de>, CPS IT
@@ -53,6 +55,10 @@ trait ReservationPersonTrait {
 	 * @return \CPSIT\T3eventsReservation\Domain\Model\Reservation $reservation
 	 */
 	public function getReservation() {
+        if ($this->reservation instanceof LazyLoadingProxy) {
+            $this->reservation->_loadRealInstance();
+        }
+
 		return $this->reservation;
 	}
 

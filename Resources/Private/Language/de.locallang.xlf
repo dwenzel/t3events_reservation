@@ -177,6 +177,10 @@
 			<source>Please finish or delete your current reservation before creating a new one.</source>
 			<target>Bitte schließen Sie Ihre aktuelle Reservierung ab oder löschen sie, bevor Sie eine neue Reservierung erstellen!</target>
 		</trans-unit>
+		<trans-unit id="error.contact.reservation.contact.1410958066" approved="yes" xml:space="preserve">
+            <source>Please enter an email adress of the contact person!</source>
+            <target>Bitte geben Sie die Email-Adresse des Ansprechpartners an!</target>
+        </trans-unit>
 		<trans-unit id="error.reservation.checkout.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to checkout this reservation.</source>
 			<target>Sie dürfen diese Registrierung nicht abschließen.</target>
