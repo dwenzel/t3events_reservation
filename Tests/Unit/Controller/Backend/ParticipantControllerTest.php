@@ -230,10 +230,8 @@ $mockParticipantDemand = $this->getMockBuilder(ParticipantDemand::class)->getMoc
      * @test
      * @dataProvider settablePropertiesDataProvider
      * @param string $propertyName
-     * @param string|int $settingsValue
-     * @param mixed $expectedValue
      */
-    public function listActionGetsDemandFromSettingsWithSettableProperties($propertyName, $settingsValue, $expectedValue)
+    public function listActionGetsDemandFromSettingsWithSettableProperties($propertyName, string|int $settingsValue, mixed $expectedValue)
     {
         $settings = [
             $propertyName => $settingsValue
@@ -266,10 +264,8 @@ $mockParticipantDemand = $this->getMockBuilder(ParticipantDemand::class)->getMoc
      * @dataProvider mappedPropertiesDataProvider
      * @param string $settingsKey
      * @param string $propertyName
-     * @param string|int $settingsValue
-     * @param mixed $expectedValue
      */
-    public function createFromSettingsSetsMappedProperties($settingsKey, $propertyName, $settingsValue, $expectedValue)
+    public function createFromSettingsSetsMappedProperties($settingsKey, $propertyName, string|int $settingsValue, mixed $expectedValue)
     {
         $settings = [
             $settingsKey => $settingsValue
@@ -305,10 +301,8 @@ $mockParticipantDemand = $this->getMockBuilder(ParticipantDemand::class)->getMoc
      * @dataProvider skippedPropertiesDataProvider
      * @param string $settingsKey
      * @param string $propertyName
-     * @param string|int|null|bool $settingsValue
-     * @param mixed $expectedValue
      */
-    public function createFromSettingsSkipsCompositeProperties($settingsKey, $propertyName, $settingsValue, $expectedValue)
+    public function createFromSettingsSkipsCompositeProperties($settingsKey, $propertyName, string|int|null|bool $settingsValue, mixed $expectedValue)
     {
         $settings = [
             $settingsKey => $settingsValue

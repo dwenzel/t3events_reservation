@@ -93,12 +93,10 @@ class ScheduleDemandFactoryTest extends UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider settablePropertiesDataProvider
-	 * @param string $propertyName
-	 * @param string|int $settingsValue
-	 * @param mixed $expectedValue
-	 */
-	public function createFromSettingsSetsSettableProperties($propertyName, $settingsValue, $expectedValue) {
+  * @dataProvider settablePropertiesDataProvider
+  * @param string $propertyName
+  */
+ public function createFromSettingsSetsSettableProperties($propertyName, string|int $settingsValue, mixed $expectedValue) {
 		$settings = [
 			$propertyName => $settingsValue
 		];

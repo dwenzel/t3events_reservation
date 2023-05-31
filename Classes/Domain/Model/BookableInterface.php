@@ -29,12 +29,11 @@ interface BookableInterface {
 	public function getDeadline();
 
 	/**
-	 * Adds a Participant
-	 *
-	 * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
-	 * @return void
-	 */
-	public function addParticipant(Person $participant);
+  * Adds a Participant
+  *
+  * @return void
+  */
+ public function addParticipant(Person $participant);
 
 	/**
 	 * Returns the places

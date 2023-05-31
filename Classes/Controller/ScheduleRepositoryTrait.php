@@ -29,8 +29,6 @@ trait ScheduleRepositoryTrait
 
     /**
      * Injects the reservation repository
-     *
-     * @param \CPSIT\T3eventsReservation\Domain\Repository\ScheduleRepository $scheduleRepository
      */
     public function injectScheduleRepository(ScheduleRepository $scheduleRepository)
     {

@@ -59,17 +59,17 @@ class ReservationController
     /**
      * @const Session namespace for reservations
      */
-    const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
+    final public const SESSION_NAME_SPACE = 'tx_t3eventsreservation';
 
     /**
      * @const Identifier for reservation in session
      */
-    const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
+    final public const SESSION_IDENTIFIER_RESERVATION = 'reservationUid';
 
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY = 't3events_reservation';
+    final public const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * Lesson Repository
@@ -86,7 +86,6 @@ class ReservationController
     /**
      * action show
      *
-     * @param Reservation $reservation
      * @return void
      */
     public function showAction(Reservation $reservation)
@@ -98,12 +97,10 @@ class ReservationController
     /**
      * action new
      *
-     * @param BookableInterface|Performance $lesson
-     * @param Reservation $newReservation
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newReservation")
      * @throws NoSuchArgumentException
      */
-    public function newAction(Performance $lesson = null, Reservation $newReservation = null)
+    public function newAction(\CPSIT\T3eventsReservation\Domain\Model\BookableInterface|\DWenzel\T3events\Domain\Model\Performance $lesson = null, Reservation $newReservation = null)
     {
         if (is_null($lesson)) {
             $error = 'message.selectLesson';
@@ -129,7 +126,6 @@ class ReservationController
     /**
      * action create
      *
-     * @param Reservation $newReservation
      * @return void
      * @throws IllegalObjectTypeException
      * @throws InvalidSourceException
@@ -163,7 +159,6 @@ class ReservationController
     /**
      * action edit
      *
-     * @param Reservation $reservation
      * @return void
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
@@ -183,7 +178,6 @@ class ReservationController
     /**
      * action delete
      *
-     * @param Reservation $reservation
      * @return void
      * @throws IllegalObjectTypeException
      */
@@ -210,8 +204,6 @@ class ReservationController
     /**
      * action newParticipant
      *
-     * @param Reservation $reservation
-     * @param Person $newParticipant
      * @return void
      * @throws InvalidSourceException
      * @throws NoSuchArgumentException
@@ -259,8 +251,6 @@ class ReservationController
     /**
      * action createParticipant
      *
-     * @param Reservation $reservation
-     * @param Person $newParticipant
      * @return void
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
@@ -288,7 +278,6 @@ class ReservationController
     /**
      * Checkout Action
      *
-     * @param Reservation $reservation
      * @return void
      */
     public function checkoutAction(Reservation $reservation)
@@ -299,7 +288,6 @@ class ReservationController
     /**
      * Confirm Action
      *
-     * @param Reservation $reservation
      * @return void
      * @throws Exception
      * @throws IllegalObjectTypeException
@@ -321,7 +309,6 @@ class ReservationController
     }
 
     /**
-     * @param Reservation $reservation
      * @param string $identifier
      * @param array $config
      * @return bool
@@ -332,17 +319,17 @@ class ReservationController
         if (isset($config[SettingsInterface::FROM_EMAIL])) {
             $fromEmail = $config[SettingsInterface::FROM_EMAIL];
         } else {
-            throw new Exception('Missing sender for email notification', 1454518855);
+            throw new Exception('Missing sender for email notification', 1_454_518_855);
         }
 
         $recipientEmail = $this->settingsUtility->getValue($reservation, $config[SettingsInterface::TO_EMAIL]);
         if (!isset($recipientEmail)) {
-            throw new Exception('Missing recipient for email notification ' . $identifier, 1454865240);
+            throw new Exception('Missing recipient for email notification ' . $identifier, 1_454_865_240);
         }
 
         $subject = $this->settingsUtility->getValue($reservation, $config[SettingsInterface::SUBJECT]);
         if (!isset($subject)) {
-            throw new Exception('Missing subject for email notification ' . $identifier, 1454865250);
+            throw new Exception('Missing subject for email notification ' . $identifier, 1_454_865_250);
         }
 
         $format = 'plain';
@@ -387,8 +374,6 @@ class ReservationController
     /**
      * action removeParticipant
      *
-     * @param Reservation $reservation
-     * @param Person $participant
      * @return void
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
@@ -407,8 +392,6 @@ class ReservationController
 
     /**
      * Edit billing address
-     *
-     * @param Reservation $reservation
      */
     public function editBillingAddressAction(Reservation $reservation)
     {
@@ -422,7 +405,6 @@ class ReservationController
     /**
      * Removes a billing address from reservation
      *
-     * @param Reservation $reservation
      * @throws IllegalObjectTypeException
      */
     public function removeBillingAddressAction(Reservation $reservation)
@@ -441,7 +423,6 @@ class ReservationController
     /**
      * New billing address action
      *
-     * @param Reservation $reservation
      * @param BillingAddress|null $newBillingAddress
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newBillingAddress")
      */
@@ -456,8 +437,6 @@ class ReservationController
     }
 
     /**
-     * @param Reservation $reservation
-     * @param BillingAddress $newBillingAddress
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
@@ -476,7 +455,6 @@ class ReservationController
     /**
      * updates the reservation
      *
-     * @param Reservation $reservation
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */

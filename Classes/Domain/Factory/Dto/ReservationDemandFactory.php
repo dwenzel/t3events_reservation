@@ -34,7 +34,7 @@ use PeriodAwareDemandFactoryTrait;
     /**
      * Class name of the object created by this factory
      */
-    const DEMAND_CLASS = ReservationDemand::class;
+    final public const DEMAND_CLASS = ReservationDemand::class;
 
     /**
      * Composite properties which can not set directly
@@ -50,7 +50,6 @@ use PeriodAwareDemandFactoryTrait;
     /**
      * Creates a demand object from settings
      *
-     * @param array $settings
      * @return DemandInterface
      */
     public function createFromSettings(array $settings)

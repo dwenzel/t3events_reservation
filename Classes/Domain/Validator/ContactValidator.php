@@ -18,7 +18,7 @@ class ContactValidator extends AbstractValidator {
      * @var array
      */
     protected static $requiredProperties = [
-        'email' => 1410958066
+        'email' => 1_410_958_066
     ];
 
 	/**
@@ -29,7 +29,7 @@ class ContactValidator extends AbstractValidator {
 	 */
 	protected function isValid($contact) {
 		if (!$contact instanceof Person) {
-			$this->addError('Contact must be a Person.', 1410958031);
+			$this->addError('Contact must be a Person.', 1_410_958_031);
 
 			return false;
 		}

@@ -76,19 +76,15 @@ trait ReservationAccessTrait
      */
     abstract protected function clearCacheOnError();
 
-    /**
-     * @param Typo3Session $session
-     */
     public function injectSession(Typo3Session $session)
     {
         $this->session = $session;
     }
 
     /**
-     * @return int|false
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    protected function getReservationIdFromRequest()
+    protected function getReservationIdFromRequest(): int|false
     {
         $reservationId = false;
         $argument = $this->request->getArgument(SettingsInterface::RESERVATION);
@@ -208,7 +204,7 @@ trait ReservationAccessTrait
      * @return void
      * @throws InvalidSourceException
      */
-    public function denyAccess()
+    public function denyAccess(): never
     {
         $this->clearCacheOnError();
         $this->addFlashMessage(
@@ -219,7 +215,7 @@ trait ReservationAccessTrait
 
         throw new InvalidSourceException(
             'Access not allowed',
-            1459870578
+            1_459_870_578
         );
     }
 

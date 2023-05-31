@@ -47,17 +47,16 @@ class ParticipantController
         ReservationRepositoryTrait, RoutingTrait,
         SettingsUtilityTrait, TranslateTrait, SearchTrait;
 
-    const PARENT_CONTROLLER_NAME = 'Reservation';
+    final public const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY = 't3events_reservation';
+    final public const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * New participant action
      *
-     * @param Reservation $reservation
      * @param Person|null $participant
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("participant")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -82,8 +81,6 @@ class ParticipantController
     /**
      * Create participant action
      *
-     * @param Reservation $reservation
-     * @param Person $participant
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
@@ -111,8 +108,6 @@ class ParticipantController
     /**
      * Edit participant
      *
-     * @param Person $participant
-     * @param Reservation $reservation
      * @throws InvalidSourceException
      */
     public function editAction(Person $participant, Reservation $reservation)
@@ -121,7 +116,7 @@ class ParticipantController
             throw new InvalidSourceException(
                 'Can not edit participant uid ' . $participant->getUid()
                 . '. Participant not found in Reservation uid: ' . $reservation->getUid() . '.',
-                1459343264
+                1_459_343_264
             );
         }
 
@@ -131,7 +126,6 @@ class ParticipantController
     /**
      * Updates a participant
      *
-     * @param Person $participant
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      * @TYPO3\CMS\Extbase\Annotation\Validate(param="participant", validator="CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator")
@@ -147,8 +141,6 @@ class ParticipantController
      * Removes a participant from the reservation its
      * lesson and deletes it.
      *
-     * @param Reservation $reservation
-     * @param Person $participant
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */

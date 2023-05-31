@@ -37,8 +37,6 @@ trait ReservationRepositoryTrait
 
     /**
      * Injects the reservation repository
-     *
-     * @param \CPSIT\T3eventsReservation\Domain\Repository\ReservationRepository $reservationRepository
      */
     public function injectReservationRepository(ReservationRepository $reservationRepository)
     {

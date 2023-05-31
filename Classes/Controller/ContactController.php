@@ -50,12 +50,12 @@ class ContactController
     /**
      * @const parent controller
      */
-    const PARENT_CONTROLLER_NAME = 'Reservation';
+    final public const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY = 't3events_reservation';
+    final public const EXTENSION_KEY = 't3events_reservation';
 
     public function isAccessAllowed()
     {
@@ -78,7 +78,7 @@ class ContactController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function newAction(Contact $contact = null, Reservation $reservation)
+    public function newAction(Reservation $reservation, Contact $contact = null)
     {
         $originalRequest = $this->request->getOriginalRequest();
         if (
@@ -98,7 +98,6 @@ class ContactController
     /**
      * Create a contact
      *
-     * @param Contact $contact
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function createAction(Contact $contact)
@@ -114,8 +113,6 @@ class ContactController
     /**
      * Edit contact
      *
-     * @param Contact $contact
-     * @param Reservation $reservation
      * @throws InvalidSourceException
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("reservation")
@@ -126,7 +123,7 @@ class ContactController
             throw new InvalidSourceException(
                 'Can not edit contact uid ' . $contact->getUid()
                 . '. Contact not found in Reservation uid: ' . $reservation->getUid() . '.',
-                1460039887
+                1_460_039_887
             );
         }
 
@@ -136,7 +133,6 @@ class ContactController
     /**
      * Updates a contact
      *
-     * @param Contact $contact
      * @TYPO3\CMS\Extbase\Annotation\Validate(param="contact", validator="CPSIT\T3eventsReservation\Domain\Validator\ContactValidator")
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException

@@ -32,7 +32,6 @@ trait PersonDemandFactoryTrait
     /**
      * Injects the personDemandFactory
      *
-     * @param PersonDemandFactory $personDemandFactory
      * @return void
      */
     public function injectPersonDemandFactory(PersonDemandFactory $personDemandFactory)

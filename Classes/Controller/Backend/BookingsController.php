@@ -68,12 +68,11 @@ class BookingsController extends AbstractBackendController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    final public const EXTENSION_KEY =  't3events_reservation';
 
     /**
      * List action
      *
-     * @param array $overwriteDemand
      * @return void
      */
     public function listAction(array $overwriteDemand = NULL)
@@ -108,7 +107,7 @@ class BookingsController extends AbstractBackendController
      * @return string|boolean The flash message or FALSE if no flash message should be set
      * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
-    protected function getErrorFlashMessage()
+    protected function getErrorFlashMessage(): string|bool
     {
         $key = 'error' . '.' . $this->settingsUtility->getControllerKey($this) . '.'
             . str_replace('Action', '', $this->actionMethodName);

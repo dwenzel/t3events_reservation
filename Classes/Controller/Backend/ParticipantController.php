@@ -57,7 +57,7 @@ class ParticipantController extends AbstractBackendController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    final public const EXTENSION_KEY =  't3events_reservation';
 
     /**
      * @var string
@@ -67,7 +67,6 @@ class ParticipantController extends AbstractBackendController
     /**
      * List action
      *
-     * @param array $overwriteDemand
      * @return void
      */
     public function listAction(array $overwriteDemand = null)
@@ -107,6 +106,7 @@ class ParticipantController extends AbstractBackendController
      */
     public function downloadAction($schedule = null, $ext = 'csv')
     {
+        $objectForFileName = null;
         if (is_null($schedule)) {
             $demand = $this->demandFactory->createFromSettings($this->settings);
             $this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
@@ -129,7 +129,7 @@ class ParticipantController extends AbstractBackendController
      * @return string|boolean The flash message or false if no flash message should be set
      * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
-    protected function getErrorFlashMessage()
+    protected function getErrorFlashMessage(): string|bool
     {
         $key = 'error' . '.participant.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
         $message = $this->translate($key);

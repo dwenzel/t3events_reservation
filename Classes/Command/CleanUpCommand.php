@@ -213,10 +213,9 @@ class CleanUpCommand extends Command
     /**
      * Gets all participants from all reservations
      *
-     * @param QueryResultInterface|array $reservations
      * @return array
      */
-    protected function getParticipantsToRemove($reservations)
+    protected function getParticipantsToRemove(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array $reservations)
     {
         $participantsToRemove = [];
         /** @var Reservation $reservation */
@@ -236,10 +235,9 @@ class CleanUpCommand extends Command
     /**
      * Gets all contacts from all reservations
      *
-     * @param QueryResultInterface|array $reservations
      * @return array
      */
-    protected function getContactsToRemove($reservations)
+    protected function getContactsToRemove(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array $reservations)
     {
         $contactsToRemove = [];
         /** @var Reservation $reservation */
@@ -256,10 +254,9 @@ class CleanUpCommand extends Command
     /**
      * Gets all billing adresses from all reservations
      *
-     * @param QueryResultInterface|array $reservations
      * @return array
      */
-    protected function getBillingAddressesToRemove($reservations)
+    protected function getBillingAddressesToRemove(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array $reservations)
     {
         $billingAddressesToRemove = [];
         /** @var Reservation $reservation */
@@ -276,10 +273,9 @@ class CleanUpCommand extends Command
     /**
      * Gets all notifications from all reservations
      *
-     * @param QueryResultInterface|array $reservations
      * @return array
      */
-    protected function getNotificationsToRemove($reservations)
+    protected function getNotificationsToRemove(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array $reservations)
     {
         $notificationsToRemove = [];
         /** @var Reservation $reservation */

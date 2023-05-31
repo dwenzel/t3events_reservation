@@ -58,15 +58,15 @@ class CloseBookingCommand extends Command
     use ConfigurationManagerTrait, NotificationServiceTrait, PersistenceManagerTrait,
         PersonRepositoryTrait, ReservationRepositoryTrait, ScheduleRepositoryTrait;
 
-    const TEMPLATE_EMAIL = 'Email';
-    const TEMPLATE_DOWNLOAD = 'Download';
-    const FOLDER_CLOSE_BOOKING = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/CloseBooking';
-    const FOLDER_CLEANUP_INCOMPLETE = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/CleanupIncomplete';
-    const FOLDER_REPORT_EXPIRED = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/ReportExpired';
+    final public const TEMPLATE_EMAIL = 'Email';
+    final public const TEMPLATE_DOWNLOAD = 'Download';
+    final public const FOLDER_CLOSE_BOOKING = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/CloseBooking';
+    final public const FOLDER_CLEANUP_INCOMPLETE = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/CleanupIncomplete';
+    final public const FOLDER_REPORT_EXPIRED = 'typo3conf/ext/t3events_reservation/Resources/Private/Templates/ReportExpired';
 
-    const COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION = 'cleanupIncompleteReservations';
-    const COMMAND_CLOSE_BOOKING = 'closeBooking';
-    const COMMAND_REPORT_EXPIRED = 'reportExpired';
+    final public const COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION = 'cleanupIncompleteReservations';
+    final public const COMMAND_CLOSE_BOOKING = 'closeBooking';
+    final public const COMMAND_REPORT_EXPIRED = 'reportExpired';
 
     /**
      * View
@@ -85,9 +85,6 @@ class CloseBookingCommand extends Command
      */
     protected $storagePageIds;
 
-    /**
-     * @param \TYPO3\CMS\Fluid\View\StandaloneView $view
-     */
     public function injectView(\TYPO3\CMS\Fluid\View\StandaloneView $view)
     {
         $this->view = $view;
@@ -358,11 +355,10 @@ class CloseBookingCommand extends Command
      * Hides all lesson which meet the given constraints. Returns a query result with matching lessons.
      *
      * @param boolean $dryRun
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    protected function hideExpiredLessons($dryRun)
+    protected function hideExpiredLessons($dryRun): \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
     {
         $demand = $this->createDemandForExpiredLessons();
         $lessons = $this->scheduleRepository->findDemanded($demand);
@@ -400,11 +396,10 @@ class CloseBookingCommand extends Command
      * Closes expired reservations
      *
      * @param boolean $dryRun
-     * @return QueryResult|array
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    protected function closeReservations($dryRun)
+    protected function closeReservations($dryRun): \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|array
     {
         $reservationDemand = $this->createReservationDemandByExpiredLessonDate();
         $reservations = $this->reservationRepository->findDemanded($reservationDemand);
@@ -490,9 +485,8 @@ class CloseBookingCommand extends Command
      * Gets all expired lessons
      *
      * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
-     * @return QueryResultInterface|array
      */
-    protected function getLessonsWithExpiredDeadline($date = NULL)
+    protected function getLessonsWithExpiredDeadline($date = NULL): \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
     {
         /** @var ScheduleDemand $lessonDemand */
         $lessonDemand = $this->createDemandForLessonsWithExpiredDeadline($date);
