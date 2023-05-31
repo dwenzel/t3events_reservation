@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.2 || ^8.0",
-    "typo3/cms-core": ">=8.7.0 || >=9.5.0 || >=10.4.0 || >=^11.5",
+    "typo3/cms-core": ">=8.7.0 || >=9.5.0 || >=10.4.0 || >=11.5",
     "dwenzel/t3extension-tools": "dev-feature/version10compatible",
     "dwenzel/t3events": "dev-feature/version10compatible"
   },
