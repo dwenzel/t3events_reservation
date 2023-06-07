@@ -24,6 +24,7 @@ use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\SignalInterface;
 use DWenzel\T3events\Controller\TranslateTrait;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
@@ -141,5 +142,18 @@ class ContactController
     {
         $this->contactRepository->update($contact);
         $this->dispatch([SettingsInterface::RESERVATION => $contact->getReservation()]);
+    }
+
+    /**
+     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
+     */
+    public function clearCacheOnError(): void
+    {
+        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
+            if (isset($GLOBALS['TSFE'])) {
+                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
+            }
+        }
     }
 }

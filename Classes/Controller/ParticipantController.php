@@ -152,4 +152,19 @@ class ParticipantController
         $this->addFlashMessage($this->translate('message.participant.remove.success'));
         $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
+
+    
+
+    /**
+     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
+     */
+    public function clearCacheOnError(): void
+    {
+        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
+            if (isset($GLOBALS['TSFE'])) {
+                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
+            }
+        }
+    }
 }

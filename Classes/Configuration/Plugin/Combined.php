@@ -55,5 +55,5 @@ abstract class Combined implements PluginConfigurationInterface
     ];
 
     static protected $extensionName = ExtensionConfiguration::EXTENSION_KEY;
-
+    static protected string $vendorExtensionName = ExtensionConfiguration::VENDOR . '.' . ExtensionConfiguration::EXTENSION_KEY;
 }
