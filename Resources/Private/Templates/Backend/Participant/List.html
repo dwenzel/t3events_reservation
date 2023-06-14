@@ -14,6 +14,7 @@
               arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
     <f:flashMessages />
     <div class="panel panel-space panel-default recordlist">
+                <f:render partial="Backend/Pagination" arguments="{pagination: pagination, paginator: pagination.paginator}" />
         <table class="typo3-dblist nowrap tx_t3eventsreservation">
             <thead>
             <tr class="c-headline">
@@ -29,12 +30,7 @@
                 </th>
             </tr>
             </thead>
-            <f:be.widget.paginate
-                    objects="{participants}"
-                    configuration="{settings.paginate}"
-                    as="paginatedParticipants"
-            >
-                <f:for each="{paginatedParticipants}" as="participant">
+                <f:for each="{paginator.paginatedItems}" as="participant">
                     <tr class="db_list_normal">
                         <td>{participant.uid}</td>
                         <td>{participant.lastName}, {participant.firstName}</td>
@@ -45,8 +41,9 @@
                         </td>
                     </tr>
                 </f:for>
-            </f:be.widget.paginate>
         </table>
+        
+            <f:render partial="Backend/Pagination" arguments="{pagination: pagination, paginator: pagination.paginator}" />
     </div>
 </f:section>
 
