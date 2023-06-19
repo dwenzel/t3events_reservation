@@ -108,7 +108,8 @@ class ParticipantController extends AbstractBackendController
                 'participants' => $participants,
                 'overwriteDemand' => $overwriteDemand,
                 'demand' => $demand,
-                'filterOptions' => $filterOptions
+                'filterOptions' => $filterOptions,
+                'module' => 'T3eventsEvents_T3ReservationM3',
             ]
         );
     }

@@ -114,7 +114,8 @@ class BookingsController extends AbstractBackendController
                 'reservations' => $reservations,
                 'overwriteDemand' => $overwriteDemand,
                 'demand' => $demand,
-                'filterOptions' => $this->getFilterOptions($this->settings['filter'])
+                'filterOptions' => $this->getFilterOptions($this->settings['filter']),
+                'module' => 'T3eventsEvents_T3ReservationM1',
             ]
         );
     }
