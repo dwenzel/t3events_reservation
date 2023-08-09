@@ -10,7 +10,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = ['title' => 'Reservations', 'description' => 'Manages reservations for events. Extends t3events ', 'category' => 'plugin', 'author' => 'Dirk Wenzel, Sebastian Kreideweiss', 'author_email' => 'wenzel@cps-it.de, kreideweiss@cps-it.de', 'state' => 'beta', 'uploadfolder' => '0', 'createDirs' => '', 'clearCacheOnLoad' => 0, 'version' => '0.16.0', 'constraints' =>
+$EM_CONF[$_EXTKEY] = ['title' => 'Reservations', 'description' => 'Manages reservations for events. Extends t3events ', 'category' => 'plugin', 'author' => 'Dirk Wenzel, Sebastian Kreideweiss', 'author_email' => 'wenzel@cps-it.de, kreideweiss@cps-it.de', 'state' => 'beta', 'uploadfolder' => '0', 'createDirs' => '', 'clearCacheOnLoad' => 0, 'version' => '1.0.0',
 	['depends' =>
 		['typo3' => '8.7.0-10.99.99', 't3events' => '1.1.0-0.0.0'], 'conflicts' =>
 		[], 'suggests' =>
