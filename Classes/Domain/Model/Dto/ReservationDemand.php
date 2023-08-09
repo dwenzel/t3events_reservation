@@ -46,11 +46,11 @@ class ReservationDemand extends AbstractDemand
 		GenreAwareDemandTrait, EventTypeAwareDemandTrait,
 		AudienceAwareDemandTrait;
 
-	const START_DATE_FIELD = 'lesson.date';
-	const END_DATE_FIELD = 'lesson.endDate';
-	const GENRE_FIELD = 'lesson.event.genre';
-	const AUDIENCE_FIELD = 'lesson.event.audience';
-	const EVENT_TYPE_FIELD = 'lesson.event.eventType';
+	final public const START_DATE_FIELD = 'lesson.date';
+	final public const END_DATE_FIELD = 'lesson.endDate';
+	final public const GENRE_FIELD = 'lesson.event.genre';
+	final public const AUDIENCE_FIELD = 'lesson.event.audience';
+	final public const EVENT_TYPE_FIELD = 'lesson.event.eventType';
 
 	/**
 	 * Status

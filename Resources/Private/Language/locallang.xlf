@@ -110,6 +110,9 @@
 		<trans-unit id="error.newReservation.contact.1410958066" xml:space="preserve">
 			<source>Please enter an email adress of the contact person!</source>
 		</trans-unit>
+		<trans-unit id="error.contact.reservation.contact.1410958066" xml:space="preserve">
+			<source>Please enter an email adress of the contact person!</source>
+		</trans-unit>
 		<trans-unit id="error.newReservation.contact.1417193585" xml:space="preserve">
 			<source>Please enter the contact persons phone number!</source>
 		</trans-unit>

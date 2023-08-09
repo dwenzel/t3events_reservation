@@ -15,7 +15,7 @@ trait BookableScheduleTrait
      * Participants of this course.
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $participants = null;
 
@@ -72,7 +72,7 @@ trait BookableScheduleTrait
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $registrationDocuments;
 
@@ -98,7 +98,6 @@ trait BookableScheduleTrait
     /**
      * Sets the deadline
      *
-     * @param \DateTime $deadline
      * @return void
      */
     public function setDeadline(\DateTime $deadline)
@@ -109,7 +108,6 @@ trait BookableScheduleTrait
     /**
      * Adds a Participant
      *
-     * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
      * @return void
      */
     public function addParticipant(Person $participant)
@@ -223,8 +221,6 @@ trait BookableScheduleTrait
 
     /**
      * Adds an registration document
-     *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference
      */
     public function addRegistrationDocument(FileReference $fileReference)
     {
@@ -233,8 +229,6 @@ trait BookableScheduleTrait
 
     /**
      * Removes an registration document
-     *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference
      */
     public function removeRegistrationDocument(FileReference $fileReference)
     {

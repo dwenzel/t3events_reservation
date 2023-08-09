@@ -122,10 +122,8 @@ class PersonDemandFactoryTest extends UnitTestCase
      * @test
      * @dataProvider settablePropertiesDataProvider
      * @param string $propertyName
-     * @param string|int $settingsValue
-     * @param mixed $expectedValue
      */
-    public function createFromSettingsSetsSettableProperties($propertyName, $settingsValue, $expectedValue)
+    public function createFromSettingsSetsSettableProperties($propertyName, string|int $settingsValue, mixed $expectedValue)
     {
         $settings = [
             $propertyName => $settingsValue
@@ -156,10 +154,8 @@ class PersonDemandFactoryTest extends UnitTestCase
      * @dataProvider mappedPropertiesDataProvider
      * @param string $settingsKey
      * @param string $propertyName
-     * @param string|int $settingsValue
-     * @param mixed $expectedValue
      */
-    public function createFromSettingsSetsMappedProperties($settingsKey, $propertyName, $settingsValue, $expectedValue)
+    public function createFromSettingsSetsMappedProperties($settingsKey, $propertyName, string|int $settingsValue, mixed $expectedValue)
     {
         $settings = [
             $settingsKey => $settingsValue

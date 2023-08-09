@@ -37,8 +37,6 @@ trait ContactRepositoryTrait
 
     /**
      * Injects the reservation repository
-     *
-     * @param \CPSIT\T3eventsReservation\Domain\Repository\ContactRepository $contactRepository
      */
     public function injectContactRepository(ContactRepository $contactRepository)
     {

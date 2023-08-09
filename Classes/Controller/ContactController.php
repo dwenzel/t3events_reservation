@@ -24,6 +24,7 @@ use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\SignalInterface;
 use DWenzel\T3events\Controller\TranslateTrait;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
@@ -39,29 +40,46 @@ class ContactController
     implements AccessControlInterface, SignalInterface
 {
     use ContactRepositoryTrait, DemandTrait,
-        EntityNotFoundHandlerTrait, ReservationAccessTrait,
+        EntityNotFoundHandlerTrait,
         RoutingTrait, SearchTrait, SettingsUtilityTrait,
         TranslateTrait;
+
+    use ReservationAccessTrait {
+        isAccessAllowed as traitIsAccessAllowed;
+    }
 
     /**
      * @const parent controller
      */
-    const PARENT_CONTROLLER_NAME = 'Reservation';
+    final public const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY = 't3events_reservation';
+    final public const EXTENSION_KEY = 't3events_reservation';
+
+    public function isAccessAllowed()
+    {
+        if ($this->request->hasArgument('contact')) {
+            $contact = $this->request->getArgument('contact');
+
+            if (!empty($contact['reservation'])) {
+                $this->request->setArgument('reservation', $contact['reservation']);
+            }
+        }
+
+        return $this->traitIsAccessAllowed();
+    }
 
     /**
      * New contact
      *
      * @param Contact|null $contact
      * @param Reservation $reservation
-     * @ignorevalidation $contact
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function newAction(Contact $contact = null, Reservation $reservation)
+    public function newAction(Reservation $reservation, Contact $contact = null)
     {
         $originalRequest = $this->request->getOriginalRequest();
         if (
@@ -81,7 +99,6 @@ class ContactController
     /**
      * Create a contact
      *
-     * @param Contact $contact
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function createAction(Contact $contact)
@@ -97,11 +114,9 @@ class ContactController
     /**
      * Edit contact
      *
-     * @param Contact $contact
-     * @param Reservation $reservation
      * @throws InvalidSourceException
-     * @ignorevalidation $contact
-     * @ignorevalidation $reservation
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("reservation")
      */
     public function editAction(Contact $contact, Reservation $reservation)
     {
@@ -109,7 +124,7 @@ class ContactController
             throw new InvalidSourceException(
                 'Can not edit contact uid ' . $contact->getUid()
                 . '. Contact not found in Reservation uid: ' . $reservation->getUid() . '.',
-                1460039887
+                1_460_039_887
             );
         }
 
@@ -119,8 +134,7 @@ class ContactController
     /**
      * Updates a contact
      *
-     * @param Contact $contact
-     * @validate $contact \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="contact", validator="CPSIT\T3eventsReservation\Domain\Validator\ContactValidator")
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
@@ -128,5 +142,18 @@ class ContactController
     {
         $this->contactRepository->update($contact);
         $this->dispatch([SettingsInterface::RESERVATION => $contact->getReservation()]);
+    }
+
+    /**
+     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
+     */
+    public function clearCacheOnError(): void
+    {
+        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
+            if (isset($GLOBALS['TSFE'])) {
+                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
+            }
+        }
     }
 }

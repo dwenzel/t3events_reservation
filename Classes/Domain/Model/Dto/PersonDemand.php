@@ -48,12 +48,12 @@ class PersonDemand extends AbstractDemand
         OrderAwareDemandTrait, PeriodAwareDemandTrait,
         SearchAwareDemandTrait;
 
-	const GENRE_FIELD = 'reservation.lesson.event.genre';
-	const EVENT_TYPE_FIELD = 'reservation.lesson.event.eventType';
-	const CATEGORY_FIELD = 'reservation.lesson.event.categories';
-	const START_DATE_FIELD = 'reservation.lesson.date';
-	const END_DATE_FIELD = 'reservation.lesson.endDate';
-	const AUDIENCE_FIELD = 'reservation.lesson.event.audience';
+	public const GENRE_FIELD = 'reservation.lesson.event.genre';
+	public const EVENT_TYPE_FIELD = 'reservation.lesson.event.eventType';
+	public const CATEGORY_FIELD = 'reservation.lesson.event.categories';
+	public const START_DATE_FIELD = 'reservation.lesson.date';
+	public const END_DATE_FIELD = 'reservation.lesson.endDate';
+	public const AUDIENCE_FIELD = 'reservation.lesson.event.audience';
 
 	/**
 	 * Types

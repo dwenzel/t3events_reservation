@@ -35,10 +35,9 @@ trait RequiredPropertiesTrait
     abstract protected function addError($message, $code, array $arguments = [], $title = '');
 
     /**
-     * @param mixed $value
      * @return boolean TRUE if the given $value is NULL or an empty string ('')
      */
-    abstract protected function isEmpty($value);
+    abstract protected function isEmpty(mixed $value);
 
     /**
      * Validates required properties and adds an error for

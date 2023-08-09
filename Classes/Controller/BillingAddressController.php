@@ -25,6 +25,7 @@ use DWenzel\T3events\Controller\RoutingTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -44,19 +45,18 @@ class BillingAddressController
         RoutingTrait, SettingsUtilityTrait,
         SearchTrait, TranslateTrait;
 
-    const PARENT_CONTROLLER_NAME = 'Reservation';
+    final public const PARENT_CONTROLLER_NAME = 'Reservation';
 
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY = 't3events_reservation';
+    final public const EXTENSION_KEY = 't3events_reservation';
 
     /**
      * New billing address action
      *
-     * @param Reservation $reservation
      * @param BillingAddress|null $billingAddress
-     * @ignorevalidation $billingAddress
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("billingAddress")
      */
     public function newAction(Reservation $reservation, BillingAddress $billingAddress = null)
     {
@@ -71,8 +71,6 @@ class BillingAddressController
     /**
      * Create billing address action
      * Creates a billing addres for a reservation
-     * @param Reservation $reservation
-     * @param BillingAddress $billingAddress
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
@@ -91,9 +89,6 @@ class BillingAddressController
 
     /**
      * Edit a billing address
-     *
-     * @param Reservation $reservation
-     * @param BillingAddress $billingAddress
      */
     public function editAction(Reservation $reservation, BillingAddress $billingAddress)
     {
@@ -108,8 +103,6 @@ class BillingAddressController
     /**
      * Removes a billing address from reservation
      *
-     * @param Reservation $reservation
-     * @param BillingAddress $billingAddress
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function removeAction(Reservation $reservation, BillingAddress $billingAddress)
@@ -128,8 +121,6 @@ class BillingAddressController
     /**
      * Updates a billing address
      *
-     * @param Reservation $reservation
-     * @param BillingAddress $billingAddress
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
@@ -137,5 +128,18 @@ class BillingAddressController
     {
         $this->billingAddressRepository->update($billingAddress);
         $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
+    }
+
+    /**
+     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
+     */
+    public function clearCacheOnError(): void
+    {
+        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
+            if (isset($GLOBALS['TSFE'])) {
+                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
+            }
+        }
     }
 }

@@ -31,7 +31,7 @@ class ParticipantDemandFactory extends PersonDemandFactory
     /**
      * Class name of the object created by this factory.
      */
-    const DEMAND_CLASS = ParticipantDemand::class;
+    final public const DEMAND_CLASS = ParticipantDemand::class;
 
     /**
      * Composite properties which can not set directly

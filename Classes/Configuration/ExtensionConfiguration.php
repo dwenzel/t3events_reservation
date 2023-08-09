@@ -26,8 +26,8 @@ use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 
 class ExtensionConfiguration extends \DWenzel\T3extensionTools\Configuration\ExtensionConfiguration
 {
-    public const EXTENSION_KEY = 't3events_reservation';
-    public const VENDOR = 'CPSIT';
+    final public const EXTENSION_KEY = 't3events_reservation';
+    final public const VENDOR = 'CPSIT';
 
     protected const MODULES_TO_REGISTER = [
         Bookings::class,
@@ -38,15 +38,15 @@ class ExtensionConfiguration extends \DWenzel\T3extensionTools\Configuration\Ext
         Combined::class
     ];
 
-    public const TABLES_ALLOWED_ON_STANDARD_PAGES = [
+    final public const TABLES_ALLOWED_ON_STANDARD_PAGES = [
         'tx_t3eventsreservation_domain_model_reservation'
     ];
 
-    public const LOCALIZED_TABLE_DESCRIPTION = [
+    final public const LOCALIZED_TABLE_DESCRIPTION = [
         'tx_t3eventsreservation_domain_model_reservation' => 'EXT:t3events_reservation/Resources/Private/Language/locallang_csh_tx_t3eventsreservation_domain_model_reservation.xlf'
     ];
 
-    public const BITMAP_ICONS_TO_REGISTER = [
+    final public const BITMAP_ICONS_TO_REGISTER = [
         'download-excel-white' => 'EXT:t3events_reservation/Resources/Public/Icons/icon_excel_white.png',
         'download-excel-blue' => 'EXT:t3events_reservation/Resources/Public/Icons/icon_excel_blue.png',
     ];

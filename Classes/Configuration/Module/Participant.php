@@ -19,6 +19,7 @@ namespace CPSIT\T3eventsReservation\Configuration\Module;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use CPSIT\T3eventsReservation\Controller\Backend\ParticipantController;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface as SI;
 use DWenzel\T3extensionTools\Configuration\ModuleRegistrationInterface;
 use DWenzel\T3extensionTools\Configuration\ModuleRegistrationTrait;
@@ -30,7 +31,7 @@ abstract class Participant extends DefaultRegistration implements ModuleRegistra
 
     protected static $subModuleName = 'm3';
     protected static $controllerActions = [
-        'Backend\Participant' => 'list,reset',
+        ParticipantController::class => 'list,reset',
     ];
     protected static $moduleConfiguration = [
         'access' => 'user,group',

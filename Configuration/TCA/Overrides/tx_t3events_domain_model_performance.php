@@ -131,23 +131,23 @@ $temporaryColumns = [
                     'types' => [
                         '0' => [
                             'showitem' => '
-                        --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                        --palette--;;filePalette'
+                            --palette--;;imageoverlayPalette,
+                            --palette--;;filePalette'
                         ],
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
                             'showitem' => '
-                        --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                        --palette--;;filePalette'
+                            --palette--;;imageoverlayPalette,
+                            --palette--;;filePalette'
                         ],
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                             'showitem' => '
-                        --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                        --palette--;;filePalette'
+                            --palette--;;imageoverlayPalette,
+                            --palette--;;filePalette'
                         ],
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
                             'showitem' => '
-                        --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                        --palette--;;filePalette'
+                            --palette--;;imageoverlayPalette,
+                            --palette--;;filePalette'
                         ]
                     ],
                 ],
@@ -183,8 +183,7 @@ if (!isset($GLOBALS['TCA']['tx_t3events_domain_model_performance']['columns']['t
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tx_t3events_domain_model_performance',
-    $temporaryColumns,
-    TRUE
+    $temporaryColumns
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(

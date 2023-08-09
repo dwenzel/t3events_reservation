@@ -50,7 +50,7 @@ class ParticipantValidatorTest extends UnitTestCase
     {
         $objectOfWrongType = new \stdClass();
         $expectedResult = new Result();
-        $expectedError = new Error('Participant must be a Person.', 1465382176);
+        $expectedError = new Error('Participant must be a Person.', 1_465_382_176);
         $expectedResult->addError($expectedError);
         $this->assertEquals(
             $expectedResult,
@@ -70,7 +70,7 @@ class ParticipantValidatorTest extends UnitTestCase
         $expectedError = new Error(
             'Wrong person type: foo.  Participant must be of type '
             . Person::class . '::PERSON_TYPE_PARTICIPANT.',
-            1465382335);
+            1_465_382_335);
         $expectedResult->addError($expectedError);
         $this->assertEquals(
             $expectedResult,
@@ -87,7 +87,7 @@ class ParticipantValidatorTest extends UnitTestCase
         $participant->setType(Person::PERSON_TYPE_PARTICIPANT);
 
         $expectedResult = new Result();
-        $expectedError = new Error('Missing reservation.', 1465389725);
+        $expectedError = new Error('Missing reservation.', 1_465_389_725);
         $expectedResult->addError($expectedError);
 
         $this->assertEquals(

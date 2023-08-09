@@ -5,10 +5,10 @@ sudo: false
 matrix:
   fast_finish: true
   include:
-  - php: 7.0
+  - php: 7.2
     env: TYPO3_VERSION=^8
-  - php: 7.1
-    env: TYPO3_VERSION=^8 COVERAGE=1
+  - php: 7.3
+    env: TYPO3_VERSION=^9 COVERAGE=1
 env:
   global:
   - secure: MnesJZcRgL8YigdE8OB7oxujqrnrh07E0Orhhpjc2JrukC+zVwQ7ogX3gvlBoTynGSBOCq2hf0HpItqFTG8r4jWqirUbHwYMo2GX1A+bfzL0bhh38anLgnZ+6oOxKx6ffOqUBLQ4Unppz/KtqJx+KrIz5buVPUL38NDNSMIgqvqKBRk9NEEzd0V9c2WY1vEKM/ZjGM0Y+UzgH4t5xRzwBUBPVa0Yo7zSZFANjALaUUgASbdzVDkaXyL2RbXYrozXCnrtij62JexM+qAR4NPNFpKuizzJjb7Pwrv4qMmjCUcnq9ExqxqlZHxprskyPQi0cAQFd3W6K6Lw+DarQHtYhRCn5gmAjoxI8t8q5UbrZ2FWqSAFBzw8ac8D0xDQSaFMj37rCKqey5er1F8uVVffGPEtlE21W9Dfg4B7ED9prlUVskski66oF1SxOBvDexRa0sHlzy0YlK6uLEDfNYcVAb5dDt0/g93mX5j+bszoCfX3OCiYU0KaNg2e0zQ4twtmHdO/CqoDTEWIu9SdUwfi8ikyVFCUuw/rqM4uYLI4ShYe4VO5w3UFO4QRa/LbmkqOmF/2ifAOJI7/nnGsKfuXJXKCTcGd9TSk4l+n/zJ6/3cmLr5NI0eBnz9DJiU1u1XcFqnRnB7ks9VdOZkEceZlOsxFkX3mDHNtR9wrcGlMa5c=
@@ -21,7 +21,6 @@ addons:
     branches:
       - master
       - (develop|feature\/|release\/)[-]?.*
-
 
 cache:
   directories:

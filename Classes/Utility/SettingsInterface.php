@@ -17,18 +17,18 @@ namespace CPSIT\T3eventsReservation\Utility;
 
 interface SettingsInterface extends \DWenzel\T3events\Utility\SettingsInterface
 {
-    const CONTACT = 'contact';
-    const CONTACTS = 'contacts';
-    const CONFIRM = 'confirm';
-    const LESSON = 'lesson';
-    const LESSONS = 'lessons';
-    const NEW_BILLING_ADDRESS = 'newBillingAddress';
-    const NEW_RESERVATION = 'newReservation';
-    const NEW_PARTICIPANT = 'newParticipant';
-    const NOTIFICATION = 'notification';
-    const PARTICIPANT = 'participant';
-    const PARTICIPANTS = 'participants';
-    const RESERVATION = 'reservation';
-    const RESERVATIONS = 'reservations';
-    const LESSON_DEADLINE = 'lessonDeadline';
+    public const CONTACT = 'contact';
+    public const CONTACTS = 'contacts';
+    public const CONFIRM = 'confirm';
+    public const LESSON = 'lesson';
+    public const LESSONS = 'lessons';
+    public const NEW_BILLING_ADDRESS = 'newBillingAddress';
+    public const NEW_RESERVATION = 'newReservation';
+    public const NEW_PARTICIPANT = 'newParticipant';
+    public const NOTIFICATION = 'notification';
+    public const PARTICIPANT = 'participant';
+    public const PARTICIPANTS = 'participants';
+    public const RESERVATION = 'reservation';
+    public const RESERVATIONS = 'reservations';
+    public const LESSON_DEADLINE = 'lessonDeadline';
 }
