@@ -39,7 +39,7 @@ class ParticipantValidator extends AbstractValidator
     protected function isValid($participant)
     {
         if (!$participant instanceof Person) {
-            $this->addError('Participant must be a Person.', 1465382176);
+            $this->addError('Participant must be a Person.', 1_465_382_176);
 
             return false;
         }
@@ -49,14 +49,14 @@ class ParticipantValidator extends AbstractValidator
                 'Wrong person type: ' . $participant->getType() . '. '
                 . ' Participant must be of type '
                 . Person::class . '::PERSON_TYPE_PARTICIPANT.',
-                1465382335
+                1_465_382_335
             );
 
             return false;
         }
 
         if (!$participant->getReservation() instanceof Reservation) {
-            $this->addError('Missing reservation.', 1465389725);
+            $this->addError('Missing reservation.', 1_465_389_725);
 
             return false;
         }

@@ -31,13 +31,11 @@ class BillingAddressRepository
 	extends AbstractDemandedRepository
 	implements DemandedRepositoryInterface {
 	/**
-	 * Returns an array of constraints created from a given demand object.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @param \DWenzel\T3events\Domain\Model\Dto\DemandInterface $demand
-	 * @return array<\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constraint>
-	 */
-	public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {
+  * Returns an array of constraints created from a given demand object.
+  *
+  * @return array<\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constraint>
+  */
+ public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand) {
 		/** @var \CPSIT\T3eventsReservation\Domain\Model\Dto\PersonDemand $demand */
 		$constraints = [];
 		return $constraints;

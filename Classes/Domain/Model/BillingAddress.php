@@ -21,7 +21,7 @@ use DWenzel\T3events\Domain\Model\Person as BasePerson;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 class BillingAddress extends BasePerson {
-	const PERSON_TYPE_BILLING_ADDRESS = 'Tx_T3eventsReservation_BillingAddress';
+	final public const PERSON_TYPE_BILLING_ADDRESS = 'Tx_T3eventsReservation_BillingAddress';
 
 	/**
 	 * Record type

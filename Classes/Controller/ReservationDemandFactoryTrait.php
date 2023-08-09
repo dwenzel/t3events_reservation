@@ -36,7 +36,6 @@ trait ReservationDemandFactoryTrait
     /**
      * Injects the reservationDemandFactory
      *
-     * @param ReservationDemandFactory $reservationDemandFactory
      * @return void
      */
     public function injectReservationDemandFactory(ReservationDemandFactory $reservationDemandFactory)

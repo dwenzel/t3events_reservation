@@ -4,15 +4,10 @@ if (!defined('TYPO3_MODE')) {
 }
 \CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::configurePlugins();
 
-call_user_func(function() {
+/** @noinspection PhpUnhandledExceptionInspection */
+\CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::registerIcons();
 
-    // Register command controllers for Scheduler and CLI
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CloseBooking'] =
-        \CPSIT\T3eventsReservation\Command\CloseBookingCommandController::class;
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_CleanUp'] =
-        \CPSIT\T3eventsReservation\Command\CleanUpCommandController::class;
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['tx_t3eventsreservation_Task'] =
-        \CPSIT\T3eventsReservation\Command\TaskCommandController::class;
+call_user_func(function() {
 
     // Add default routing
     $routeLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DWenzel\T3events\Service\RouteLoader::class);

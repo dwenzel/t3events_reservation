@@ -36,6 +36,10 @@ use DWenzel\T3events\Controller\VenueRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use DWenzel\T3events\Controller\FilterableControllerInterface;
 use DWenzel\T3events\Controller\FilterableControllerTrait;
+use DWenzel\T3events\Pagination\NumberedPagination;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 
 /**
  * Class ParticipantController
@@ -57,7 +61,7 @@ class ParticipantController extends AbstractBackendController
     /**
      * @const Extension key
      */
-    const EXTENSION_KEY =  't3events_reservation';
+    final public const EXTENSION_KEY =  't3events_reservation';
 
     /**
      * @var string
@@ -67,7 +71,6 @@ class ParticipantController extends AbstractBackendController
     /**
      * List action
      *
-     * @param array $overwriteDemand
      * @return void
      */
     public function listAction(array $overwriteDemand = null)
@@ -86,12 +89,27 @@ class ParticipantController extends AbstractBackendController
 
         $participants = $this->personRepository->findDemanded($demand);
 
+        // pagination
+        $paginationConfiguration = $this->settings['event']['list']['paginate'] ?? [];
+        $itemsPerPage = (int)(($paginationConfiguration['itemsPerPage'] ?? '') ?: 25);
+        $maximumNumberOfLinks = (int)($paginationConfiguration['maximumNumberOfLinks'] ?? 0);
+        
+        $currentPage = max(1, $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1);
+        #$paginator = new ArrayPaginator($contacts->toArray(), $currentPage, $itemsPerPage);
+        $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $participants, $currentPage, $itemsPerPage, (int)($this->settings['limit'] ?? 0), (int)($this->settings['offset'] ?? 0));
+        $paginationClass = $paginationConfiguration['class'] ?? NumberedPagination::class;
+        #$pagination = new SimplePagination($paginator);
+        $pagination = $this->getPagination($paginationClass, $maximumNumberOfLinks, $paginator);
+
         $this->view->assignMultiple(
             [
+                'paginator' => $paginator,
+                'pagination' => $pagination,
                 'participants' => $participants,
                 'overwriteDemand' => $overwriteDemand,
                 'demand' => $demand,
-                'filterOptions' => $filterOptions
+                'filterOptions' => $filterOptions,
+                'module' => 'T3eventsEvents_T3ReservationM3',
             ]
         );
     }
@@ -100,13 +118,14 @@ class ParticipantController extends AbstractBackendController
      * Download action
      *
      * @param \CPSIT\T3eventsReservation\Domain\Model\Schedule $schedule
-     * @ignorevalidation $schedule
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("schedule")
      * @param string $ext File extension for download
      * @return string
      * @throws \DWenzel\T3events\InvalidFileTypeException
      */
     public function downloadAction($schedule = null, $ext = 'csv')
     {
+        $objectForFileName = null;
         if (is_null($schedule)) {
             $demand = $this->demandFactory->createFromSettings($this->settings);
             $this->overwriteDemandObject($demand, $this->moduleData->getOverwriteDemand());
@@ -129,7 +148,7 @@ class ParticipantController extends AbstractBackendController
      * @return string|boolean The flash message or false if no flash message should be set
      * @override \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
-    protected function getErrorFlashMessage()
+    protected function getErrorFlashMessage(): string|bool
     {
         $key = 'error' . '.participant.' . str_replace('Action', '', $this->actionMethodName) . '.' . $this->errorMessage;
         $message = $this->translate($key);
@@ -152,6 +171,23 @@ class ParticipantController extends AbstractBackendController
     protected function createDemandFromSettings($settings)
     {
         return $this->demandFactory->createFromSettings($settings);
+    }
+    /**
+     * @param $paginationClass
+     * @param int $maximumNumberOfLinks
+     * @param $paginator
+     * @return \#o#Э#A#M#C\GeorgRinger\News\Controller\NewsController.getPagination.0|NumberedPagination|mixed|\Psr\Log\LoggerAwareInterface|string|SimplePagination|\TYPO3\CMS\Core\SingletonInterface
+     */
+    protected function getPagination($paginationClass, int $maximumNumberOfLinks, $paginator)
+    {
+        if (class_exists(NumberedPagination::class) && $paginationClass === NumberedPagination::class && $maximumNumberOfLinks) {
+            $pagination = GeneralUtility::makeInstance(NumberedPagination::class, $paginator, $maximumNumberOfLinks);
+        } elseif (class_exists($paginationClass)) {
+            $pagination = GeneralUtility::makeInstance($paginationClass, $paginator);
+        } else {
+            $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);
+        }
+        return $pagination;
     }
 
 }

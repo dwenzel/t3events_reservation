@@ -36,7 +36,6 @@ trait ScheduleDemandFactoryTrait
     /**
      * Injects the scheduleDemandFactory
      *
-     * @param ScheduleDemandFactory $scheduleDemandFactory
      * @return void
      */
     public function injectScheduleDemandFactory(ScheduleDemandFactory $scheduleDemandFactory)

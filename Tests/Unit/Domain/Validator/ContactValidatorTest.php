@@ -49,7 +49,7 @@ class ContactValidatorTest extends UnitTestCase
     {
         $objectOfWrongType = new \stdClass();
         $expectedResult = new Result();
-        $expectedError = new Error('Contact must be a Person.', 1410958031);
+        $expectedError = new Error('Contact must be a Person.', 1_410_958_031);
         $expectedResult->addError($expectedError);
 
         $this->assertEquals(
@@ -67,7 +67,7 @@ class ContactValidatorTest extends UnitTestCase
         $contact->setType(Person::PERSON_TYPE_CONTACT);
 
         $expectedResult = new Result();
-        $expectedError = new Error('email is required.', 1410958066);
+        $expectedError = new Error('email is required.', 1_410_958_066);
         $expectedResult->addError($expectedError);
 
         $this->assertEquals(

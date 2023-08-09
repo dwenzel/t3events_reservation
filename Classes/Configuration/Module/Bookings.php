@@ -19,6 +19,7 @@ namespace CPSIT\T3eventsReservation\Configuration\Module;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use CPSIT\T3eventsReservation\Controller\Backend\BookingsController;
 use DWenzel\T3extensionTools\Configuration\ModuleRegistrationInterface;
 use DWenzel\T3extensionTools\Configuration\ModuleRegistrationTrait;
 
@@ -28,7 +29,7 @@ abstract class Bookings extends DefaultRegistration implements ModuleRegistratio
 
     protected static $subModuleName = 'm1';
     protected static $controllerActions = [
-        'Backend\Bookings' => 'list,reset',
+        BookingsController::class => 'list,reset',
     ];
     protected static $moduleConfiguration = [
         'access' => 'user,group',

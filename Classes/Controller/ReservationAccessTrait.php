@@ -76,11 +76,15 @@ trait ReservationAccessTrait
      */
     abstract protected function clearCacheOnError();
 
+    public function injectSession(Typo3Session $session)
+    {
+        $this->session = $session;
+    }
+
     /**
-     * @return int|false
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    protected function getReservationIdFromRequest()
+    protected function getReservationIdFromRequest(): int|false
     {
         $reservationId = false;
         $argument = $this->request->getArgument(SettingsInterface::RESERVATION);
@@ -200,7 +204,7 @@ trait ReservationAccessTrait
      * @return void
      * @throws InvalidSourceException
      */
-    public function denyAccess()
+    public function denyAccess(): never
     {
         $this->clearCacheOnError();
         $this->addFlashMessage(
@@ -211,7 +215,7 @@ trait ReservationAccessTrait
 
         throw new InvalidSourceException(
             'Access not allowed',
-            1459870578
+            1_459_870_578
         );
     }
 
@@ -223,7 +227,7 @@ trait ReservationAccessTrait
      */
     public function initializeAction()
     {
-        $this->session = $this->objectManager->get(Typo3Session::class, ReservationController::SESSION_NAME_SPACE);
+        $this->session->setNamespace(ReservationController::SESSION_NAME_SPACE);
 
         if (!$this->isAccessAllowed()) {
             $this->denyAccess();
@@ -238,16 +242,10 @@ trait ReservationAccessTrait
         $this->clearCacheOnError();
 
         if ($this->arguments instanceof Arguments) {
-            $validationResult = $this->arguments->getValidationResults();
+
+            $validationResult = $this->arguments->validate();
             if ($validationResult->hasErrors()) {
-                $referringRequest = $this->request->getReferringRequest();
-                if ($referringRequest !== null) {
-                    $originalRequest = clone $this->request;
-                    $this->request->setOriginalRequest($originalRequest);
-                    $this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-                    $this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(),
-                        $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
-                }
+                $this->forwardToReferringRequest();
             }
         }
 

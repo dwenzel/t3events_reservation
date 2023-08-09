@@ -2,6 +2,10 @@
 
 namespace CPSIT\T3eventsReservation\Configuration\Plugin;
 
+use CPSIT\T3eventsReservation\Controller\BillingAddressController;
+use CPSIT\T3eventsReservation\Controller\ContactController;
+use CPSIT\T3eventsReservation\Controller\ParticipantController;
+use CPSIT\T3eventsReservation\Controller\ReservationController;
 use DWenzel\T3extensionTools\Configuration\PluginConfigurationInterface;
 use DWenzel\T3extensionTools\Configuration\PluginConfigurationTrait;
 
@@ -35,21 +39,21 @@ abstract class Combined implements PluginConfigurationInterface
 
     static protected $pluginName = 'Pi1';
     static protected $controllerActions = [
-        'Reservation' => 'new,show,create,edit,checkout,confirm,delete,newParticipant,createParticipant,removeParticipant,'
+        ReservationController::class => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,'
             . 'newBillingAddress, createBillingAddress, editBillingAddress, removeBillingAddress, update,error',
-        'Participant' => 'edit,update,error',
-        'Contact' => 'new,edit,create,update,remove,error',
-        'BillingAddress' => 'new,edit,create,update,remove,error',
+        ParticipantController::class => 'edit, update, error',
+        ContactController::class => 'new, edit, create, update, remove, error',
+        BillingAddressController::class => 'new, edit, create, update, remove, error',
     ];
 
     static protected $nonCacheableControllerActions = [
-        'Reservation' => 'new,show,create,edit,checkout,confirm,delete,newParticipant,createParticipant,removeParticipant,'
-            . 'newBillingAddress,createBillingAddress,editBillingAddress,removeBillingAddress,update,error',
-        'Participant' => 'edit,update,error',
-        'Contact' => 'new,edit,create,update,remove,error',
-        'BillingAddress' => 'new,edit,create,update,remove,error',
+        ReservationController::class => 'new, show, create, edit, checkout, confirm, delete, newParticipant, createParticipant, removeParticipant,'
+            . 'newBillingAddress, createBillingAddress, editBillingAddress, removeBillingAddress, update, error',
+        ParticipantController::class => 'edit, update, error',
+        ContactController::class => 'new, edit, create, update, remove, error',
+        BillingAddressController::class => 'new, edit, create, update, remove, error',
     ];
 
-    static protected $vendorExtensionName = ExtensionConfiguration::VENDOR . '.' . ExtensionConfiguration::EXTENSION_KEY;
-
+    static protected $extensionName = ExtensionConfiguration::EXTENSION_KEY;
+    static protected string $vendorExtensionName = ExtensionConfiguration::VENDOR . '.' . ExtensionConfiguration::EXTENSION_KEY;
 }

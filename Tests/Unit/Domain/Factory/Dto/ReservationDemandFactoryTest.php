@@ -257,10 +257,8 @@ class ReservationDemandFactoryTest extends UnitTestCase
      * @test
      * @dataProvider settablePropertiesDataProvider
      * @param string $propertyName
-     * @param string|int $settingsValue
-     * @param mixed $expectedValue
      */
-    public function createFromSettingsSetsSettableProperties($propertyName, $settingsValue, $expectedValue) {
+    public function createFromSettingsSetsSettableProperties($propertyName, string|int $settingsValue, mixed $expectedValue) {
         $settings = [
             $propertyName => $settingsValue
         ];

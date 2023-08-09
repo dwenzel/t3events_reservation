@@ -38,8 +38,6 @@ class ReservationControllerSlot implements SingletonInterface
 
     /**
      * Injects the session and sets its namespace ReservationController::SESSION_NAME_SPACE
-     *
-     * @param \DWenzel\T3events\Session\Typo3Session $typo3Session
      */
     public function injectSession(Typo3Session $typo3Session)
     {
@@ -49,7 +47,6 @@ class ReservationControllerSlot implements SingletonInterface
 
     /**
      * Injects the objectManager
-     * @param ObjectManager $objectManager
      */
     public function injectObjectManager(ObjectManager $objectManager)
     {
@@ -59,7 +56,6 @@ class ReservationControllerSlot implements SingletonInterface
     /**
      * Slot method for CPSIT\T3eventsReservation\ReservationController signal 'handleEntityNotFoundError'
      *
-     * @param array $params
      * @return array
      */
     public function handleEntityNotFoundSlot(array $params)

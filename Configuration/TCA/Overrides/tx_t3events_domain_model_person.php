@@ -71,8 +71,7 @@ $tmpColumns = [
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
 	'tx_t3events_domain_model_person',
-	$tmpColumns,
-	TRUE
+	$tmpColumns
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(

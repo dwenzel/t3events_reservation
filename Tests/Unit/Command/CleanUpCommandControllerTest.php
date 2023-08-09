@@ -20,7 +20,7 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use CPSIT\T3eventsReservation\Command\CleanUpCommandController;
+use CPSIT\T3eventsReservation\Command\CleanUpCommand;
 use CPSIT\T3eventsReservation\Domain\Factory\Dto\ReservationDemandFactory;
 use CPSIT\T3eventsReservation\Domain\Model\BillingAddress;
 use CPSIT\T3eventsReservation\Domain\Model\Contact;
@@ -46,7 +46,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class CleanUpCommandControllerTest extends UnitTestCase
 {
     /**
-     * @var CleanUpCommandController
+     * @var CleanUpCommand
      */
     protected $subject;
 
@@ -66,7 +66,7 @@ class CleanUpCommandControllerTest extends UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getAccessibleMock(
-            CleanUpCommandController::class, ['dummy', 'outputLine']
+            CleanUpCommand::class, ['dummy', 'outputLine']
         );
         $this->persistenceManager = $this->getMockBuilder(PersistenceManager::class)
             ->disableOriginalConstructor()

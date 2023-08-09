@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  CPSIT\T3eventsReservation\:
+    resource: '../Classes/*'
+
+  CPSIT\T3eventsReservation\Command\CleanUpCommand:
+    tags:
+      - name: 'console.command'
+        command: 't3eventsreservation:cleanup:deleteReservations'
+        description: 'Deletes reservations by date and all their related records.'
+
+  CPSIT\T3eventsReservation\Command\CloseBookingCommand:
+    tags:
+      - name: 'console.command'
+        command: 't3eventsreservation:closebooking'
+        description: 'Commands for close bookings'
+
+  DWenzel\T3events\Domain\Repository\TaskRepositoryInterface: '@CPSIT\T3eventsReservation\Domain\Repository\TaskRepository'
+
+  DWenzel\T3events\Domain\Model\Task: '@CPSIT\T3eventsReservation\Domain\Model\Task'

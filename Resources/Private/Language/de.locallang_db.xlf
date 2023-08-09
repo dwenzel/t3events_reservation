@@ -33,14 +33,6 @@
 			<source>Schedule (bookable)</source>
 			<target>Termin (buchbar)</target>
 		</trans-unit>
-		<trans-unit id="tabs.notifications" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Benachrichtigungen</target>
-		</trans-unit>
-		<trans-unit id="tabs.participants" approved="yes" xml:space="preserve">
-			<source></source>
-			<target>Teilnehmer</target>
-		</trans-unit>
 		<trans-unit id="tx_t3events_domain_model_event.tx_extbase_type.Tx_T3eventsCourse_Course" approved="yes" xml:space="preserve">
 			<source>Course</source>
 			<target>Seminar</target>

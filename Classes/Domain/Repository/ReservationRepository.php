@@ -40,8 +40,6 @@ class ReservationRepository
         PeriodConstraintRepositoryTrait, AudienceConstraintRepositoryTrait;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-     * @param \DWenzel\T3events\Domain\Model\Dto\DemandInterface $demand
      * @return array
      */
     public function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand)

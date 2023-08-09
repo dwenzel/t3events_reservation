@@ -27,8 +27,6 @@ class ScheduleRepository extends PerformanceRepository
     /**
      * Returns an array of constraints created from a given demand object.
      *
-     * @param QueryInterface $query
-     * @param DemandInterface $demand
      * @return array<\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constraint>
      */
     public function createConstraintsFromDemand(

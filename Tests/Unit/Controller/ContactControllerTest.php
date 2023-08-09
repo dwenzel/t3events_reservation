@@ -206,7 +206,7 @@ class ContactControllerTest extends UnitTestCase
             ->method('assignMultiple')
             ->with($expectedVariables);
 
-        $this->subject->newAction($mockContact, $mockReservation);
+        $this->subject->newAction($mockReservation, $mockContact);
     }
 
     /**
@@ -229,7 +229,7 @@ class ContactControllerTest extends UnitTestCase
             ->with('contact')
             ->will($this->returnValue($contactFromRequest));
 
-        $this->subject->newAction(null, $mockReservation);
+        $this->subject->newAction($mockReservation, null);
     }
 
     /**

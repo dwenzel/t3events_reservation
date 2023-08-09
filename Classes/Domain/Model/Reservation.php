@@ -33,29 +33,29 @@ class Reservation extends AbstractEntity
 {
     use EqualsTrait;
 
-    const ERROR_ACCESS_UNKNOWN = 'unknownAccessError';
+    final public const ERROR_ACCESS_UNKNOWN = 'unknownAccessError';
 
-    const ERROR_INCOMPLETE_RESERVATION_IN_SESSION = 'incompleteReservationInSession';
+    final public const ERROR_INCOMPLETE_RESERVATION_IN_SESSION = 'incompleteReservationInSession';
 
-    const ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT = 'mismatchOfReservationKeyInSessionAndRequestArgument';
+    final public const ERROR_MISMATCH_SESSION_KEY_REQUEST_ARGUMENT = 'mismatchOfReservationKeyInSessionAndRequestArgument';
 
-    const ERROR_MISSING_RESERVATION_KEY_IN_SESSION = 'missingReservationKeyInSession';
+    final public const ERROR_MISSING_RESERVATION_KEY_IN_SESSION = 'missingReservationKeyInSession';
 
-    const ERROR_MISSING_SESSION_KEY_AND_REQUEST_ARGUMENT = 'requestArgumentAndSessionKeyMissing';
+    final public const ERROR_MISSING_SESSION_KEY_AND_REQUEST_ARGUMENT = 'requestArgumentAndSessionKeyMissing';
 
-    const STATUS_CANCELED_BY_SUPPLIER = 6;
+    final public const STATUS_CANCELED_BY_SUPPLIER = 6;
 
-    const STATUS_CANCELED_NO_CHARGE = 3;
+    final public const STATUS_CANCELED_NO_CHARGE = 3;
 
-    const STATUS_CANCELED_WITH_COSTS = 4;
+    final public const STATUS_CANCELED_WITH_COSTS = 4;
 
-    const STATUS_CLOSED = 5;
+    final public const STATUS_CLOSED = 5;
 
-    const STATUS_DRAFT = 1;
+    final public const STATUS_DRAFT = 1;
 
-    const STATUS_NEW = 0;
+    final public const STATUS_NEW = 0;
 
-    const STATUS_SUBMITTED = 2;
+    final public const STATUS_SUBMITTED = 2;
 
     /**
      * billing address
@@ -75,7 +75,7 @@ class Reservation extends AbstractEntity
      * Responsible contact person for reservation.
      *
      * @var \CPSIT\T3eventsReservation\Domain\Model\Contact
-     * @validate \CPSIT\T3eventsReservation\Domain\Validator\ContactValidator
+     * @TYPO3\CMS\Extbase\Annotation\Validate("\CPSIT\T3eventsReservation\Domain\Validator\ContactValidator")
      */
     protected $contact = null;
 
@@ -103,7 +103,7 @@ class Reservation extends AbstractEntity
     /**
      * lesson
      *
-     * @var \DWenzel\T3events\Domain\Model\Performance|Schedule
+     * @var \DWenzel\T3events\Domain\Model\Performance
      */
     protected $lesson = null;
 
@@ -118,7 +118,7 @@ class Reservation extends AbstractEntity
      * Notifications
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $notifications;
 
@@ -126,7 +126,7 @@ class Reservation extends AbstractEntity
      * participants
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $participants = null;
 
@@ -134,7 +134,7 @@ class Reservation extends AbstractEntity
      * Privacy statement
      *
      * @var boolean
-     * @validate Boolean(is=true)
+     * @TYPO3\CMS\Extbase\Annotation\Validate("Boolean", options={"is": true})
      */
     protected $privacyStatementAccepted = false;
 
@@ -178,7 +178,6 @@ class Reservation extends AbstractEntity
     /**
      * Adds a Notification
      *
-     * @param Notification $notification
      * @return void
      */
     public function addNotification(Notification $notification)
@@ -189,7 +188,6 @@ class Reservation extends AbstractEntity
     /**
      * Adds a Person
      *
-     * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participant
      * @return void
      */
     public function addParticipant(Person $participant)
@@ -224,7 +222,6 @@ class Reservation extends AbstractEntity
     /**
      * Sets the lesson
      *
-     * @param \DWenzel\T3events\Domain\Model\Performance $lesson
      * @return void
      */
     public function setLesson(Performance $lesson)
@@ -240,9 +237,6 @@ class Reservation extends AbstractEntity
         return $this->billingAddress;
     }
 
-    /**
-     * @param \CPSIT\T3eventsReservation\Domain\Model\BillingAddress $billingAddress
-     */
     public function setBillingAddress(BillingAddress $billingAddress)
     {
         $this->billingAddress = $billingAddress;
@@ -261,7 +255,6 @@ class Reservation extends AbstractEntity
     /**
      * Sets the company
      *
-     * @param \DWenzel\T3events\Domain\Model\Company $company
      * @return void
      */
     public function setCompany(Company $company)
@@ -282,7 +275,6 @@ class Reservation extends AbstractEntity
     /**
      * Sets the contact
      *
-     * @param Contact $contact
      * @return void
      */
     public function setContact(Contact $contact)

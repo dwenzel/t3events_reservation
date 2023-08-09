@@ -13,8 +13,9 @@
     <f:render partial="Backend/Common/SearchForm"
               arguments="{overwriteDemand: overwriteDemand, filterOptions: filterOptions, showSubjectField: '{settings.search.showSubjectField}'}"/>
     <f:flashMessages />
+    <f:render partial="Backend/Pagination" arguments="{pagination: pagination, paginator: pagination.paginator}" />
     <div class="panel panel-space panel-default recordlist">
-        <table class="typo3-dblist nowrap tx_t3eventsreservation">
+        <table class="table table-striped table-hover typo3-dblist nowrap tx_t3eventsreservation">
             <thead>
             <tr class="c-headline">
                 <th>{f:translate(key: 'label.id', default: 'ID')}</th>
@@ -29,12 +30,7 @@
                 </th>
             </tr>
             </thead>
-            <f:be.widget.paginate
-                    objects="{participants}"
-                    configuration="{settings.paginate}"
-                    as="paginatedParticipants"
-            >
-                <f:for each="{paginatedParticipants}" as="participant">
+                <f:for each="{paginator.paginatedItems}" as="participant">
                     <tr class="db_list_normal">
                         <td>{participant.uid}</td>
                         <td>{participant.lastName}, {participant.firstName}</td>
@@ -45,9 +41,9 @@
                         </td>
                     </tr>
                 </f:for>
-            </f:be.widget.paginate>
         </table>
     </div>
+    <f:render partial="Backend/Pagination" arguments="{pagination: pagination, paginator: pagination.paginator}" />
 </f:section>
 
 <f:comment>Header buttons</f:comment>
