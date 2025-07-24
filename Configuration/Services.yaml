@@ -6,6 +6,7 @@ services:
 
   CPSIT\T3eventsReservation\:
     resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
 
   CPSIT\T3eventsReservation\Command\CleanUpCommand:
     tags:

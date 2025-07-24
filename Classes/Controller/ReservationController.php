@@ -20,6 +20,7 @@ use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Event\ReservationCreatedEvent;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
@@ -81,12 +82,12 @@ class ReservationController
      */
     protected $lessonRepository = null;
 
-    public function injectCacheService(CacheService $cacheService)
+    public function injectCacheService(CacheService $cacheService): void
     {
         $this->cacheService = $cacheService;
     }
 
-    public function injectLessonRepository(\DWenzel\T3events\Domain\Repository\PerformanceRepository $lessonRepository)
+    public function injectLessonRepository(\DWenzel\T3events\Domain\Repository\PerformanceRepository $lessonRepository): void
     {
         $this->lessonRepository = $lessonRepository;
     }
@@ -94,9 +95,10 @@ class ReservationController
     /**
      * action show
      *
+     * @param Reservation $reservation
      * @return void
      */
-    public function showAction(Reservation $reservation)
+    public function showAction(Reservation $reservation): void
     {
         $this->session->clean();
         $this->view->assign(SettingsInterface::RESERVATION, $reservation);
@@ -108,7 +110,7 @@ class ReservationController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newReservation")
      * @throws NoSuchArgumentException
      */
-    public function newAction(\CPSIT\T3eventsReservation\Domain\Model\BookableInterface|\DWenzel\T3events\Domain\Model\Performance $lesson = null, Reservation $newReservation = null)
+    public function newAction(\CPSIT\T3eventsReservation\Domain\Model\BookableInterface|\DWenzel\T3events\Domain\Model\Performance $lesson = null, Reservation $newReservation = null): void
     {
         if (is_null($lesson)) {
             $error = 'message.selectLesson';
@@ -132,9 +134,8 @@ class ReservationController
     }
 
     /**
-     * action create
+     * Creates a new reservation
      *
-     * @return void
      * @throws IllegalObjectTypeException
      * @throws InvalidSourceException
      */
@@ -155,6 +156,12 @@ class ReservationController
         $this->addFlashMessage(
             $this->translate('message.reservation.create.success')
         );
+        $this->eventDispatcher->dispatch(
+            new ReservationCreatedEvent(
+                $newReservation,
+                $this->settings
+            )
+        );
         $this->reservationRepository->add($newReservation);
         $this->persistenceManager->persistAll();
         $this->session->set(self::SESSION_IDENTIFIER_RESERVATION, $newReservation->getUid());
@@ -163,13 +170,14 @@ class ReservationController
     }
 
     /**
-     * action edit
+     * Edit an existing reservation.
      *
+     * @param Reservation $reservation
      * @return void
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function editAction(Reservation $reservation)
+    public function editAction(Reservation $reservation): void
     {
         $this->reservationRepository->update($reservation);
         $this->persistenceManager->persistAll();
@@ -182,12 +190,13 @@ class ReservationController
     }
 
     /**
-     * action delete
+     * Delete an existing reservation.
      *
+     * @param Reservation $reservation
      * @return void
      * @throws IllegalObjectTypeException
      */
-    public function deleteAction(Reservation $reservation)
+    public function deleteAction(Reservation $reservation): void
     {
         $this->addFlashMessage(
             $this->translate('message.reservation.delete.success')
@@ -208,14 +217,17 @@ class ReservationController
     }
 
     /**
-     * action newParticipant
+     * Creates a new participant and adds it to the reservation.
+     *
+     * @param Reservation $reservation
+     * @param Person|null $newParticipant
      *
      * @return void
      * @throws InvalidSourceException
      * @throws NoSuchArgumentException
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newParticipant")
      */
-    public function newParticipantAction(Reservation $reservation, Person $newParticipant = null)
+    public function newParticipantAction(Reservation $reservation, Person $newParticipant = null): void
     {
         if (
         !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
@@ -259,7 +271,7 @@ class ReservationController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function createParticipantAction(Reservation $reservation, Person $newParticipant)
+    public function createParticipantAction(Reservation $reservation, Person $newParticipant): void
     {
         /** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
         if (!$reservation->getStatus() === Reservation::STATUS_DRAFT) {
@@ -287,7 +299,7 @@ class ReservationController
      *
      * @return void
      */
-    public function checkoutAction(Reservation $reservation)
+    public function checkoutAction(Reservation $reservation): void
     {
         $this->view->assign(SettingsInterface::RESERVATION, $reservation);
     }
@@ -300,7 +312,7 @@ class ReservationController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function confirmAction(Reservation $reservation)
+    public function confirmAction(Reservation $reservation): void
     {
         $reservation->setStatus(Reservation::STATUS_SUBMITTED);
         $this->addFlashMessage(
@@ -321,7 +333,7 @@ class ReservationController
      * @return bool
      * @throws Exception
      */
-    protected function sendNotification(Reservation $reservation, $identifier, $config)
+    protected function sendNotification(Reservation $reservation, $identifier, $config): bool
     {
         if (isset($config[SettingsInterface::FROM_EMAIL])) {
             $fromEmail = $config[SettingsInterface::FROM_EMAIL];
@@ -385,7 +397,7 @@ class ReservationController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function removeParticipantAction(Reservation $reservation, Person $participant)
+    public function removeParticipantAction(Reservation $reservation, Person $participant): void
     {
         $reservation->removeParticipant($participant);
         $this->personRepository->remove($participant);
@@ -400,7 +412,7 @@ class ReservationController
     /**
      * Edit billing address
      */
-    public function editBillingAddressAction(Reservation $reservation)
+    public function editBillingAddressAction(Reservation $reservation): void
     {
         $this->view->assignMultiple(
             [
@@ -414,7 +426,7 @@ class ReservationController
      *
      * @throws IllegalObjectTypeException
      */
-    public function removeBillingAddressAction(Reservation $reservation)
+    public function removeBillingAddressAction(Reservation $reservation): void
     {
         if ($billingAddress = $reservation->getBillingAddress()) {
             $reservation->removeBillingAddress();
@@ -433,7 +445,7 @@ class ReservationController
      * @param BillingAddress|null $newBillingAddress
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("newBillingAddress")
      */
-    public function newBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress = null)
+    public function newBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress = null): void
     {
         $this->view->assignMultiple(
             [
@@ -447,7 +459,7 @@ class ReservationController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress)
+    public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress): void
     {
         $reservation->setBillingAddress($newBillingAddress);
         $this->personRepository->add($newBillingAddress);
@@ -465,7 +477,7 @@ class ReservationController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateAction(Reservation $reservation)
+    public function updateAction(Reservation $reservation): void
     {
         $this->addFlashMessage(
             $this->translate('message.reservation.update.success')
