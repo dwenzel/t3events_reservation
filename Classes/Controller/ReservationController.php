@@ -31,9 +31,7 @@ use DWenzel\T3events\Controller\RoutingTrait;
 use DWenzel\T3events\Controller\SearchTrait;
 use DWenzel\T3events\Controller\SettingsUtilityTrait;
 use DWenzel\T3events\Controller\TranslateTrait;
-use DWenzel\T3events\Domain\Model\Performance;
 use DWenzel\T3events\Session\SessionInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -42,6 +40,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Service\CacheService;
 
 /**
  * ReservationController
@@ -72,12 +72,19 @@ class ReservationController
      */
     final public const EXTENSION_KEY = 't3events_reservation';
 
+    protected CacheService $cacheService;
+
     /**
      * Lesson Repository
      *
      * @var \DWenzel\T3events\Domain\Repository\PerformanceRepository
      */
     protected $lessonRepository = null;
+
+    public function injectCacheService(CacheService $cacheService)
+    {
+        $this->cacheService = $cacheService;
+    }
 
     public function injectLessonRepository(\DWenzel\T3events\Domain\Repository\PerformanceRepository $lessonRepository)
     {
@@ -469,7 +476,7 @@ class ReservationController
         $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
-    
+
 
     /**
      * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
