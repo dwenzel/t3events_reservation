@@ -138,7 +138,7 @@ class ReservationController
      * @throws IllegalObjectTypeException
      * @throws InvalidSourceException
      */
-    public function createAction(Reservation $newReservation)
+    public function createAction(Reservation $newReservation): void
     {
         if (
             !is_null($newReservation->getUid())
@@ -146,8 +146,6 @@ class ReservationController
                 && $this->session->has(self::SESSION_IDENTIFIER_RESERVATION))
         ) {
             $this->denyAccess();
-
-            return;
         }
 
         if ($contact = $newReservation->getContact()) {
@@ -224,8 +222,6 @@ class ReservationController
         )
         ) {
             $this->denyAccess();
-
-            return;
         }
 
         if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
@@ -265,10 +261,13 @@ class ReservationController
      */
     public function createParticipantAction(Reservation $reservation, Person $newParticipant)
     {
-        if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+        /** @noinspection PhpStrictComparisonWithOperandsOfDifferentTypesInspection */
+        if (!$reservation->getStatus() === Reservation::STATUS_DRAFT) {
             $reservation->setStatus(Reservation::STATUS_DRAFT);
         }
-        if ($reservation->getLesson()->getFreePlaces()) {
+        $lesson = $reservation->getLesson();
+
+        if ($lesson instanceof BookableInterface && $lesson->getFreePlaces()) {
             $newParticipant->setReservation($reservation);
             $newParticipant->setType(Person::PERSON_TYPE_PARTICIPANT);
             $reservation->addParticipant($newParticipant);
