@@ -103,7 +103,7 @@ class Reservation extends AbstractEntity
     /**
      * lesson
      *
-     * @var \DWenzel\T3events\Domain\Model\Performance
+     * @var \DWenzel\T3events\Domain\Model\Performance|\CPSIT\T3eventsReservation\Domain\Model\BookableInterface
      */
     protected $lesson = null;
 
@@ -169,7 +169,7 @@ class Reservation extends AbstractEntity
      *
      * @return void
      */
-    protected function initStorageObjects()
+    protected function initStorageObjects(): void
     {
         $this->participants = new ObjectStorage();
         $this->notifications = new ObjectStorage();
@@ -180,7 +180,7 @@ class Reservation extends AbstractEntity
      *
      * @return void
      */
-    public function addNotification(Notification $notification)
+    public function addNotification(Notification $notification): void
     {
         $this->notifications->attach($notification);
     }
@@ -190,7 +190,7 @@ class Reservation extends AbstractEntity
      *
      * @return void
      */
-    public function addParticipant(Person $participant)
+    public function addParticipant(Person $participant): void
     {
         $this->participants->attach($participant);
         $this->lesson->addParticipant($participant);
@@ -200,7 +200,7 @@ class Reservation extends AbstractEntity
     /**
      * updates the total price
      */
-    protected function updateTotalPrice()
+    protected function updateTotalPrice(): void
     {
         if ($this->lesson instanceof PriceableInterface) {
             $totalPrice = $this->lesson->getPrice() * $this->participants->count();
@@ -212,9 +212,9 @@ class Reservation extends AbstractEntity
     /**
      * Returns the lesson
      *
-     * @return Performance $lesson
+     * @return Performance|BookableInterface|null $lesson
      */
-    public function getLesson()
+    public function getLesson(): Performance|BookableInterface|null
     {
         return $this->lesson;
     }
@@ -224,20 +224,20 @@ class Reservation extends AbstractEntity
      *
      * @return void
      */
-    public function setLesson(Performance $lesson)
+    public function setLesson(Performance $lesson): void
     {
         $this->lesson = $lesson;
     }
 
     /**
-     * @return \CPSIT\T3eventsReservation\Domain\Model\BillingAddress
+     * @return ?BillingAddress
      */
-    public function getBillingAddress()
+    public function getBillingAddress(): ?BillingAddress
     {
         return $this->billingAddress;
     }
 
-    public function setBillingAddress(BillingAddress $billingAddress)
+    public function setBillingAddress(BillingAddress $billingAddress): void
     {
         $this->billingAddress = $billingAddress;
     }
@@ -245,9 +245,9 @@ class Reservation extends AbstractEntity
     /**
      * Returns the company
      *
-     * @return Company $company
+     * @return ?Company $company
      */
-    public function getCompany()
+    public function getCompany(): ?Company
     {
         return $this->company;
     }
@@ -257,7 +257,7 @@ class Reservation extends AbstractEntity
      *
      * @return void
      */
-    public function setCompany(Company $company)
+    public function setCompany(Company $company): void
     {
         $this->company = $company;
     }
@@ -265,9 +265,9 @@ class Reservation extends AbstractEntity
     /**
      * Returns the contact
      *
-     * @return Contact $contact
+     * @return ?Contact $contact
      */
-    public function getContact()
+    public function getContact(): ?Contact
     {
         return $this->contact;
     }
@@ -275,9 +275,10 @@ class Reservation extends AbstractEntity
     /**
      * Sets the contact
      *
+     * @param Contact $contact
      * @return void
      */
-    public function setContact(Contact $contact)
+    public function setContact(Contact $contact): void
     {
         $this->contact = $contact;
     }
@@ -287,18 +288,18 @@ class Reservation extends AbstractEntity
      *
      * @return boolean
      */
-    public function getContactIsParticipant()
+    public function getContactIsParticipant(): bool
     {
         return $this->contactIsParticipant;
     }
 
     /**
-     * Set contact is participant
+     * Set contact is participant flag
      *
-     * @var boolean $contactIsParticipant
      * @return void
+     *@var boolean $contactIsParticipant
      */
-    public function setContactIsParticipant($contactIsParticipant)
+    public function setContactIsParticipant(bool $contactIsParticipant): void
     {
         $this->contactIsParticipant = $contactIsParticipant;
     }
@@ -308,7 +309,7 @@ class Reservation extends AbstractEntity
      *
      * @return boolean
      */
-    public function getDisclaimRevocation()
+    public function getDisclaimRevocation(): bool
     {
         return $this->disclaimRevocation;
     }
@@ -318,7 +319,7 @@ class Reservation extends AbstractEntity
      *
      * @param boolean $disclaimRevocation
      */
-    public function setDisclaimRevocation($disclaimRevocation)
+    public function setDisclaimRevocation(bool $disclaimRevocation): void
     {
         $this->disclaimRevocation = $disclaimRevocation;
     }
@@ -328,7 +329,7 @@ class Reservation extends AbstractEntity
      *
      * @return int
      */
-    public function getHidden()
+    public function getHidden(): int
     {
         return $this->hidden;
     }
@@ -338,7 +339,7 @@ class Reservation extends AbstractEntity
      *
      * @param int $hidden
      */
-    public function setHidden($hidden)
+    public function setHidden($hidden): void
     {
         $this->hidden = $hidden;
     }
@@ -346,7 +347,7 @@ class Reservation extends AbstractEntity
     /**
      * @return string
      */
-    public function getNote()
+    public function getNote(): string
     {
         return $this->note;
     }
@@ -354,7 +355,7 @@ class Reservation extends AbstractEntity
     /**
      * @param string $note
      */
-    public function setNote($note)
+    public function setNote($note): void
     {
         $this->note = $note;
     }
@@ -364,7 +365,7 @@ class Reservation extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification> $notifications
      */
-    public function getNotifications()
+    public function getNotifications(): ObjectStorage
     {
         return $this->notifications;
     }
@@ -375,7 +376,7 @@ class Reservation extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Notification> $notifications
      * @return void
      */
-    public function setNotifications(ObjectStorage $notifications)
+    public function setNotifications(ObjectStorage $notifications): void
     {
         $this->notifications = $notifications;
     }
@@ -385,7 +386,7 @@ class Reservation extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person> $participants
      */
-    public function getParticipants()
+    public function getParticipants(): ?ObjectStorage
     {
         return $this->participants;
     }
@@ -396,7 +397,7 @@ class Reservation extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\CPSIT\T3eventsReservation\Domain\Model\Person> $participants
      * @return void
      */
-    public function setParticipants(ObjectStorage $participants)
+    public function setParticipants(ObjectStorage $participants): void
     {
         /** @var Person $oldParticipant */
         foreach ($this->participants as $oldParticipant) {
@@ -415,7 +416,7 @@ class Reservation extends AbstractEntity
      *
      * @return boolean
      */
-    public function getPrivacyStatementAccepted()
+    public function getPrivacyStatementAccepted(): bool
     {
         return $this->privacyStatementAccepted;
     }
@@ -426,7 +427,7 @@ class Reservation extends AbstractEntity
      * @param boolean $accepted
      * @return void
      */
-    public function setPrivacyStatementAccepted($accepted)
+    public function setPrivacyStatementAccepted($accepted): void
     {
         $this->privacyStatementAccepted = $accepted;
     }
@@ -436,7 +437,7 @@ class Reservation extends AbstractEntity
      *
      * @return integer $status
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -447,7 +448,7 @@ class Reservation extends AbstractEntity
      * @param integer $status
      * @return void
      */
-    public function setStatus($status)
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
@@ -455,7 +456,7 @@ class Reservation extends AbstractEntity
     /**
      * @return float
      */
-    public function getTotalPrice()
+    public function getTotalPrice(): float
     {
         return $this->totalPrice;
     }
@@ -463,7 +464,7 @@ class Reservation extends AbstractEntity
     /**
      * @param float $totalPrice
      */
-    public function setTotalPrice($totalPrice)
+    public function setTotalPrice($totalPrice): void
     {
         $this->totalPrice = $totalPrice;
     }
@@ -472,7 +473,7 @@ class Reservation extends AbstractEntity
      * Removes the billing address.
      * I.e. sets it to null
      */
-    public function removeBillingAddress()
+    public function removeBillingAddress(): void
     {
         $this->billingAddress = null;
     }
@@ -483,7 +484,7 @@ class Reservation extends AbstractEntity
      * @param \CPSIT\T3eventsReservation\Domain\Model\Notification $notificationToRemove The Notification to be removed
      * @return void
      */
-    public function removeNotification(Notification $notificationToRemove)
+    public function removeNotification(Notification $notificationToRemove): void
     {
         $this->notifications->detach($notificationToRemove);
     }
@@ -494,7 +495,7 @@ class Reservation extends AbstractEntity
      * @param \CPSIT\T3eventsReservation\Domain\Model\Person $participantToRemove The Person to be removed
      * @return void
      */
-    public function removeParticipant(Person $participantToRemove)
+    public function removeParticipant(Person $participantToRemove): void
     {
         $this->participants->detach($participantToRemove);
         $this->lesson->removeParticipant($participantToRemove);
