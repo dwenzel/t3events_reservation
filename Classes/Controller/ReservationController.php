@@ -41,8 +41,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Service\CacheService;
 
 /**
  * ReservationController
@@ -51,7 +49,9 @@ class ReservationController
     extends ActionController
     implements AccessControlInterface, RoutableControllerInterface
 {
-    use BillingAddressRepositoryTrait, ContactRepositoryTrait,
+    use ClearCacheOnErrorTrait,
+        BillingAddressRepositoryTrait,
+        ContactRepositoryTrait,
         CompanyRepositoryTrait, DemandTrait,
         EntityNotFoundHandlerTrait, NotificationServiceTrait,
         PersistenceManagerTrait, PersonRepositoryTrait, ReservationAccessTrait,
@@ -73,7 +73,6 @@ class ReservationController
      */
     final public const EXTENSION_KEY = 't3events_reservation';
 
-    protected CacheService $cacheService;
 
     /**
      * Lesson Repository
@@ -81,11 +80,6 @@ class ReservationController
      * @var \DWenzel\T3events\Domain\Repository\PerformanceRepository
      */
     protected $lessonRepository = null;
-
-    public function injectCacheService(CacheService $cacheService): void
-    {
-        $this->cacheService = $cacheService;
-    }
 
     public function injectLessonRepository(\DWenzel\T3events\Domain\Repository\PerformanceRepository $lessonRepository): void
     {
@@ -487,18 +481,4 @@ class ReservationController
         $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
-
-
-    /**
-     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
-     */
-    public function clearCacheOnError(): void
-    {
-        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
-            if (isset($GLOBALS['TSFE'])) {
-                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
-            }
-        }
-    }
 }

@@ -39,7 +39,8 @@ class BillingAddressController
     extends ActionController
     implements AccessControlInterface
 {
-    use BillingAddressRepositoryTrait, DemandTrait,
+    use ClearCacheOnErrorTrait,
+        BillingAddressRepositoryTrait, DemandTrait,
         EntityNotFoundHandlerTrait, PerformanceRepositoryTrait,
         ReservationAccessTrait, ReservationRepositoryTrait,
         RoutingTrait, SettingsUtilityTrait,
@@ -128,18 +129,5 @@ class BillingAddressController
     {
         $this->billingAddressRepository->update($billingAddress);
         $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
-    }
-
-    /**
-     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
-     */
-    public function clearCacheOnError(): void
-    {
-        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
-            if (isset($GLOBALS['TSFE'])) {
-                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
-            }
-        }
     }
 }

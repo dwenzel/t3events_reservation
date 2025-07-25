@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
 
 /**
  * Class ContactController
- * This should be used as child controller of ReservationController only
+ * This should be used as a child controller of the ReservationController only
  *
  * @package CPSIT\T3eventsReservation\Controller
  */
@@ -39,9 +39,13 @@ class ContactController
     extends ActionController
     implements AccessControlInterface, SignalInterface
 {
-    use ContactRepositoryTrait, DemandTrait,
+    use ClearCacheOnErrorTrait,
+        ContactRepositoryTrait,
+        DemandTrait,
         EntityNotFoundHandlerTrait,
-        RoutingTrait, SearchTrait, SettingsUtilityTrait,
+        RoutingTrait,
+        SearchTrait,
+        SettingsUtilityTrait,
         TranslateTrait;
 
     use ReservationAccessTrait {
@@ -58,7 +62,7 @@ class ContactController
      */
     final public const EXTENSION_KEY = 't3events_reservation';
 
-    public function isAccessAllowed()
+    public function isAccessAllowed(): bool
     {
         if ($this->request->hasArgument('contact')) {
             $contact = $this->request->getArgument('contact');
@@ -79,7 +83,7 @@ class ContactController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function newAction(Reservation $reservation, Contact $contact = null)
+    public function newAction(Reservation $reservation, Contact $contact = null): void
     {
         $originalRequest = $this->request->getOriginalRequest();
         if (
@@ -101,7 +105,7 @@ class ContactController
      *
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function createAction(Contact $contact)
+    public function createAction(Contact $contact): void
     {
         $this->contactRepository->add($contact);
 
@@ -118,7 +122,7 @@ class ContactController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("contact")
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("reservation")
      */
-    public function editAction(Contact $contact, Reservation $reservation)
+    public function editAction(Contact $contact, Reservation $reservation): void
     {
         if (!$contact->equals($reservation->getContact())) {
             throw new InvalidSourceException(
@@ -138,22 +142,9 @@ class ContactController
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function updateAction(Contact $contact)
+    public function updateAction(Contact $contact): void
     {
         $this->contactRepository->update($contact);
         $this->dispatch([SettingsInterface::RESERVATION => $contact->getReservation()]);
-    }
-
-    /**
-     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
-     */
-    public function clearCacheOnError(): void
-    {
-        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
-            if (isset($GLOBALS['TSFE'])) {
-                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
-            }
-        }
     }
 }

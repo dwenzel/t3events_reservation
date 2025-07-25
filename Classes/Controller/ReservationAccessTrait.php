@@ -74,9 +74,9 @@ trait ReservationAccessTrait
      *
      * @return void
      */
-    abstract protected function clearCacheOnError();
+    abstract protected function clearCacheOnError(): void;
 
-    public function injectSession(Typo3Session $session)
+    public function injectSession(Typo3Session $session): void
     {
         $this->session = $session;
     }
@@ -121,7 +121,7 @@ trait ReservationAccessTrait
         $pageUid = null,
         $delay = 0,
         $statusCode = 303
-    );
+    ): void;
 
     /**
      * Forwards the request to another action and / or controller.
@@ -139,7 +139,7 @@ trait ReservationAccessTrait
         $controllerName = null,
         $extensionName = null,
         array $arguments = null
-    );
+    ): void;
 
     /**
      * Translate a given key
@@ -149,7 +149,7 @@ trait ReservationAccessTrait
      * @param array $arguments
      * @return string
      */
-    abstract public function translate($key, $extension = 't3events', $arguments = null);
+    abstract public function translate($key, $extension = 't3events', $arguments = null): string;
 
     /**
      * Checks if access is allowed
@@ -157,7 +157,7 @@ trait ReservationAccessTrait
      * @return boolean
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function isAccessAllowed()
+    public function isAccessAllowed(): bool
     {
         if ($this->request->getControllerActionName() === 'error') {
             return true;
@@ -225,7 +225,7 @@ trait ReservationAccessTrait
      * @throws InvalidSourceException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->session->setNamespace(ReservationController::SESSION_NAME_SPACE);
 
@@ -237,7 +237,7 @@ trait ReservationAccessTrait
     /**
      * error action
      */
-    public function errorAction()
+    public function errorAction(): void
     {
         $this->clearCacheOnError();
 
@@ -265,7 +265,7 @@ trait ReservationAccessTrait
      *
      * @return string
      */
-    public function getErrorFlashMessage()
+    public function getErrorFlashMessage(): string
     {
         $controllerName = strtolower($this->request->getControllerName());
         $actionName = strtolower($this->request->getControllerActionName());

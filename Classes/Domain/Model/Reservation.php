@@ -103,7 +103,11 @@ class Reservation extends AbstractEntity
     /**
      * lesson
      *
-     * @var \DWenzel\T3events\Domain\Model\Performance|\CPSIT\T3eventsReservation\Domain\Model\BookableInterface
+     * @var Performance|BookableInterface
+     */
+
+    /**
+     * @var Performance
      */
     protected $lesson = null;
 

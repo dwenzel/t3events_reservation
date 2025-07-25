@@ -41,11 +41,18 @@ class ParticipantController
     extends ActionController
     implements AccessControlInterface
 {
-    use DemandTrait, EntityNotFoundHandlerTrait,
-        PerformanceRepositoryTrait, PersonRepositoryTrait,
-        PersistenceManagerTrait, ReservationAccessTrait,
-        ReservationRepositoryTrait, RoutingTrait,
-        SettingsUtilityTrait, TranslateTrait, SearchTrait;
+    use ClearCacheOnErrorTrait,
+        DemandTrait,
+        EntityNotFoundHandlerTrait,
+        PerformanceRepositoryTrait,
+        PersonRepositoryTrait,
+        PersistenceManagerTrait,
+        ReservationAccessTrait,
+        ReservationRepositoryTrait,
+        RoutingTrait,
+        SettingsUtilityTrait,
+        TranslateTrait,
+        SearchTrait;
 
     final public const PARENT_CONTROLLER_NAME = 'Reservation';
 
@@ -61,7 +68,7 @@ class ParticipantController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("participant")
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function newAction(Reservation $reservation, Person $participant = null)
+    public function newAction(Reservation $reservation, Person $participant = null): void
     {
         $originalRequest = $this->request->getOriginalRequest();
         if (
@@ -84,7 +91,7 @@ class ParticipantController
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function createAction(Reservation $reservation, Person $participant)
+    public function createAction(Reservation $reservation, Person $participant): void
     {
         $lesson = $reservation->getLesson();
         $messageKey = 'message.participant.create.failure.notBookable';
@@ -110,7 +117,7 @@ class ParticipantController
      *
      * @throws InvalidSourceException
      */
-    public function editAction(Person $participant, Reservation $reservation)
+    public function editAction(Person $participant, Reservation $reservation): void
     {
         if (!$reservation->equals($participant->getReservation())) {
             throw new InvalidSourceException(
@@ -130,7 +137,7 @@ class ParticipantController
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      * @TYPO3\CMS\Extbase\Annotation\Validate(param="participant", validator="CPSIT\T3eventsReservation\Domain\Validator\ParticipantValidator")
      */
-    public function updateAction(Person $participant)
+    public function updateAction(Person $participant): void
     {
         $this->personRepository->update($participant);
         $this->dispatch([SettingsInterface::RESERVATION => $participant->getReservation()]);
@@ -144,7 +151,7 @@ class ParticipantController
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function removeAction(Reservation $reservation, Person $participant)
+    public function removeAction(Reservation $reservation, Person $participant): void
     {
         $reservation->removeParticipant($participant);
         $this->personRepository->remove($participant);
@@ -153,18 +160,4 @@ class ParticipantController
         $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
     }
 
-    
-
-    /**
-     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
-     */
-    public function clearCacheOnError(): void
-    {
-        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
-            if (isset($GLOBALS['TSFE'])) {
-                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
-            }
-        }
-    }
 }
