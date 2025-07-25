@@ -133,13 +133,14 @@ trait ReservationAccessTrait
      * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
      * @param array $arguments Arguments to pass to the target action
      * @return void
+     * @noinspection PhpMissingReturnTypeInspection
      */
     abstract public function forward(
         $actionName,
         $controllerName = null,
         $extensionName = null,
         array $arguments = null
-    ): void;
+    );
 
     /**
      * Translate a given key
@@ -148,8 +149,9 @@ trait ReservationAccessTrait
      * @param string $extension
      * @param array $arguments
      * @return string
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    abstract public function translate($key, $extension = 't3events', $arguments = null): string;
+    abstract public function translate($key, $extension = 't3events', $arguments = null);
 
     /**
      * Checks if access is allowed
@@ -225,7 +227,7 @@ trait ReservationAccessTrait
      * @throws InvalidSourceException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function initializeAction(): void
+    public function initializeAction()
     {
         $this->session->setNamespace(ReservationController::SESSION_NAME_SPACE);
 
