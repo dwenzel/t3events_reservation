@@ -41,7 +41,6 @@ $temporaryColumns = [
                     'dragdrop' => FALSE,
                     'sort' => FALSE,
                     'hide' => FALSE,
-                    'delete' => FALSE,
                     'localize' => FALSE,
                 ],
             ],
