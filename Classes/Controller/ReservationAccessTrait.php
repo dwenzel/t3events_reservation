@@ -5,6 +5,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
@@ -241,13 +242,14 @@ trait ReservationAccessTrait
      */
     public function errorAction(): void
     {
-        $this->clearCacheOnError();
-
         if ($this->arguments instanceof Arguments) {
 
             $validationResult = $this->arguments->validate();
             if ($validationResult->hasErrors()) {
-                $this->forwardToReferringRequest();
+                $response = $this->forwardToReferringRequest();
+                if ($response instanceof ForwardResponse) {
+                    return;
+                }
             }
         }
 
