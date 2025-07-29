@@ -3,8 +3,8 @@ namespace CPSIT\T3eventsReservation\Controller;
 
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -239,8 +239,10 @@ trait ReservationAccessTrait
 
     /**
      * error action
+     * @throws InvalidArgumentNameException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
      */
-    public function errorAction(): void
+    public function errorAction(): ResponseInterface
     {
         if ($this->arguments instanceof Arguments) {
 
@@ -248,7 +250,7 @@ trait ReservationAccessTrait
             if ($validationResult->hasErrors()) {
                 $response = $this->forwardToReferringRequest();
                 if ($response instanceof ForwardResponse) {
-                    return;
+                    return $response;
                 }
             }
         }
@@ -262,6 +264,7 @@ trait ReservationAccessTrait
             '',
             FlashMessage::ERROR
         );
+        return $this->htmlResponse();
     }
 
     /**
