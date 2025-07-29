@@ -348,7 +348,10 @@
 			<source>Contact</source>
 		</trans-unit>
 		<trans-unit id="label.contactIsParticipant" xml:space="preserve">
-			<source>Contact ist participant</source>
+			<source>Contact is participant</source>
+		</trans-unit>
+		<trans-unit id="label.contactRegistersMultipleParticipants" xml:space="preserve">
+			<source>Contact registers multiple participants</source>
 		</trans-unit>
 		<trans-unit id="label.country" xml:space="preserve">
 			<source>Country</source>

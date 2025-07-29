@@ -405,6 +405,10 @@
 			<source>Contact is participant</source>
 			<target>Ansprechpartner nimmt teil</target>
 		</trans-unit>
+		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactRegistersMultipleParticipants" approved="yes" xml:space="preserve">
+			<source>Contact registers multiple participants</source>
+			<target>Ansprechpartner registriert mehrere Teilnehmer</target>
+		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
 			<source></source>
 			<target>Verzicht auf Widerrufsrecht</target>
