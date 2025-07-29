@@ -21,6 +21,7 @@ use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Event\ReservationCreatedEvent;
+use CPSIT\T3eventsReservation\Event\ReservationUpdatedEvent;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Controller\CompanyRepositoryTrait;
 use DWenzel\T3events\Controller\DemandTrait;
@@ -174,6 +175,13 @@ class ReservationController
     public function editAction(Reservation $reservation): void
     {
         $this->reservationRepository->update($reservation);
+        $this->eventDispatcher->dispatch(
+            new ReservationUpdatedEvent(
+                $reservation,
+                $this->settings
+            )
+        );
+
         $this->persistenceManager->persistAll();
 
         $this->view->assignMultiple(
@@ -230,7 +238,7 @@ class ReservationController
             $this->denyAccess();
         }
 
-        if (!$reservation->getStatus() == Reservation::STATUS_DRAFT) {
+        if (!$reservation->getStatus() === Reservation::STATUS_DRAFT) {
             $reservation->setStatus(Reservation::STATUS_DRAFT);
         }
 
