@@ -207,6 +207,13 @@ return [
                 'default' => '0',
             ],
         ],
+        'contact_registers_multiple_participants' => [
+            'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.contactRegistersMultipleParticipants',
+            'config' => [
+                'type' => 'check',
+                'default' => '0',
+            ],
+        ],
         'privacy_statement_accepted' => [
             'label' => $ll . 'tx_t3eventsreservation_domain_model_reservation.privacyStatementAccepted',
             'config' => [

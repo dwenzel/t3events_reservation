@@ -86,6 +86,18 @@ class Reservation extends AbstractEntity
      */
     protected $contactIsParticipant;
 
+    protected bool $contactRegistersMultipleParticipants = false;
+
+    public function isContactRegistersMultipleParticipants(): bool
+    {
+        return $this->contactRegistersMultipleParticipants;
+    }
+
+    public function setContactRegistersMultipleParticipants(bool $contactRegistersMultipleParticipants): void
+    {
+        $this->contactRegistersMultipleParticipants = $contactRegistersMultipleParticipants;
+    }
+
     /**
      * Disclaimer of revocation statement
      *

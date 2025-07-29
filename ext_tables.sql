@@ -15,6 +15,7 @@ CREATE TABLE tx_t3eventsreservation_domain_model_reservation (
 	lesson int(11) unsigned DEFAULT '0',
 	privacy_statement_accepted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	contact_is_participant tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	contact_registers_multiple_participants tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	disclaim_revocation tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	total_price double(11,2) DEFAULT '0.00' NOT NULL,
 	note text NOT NULL,
