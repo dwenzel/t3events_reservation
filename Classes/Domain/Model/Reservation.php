@@ -514,7 +514,10 @@ class Reservation extends AbstractEntity
     public function removeParticipant(Person $participantToRemove): void
     {
         $this->participants->detach($participantToRemove);
-        $this->lesson->removeParticipant($participantToRemove);
+        if($this->lesson instanceof BookableInterface) {
+            $this->lesson->removeParticipant($participantToRemove);
+        }
+
         $this->updateTotalPrice();
     }
 }

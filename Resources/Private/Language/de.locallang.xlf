@@ -11,7 +11,7 @@
 		</trans-unit>
 		<trans-unit id="button.addParticipant" approved="yes" xml:space="preserve">
 			<source>add participant</source>
-			<target>Teilnehmer hinzufügen</target>
+			<target>Person hinzufügen</target>
 		</trans-unit>
 		<trans-unit id="button.applyFilter" approved="yes" xml:space="preserve">
 			<source>apply filter</source>
@@ -43,7 +43,7 @@
 		</trans-unit>
 		<trans-unit id="button.createParticipant" approved="yes" xml:space="preserve">
 			<source>Add Participant</source>
-			<target>Teilnehmer hinzufügen</target>
+			<target>Person hinzufügen</target>
 		</trans-unit>
 		<trans-unit id="button.createReservation" approved="yes" xml:space="preserve">
 			<source>book</source>
@@ -63,7 +63,7 @@
 		</trans-unit>
 		<trans-unit id="button.editParticipant" approved="yes" xml:space="preserve">
 			<source>edit particpant</source>
-			<target>Teilnehmer bearbeiten</target>
+			<target>Person bearbeiten</target>
 		</trans-unit>
 		<trans-unit id="button.goToLessonListPage" approved="yes" xml:space="preserve">
 			<source>Go to lessons list</source>
@@ -79,7 +79,7 @@
 		</trans-unit>
 		<trans-unit id="button.removeParticipant" approved="yes" xml:space="preserve">
 			<source>Remove Participant</source>
-			<target>Teilnehmer löschen</target>
+			<target>Person löschen</target>
 		</trans-unit>
 		<trans-unit id="button.reset" approved="yes" xml:space="preserve">
 			<source>reset</source>
@@ -115,7 +115,7 @@
 		</trans-unit>
 		<trans-unit id="error.newParticipant.firstName.1221560718" approved="yes" xml:space="preserve">
 			<source>Please enter the first name of the participant!</source>
-			<target>Bitte geben Sie den Vornamen des Teilnehmers an! </target>
+			<target>Bitte geben Sie den Vornamen der Persons an! </target>
 		</trans-unit>
 		<trans-unit id="error.newParticipant.gender.1221560910" approved="yes" xml:space="preserve">
 			<source>Please choose a salutation!</source>
@@ -123,7 +123,7 @@
 		</trans-unit>
 		<trans-unit id="error.newParticipant.name.1221560718" approved="yes" xml:space="preserve">
 			<source>Please enter the participants name!</source>
-			<target>Bitte geben Sie den Namen des Teilnehmers an!</target>
+			<target>Bitte geben Sie den Namen der Persons an!</target>
 		</trans-unit>
 		<trans-unit id="error.newReservation.company.address.1221560718" approved="yes" xml:space="preserve">
 			<source>Please enter a company address!</source>
@@ -239,7 +239,7 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to create a participant for this reservation.</source>
-			<target>Sie dürfen keinen Teilnehmer für diese Reservierung anlegen.</target>
+			<target>Sie dürfen keine Person für diese Reservierung anlegen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -251,7 +251,7 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.createParticipant.unknownError" approved="yes" xml:space="preserve">
 			<source>Sorry, the participant could not be created!</source>
-			<target>Der Teilnehmer konnte nicht hinzugefügt werden.</target>
+			<target>Die Person konnte nicht hinzugefügt werden.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.delete.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to delete this reservation.</source>
@@ -311,7 +311,7 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to add a participant to this reservation.</source>
-			<target>Sie dürfen keinen Teilnehmer zu dieser Reservierung hinzufügen.</target>
+			<target>Sie dürfen keine Person zu dieser Reservierung hinzufügen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.newParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -323,7 +323,7 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.participants.1347992453" approved="yes" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
-			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu!</target>
+			<target>Bitte fügen Sie mindestens eine Person hinzu!</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.removeBillingAddress.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -335,7 +335,7 @@
 		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.accessDenied" approved="yes" xml:space="preserve">
 			<source>You are not allowed to remove this participant.</source>
-			<target>Sie dürfen diesen Teilnehmer nicht entfernen.</target>
+			<target>Sie dürfen diese Person nicht entfernen.</target>
 		</trans-unit>
 		<trans-unit id="error.reservation.removeParticipant.missingReservationKeyInSession" approved="yes" xml:space="preserve">
 			<source>Your session expired!</source>
@@ -379,7 +379,7 @@
 		</trans-unit>
 		<trans-unit id="header.editParticipant" approved="yes" xml:space="preserve">
 			<source>Edit Participant</source>
-			<target>Teilnehmer bearbeiten</target>
+			<target>Person bearbeiten</target>
 		</trans-unit>
 		<trans-unit id="header.editReservation" approved="yes" xml:space="preserve">
 			<source>Edit Reservation</source>
@@ -391,7 +391,7 @@
 		</trans-unit>
 		<trans-unit id="header.participants" approved="yes" xml:space="preserve">
 			<source>Participants</source>
-			<target>Teilnehmer</target>
+			<target>Teilnehmende Personen</target>
 		</trans-unit>
 		<trans-unit id="label.abstract" approved="yes" xml:space="preserve">
 			<source>Short description</source>
@@ -458,8 +458,8 @@
 			<target>Ansprechpartner nimmt teil.</target>
 		</trans-unit>
 		<trans-unit id="label.contactRegistersMultipleParticipants" approved="yes" xml:space="preserve">
-			<source>Contact registers multiple participant</source>
-			<target>Ich melde mehrere Teilnehmer an.</target>
+			<source>Contact registers multiple participants</source>
+			<target>Ich melde mehrere Personen an.</target>
 		</trans-unit>
 		<trans-unit id="label.country" approved="yes" xml:space="preserve">
 			<source>Country</source>
@@ -507,7 +507,7 @@
 		</trans-unit>
 		<trans-unit id="label.participants" approved="yes" xml:space="preserve">
 			<source>Participants</source>
-			<target>Teilnehmer</target>
+			<target>Teilnehmende Personen</target>
 		</trans-unit>
 		<trans-unit id="label.period.all" approved="yes" xml:space="preserve">
 			<source>all</source>
@@ -631,10 +631,10 @@
 		</trans-unit>
 		<trans-unit id="message.fillInParticipantData" approved="yes" xml:space="preserve">
 			<source>Please enter the details for the new participant.</source>
-			<target>Bitte geben sie die Kontaktdaten für den neuen Teilnehmer ein.</target>
+			<target>Bitte geben sie die Kontaktdaten für die neue Person ein.</target>
 		</trans-unit>
 		<trans-unit id="message.mailToWaitlist" approved="yes" xml:space="preserve">
-			<source>Please send an email to &lt;a href=&quot;mailto:veranstaltungen@cps-it.de?subject=Waitlist&quot;&gt;veranstaltungen@cps-it.de&lt;/a&gt;</source>
+			<source>Please email:</source>
 			<target>Um auf die Warteliste aufgenommen zu werden, senden Sie bitte eine E-Mail an:</target>
 		</trans-unit>
 		<trans-unit id="message.noCoursesFound.text" approved="yes" xml:space="preserve">
@@ -649,7 +649,16 @@
 			<source>Sorry! There are no places available for this lesson anymore.</source>
 			<target>Für diesen Termin sind leider keine Plätze mehr verfügbar.</target>
 		</trans-unit>
-		<trans-unit id="message.noLessonsForSelection.text" approved="yes" xml:space="preserve">
+			<trans-unit id="message.numberOfAvailablePlaces" xml:space="preserve">
+			<source>There are %s places available.</source>
+				<target>Es sind noch %s Plätze verfügbar.</target>
+		</trans-unit>
+			<trans-unit id="message.onePlaceAvailable" xml:space="preserve">
+			<source>There is one place available.</source>
+				<target>Es ist noch ein Platz verfügbar.</target>
+		</trans-unit>
+
+			<trans-unit id="message.noLessonsForSelection.text" approved="yes" xml:space="preserve">
 			<source>Sorry, we could not find any lessons for your selection.</source>
 			<target>Es konnten keine Veranstaltungstermine für die aktuelle Auswahl gefunden werden.</target>
 		</trans-unit>
@@ -675,7 +684,7 @@
 		</trans-unit>
 		<trans-unit id="message.reservation.createParticipant.success" approved="yes" xml:space="preserve">
 			<source>The participant has been added to your reservation.</source>
-			<target>Der Teilnehmer wurde zur Reservierung hinzugefügt.</target>
+			<target>Die Person wurde zur Reservierung hinzugefügt.</target>
 		</trans-unit>
 		<trans-unit id="message.reservation.delete.success" approved="yes" xml:space="preserve">
 			<source>Your reservation has been deleted.</source>
@@ -683,7 +692,7 @@
 		</trans-unit>
 		<trans-unit id="message.reservation.newParticipant.addAtLeastOneParticipant" approved="yes" xml:space="preserve">
 			<source>Please, add at least one participant.</source>
-			<target>Bitte fügen Sie mindestens einen Teilnehmer hinzu.</target>
+			<target>Bitte fügen Sie mindestens eine teilnehmende Person hinzu.</target>
 		</trans-unit>
 		<trans-unit id="message.reservation.removeBillingAddress.success" approved="yes" xml:space="preserve">
 			<source>The billing address has been removed from your reservation.</source>
@@ -691,7 +700,7 @@
 		</trans-unit>
 		<trans-unit id="message.reservation.removeParticipant.success" approved="yes" xml:space="preserve">
 			<source>The participant has been removed from your reservation.</source>
-			<target>Der Teilnehmer wurde von der Reservierung entfernt.</target>
+			<target>Die Person wurde von der Reservierung entfernt.</target>
 		</trans-unit>
 		<trans-unit id="message.reservation.sendNotification.error" approved="yes" xml:space="preserve">
 			<source>An error occured while sending a confirmation email.</source>
@@ -747,11 +756,11 @@
 		</trans-unit>
 		<trans-unit id="title.newParticipant" approved="yes" xml:space="preserve">
 			<source>New Participant</source>
-			<target>Neuer Teilnehmer</target>
+			<target>Neue teilnehmende Person</target>
 		</trans-unit>
 		<trans-unit id="title.participant" approved="yes" xml:space="preserve">
 			<source>Participant</source>
-			<target>Teilnehmer</target>
+			<target>Person</target>
 		</trans-unit>
 		<trans-unit id="title.reservationError" approved="yes" xml:space="preserve">
 			<source>Error</source>

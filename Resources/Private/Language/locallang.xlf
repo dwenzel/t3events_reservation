@@ -503,6 +503,12 @@
 		<trans-unit id="message.noFreePlacesForThisLesson" xml:space="preserve">
 			<source>Sorry! There are no places available for this lesson anymore.</source>
 		</trans-unit>
+		<trans-unit id="message.numberOfAvailablePlaces" xml:space="preserve">
+			<source>There are %s places available.</source>
+		</trans-unit>
+		<trans-unit id="message.onePlaceAvailable" xml:space="preserve">
+			<source>There is one place available.</source>
+		</trans-unit>
 		<trans-unit id="message.noLessonsForSelection.text" xml:space="preserve">
 			<source>Sorry, we could not find any lessons for your selection.</source>
 		</trans-unit>
