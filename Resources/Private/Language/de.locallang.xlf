@@ -459,7 +459,7 @@
 		</trans-unit>
 		<trans-unit id="label.contactRegistersMultipleParticipants" approved="yes" xml:space="preserve">
 			<source>Contact registers multiple participant</source>
-			<target>Ansprechpartner registriert mehrere Teilnehmer.</target>
+			<target>Ich melde mehrere Teilnehmer an.</target>
 		</trans-unit>
 		<trans-unit id="label.country" approved="yes" xml:space="preserve">
 			<source>Country</source>

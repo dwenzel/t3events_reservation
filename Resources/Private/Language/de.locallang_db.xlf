@@ -407,7 +407,7 @@
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.contactRegistersMultipleParticipants" approved="yes" xml:space="preserve">
 			<source>Contact registers multiple participants</source>
-			<target>Ansprechpartner registriert mehrere Teilnehmer</target>
+			<target>Ansprechpartner meldet mehrere Teilnehmer an</target>
 		</trans-unit>
 		<trans-unit id="tx_t3eventsreservation_domain_model_reservation.disclaimRevocation" approved="yes" xml:space="preserve">
 			<source></source>
