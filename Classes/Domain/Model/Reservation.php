@@ -19,6 +19,8 @@ namespace CPSIT\T3eventsReservation\Domain\Model;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use DateTime;
 use CPSIT\T3eventsReservation\PriceableInterface;
 use DWenzel\T3events\Domain\Model\Company;
 use DWenzel\T3events\Domain\Model\EqualsTrait;
@@ -56,6 +58,16 @@ class Reservation extends AbstractEntity
     final public const STATUS_NEW = 0;
 
     final public const STATUS_SUBMITTED = 2;
+
+    /**
+     * @var \DateTime
+     */
+    protected $crdate;
+
+    /**
+     * @var \DateTime
+     */
+    protected $tstamp;
 
     /**
      * billing address
@@ -189,6 +201,46 @@ class Reservation extends AbstractEntity
     {
         $this->participants = new ObjectStorage();
         $this->notifications = new ObjectStorage();
+    }
+
+    /**
+     * Get creation date
+     *
+     * @return DateTime
+     */
+    public function getCrdate(): DateTime
+    {
+        return $this->crdate;
+    }
+
+    /**
+     * Set creation date
+     *
+     * @param DateTime $crdate
+     */
+    public function setCrdate($crdate): void
+    {
+        $this->crdate = $crdate;
+    }
+
+    /**
+     * Get timestamp
+     *
+     * @return DateTime
+     */
+    public function getTstamp(): DateTime
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * Set time stamp
+     *
+     * @param DateTime $tstamp time stamp
+     */
+    public function setTstamp($tstamp): void
+    {
+        $this->tstamp = $tstamp;
     }
 
     /**

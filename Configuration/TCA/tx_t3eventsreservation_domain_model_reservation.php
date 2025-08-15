@@ -74,7 +74,22 @@ return [
                 'type' => 'passthrough',
             ],
         ],
-
+        'crdate' => [
+            'label' => 'crdate',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+            ],
+        ],
+        'tstamp' => [
+            'label' => 'tstamp',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+            ],
+        ],
         'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.visible',
