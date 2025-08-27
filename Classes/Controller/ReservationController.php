@@ -20,6 +20,7 @@ use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Notification;
 use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Event\ReservationBeforeCheckoutEvent;
 use CPSIT\T3eventsReservation\Event\ReservationCreatedEvent;
 use CPSIT\T3eventsReservation\Event\ReservationUpdatedEvent;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
@@ -239,8 +240,8 @@ class ReservationController
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null): void
     {
         if (
-        !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
-        )
+            !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
+            )
         ) {
             $this->denyAccess();
         }
@@ -310,6 +311,12 @@ class ReservationController
      */
     public function checkoutAction(Reservation $reservation): void
     {
+        $this->eventDispatcher->dispatch(
+            new ReservationBeforeCheckoutEvent(
+                $reservation,
+                $this->settings
+            )
+        );
         $this->view->assign(SettingsInterface::RESERVATION, $reservation);
     }
 
