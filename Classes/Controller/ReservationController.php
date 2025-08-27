@@ -148,6 +148,13 @@ class ReservationController
             $contact->setReservation($newReservation);
         }
         $newReservation->setStatus(Reservation::STATUS_DRAFT);
+
+        /**
+         * Note: this seems to be the only method to clear session messages. We don't want
+         * messages from earlier reservation session to be displayed. This may happen if
+         * a custom checkout/finish action is used
+         */
+        $this->getFlashMessageQueue()->getAllMessagesAndFlush();
         $this->addFlashMessage(
             $this->translate('message.reservation.create.success')
         );
