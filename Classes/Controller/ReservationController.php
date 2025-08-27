@@ -179,17 +179,23 @@ class ReservationController
      * @return void
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function editAction(Reservation $reservation): void
     {
         $this->reservationRepository->update($reservation);
-        $this->eventDispatcher->dispatch(
+        $reservationUpdatedEvent = $this->eventDispatcher->dispatch(
             new ReservationUpdatedEvent(
                 $reservation,
                 $this->settings
             )
         );
 
+        if($messages = $reservationUpdatedEvent->getMessages() ) {
+            foreach ($messages as $message) {
+                $this->getFlashMessageQueue()->addMessage($message);
+            }
+        }
         $this->persistenceManager->persistAll();
 
         $this->view->assignMultiple(
@@ -240,7 +246,9 @@ class ReservationController
     public function newParticipantAction(Reservation $reservation, Person $newParticipant = null): void
     {
         if (
-            !($reservation->getStatus() === Reservation::STATUS_DRAFT || $reservation->getStatus() === Reservation::STATUS_NEW
+            !(
+                $reservation->getStatus() === Reservation::STATUS_DRAFT
+                || $reservation->getStatus() === Reservation::STATUS_NEW
             )
         ) {
             $this->denyAccess();
@@ -257,6 +265,8 @@ class ReservationController
             $this->addFlashMessage(
                 $this->translate('message.noFreePlacesForThisLesson'), '', AbstractMessage::ERROR, true
             );
+            // dispatch redirects to the appropriate action, most probably 'edit'
+            $this->dispatch([SettingsInterface::RESERVATION => $reservation]);
         } elseif (!count($reservation->getParticipants())) {
             $this->addFlashMessage(
                 $this->translate('message.reservation.newParticipant.addAtLeastOneParticipant'), '',
@@ -280,6 +290,7 @@ class ReservationController
      * @return void
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function createParticipantAction(Reservation $reservation, Person $newParticipant): void
     {
@@ -307,6 +318,7 @@ class ReservationController
     /**
      * Checkout Action
      *
+     * @param Reservation $reservation
      * @return void
      */
     public function checkoutAction(Reservation $reservation): void
@@ -344,13 +356,16 @@ class ReservationController
     }
 
     /**
+     * @param Reservation $reservation
      * @param string $identifier
      * @param array $config
      * @return bool
-     * @throws Exception
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function sendNotification(Reservation $reservation, $identifier, $config): bool
+    protected function sendNotification(Reservation $reservation, string $identifier, array $config): bool
     {
+        //@todo Clean up an move to an event lister
         if (isset($config[SettingsInterface::FROM_EMAIL])) {
             $fromEmail = $config[SettingsInterface::FROM_EMAIL];
         } else {
@@ -411,7 +426,7 @@ class ReservationController
      *
      * @return void
      * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
+     * @throws UnknownObjectException|\TYPO3\CMS\Core\Exception
      */
     public function removeParticipantAction(Reservation $reservation, Person $participant): void
     {
@@ -440,7 +455,7 @@ class ReservationController
     /**
      * Removes a billing address from reservation
      *
-     * @throws IllegalObjectTypeException
+     * @throws IllegalObjectTypeException|\TYPO3\CMS\Core\Exception
      */
     public function removeBillingAddressAction(Reservation $reservation): void
     {
@@ -473,7 +488,7 @@ class ReservationController
 
     /**
      * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
+     * @throws UnknownObjectException|\TYPO3\CMS\Core\Exception
      */
     public function createBillingAddressAction(Reservation $reservation, BillingAddress $newBillingAddress): void
     {
@@ -491,7 +506,7 @@ class ReservationController
      * updates the reservation
      *
      * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
+     * @throws UnknownObjectException|\TYPO3\CMS\Core\Exception
      */
     public function updateAction(Reservation $reservation): void
     {

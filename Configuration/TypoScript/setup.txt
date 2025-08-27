@@ -36,6 +36,7 @@ plugin.tx_t3eventsreservation {
 			confirm.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			newParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			createParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
+			newParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			removeParticipant.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			editBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}
 			newBillingAddress.errorHandling = {$plugin.tx_t3eventsreservation.settings.reservation.default.errorHandling}

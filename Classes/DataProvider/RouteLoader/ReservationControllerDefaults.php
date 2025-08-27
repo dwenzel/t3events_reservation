@@ -35,6 +35,7 @@ class ReservationControllerDefaults implements RouteLoaderDataProviderInterface
         $methods = [
             'create' => 'edit',
             'createParticipant' => 'edit',
+            'newParticipant' => 'edit',
             'confirm' => 'show',
             'removeParticipant' => 'edit',
             'removeBillingAddress' => 'edit',

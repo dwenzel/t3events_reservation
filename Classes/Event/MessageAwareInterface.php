@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace CPSIT\T3eventsReservation\Event;
 
-use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /***************************************************************
  *  Copyright notice
@@ -22,25 +20,11 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-final class ReservationUpdatedEvent implements MessageAwareInterface
+interface MessageAwareInterface
 {
-    use MessageAwareTrait;
+    /**
+     * @return FlashMessage[]
+     */
+    public function getMessages(): array;
 
-    public function __construct(
-        private readonly Reservation $reservation,
-        private readonly array $settings
-    )
-    {
-
-    }
-
-    public function getReservation(): Reservation
-    {
-        return $this->reservation;
-    }
-
-    public function getSettings(): array
-    {
-        return $this->settings;
-    }
 }

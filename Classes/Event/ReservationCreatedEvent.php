@@ -22,11 +22,13 @@ use CPSIT\T3eventsReservation\Domain\Model\Reservation;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-final readonly class ReservationCreatedEvent
+final class ReservationCreatedEvent implements MessageAwareInterface
 {
+    use MessageAwareTrait;
+
     public function __construct(
-        private Reservation $newReservation,
-        private array       $settings
+        private readonly Reservation $newReservation,
+        private readonly array $settings
     )
     {
 
