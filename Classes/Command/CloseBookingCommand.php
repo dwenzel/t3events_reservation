@@ -1,4 +1,5 @@
 <?php
+
 namespace CPSIT\T3eventsReservation\Command;
 
 /***************************************************************
@@ -20,32 +21,31 @@ namespace CPSIT\T3eventsReservation\Command;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use CPSIT\T3eventsCourse\Domain\Model\Dto\ScheduleDemand;
-use CPSIT\T3eventsCourse\Domain\Model\Schedule;
 use CPSIT\T3eventsReservation\Controller\PersonRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ReservationRepositoryTrait;
 use CPSIT\T3eventsReservation\Controller\ScheduleRepositoryTrait;
+use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
-use CPSIT\T3eventsReservation\Domain\Model\Person;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Configuration\ConfigurationManagerTrait;
 use DWenzel\T3events\Controller\NotificationServiceTrait;
 use DWenzel\T3events\Controller\PersistenceManagerTrait;
 use DWenzel\T3events\Domain\Repository\PeriodConstraintRepositoryInterface;
-use Symfony\Component\Console\Input\InputOption;
-use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
-use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class CloseBookingCommand
@@ -68,37 +68,24 @@ class CloseBookingCommand extends Command
     final public const COMMAND_CLOSE_BOOKING = 'closeBooking';
     final public const COMMAND_REPORT_EXPIRED = 'reportExpired';
 
-    /**
-     * View
-     *
-     * @var \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected $view;
+    protected StandaloneView $view;
+    protected ObjectManager $objectManager;
+    protected string $storagePageIds;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var string
-     */
-    protected $storagePageIds;
-
-    public function injectView(\TYPO3\CMS\Fluid\View\StandaloneView $view)
+    public function injectView(StandaloneView $view): void
     {
         $this->view = $view;
     }
 
-    public function injectObjectManager(ObjectManager $objectManager)
+    public function injectObjectManager(ObjectManager $objectManager): void
     {
         $this->objectManager = $objectManager;
     }
 
     /**
-     * Configure the command by defining the name, options and arguments
+     * Configure the command by defining the name, options, and arguments
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument(
@@ -132,8 +119,7 @@ class CloseBookingCommand extends Command
                 'f',
                 InputOption::VALUE_NONE,
                 'If force is not set, nothing will be changed.'
-            )
-        ;
+            );
     }
 
     /**
@@ -142,8 +128,10 @@ class CloseBookingCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int error code
+     * @throws \TYPO3\CMS\Core\Exception
+     * @throws \TYPO3\CMS\Core\Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -151,7 +139,7 @@ class CloseBookingCommand extends Command
         $this->storagePageIds = $input->getArgument('storagePageIds');
         $age = $input->getOption('age');
         $email = $input->getOption('email');
-        $dryRun = !(bool) $input->getOption('force');
+        $dryRun = !(bool)$input->getOption('force');
 
         $io->section(sprintf('Executing command "%s" with arguments:', $command));
         $io->writeln('Storage page ids: ' . $this->storagePageIds);
@@ -168,11 +156,11 @@ class CloseBookingCommand extends Command
                 $io->writeln(sprintf('Age: %d seconds', $age));
 
                 $this->cleanupIncompleteReservationsCommand($age, $email, $dryRun);
-            break;
+                break;
             case self::COMMAND_CLOSE_BOOKING:
 
                 $this->closeBookingCommand($email, $dryRun);
-            break;
+                break;
             case self::COMMAND_REPORT_EXPIRED:
                 if (empty($email)) {
                     $io->error('Option --email is required for this command.');
@@ -182,12 +170,12 @@ class CloseBookingCommand extends Command
                 $io->writeln('Email: ' . $email);
 
                 $this->reportExpiredCommand($email);
-            break;
+                break;
             default:
                 $io->error('Valid command names are: ' . implode(', ', [
-                    self::COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION,
-                    self::COMMAND_CLOSE_BOOKING
-                ]));
+                        self::COMMAND_CLEAN_UP_INCOMPLETE_RESERVATION,
+                        self::COMMAND_CLOSE_BOOKING
+                    ]));
                 return Command::FAILURE;
         }
 
@@ -197,83 +185,87 @@ class CloseBookingCommand extends Command
     }
 
     /**
-     * Cleanup incomplete reservations.
-     * Removes all reservations which are older then 'age' seconds and
+     * Clean up incomplete reservations.
+     * Removes all reservations, which are older than 'age' seconds and
      * of status 'new' or 'draft'
      *
      * @param int $age Minimum age of reservations
      * @param string $email Email address for notification
      * @param boolean $dryRun Dry run
-     * @return boolean Return TRUE
      * @throws Exception Throws an exception if send email fails
      */
-    public function cleanupIncompleteReservationsCommand($age, $email, $dryRun = NULL)
+    public function cleanupIncompleteReservationsCommand(int $age, string $email, bool $dryRun): void
     {
         $deletedCount = $this->deleteInvalidReservations($dryRun, $age);
 
-        if (!empty($email)) {
-            try {
-                return $this->notificationService->notify(
-                    $email,
-                    'no-reply@example.com',
-                    'cleanup incomplete reservations',
-                    static::TEMPLATE_EMAIL,
-                    NULL,
-                    static::FOLDER_CLEANUP_INCOMPLETE,
-                    [
-                        'dryRun' => $dryRun,
-                        'age' => $age,
-                        'deletedCount' => $deletedCount
-                    ]
-                );
-            } catch (Exception $e) {
-                throw new Exception($e->getMessage());
-            }
+        if (empty($email)) {
+            return;
         }
-
-        return TRUE;
+        try {
+            $this->notificationService->notify(
+                $email,
+                'no-reply@example.com',
+                'cleanup incomplete reservations',
+                static::TEMPLATE_EMAIL,
+                NULL,
+                static::FOLDER_CLEANUP_INCOMPLETE,
+                [
+                    'dryRun' => $dryRun,
+                    'age' => $age,
+                    'deletedCount' => $deletedCount
+                ]
+            );
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
      * Delete expired reservations
-     * I.e. reservations of status new which are older then a given minAge
+     * I.e. reservations of status new which are older than a given minAge
      *
      * @param boolean $dryRun
      * @param int $age Age in seconds
      * @return int
      * @throws IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function deleteInvalidReservations($dryRun, $age)
+    protected function deleteInvalidReservations(bool $dryRun, int $age): int
     {
         $reservations = $this->getInvalidReservations($age);
         $deletedCount = 0;
 
-        if (!$dryRun) {
-            /** @var Reservation $reservation */
-            foreach ($reservations as $reservation) {
-                /** @var Schedule $lesson */
-                if ($lesson = $reservation->getLesson()) {
-                    /** @var Person $participants */
-                    if ($participants = $reservation->getParticipants()) {
-                        foreach ($participants as $participant) {
-                            $lesson->removeParticipant($participant);
-                            $this->personRepository->remove($participant);
-                        }
-                    }
-                }
-                $this->reservationRepository->remove($reservation);
-                $deletedCount++;
-            }
+        if ($dryRun) {
+            return count($reservations);
         }
 
-        return $dryRun ? count($reservations) : $deletedCount;
+        /** @var Reservation $reservation */
+        foreach ($reservations as $reservation) {
+            $lesson = $reservation->getLesson();
+            $participants = $reservation->getParticipants();
+
+            /** @noinspection IsEmptyFunctionUsageInspection */
+            if (!$lesson instanceof BookableInterface
+                || empty($participants)) {
+                continue;
+            }
+            foreach ($participants as $participant) {
+                $lesson->removeParticipant($participant);
+                $this->personRepository->remove($participant);
+            }
+            $this->reservationRepository->remove($reservation);
+            $deletedCount++;
+        }
+        $this->persistenceManager->persistAll();
+
+        return $deletedCount;
     }
 
     /**
      * @param int $age Age in seconds
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function getInvalidReservations($age)
+    protected function getInvalidReservations(int $age): QueryResultInterface
     {
         $reservationDemand = $this->createInvalidReservationsDemand($age);
 
@@ -286,8 +278,9 @@ class CloseBookingCommand extends Command
      *
      * @param int $age Age in seconds
      * @return ReservationDemand $reservationDemand
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function createInvalidReservationsDemand($age)
+    protected function createInvalidReservationsDemand(int $age): ReservationDemand
     {
         /** @var ReservationDemand $reservationDemand */
         $reservationDemand = $this->objectManager->get(ReservationDemand::class);
@@ -295,7 +288,12 @@ class CloseBookingCommand extends Command
         $reservationDemand->setStatus(implode(',', $expiredStatus));
         $reservationDemand->setMinAge($age);
         $reservationDemand->setStoragePages($this->storagePageIds);
-
+        /**
+         * Note: we set a high limit as a workaround for a previous
+         * bug where changes were not persisted to the database. We should consider refactoring
+         * this class to single commands with a single responsibility and adding an argument for the limit.
+         */
+        $reservationDemand->setLimit(1000);
         return $reservationDemand;
     }
 
@@ -303,62 +301,61 @@ class CloseBookingCommand extends Command
      * Close Bookings
      * Searches for lessons with expired date and hides them.
      * Matching reservations are set to 'closed' state and hidden too.
-     * A list of all participants is being generated and send via email attachment .
+     * A list of all participants is being generated and sent via email attachment.
      *
      * @param string $email E-Mail
      * @param boolean $dryRun Does not persist changes but sends the generated email with attachment.
-     * @throws \TYPO3\CMS\Core\Exception
      * @return void
+     * @throws \TYPO3\CMS\Core\Exception
      */
-    public function closeBookingCommand($email, $dryRun = NULL)
+    public function closeBookingCommand(string $email, bool $dryRun): void
     {
         $lessons = $this->hideExpiredLessons($dryRun);
         $reservations = $this->closeReservations($dryRun);
 
-        // only send an email if at least one lesson or one reservation has been closed (and email address is given)
-        if (!empty($email) && (count($lessons) || count($reservations))) {
-            try {
-                // FIXME remove hard coded argument and use template for rendering (render method)
-                $this->notificationService->notify(
-                    $email,
-                    't3events@cps-it.de',
-                    'close booking',
-                    static::TEMPLATE_EMAIL,
-                    NULL,
-                    static::FOLDER_CLOSE_BOOKING,
-                    [
-                        'dryRun' => $dryRun,
+        /**
+         * only send an email if an email address is given and at least one lesson or one reservation has been closed
+         */
+        if (empty($email || (empty($lessons) && empty($reservations)))) {
+            return;
+        }
+        // FIXME remove hard coded argument and use template for rendering (render method)
+        $this->notificationService->notify(
+            $email,
+            't3events@cps-it.de',
+            'close booking',
+            static::TEMPLATE_EMAIL,
+            NULL,
+            static::FOLDER_CLOSE_BOOKING,
+            [
+                'dryRun' => $dryRun,
+                SettingsInterface::LESSONS => $lessons,
+                SettingsInterface::RESERVATIONS => $reservations
+            ],
+            [
+                [
+                    'variables' => [
                         SettingsInterface::LESSONS => $lessons,
                         SettingsInterface::RESERVATIONS => $reservations
                     ],
-                    [
-                        [
-                            'variables' => [
-                                SettingsInterface::LESSONS => $lessons,
-                                SettingsInterface::RESERVATIONS => $reservations
-                            ],
-                            'templateName' => static::TEMPLATE_DOWNLOAD,
-                            'folderName' => static::FOLDER_CLOSE_BOOKING,
-                            'fileName' => 'anhang.xls',
-                            'mimeType' => 'application/vnd.ms-excel'
-                        ]
-                    ]
-                );
-            } catch (Exception $e) {
-                throw new Exception($e->getMessage());
-            }
-        }
+                    'templateName' => static::TEMPLATE_DOWNLOAD,
+                    'folderName' => static::FOLDER_CLOSE_BOOKING,
+                    'fileName' => 'anhang.xls',
+                    'mimeType' => 'application/vnd.ms-excel'
+                ]
+            ]
+        );
     }
 
     /**
      * Hide expired lessons
-     * Hides all lesson which meet the given constraints. Returns a query result with matching lessons.
+     * Hides all lessons which meet the given constraints. Returns a query result with matching lessons.
      *
-     * @param boolean $dryRun
-     * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    protected function hideExpiredLessons($dryRun): \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+    protected function hideExpiredLessons(bool $dryRun): QueryResultInterface|array
     {
         $demand = $this->createDemandForExpiredLessons();
         $lessons = $this->scheduleRepository->findDemanded($demand);
@@ -375,13 +372,16 @@ class CloseBookingCommand extends Command
 
     /**
      * Returns a lesson demand object for expired lessons.
-     * A lesson will considered expired when its date is older than the given date.
+     * A lesson will be considered expired when its date is older than the given date.
      * Default is 'now'
      *
-     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @param string $date A string that the strtotime(), DateTime, and date_create() parser understands. Default: 'now'
      * @return ScheduleDemand $lessonDemand
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \Exception
      */
-    protected function createDemandForExpiredLessons($date = 'now')
+    protected function createDemandForExpiredLessons(string $date = 'now'): ScheduleDemand
     {
         /** @var ScheduleDemand $lessonDemand */
         $lessonDemand = $this->objectManager->get(ScheduleDemand::class);
@@ -395,11 +395,11 @@ class CloseBookingCommand extends Command
     /**
      * Closes expired reservations
      *
-     * @param boolean $dryRun
-     * @throws IllegalObjectTypeException
-     * @throws UnknownObjectException
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    protected function closeReservations($dryRun): \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|array
+    protected function closeReservations(bool $dryRun): QueryResult|array
     {
         $reservationDemand = $this->createReservationDemandByExpiredLessonDate();
         $reservations = $this->reservationRepository->findDemanded($reservationDemand);
@@ -421,10 +421,12 @@ class CloseBookingCommand extends Command
      * where the date of its lessons is beyond
      * a given date and time (default 'now')
      *
-     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @param string $date A string that the strtotime(), DateTime, and date_create() parser understands. Default: 'now'
      * @return ReservationDemand $reservationDemand
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function createReservationDemandByExpiredLessonDate($date = 'now')
+    protected function createReservationDemandByExpiredLessonDate(string $date = 'now'): ReservationDemand
     {
         /** @var ReservationDemand $reservationDemand */
         $reservationDemand = $this->objectManager->get(ReservationDemand::class);
@@ -445,7 +447,7 @@ class CloseBookingCommand extends Command
      * @param string $email Recipients email address
      * @throws Exception
      */
-    public function reportExpiredCommand($email)
+    public function reportExpiredCommand(string $email): void
     {
         $lessons = $this->getLessonsWithExpiredDeadline();
         $reservationDemand = $this->createReservationDemandByLessonDeadline('yesterday');
@@ -484,25 +486,28 @@ class CloseBookingCommand extends Command
     /**
      * Gets all expired lessons
      *
-     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @param string $date A string that the strtotime(), DateTime, and date_create() parser understands. Default: 'now'
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function getLessonsWithExpiredDeadline($date = NULL): \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+    protected function getLessonsWithExpiredDeadline($date = NULL): QueryResultInterface|array
     {
-        /** @var ScheduleDemand $lessonDemand */
         $lessonDemand = $this->createDemandForLessonsWithExpiredDeadline($date);
 
         return $this->scheduleRepository->findDemanded($lessonDemand);
     }
 
     /**
-     * Returns a lesson demand object for lessons with expired registration deadline.
-     * A lesson will considered expired when its registration deadline is older than the given date.
+     * Returns a lesson demand object for lessons with an expired registration deadline.
+     * A lesson will be considered expired when its registration deadline is older than the given date.
      * Default is 'now'
      *
-     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @param string $date A string that the strtotime(), DateTime, and date_create() parser understands. Default: 'now'
      * @return ScheduleDemand $lessonDemand
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @noinspection SpellCheckingInspection
      */
-    protected function createDemandForLessonsWithExpiredDeadline($date = 'now')
+    protected function createDemandForLessonsWithExpiredDeadline(string $date = 'now'): ScheduleDemand
     {
         /** @var ScheduleDemand $lessonDemand */
         $lessonDemand = $this->objectManager->get(ScheduleDemand::class);
@@ -518,10 +523,13 @@ class CloseBookingCommand extends Command
      * where the registration deadline of its lessons is beyond
      * a given date and time (default 'now')
      *
-     * @param string $date A string that the strtotime(), DateTime and date_create() parser understands. Default: 'now'
+     * @param string $date A string that the strtotime(), DateTime, and date_create() parser understands. Default: 'now'
      * @return ReservationDemand $reservationDemand
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \Exception
      */
-    protected function createReservationDemandByLessonDeadline($date = 'now')
+    protected function createReservationDemandByLessonDeadline(string $date = 'now'): ReservationDemand
     {
         /** @var ReservationDemand $reservationDemand */
         $reservationDemand = $this->objectManager->get(ReservationDemand::class);
