@@ -244,13 +244,12 @@ class CloseBookingCommand extends Command
             $lesson = $reservation->getLesson();
             $participants = $reservation->getParticipants();
 
-            /** @noinspection IsEmptyFunctionUsageInspection */
-            if (!$lesson instanceof BookableInterface
-                || empty($participants)) {
-                continue;
+            if ($lesson instanceof BookableInterface) {
+                foreach ($participants as $participant) {
+                    $lesson->removeParticipant($participant);
+                }
             }
             foreach ($participants as $participant) {
-                $lesson->removeParticipant($participant);
                 $this->personRepository->remove($participant);
             }
             $this->reservationRepository->remove($reservation);
@@ -293,7 +292,7 @@ class CloseBookingCommand extends Command
          * bug where changes were not persisted to the database. We should consider refactoring
          * this class to single commands with a single responsibility and adding an argument for the limit.
          */
-        $reservationDemand->setLimit(1000);
+        $reservationDemand->setLimit(50000);
         return $reservationDemand;
     }
 
