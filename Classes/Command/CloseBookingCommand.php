@@ -292,7 +292,7 @@ class CloseBookingCommand extends Command
          * bug where changes were not persisted to the database. We should consider refactoring
          * this class to single commands with a single responsibility and adding an argument for the limit.
          */
-        $reservationDemand->setLimit(50000);
+        $reservationDemand->setLimit(1000);
         return $reservationDemand;
     }
 
