@@ -190,11 +190,11 @@ class CloseBookingCommand extends Command
      * of status 'new' or 'draft'
      *
      * @param int $age Minimum age of reservations
-     * @param string $email Email address for notification
+     * @param string|null $email Email address for notification; null when invoked by the BE scheduler
      * @param boolean $dryRun Dry run
      * @throws Exception Throws an exception if send email fails
      */
-    public function cleanupIncompleteReservationsCommand(int $age, string $email, bool $dryRun): void
+    public function cleanupIncompleteReservationsCommand(int $age, ?string $email, bool $dryRun): void
     {
         $deletedCount = $this->deleteInvalidReservations($dryRun, $age);
 
