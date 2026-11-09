@@ -7,6 +7,8 @@ if (!defined('TYPO3_MODE')) {
 /** @noinspection PhpUnhandledExceptionInspection */
 \CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::registerIcons();
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['t3events_reservation'] = \CPSIT\T3eventsReservation\Hooks\ReservationDeleteHook::class;
+
 call_user_func(function() {
 
     // Add default routing
