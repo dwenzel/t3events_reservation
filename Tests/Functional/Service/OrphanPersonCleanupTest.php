@@ -121,6 +121,38 @@ class OrphanPersonCleanupTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function softDeleteOrphansLeavesPersonUntouchedWhoIsBillingAddressOfLiveReservation(): void
+    {
+        $this->insertReservation(self::DELETED_RESERVATION, ['deleted' => 1]);
+        $this->insertReservation(self::LIVE_RESERVATION, ['billing_address' => 1]);
+        $this->insertPerson(1, BillingAddress::PERSON_TYPE_BILLING_ADDRESS, ['reservation' => self::DELETED_RESERVATION]);
+
+        self::assertSame(0, $this->subject()->softDeleteOrphans([self::PID]));
+        $this->assertPersonUntouched(1);
+    }
+
+    /**
+     * @test
+     */
+    public function softDeleteOrphansLeavesPersonsOfHiddenLiveReservationUntouched(): void
+    {
+        $this->insertReservation(self::DELETED_RESERVATION, ['deleted' => 1]);
+        $this->insertReservation(self::LIVE_RESERVATION, ['hidden' => 1, 'contact' => 1, 'billing_address' => 2]);
+        $this->insertPerson(1, EventsPerson::PERSON_TYPE_CONTACT, ['reservation' => self::DELETED_RESERVATION]);
+        $this->insertPerson(2, BillingAddress::PERSON_TYPE_BILLING_ADDRESS, ['reservation' => self::DELETED_RESERVATION]);
+        $this->insertReservation(self::LIVE_RESERVATION + 1, ['hidden' => 1, 'contact' => 3, 'billing_address' => 4]);
+        $this->insertPerson(3, EventsPerson::PERSON_TYPE_CONTACT);
+        $this->insertPerson(4, BillingAddress::PERSON_TYPE_BILLING_ADDRESS);
+
+        self::assertSame(0, $this->subject()->softDeleteOrphans([self::PID]));
+        foreach ([1, 2, 3, 4] as $uid) {
+            $this->assertPersonUntouched($uid);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function softDeleteOrphansLeavesSharedMmParticipantUntouched(): void
     {
         $this->insertReservation(self::DELETED_RESERVATION, ['deleted' => 1]);

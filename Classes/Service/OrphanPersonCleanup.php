@@ -74,7 +74,9 @@ class OrphanPersonCleanup
               AND p.tx_extbase_type IN (:types)
               AND ' . $orphanCondition . '
               AND NOT EXISTS (SELECT 1 FROM ' . self::TABLE_RESERVATION . ' r3
-                  WHERE r3.deleted = 0 AND (r3.contact = p.uid OR r3.billing_address = p.uid))
+                  WHERE r3.contact = p.uid AND r3.deleted = 0)
+              AND NOT EXISTS (SELECT 1 FROM ' . self::TABLE_RESERVATION . ' r5
+                  WHERE r5.billing_address = p.uid AND r5.deleted = 0)
               AND NOT EXISTS (SELECT 1 FROM ' . self::TABLE_PARTICIPANTS_MM . ' mm
                   JOIN ' . self::TABLE_RESERVATION . ' r4 ON r4.uid = mm.uid_local AND r4.deleted = 0
                   WHERE mm.uid_foreign = p.uid)';
