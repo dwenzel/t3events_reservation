@@ -8,6 +8,7 @@ if (!defined('TYPO3_MODE')) {
 \CPSIT\T3eventsReservation\Configuration\ExtensionConfiguration::registerIcons();
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['t3events_reservation'] = \CPSIT\T3eventsReservation\Hooks\ReservationDeleteHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\CPSIT\T3eventsReservation\Updates\OrphanPersonCleanupWizard::IDENTIFIER] = \CPSIT\T3eventsReservation\Updates\OrphanPersonCleanupWizard::class;
 
 call_user_func(function() {
 
