@@ -1,0 +1,2 @@
+# cat=basic; type=string; label=Orphan person cleanup pids: Comma-separated page uids on which the upgrade wizard t3eventsReservationOrphanPersonCleanup may soft-delete orphaned reservation persons. Empty disables the wizard.
+orphanCleanupPids =
