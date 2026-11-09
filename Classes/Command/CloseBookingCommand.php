@@ -29,6 +29,7 @@ use CPSIT\T3eventsReservation\Controller\ScheduleRepositoryTrait;
 use CPSIT\T3eventsReservation\Domain\Model\BookableInterface;
 use CPSIT\T3eventsReservation\Domain\Model\Dto\ReservationDemand;
 use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Service\ReservationRemover;
 use CPSIT\T3eventsReservation\Utility\SettingsInterface;
 use DWenzel\T3events\Configuration\ConfigurationManagerTrait;
 use DWenzel\T3events\Controller\NotificationServiceTrait;
@@ -71,6 +72,7 @@ class CloseBookingCommand extends Command
     protected StandaloneView $view;
     protected ObjectManager $objectManager;
     protected string $storagePageIds;
+    protected ReservationRemover $reservationRemover;
 
     public function injectView(StandaloneView $view): void
     {
@@ -80,6 +82,11 @@ class CloseBookingCommand extends Command
     public function injectObjectManager(ObjectManager $objectManager): void
     {
         $this->objectManager = $objectManager;
+    }
+
+    public function injectReservationRemover(ReservationRemover $reservationRemover): void
+    {
+        $this->reservationRemover = $reservationRemover;
     }
 
     /**
@@ -242,17 +249,13 @@ class CloseBookingCommand extends Command
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
             $lesson = $reservation->getLesson();
-            $participants = $reservation->getParticipants();
 
             if ($lesson instanceof BookableInterface) {
-                foreach ($participants as $participant) {
+                foreach ($reservation->getParticipants() as $participant) {
                     $lesson->removeParticipant($participant);
                 }
             }
-            foreach ($participants as $participant) {
-                $this->personRepository->remove($participant);
-            }
-            $this->reservationRepository->remove($reservation);
+            $this->reservationRemover->remove($reservation);
             $deletedCount++;
         }
         $this->persistenceManager->persistAll();

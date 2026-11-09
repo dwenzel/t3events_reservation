@@ -21,9 +21,16 @@ namespace CPSIT\T3eventsReservation\Tests\Unit\Command;
  ***************************************************************/
 
 use CPSIT\T3eventsReservation\Command\CloseBookingCommand;
+use CPSIT\T3eventsReservation\Domain\Model\Person;
+use CPSIT\T3eventsReservation\Domain\Model\Reservation;
+use CPSIT\T3eventsReservation\Domain\Model\Schedule;
+use CPSIT\T3eventsReservation\Service\ReservationRemover;
 use DWenzel\T3events\Service\NotificationService;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Class CloseBookingCommandTest
@@ -131,5 +138,87 @@ class CloseBookingCommandTest extends UnitTestCase
             );
 
         $this->subject->cleanupIncompleteReservationsCommand(7200, $email, false);
+    }
+
+    /**
+     * @return array{0: MockObject, 1: MockObject, 2: MockObject, 3: MockObject}
+     */
+    protected function buildDeletionSubject(): array
+    {
+        $schedule = $this->getMockBuilder(Schedule::class)
+            ->onlyMethods(['removeParticipant'])
+            ->getMock();
+        $schedule->initializeObject();
+        $participants = new ObjectStorage();
+        $participants->attach(new Person());
+        $participants->attach(new Person());
+        $withLesson = new Reservation();
+        $withLesson->setLesson($schedule);
+        $withLesson->setParticipants($participants);
+        $iterator = new \ArrayIterator([$withLesson, new Reservation()]);
+        $reservations = $this->createMock(QueryResultInterface::class);
+        $reservations->method('count')->willReturn(2);
+        $reservations->method('rewind')->willReturnCallback([$iterator, 'rewind']);
+        $reservations->method('valid')->willReturnCallback([$iterator, 'valid']);
+        $reservations->method('current')->willReturnCallback([$iterator, 'current']);
+        $reservations->method('key')->willReturnCallback([$iterator, 'key']);
+        $reservations->method('next')->willReturnCallback([$iterator, 'next']);
+
+        $subject = $this->getAccessibleMock(
+            CloseBookingCommand::class,
+            ['getInvalidReservations']
+        );
+        $subject->method('getInvalidReservations')->willReturn($reservations);
+        $persistenceManager = $this->createMock(PersistenceManagerInterface::class);
+        $remover = $this->createMock(ReservationRemover::class);
+        $subject->_set('persistenceManager', $persistenceManager);
+        $subject->injectReservationRemover($remover);
+
+        return [$subject, $remover, $persistenceManager, $schedule];
+    }
+
+    /**
+     * @test
+     */
+    public function deleteInvalidReservationsRemovesEachReservationViaRemover()
+    {
+        [$subject, $remover] = $this->buildDeletionSubject();
+        $remover->expects($this->exactly(2))->method('remove');
+
+        $this->assertSame(2, $subject->_call('deleteInvalidReservations', false, 7200));
+    }
+
+    /**
+     * @test
+     */
+    public function deleteInvalidReservationsPersistsOnce()
+    {
+        [$subject, , $persistenceManager] = $this->buildDeletionSubject();
+        $persistenceManager->expects($this->once())->method('persistAll');
+
+        $subject->_call('deleteInvalidReservations', false, 7200);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteInvalidReservationsDetachesParticipantsFromLesson()
+    {
+        [$subject, , , $schedule] = $this->buildDeletionSubject();
+        $schedule->expects($this->exactly(2))->method('removeParticipant');
+
+        $subject->_call('deleteInvalidReservations', false, 7200);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteInvalidReservationsDryRunRemovesNothing()
+    {
+        [$subject, $remover, $persistenceManager] = $this->buildDeletionSubject();
+        $remover->expects($this->never())->method('remove');
+        $persistenceManager->expects($this->never())->method('persistAll');
+
+        $this->assertSame(2, $subject->_call('deleteInvalidReservations', true, 7200));
     }
 }
